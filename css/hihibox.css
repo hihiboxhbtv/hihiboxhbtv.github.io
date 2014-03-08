@@ -1,0 +1,85 @@
+#hhb_holder {
+	position: absolute;
+	width: 100%%;
+	height: 280px;
+	overflow: hidden;
+	padding: 5px;
+	bottom: 0px;
+	background-color: hsla(0,0%,0%,0.9);
+}
+#hhb_header {
+	font-size: 26px;
+	font-weight: bold;
+	margin-bottom: 24px;
+	text-transform: none;
+	text-align: right;
+}
+#hhb_genre {
+	position:absolute;
+	top: 5px;
+	width: 270px;
+	font-size:12px;
+}
+#hhb_genre .genre {
+	margin: 2px 2px 2px 2px;
+	padding: 3px;
+	display: inline-block;
+	padding: 3px;
+	cursor: pointer;
+	color: #CCCCCC;
+	background-color: #333333;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+#hhb_genre .genre:hover {
+	color: #333333;
+	background-color: #FFFFFF;
+}
+#hhb_genre .genre.active {
+	color: #333333;
+	background-color: #EEEEEE;
+}
+
+#hhb_iconset {
+	overflow: scroll;
+	height: 240px;
+	border-top: 1px solid #EEEEEE;
+}
+#hhb_iconset .icon {
+	display: inline-block;
+	margin: 2px;
+	padding: 2px;
+	cursor: pointer;
+}
+.hhb_msgicon {
+	cursor: pointer;
+}
+.hhb_msgicon.orgSize {
+	width: 100% !important;
+}
+
+.icon.hhb-filter-not-match {
+	display: none !important;
+}
+
+.icon.hhb-filter-match {
+	display: inline-block !important;
+}
+.icon.hhb-filter-selected {
+	background-color: rgba(0, 255, 255, 0.5);
+	border: 1px solid #EEEEEE;
+	margin: 1px;
+}
+
+#hhb_button {
+	background: url('chrome-extension://iplcanaadjphhokckfocgommkecbbnfg/images/sosad.png') no-repeat center;
+	top: 2.5em;
+	width: 22px;
+	height: 22px;
+}
+#hhb_button:hover {
+	background: url('chrome-extension://iplcanaadjphhokckfocgommkecbbnfg/images/sosad_hover.png') no-repeat center;
+}
+#hhb_button:before {
+	content: initial;
+}
