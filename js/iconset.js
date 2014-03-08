@@ -1,8 +1,5 @@
-﻿var defaultGenre = '';
-var listGenre = ['Recent','HKG','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
+﻿var listGenre = ['Recent','HKG','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
 var listParse = [];
-var eid = 'iplcanaadjphhokckfocgommkecbbnfg';
-
 var listIcon = [
 	{	"code": ["O:-)"],
 		"icon": "http://forum11.hkgolden.com/faces/angel.gif",
@@ -945,49 +942,3 @@ var listIcon = [
 		"genre": ["小丑"]
 	}
 ];
-	
-function initIconList() {
-	var total = listIcon.length;
-	var loaded = 0;
-	$.each(listIcon,function(idx,obj) {
-		// parse Icon
-		var code = [].concat(obj.code);
-		var icon = obj.icon;
-		var genre = [].concat((obj.genre) ? obj.genre : 'Others');
-		var title = code.join(", ").replace(/(<([^>]+)>)/ig,'').replace(/, $/,'');
-		var img = '<img src="'+icon+'" title="'+title+'" class="hhb_msgicon'+(obj.width ? ' resized' : '')+'"'+(obj.width ? ' style="width:'+obj.width+'px;"' : '') +'/>';
-		var re = "";
-		$.each(code,function(idx2,code2) {
-			var isTag = code2.match(/^<[^>]+>$/g);
-			re += (re!="" ? '|' : '')+code2.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")+(isTag ? '' : '(?![^<]*>|[^<>]*<\/)');
-		});
-		var regex = new RegExp(re,'g');
-		obj.genre = genre;
-		obj.title = title;
-		obj.regex = regex;
-		obj.img = img;
-		
-		// add to genre list
-		$.each(genre,function(idx3,iconGenre) {
-			var cg = 0;
-			if (iconGenre != 'Others') {
-				if (defaultGenre=='') defaultGenre = iconGenre;
-				$.each(listGenre,function(idx4,genrei) {
-					if (genrei == iconGenre) cg++;
-				});
-				if (cg == 0) listGenre.push(iconGenre);
-			}
-		});
-		
-		// add to parse list
-		listParse.push(obj);
-	});
-	
-	listGenre.push('Others');
-	listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
-	
-	console.log('[HihiBox] Icon list loaded. (T: ',total,', G: ',listGenre.length,', P: ',listParse.length,')');
-}
-$(document).ready(function() {
-	initIconList();
-});

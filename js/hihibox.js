@@ -1,7 +1,6 @@
-﻿//alert("hitbox.tv detected.");
-//GIF exchange
-var classCheckedMsg = 'hhb_msg';
+﻿var classCheckedMsg = 'hhb_msg';
 var selectorMsg = ".message.ng-binding";
+var refreshIcon = 100;
 var refreshInit = 500;
 var refreshParse = 200;
 var delayFilter = 300;
@@ -14,6 +13,54 @@ var filterPageSize = 10;
 var timerFilter;
 
 $(document).ready(function() {
+	var timerIcon = setInterval(function() {
+		if (listIcon) {
+			var total = listIcon.length;
+			if (total > 0) {
+				var loaded = 0;
+				$.each(listIcon,function(idx,obj) {
+					// parse Icon
+					var code = [].concat(obj.code);
+					var icon = obj.icon;
+					var genre = [].concat((obj.genre) ? obj.genre : 'Others');
+					var title = code.join(", ").replace(/(<([^>]+)>)/ig,'').replace(/, $/,'');
+					var img = '<img src="'+icon+'" title="'+title+'" class="hhb_msgicon'+(obj.width ? ' resized' : '')+'"'+(obj.width ? ' style="width:'+obj.width+'px;"' : '') +'/>';
+					var re = "";
+					$.each(code,function(idx2,code2) {
+						var isTag = code2.match(/^<[^>]+>$/g);
+						re += (re!="" ? '|' : '')+code2.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")+(isTag ? '' : '(?![^<]*>|[^<>]*<\/)');
+					});
+					var regex = new RegExp(re,'g');
+					obj.genre = genre;
+					obj.title = title;
+					obj.regex = regex;
+					obj.img = img;
+					
+					// add to genre list
+					$.each(genre,function(idx3,iconGenre) {
+						var cg = 0;
+						if (iconGenre != 'Others') {
+							if (defaultGenre=='') defaultGenre = iconGenre;
+							$.each(listGenre,function(idx4,genrei) {
+								if (genrei == iconGenre) cg++;
+							});
+							if (cg == 0) listGenre.push(iconGenre);
+						}
+					});
+					
+					// add to parse list
+					listParse.push(obj);
+				});
+				
+				listGenre.push('Others');
+				listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
+				
+				clearInterval(timerIcon);
+				console.log('[HihiBox] Icon list loaded. (T: ',total,', G: ',listGenre.length,', P: ',listParse.length,')');
+			}
+		}
+	}, refreshIcon);
+	
 	var timerInit = setInterval(function() {
 		var palChat = $('.chatContent');
 		var palInput = $('.chatInput');
