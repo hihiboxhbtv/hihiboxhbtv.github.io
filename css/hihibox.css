@@ -72,13 +72,13 @@
 }
 
 #hhb_button {
-	background: url('chrome-extension://iplcanaadjphhokckfocgommkecbbnfg/images/sosad.png') no-repeat center;
+	background: url('http://hihiboxhbtv.github.io/images/sosad.png') no-repeat center;
 	top: 2.5em;
 	width: 22px;
 	height: 22px;
 }
 #hhb_button:hover {
-	background: url('chrome-extension://iplcanaadjphhokckfocgommkecbbnfg/images/sosad_hover.png') no-repeat center;
+	background: url('http://hihiboxhbtv.github.io/images/sosad_hover.png') no-repeat center;
 }
 #hhb_button:before {
 	content: initial;
