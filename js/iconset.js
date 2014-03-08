@@ -1,6 +1,7 @@
 ﻿var defaultGenre = '';
 var listGenre = ['Recent','HKG','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
 var listParse = [];
+var eid = 'iplcanaadjphhokckfocgommkecbbnfg';
 
 var listIcon = [
 	{	"code": ["O:-)"],
@@ -360,7 +361,7 @@ var listIcon = [
 		"width": 80
 	},
 	{	"code": ["[payback]"],
-		"icon": "http://hihiboxhbtv.github.io/images/[payback].jpg",
+		"icon": "chrome-extension://"+eid+"/images/[payback].jpg",
 		"width": 80
 	},
 	{	"code": ["[kingcheck]"],
@@ -392,7 +393,7 @@ var listIcon = [
 		"width": 80
 	},
 	{	"code": ["[summonvannzic]"],
-		"icon": "http://hihiboxhbtv.github.io/images/[summonvannzic].jpg",
+		"icon": "chrome-extension://"+eid+"/images/[summonvannzic].jpg",
 		"width": 80
 	},
 	{	"code": ["[打打打渣b]"],
