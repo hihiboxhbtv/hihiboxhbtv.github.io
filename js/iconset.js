@@ -358,7 +358,7 @@ var listIcon = [
 		"width": 80
 	},
 	{	"code": ["[payback]"],
-		"icon": "chrome-extension://"+eid+"/images/[payback].jpg",
+		"icon": "http://hihiboxhbtv.github.io/images/[payback].jpg",
 		"width": 80
 	},
 	{	"code": ["[kingcheck]"],
@@ -390,7 +390,7 @@ var listIcon = [
 		"width": 80
 	},
 	{	"code": ["[summonvannzic]"],
-		"icon": "chrome-extension://"+eid+"/images/[summonvannzic].jpg",
+		"icon": "http://hihiboxhbtv.github.io/images/[summonvannzic].jpg",
 		"width": 80
 	},
 	{	"code": ["[打打打渣b]"],
