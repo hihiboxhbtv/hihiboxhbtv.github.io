@@ -1,7 +1,12 @@
 ﻿var defaultGenre = 'HKG';
 var listGenre = ['Recent','HKG','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
 var listParse = [];
-var listIcon = [
+var listIcon = [].concat(
+
+/*********\
+	HKG
+\*********/
+[
 	{	"code": ["O:-)"],
 		"icon": "http://forum11.hkgolden.com/faces/angel.gif",
 		"genre": ["HKG"]
@@ -233,172 +238,22 @@ var listIcon = [
 	{	"code": ["[clownbye]"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20080803074219/evchk/images/5/55/CBye.gif",
 		"genre": ["HKG"]
-	},
-	{	"code": ["#pkmbye#"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20130317132637/evchk/images/4/48/CHZISme.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm???"],
-		"icon": "http://img4.wikia.nocookie.net/__cb20090507051125/evchk/images/9/90/3questionmarkpkmn.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm:~("],
-		"icon": "http://img2.wikia.nocookie.net/__cb20090507051233/evchk/images/c/c1/Crypkmn.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm#hehe#"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20090314033455/evchk/images/3/3b/Aipomhehe.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm#no#"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20090314033847/evchk/images/0/07/Bearno.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm[censored]"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20090314034008/evchk/images/6/6b/Cenegg.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm[banghead]"],
-		"icon": "http://img4.wikia.nocookie.net/__cb20090507051934/evchk/images/2/2c/Bangjig2.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm[police]"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20090314034102/evchk/images/0/06/Eggeggpolice.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm@_@"],
-		"icon": "http://img4.wikia.nocookie.net/__cb20090314034258/evchk/images/5/5a/Exeshock.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm:-]"],
-		"icon": "http://img3.wikia.nocookie.net/__cb20090314034327/evchk/images/5/50/Evilsmilepkmnbug.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm:o)"],
-		"icon": "http://img3.wikia.nocookie.net/__cb20090314034403/evchk/images/5/56/Wfc.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm#adore#"],
-		"icon": "http://img3.wikia.nocookie.net/__cb20090314034729/evchk/images/3/3c/Formcastadore2.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm#kill2#"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20090314034752/evchk/images/5/5c/Geodudekill.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm[shocking]"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20090314034835/evchk/images/6/6b/Kabutoshock.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm[bomb]"],
-		"icon": "http://img3.wikia.nocookie.net/__cb20090314034858/evchk/images/6/63/Magnitebomb.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm#kill#"],
-		"icon": "http://img1.wikia.nocookie.net/__cb20090314034937/evchk/images/d/d0/Mewgun.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm#love#"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20090314035002/evchk/images/4/4e/Todolove.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm#hoho#"],
-		"icon": "http://img3.wikia.nocookie.net/__cb20090314035100/evchk/images/3/3b/Sudowokkuplasticwine.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm[seed]"],
-		"icon": "http://img1.wikia.nocookie.net/__cb20090507051901/evchk/images/a/a7/Seedwhere.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm[flowerface]"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20090314035343/evchk/images/7/73/Starfishface.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm:-("],
-		"icon": "http://img4.wikia.nocookie.net/__cb20090314035424/evchk/images/f/ff/Poisonwoffe.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm[369]"],
-		"icon": "http://img3.wikia.nocookie.net/__cb20090314035453/evchk/images/6/63/Shell.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["pkm[sosad]"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20090514113614/evchk/images/3/3a/Pika897.gif",
-		"genre": ["pkmon"]
-	},
-	{	"code": ["[wonggiyin]"],
-		"icon": "http://static2.wikia.nocookie.net/__cb20121104181931/evchk/images/thumb/f/fa/IbvexqKQrPKgRe.jpg/500px-IbvexqKQrPKgRe.jpg",
-		"width": 80
-	},
-	{	"code": ["[talkthis]"],
-		"icon": "http://img1.wikia.nocookie.net/__cb20131015004820/evchk/images/c/cb/Dew_chatting_this_1080p.png",
-		"width": 80
-	},
-	{	"code": ["[specialskill]"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20140107085615/evchk/images/3/38/Recitation_002.gif",
-		"width": 80
-	},
-	{	"code": ["[youknowrules]"],
-		"icon": "http://img1.wikia.nocookie.net/__cb20110616150001/evchk/images/a/a5/Di-JN2V.jpg",
-		"width": 80
-	},
-	{	"code": ["[repeaterror]"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20070902105305/evchk/images/1/16/Repetitive_error.jpg",
-		"width": 80
-	},
-	{	"code": ["[whynotboth]"],
-		"icon": "http://cdn.androidpolice.com/wp-content/uploads/2012/08/nexusae0_whynotboth.jpg",
-		"width": 80
-	},
-	{	"code": ["[bitchplease]"],
-		"icon": "http://www.reactionimage.org/img/gallery/918476615.jpg",
-		"width": 80
-	},
-	{	"code": ["[sundaydriver]"],
-		"icon": "http://subspecies.files.wordpress.com/2011/10/elderly-female-driver.jpg",
-		"width": 80
-	},
-	{	"code": ["[payback]"],
-		"icon": "http://hihiboxhbtv.github.io/images/[payback].jpg",
-		"width": 80
-	},
-	{	"code": ["[kingcheck]"],
-		"icon": "http://static.apple.nextmedia.com/images/e-paper/20130319/large/1363674373_416d.jpg",
-		"width": 80
-	},
-	{	"code": ["[pccw]"],
-		"icon": "http://www.designerhk.com/sites/designerhk.com/files/blog/59/6118/02.jpg",
-		"width": 80
-	},
-	{	"code": ["[what]"],
-		"icon": "http://img.jpnxcn.com/pics/2013/0423/20130423041830583.jpg",
-		"width": 80
-	},
-	{	"code": ["[kimchi]"],
-		"icon": "http://img3.wikia.nocookie.net/__cb20091204132509/evchk/images/a/a9/U_are_korean.jpg",
-		"width": 80
-	},
-	{	"code": ["[goldbird]"],
-		"icon": "http://img1.wikia.nocookie.net/__cb20101025162933/evchk/images/f/f7/S18925goldenbitextl121.gif",
-		"width": 80
-	},
-	{	"code": ["[never]"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20080104213913/evchk/images/thumb/f/f7/Liulaughat.jpg/185px-Liulaughat.jpg",
-		"width": 80
-	},
-	{	"code": ["[ahaha]"],
-		"icon": "http://img4.wikia.nocookie.net/__cb20071214025759/evchk/images/thumb/7/7c/1188230991.jpg/200px-1188230991.jpg",
-		"width": 80
-	},
-	{	"code": ["[summonvannzic]"],
-		"icon": "http://hihiboxhbtv.github.io/images/[summonvannzic].jpg",
-		"width": 80
-	},
+	}
+],
+/****************\
+	壯膽同學會
+\****************/
+[
 	{	"code": ["[打打打渣b]"],
 		"icon": "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/10/10/1381417466775/Beyond-Two-Souls-008.jpg",
 		"genre": ["壯膽同學會"],
 		"width": 80
-	},
+	}
+],
+/**********\
+	腦魔
+\**********/
+[
 	{	"code": [":)lm","lm:)"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100616154204/evchk/images/9/94/85.gif",
 		"genre": ["腦魔"]
@@ -586,7 +441,12 @@ var listIcon = [
 	{	"code": [":Dlm","lm:D"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20110206090454/evchk/images/1/1c/Lmbiggrin.JPG",
 		"genre": ["腦魔"]
-	},
+	}
+],
+/**********\
+	meme
+\**********/
+[
 	{	"code": [":troll:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Malicious-Troll/30.png",
 		"genre": ["meme"],
@@ -721,7 +581,12 @@ var listIcon = [
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Stupidity/OhGodWhy.png",
 		"genre": ["meme"],
 		"width": 80
-	},
+	}
+],
+/**********\
+	禿伯
+\**********/
+[
 	{	"code": ["@_@t8","t8@_@"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20091018111053/evchk/images/a/a4/Tube8icon1.gif",
 		"genre": ["禿伯"]
@@ -797,7 +662,12 @@ var listIcon = [
 	{	"code": [":O)t8","t8:O)"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20091018112019/evchk/images/c/c6/Tube8icon21.gif",
 		"genre": ["禿伯"]
-	},
+	}
+],
+/**********\
+	小丑
+\**********/
+[
 	{	"code": ["#good#cl","cl#good#"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20070329155121/evchk/images/2/2c/P01good.gif",
 		"genre": ["小丑"]
@@ -942,4 +812,175 @@ var listIcon = [
 		"icon": "http://img4.wikia.nocookie.net/__cb20070329160842/evchk/images/b/b1/P39clownkill2.gif",
 		"genre": ["小丑"]
 	}
-];
+],
+/***********\
+	pkmon
+\***********/
+[
+	{	"code": ["#pkmbye#"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20130317132637/evchk/images/4/48/CHZISme.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm???"],
+		"icon": "http://img4.wikia.nocookie.net/__cb20090507051125/evchk/images/9/90/3questionmarkpkmn.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm:~("],
+		"icon": "http://img2.wikia.nocookie.net/__cb20090507051233/evchk/images/c/c1/Crypkmn.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm#hehe#"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20090314033455/evchk/images/3/3b/Aipomhehe.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm#no#"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20090314033847/evchk/images/0/07/Bearno.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm[censored]"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20090314034008/evchk/images/6/6b/Cenegg.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm[banghead]"],
+		"icon": "http://img4.wikia.nocookie.net/__cb20090507051934/evchk/images/2/2c/Bangjig2.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm[police]"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20090314034102/evchk/images/0/06/Eggeggpolice.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm@_@"],
+		"icon": "http://img4.wikia.nocookie.net/__cb20090314034258/evchk/images/5/5a/Exeshock.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm:-]"],
+		"icon": "http://img3.wikia.nocookie.net/__cb20090314034327/evchk/images/5/50/Evilsmilepkmnbug.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm:o)"],
+		"icon": "http://img3.wikia.nocookie.net/__cb20090314034403/evchk/images/5/56/Wfc.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm#adore#"],
+		"icon": "http://img3.wikia.nocookie.net/__cb20090314034729/evchk/images/3/3c/Formcastadore2.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm#kill2#"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20090314034752/evchk/images/5/5c/Geodudekill.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm[shocking]"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20090314034835/evchk/images/6/6b/Kabutoshock.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm[bomb]"],
+		"icon": "http://img3.wikia.nocookie.net/__cb20090314034858/evchk/images/6/63/Magnitebomb.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm#kill#"],
+		"icon": "http://img1.wikia.nocookie.net/__cb20090314034937/evchk/images/d/d0/Mewgun.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm#love#"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20090314035002/evchk/images/4/4e/Todolove.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm#hoho#"],
+		"icon": "http://img3.wikia.nocookie.net/__cb20090314035100/evchk/images/3/3b/Sudowokkuplasticwine.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm[seed]"],
+		"icon": "http://img1.wikia.nocookie.net/__cb20090507051901/evchk/images/a/a7/Seedwhere.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm[flowerface]"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20090314035343/evchk/images/7/73/Starfishface.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm:-("],
+		"icon": "http://img4.wikia.nocookie.net/__cb20090314035424/evchk/images/f/ff/Poisonwoffe.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm[369]"],
+		"icon": "http://img3.wikia.nocookie.net/__cb20090314035453/evchk/images/6/63/Shell.gif",
+		"genre": ["pkmon"]
+	},
+	{	"code": ["pkm[sosad]"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20090514113614/evchk/images/3/3a/Pika897.gif",
+		"genre": ["pkmon"]
+	}
+],
+/************\
+	Others
+\************/
+[
+	{	"code": ["[wonggiyin]"],
+		"icon": "http://static2.wikia.nocookie.net/__cb20121104181931/evchk/images/thumb/f/fa/IbvexqKQrPKgRe.jpg/500px-IbvexqKQrPKgRe.jpg",
+		"width": 80
+	},
+	{	"code": ["[talkthis]"],
+		"icon": "http://img1.wikia.nocookie.net/__cb20131015004820/evchk/images/c/cb/Dew_chatting_this_1080p.png",
+		"width": 80
+	},
+	{	"code": ["[specialskill]"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20140107085615/evchk/images/3/38/Recitation_002.gif",
+		"width": 80
+	},
+	{	"code": ["[youknowrules]"],
+		"icon": "http://img1.wikia.nocookie.net/__cb20110616150001/evchk/images/a/a5/Di-JN2V.jpg",
+		"width": 80
+	},
+	{	"code": ["[repeaterror]"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20070902105305/evchk/images/1/16/Repetitive_error.jpg",
+		"width": 80
+	},
+	{	"code": ["[whynotboth]"],
+		"icon": "http://cdn.androidpolice.com/wp-content/uploads/2012/08/nexusae0_whynotboth.jpg",
+		"width": 80
+	},
+	{	"code": ["[bitchplease]"],
+		"icon": "http://www.reactionimage.org/img/gallery/918476615.jpg",
+		"width": 80
+	},
+	{	"code": ["[sundaydriver]"],
+		"icon": "http://subspecies.files.wordpress.com/2011/10/elderly-female-driver.jpg",
+		"width": 80
+	},
+	{	"code": ["[payback]"],
+		"icon": "http://hihiboxhbtv.github.io/images/[payback].jpg",
+		"width": 80
+	},
+	{	"code": ["[kingcheck]"],
+		"icon": "http://static.apple.nextmedia.com/images/e-paper/20130319/large/1363674373_416d.jpg",
+		"width": 80
+	},
+	{	"code": ["[pccw]"],
+		"icon": "http://www.designerhk.com/sites/designerhk.com/files/blog/59/6118/02.jpg",
+		"width": 80
+	},
+	{	"code": ["[what]"],
+		"icon": "http://img.jpnxcn.com/pics/2013/0423/20130423041830583.jpg",
+		"width": 80
+	},
+	{	"code": ["[kimchi]"],
+		"icon": "http://img3.wikia.nocookie.net/__cb20091204132509/evchk/images/a/a9/U_are_korean.jpg",
+		"width": 80
+	},
+	{	"code": ["[goldbird]"],
+		"icon": "http://img1.wikia.nocookie.net/__cb20101025162933/evchk/images/f/f7/S18925goldenbitextl121.gif",
+		"width": 80
+	},
+	{	"code": ["[never]"],
+		"icon": "http://img2.wikia.nocookie.net/__cb20080104213913/evchk/images/thumb/f/f7/Liulaughat.jpg/185px-Liulaughat.jpg",
+		"width": 80
+	},
+	{	"code": ["[ahaha]"],
+		"icon": "http://img4.wikia.nocookie.net/__cb20071214025759/evchk/images/thumb/7/7c/1188230991.jpg/200px-1188230991.jpg",
+		"width": 80
+	},
+	{	"code": ["[summonvannzic]"],
+		"icon": "http://hihiboxhbtv.github.io/images/[summonvannzic].jpg",
+		"width": 80
+	}
+]
+);
