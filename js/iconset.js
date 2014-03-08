@@ -1,4 +1,5 @@
-﻿var listGenre = ['Recent','HKG','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
+﻿var defaultGenre = 'HKG';
+var listGenre = ['Recent','HKG','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
 var listParse = [];
 var listIcon = [
 	{	"code": ["O:-)"],
