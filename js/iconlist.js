@@ -8,9 +8,9 @@ var listGenre = ['Recent','HKG','meme','pkmon','腦魔','禿伯','小丑','壯�
 var listParse = [];
 var listIcon = [].concat(
 
-/*********\
+/********************\
 	HKG
-\*********/
+\********************/
 [
 	{	"code": ["O:-)"],
 		"icon": "http://forum11.hkgolden.com/faces/angel.gif",
@@ -245,9 +245,9 @@ var listIcon = [].concat(
 		"genre": ["HKG"]
 	}
 ],
-/****************\
+/********************\
 	壯膽同學會
-\****************/
+\********************/
 [
 	{	"code": ["[打打打渣b]"],
 		"icon": "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/10/10/1381417466775/Beyond-Two-Souls-008.jpg",
@@ -255,9 +255,9 @@ var listIcon = [].concat(
 		"width": 80
 	}
 ],
-/**********\
+/********************\
 	腦魔
-\**********/
+\********************/
 [
 	{	"code": [":)lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100616154204/evchk/images/9/94/85.gif",
@@ -448,9 +448,9 @@ var listIcon = [].concat(
 		"genre": ["腦魔"]
 	}
 ],
-/**********\
+/********************\
 	meme
-\**********/
+\********************/
 [
 	{	"code": [":troll:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Malicious-Troll/30.png",
@@ -588,9 +588,9 @@ var listIcon = [].concat(
 		"width": 80
 	}
 ],
-/**********\
+/********************\
 	禿伯
-\**********/
+\********************/
 [
 	{	"code": ["@_@t8"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20091018111053/evchk/images/a/a4/Tube8icon1.gif",
@@ -669,9 +669,9 @@ var listIcon = [].concat(
 		"genre": ["禿伯"]
 	}
 ],
-/**********\
+/********************\
 	小丑
-\**********/
+\********************/
 [
 	{	"code": ["#good#cl"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20070329155121/evchk/images/2/2c/P01good.gif",
@@ -818,9 +818,9 @@ var listIcon = [].concat(
 		"genre": ["小丑"]
 	}
 ],
-/***********\
+/********************\
 	pkmon
-\***********/
+\********************/
 [
 	{	"code": ["#pkmbye#"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20130317132637/evchk/images/4/48/CHZISme.gif",
@@ -915,9 +915,9 @@ var listIcon = [].concat(
 		"genre": ["pkmon"]
 	}
 ],
-/************\
+/********************\
 	Other
-\************/
+\********************/
 [
 	{	"code": ["[wonggiyin]"],
 		"icon": "http://static2.wikia.nocookie.net/__cb20121104181931/evchk/images/thumb/f/fa/IbvexqKQrPKgRe.jpg/500px-IbvexqKQrPKgRe.jpg",
@@ -988,8 +988,8 @@ var listIcon = [].concat(
 		"width": 80
 	}
 ]
-/************\
+/********************\
 	Ending
-\************/
+\********************/
 
 );
