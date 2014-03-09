@@ -39,7 +39,7 @@ var listIcon = [].concat(
 		"icon": "http://forum11.hkgolden.com/faces/devil.gif",
 		"genre": ["HKG"]
 	},
-	{	"code": [":D"],
+	{	"code": [":D",'<img src="http://edge.vie.hitbox.tv/static/img/chat/default/lol1.png" title=":lol:, :D" alt="" class="smiley">'],
 		"icon": "http://forum11.hkgolden.com/faces/biggrin.gif",
 		"genre": ["HKG"]
 	},
@@ -497,7 +497,7 @@ var listIcon = [].concat(
 		"genre": ["meme"],
 		"width": 80
 	},
-	{	"code": [":lol:"],
+	{	"code": [":lolol:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Laughing/LOL.png",
 		"genre": ["meme"],
 		"width": 80
@@ -983,4 +983,8 @@ var listIcon = [].concat(
 		"width": 80
 	}
 ]
+/************\
+	Ending
+\************/
+
 );
