@@ -254,131 +254,131 @@ var listIcon = [].concat(
 	腦魔
 \**********/
 [
-	{	"code": [":)lm","lm:)"],
+	{	"code": [":)lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100616154204/evchk/images/9/94/85.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": [";-)lm","lm;-)"],
+	{	"code": [";-)lm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20100618120620/evchk/images/b/b9/Danni.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["O:-)lm","lmO:-)"],
+	{	"code": ["O:-)lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100616154309/evchk/images/a/ab/Th_oh_copy.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["xx(lm","lmxx("],
+	{	"code": ["xx(lm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20100616154353/evchk/images/0/0e/Th_xx.png",
 		"genre": ["腦魔"]
 	},
-	{	"code": [":o)lm","lm:o)"],
+	{	"code": [":o)lm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20100616154621/evchk/images/5/5e/Th_on9.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": [":o)lm2","lm:o)2"],
+	{	"code": [":o)lm2"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100616155005/evchk/images/c/c0/Th_pa.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": [":o)lm3","lm:o)3"],
+	{	"code": [":o)lm3"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20100820160801/evchk/images/6/61/031221g1nwNaCg3d.png",
 		"genre": ["腦魔"]
 	},
-	{	"code": [":-(lm","lm:-("],
+	{	"code": [":-(lm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20100616155057/evchk/images/0/06/Th_sad.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": [":~(lm","lm:~("],
+	{	"code": [":~(lm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20100617141635/evchk/images/c/c3/Th_cry2.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": [":-[lm","lm:-["],
+	{	"code": [":-[lm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20100617142037/evchk/images/8/81/Th_angry.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Olm","lm:O"],
+	{	"code": [":Olm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20100617142105/evchk/images/3/35/Th_oh.jpg",
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Plm","lm:P"],
+	{	"code": [":Plm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100822142512/evchk/images/e/ef/Th_tounge.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Plm2","lm:P2"],
+	{	"code": [":Plm2"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20100820154415/evchk/images/5/50/LOMORR.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["?_?lm","lm?_?"],
+	{	"code": ["?_?lm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20100617142235/evchk/images/2/2a/Th_wonder2.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#oh#lm","lm#oh#"],
+	{	"code": ["#oh#lm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20100617142312/evchk/images/d/d0/Th_4_13.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#good#lm","lm#good#"],
+	{	"code": ["#good#lm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20100617142359/evchk/images/c/c3/Th_good.jpg",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#hoho#lm","lm#hoho#"],
+	{	"code": ["#hoho#lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100617142427/evchk/images/4/43/Th_hoho.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#hoho#lm2","lm#hoho#2"],
+	{	"code": ["#hoho#lm2"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20100830110529/evchk/images/7/7f/Hoholm_alcohol_plastic.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#kill#lm","lm#kill#"],
+	{	"code": ["#kill#lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100617142503/evchk/images/b/bf/Th_kill.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#kill2#lm","lm#kill2#"],
+	{	"code": ["#kill2#lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100618120205/evchk/images/a/a8/Kill2lm.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["@_@lm","lm@_@"],
+	{	"code": ["@_@lm"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20100617142537/evchk/images/7/7d/Th_fb45347a.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["???lm","lm???"],
+	{	"code": ["???lm"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20100617142620/evchk/images/e/ec/Th_wonder1.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["fucklm","lmfuck"],
+	{	"code": ["fucklm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20100617142644/evchk/images/0/09/Th_diu.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["fucklm2","lmfuck2"],
+	{	"code": ["fucklm2"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100901095942/evchk/images/9/96/Thdiuu.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[banghead]lm","lm[banghead]"],
+	{	"code": ["[banghead]lm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20100617142707/evchk/images/8/85/Th_31lmbanghead.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[shocking]lm","lm[shocking]"],
+	{	"code": ["[shocking]lm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20100617142736/evchk/images/f/fa/Th_shocking.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[photo]lm","lm[photo]"],
+	{	"code": ["[photo]lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100617142808/evchk/images/7/74/Th_20100506d980e19b600aea9.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[sosad]lm","lm[sosad]"],
+	{	"code": ["[sosad]lm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20100617142915/evchk/images/1/1a/Th_lososad.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[sosad]lm2","lm[sosad]2"],
+	{	"code": ["[sosad]lm2"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100617142955/evchk/images/4/4e/Th_sosad2.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#yup#lm","lm#yup#"],
+	{	"code": ["#yup#lm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20100617143109/evchk/images/0/06/Th_85.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[369]lm","Lm[369]"],
+	{	"code": ["[369]lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100617143132/evchk/images/3/3e/Th_369.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[bomb]lm","lm[bomb]"],
+	{	"code": ["[bomb]lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100617143429/evchk/images/4/43/Th_1_78.gif",
 		"genre": ["腦魔"]
 	},
@@ -386,59 +386,59 @@ var listIcon = [].concat(
 		"icon": "http://img2.wikia.nocookie.net/__cb20110419143501/evchk/images/2/28/BomblmJ.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[slick]lm","lm[slick]"],
+	{	"code": ["[slick]lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100617143507/evchk/images/a/a3/Th_2010050629e0acd7b8ad410.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#ng#lm","lm#ng#"],
+	{	"code": ["#ng#lm"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20100617143618/evchk/images/4/4d/Th_YTTTTT.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["Z_Zlm","lmZ_Z"],
+	{	"code": ["Z_Zlm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100617143754/evchk/images/4/4b/Th_sleep.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": [":-]lm","lm:-]"],
+	{	"code": [":-]lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100617143900/evchk/images/d/df/Th_deval.png",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#adore#lm","lm#adore#"],
+	{	"code": ["#adore#lm"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20100617143947/evchk/images/5/57/Th_adore.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#bye#lm","lm#bye#"],
+	{	"code": ["#bye#lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100617144026/evchk/images/3/36/Th_goodbye.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[flowerface]lm","lm[flowerface]"],
+	{	"code": ["[flowerface]lm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20100617144119/evchk/images/d/d8/Th_flowerface.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#love#lm","lm#love#"],
+	{	"code": ["#love#lm"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20100617144207/evchk/images/7/74/Th_love.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[yipes]lm","lm[yipes]"],
+	{	"code": ["[yipes]lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100617144314/evchk/images/f/f5/Th_yipes.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[bouncer]lm","lm[bouncer]"],
+	{	"code": ["[bouncer]lm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20100619080047/evchk/images/e/e0/Bouncerlm.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[bouncer]lm2","lm[bouncer]2"],
+	{	"code": ["[bouncer]lm2"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20100822142655/evchk/images/c/c5/Steadybouncelm.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#ass#lm","lm#ass#"],
+	{	"code": ["#ass#lm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20100820154721/evchk/images/f/f7/Th_gggggggsddf.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["^3^lm","Lm^3^"],
+	{	"code": ["^3^lm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20100823060526/evchk/images/e/ec/Lmkiss.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Dlm","lm:D"],
+	{	"code": [":Dlm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20110206090454/evchk/images/1/1c/Lmbiggrin.JPG",
 		"genre": ["腦魔"]
 	}
@@ -587,23 +587,23 @@ var listIcon = [].concat(
 	禿伯
 \**********/
 [
-	{	"code": ["@_@t8","t8@_@"],
+	{	"code": ["@_@t8"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20091018111053/evchk/images/a/a4/Tube8icon1.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": [":-[t8","t8:-["],
+	{	"code": [":-[t8"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20091018111108/evchk/images/9/9e/Tube8icon2.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": ["[shocking]t8","t8[shocking]"],
+	{	"code": ["[shocking]t8"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20091018111121/evchk/images/7/75/Tube8icon3.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": ["[yipes]t8","t8[yipes]"],
+	{	"code": ["[yipes]t8"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20091018111129/evchk/images/9/9f/Tube8icon4.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": ["#hoho#t8","t8#hoho#"],
+	{	"code": ["#hoho#t8"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20091018111219/evchk/images/0/07/Tube8icon5.gif",
 		"genre": ["禿伯"]
 	},
@@ -615,51 +615,51 @@ var listIcon = [].concat(
 		"icon": "http://img3.wikia.nocookie.net/__cb20091018111517/evchk/images/9/9c/Tube8icon7.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": [":~(t8","t8:~("],
+	{	"code": [":~(t8"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20091018111530/evchk/images/a/a2/Tube8icon8.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": ["fuckt8","t8fuck"],
+	{	"code": ["fuckt8"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20091018111549/evchk/images/8/83/Tube8icon9.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": ["#kill#t8","t8#kill#"],
+	{	"code": ["#kill#t8"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20091018111703/evchk/images/3/3f/Tube8icon10.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": [":Ot8","t8:O"],
+	{	"code": [":Ot8"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20091018111727/evchk/images/c/cb/Tube8icon11.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": ["#oh#t8","t8#oh#"],
+	{	"code": ["#oh#t8"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20091018111747/evchk/images/d/da/Tube8icon12.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": [":Pt8","t8:P"],
+	{	"code": [":Pt8"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20091018111802/evchk/images/9/9b/Tube8icon13.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": ["???t8","t8???"],
+	{	"code": ["???t8"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20091018111851/evchk/images/3/31/Tube8icon16.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": [":-(t8","t8:-("],
+	{	"code": [":-(t8"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20091018111858/evchk/images/e/e1/Tube8icon17.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": ["[sosad]t8","t8[sosad]"],
+	{	"code": ["[sosad]t8"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20091018111920/evchk/images/8/81/Tube8icon18.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": ["#yup#t8","t8#yup#"],
+	{	"code": ["#yup#t8"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20091018111936/evchk/images/0/04/Tube8icon19.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": ["Z_Zt8","t8Z_Z"],
+	{	"code": ["Z_Zt8"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20091018112002/evchk/images/8/8c/Tube8icon20.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": [":O)t8","t8:O)"],
+	{	"code": [":O)t8"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20091018112019/evchk/images/c/c6/Tube8icon21.gif",
 		"genre": ["禿伯"]
 	}
@@ -668,51 +668,51 @@ var listIcon = [].concat(
 	小丑
 \**********/
 [
-	{	"code": ["#good#cl","cl#good#"],
+	{	"code": ["#good#cl"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20070329155121/evchk/images/2/2c/P01good.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#bad#cl","cl#bad#"],
+	{	"code": ["#bad#cl"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20070329155159/evchk/images/2/24/P02bad.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#bye#cl","cl#bye#"],
+	{	"code": ["#bye#cl"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20070329155234/evchk/images/1/1f/P03bye.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#think#cl","cl#think#"],
+	{	"code": ["#think#cl"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20070329155216/evchk/images/7/74/P04sick.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["???cl","cl???"],
+	{	"code": ["???cl"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20070329155326/evchk/images/1/10/P05no.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[crash]cl","cl[crash]"],
+	{	"code": ["[crash]cl"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20070329155405/evchk/images/8/88/P06ballup.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[yipes]cl","cl[yipes]"],
+	{	"code": ["[yipes]cl"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20070329155431/evchk/images/3/30/P07afraid.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": [":~(cl","cl:~("],
+	{	"code": [":~(cl"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20070329155458/evchk/images/e/e5/P08cry.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["|||cl","cl|||"],
+	{	"code": ["|||cl"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20070329155522/evchk/images/d/d1/P09water.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[grass]cl","cl[grass]"],
+	{	"code": ["[grass]cl"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20070329155549/evchk/images/a/a4/P10grass.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[noeyec]cl","cl[noeyec]"],
+	{	"code": ["[noeyec]cl"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20070329155629/evchk/images/7/77/P11ah.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[no]cl","cl[no]"],
+	{	"code": ["[no]cl"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20070329155652/evchk/images/2/2c/P12no2.gif",
 		"genre": ["小丑"]
 	},
@@ -720,95 +720,95 @@ var listIcon = [].concat(
 		"icon": "http://img4.wikia.nocookie.net/__cb20070329155718/evchk/images/f/fe/P13adore.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#god#cl","cl#god#"],
+	{	"code": ["#god#cl"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20070329155745/evchk/images/5/5c/P14adore2.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[fuck]cl","cl[fuck]"],
+	{	"code": ["[fuck]cl"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20070329155728/evchk/images/c/c7/P15f1.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[sun]cl","cl[sun]"],
+	{	"code": ["[sun]cl"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20070329155842/evchk/images/c/cd/P16sun.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[rain]cl","cl[rain]"],
+	{	"code": ["[rain]cl"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20070329155904/evchk/images/b/b7/P17umbrella.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[jail]cl","cl[jail]"],
+	{	"code": ["[jail]cl"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20070329155926/evchk/images/b/b0/P18jail.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[fuck]cl2","cl[fuck]2"],
+	{	"code": ["[fuck]cl2"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20070329155953/evchk/images/d/d7/P19midfinger.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["???cl3","Cl???3"],
+	{	"code": ["???cl3"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20070329160040/evchk/images/5/53/P21ng.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#yup#cl","cl#yup#"],
+	{	"code": ["#yup#cl"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20070329160019/evchk/images/3/37/P22385602iUdgq.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#photo#cl","cl#photo#"],
+	{	"code": ["#photo#cl"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20070329160209/evchk/images/e/e8/P23040822165313-105283.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#smoke#cl","cl#smoke#"],
+	{	"code": ["#smoke#cl"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20070329160228/evchk/images/3/3a/P2404072022142-45236.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["???cl2","Cl???2"],
+	{	"code": ["???cl2"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20070329160332/evchk/images/2/2e/P2504071723945-45236.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[bouncer]cl","cl[bouncer]"],
+	{	"code": ["[bouncer]cl"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20070329160352/evchk/images/a/a4/P26040801112519-102412.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": [":)cl","cl:)"],
+	{	"code": [":)cl"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20070329160411/evchk/images/1/12/P2704072023856-103790.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#fire#cl","cl#fire#"],
+	{	"code": ["#fire#cl"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20070329160438/evchk/images/5/58/P28clown_fire.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#hoho#cl","cl#hoho#"],
+	{	"code": ["#hoho#cl"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20070329160519/evchk/images/3/37/P29hoho.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#dive#cl","cl#dive#"],
+	{	"code": ["#dive#cl"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20070329160453/evchk/images/6/62/P30sub.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[sosad]cl","cl[sosad]"],
+	{	"code": ["[sosad]cl"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20070329160619/evchk/images/b/be/P32sosadplas.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[offtopic]cl","cl[offtopic]"],
+	{	"code": ["[offtopic]cl"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20070329160550/evchk/images/a/ab/P33clownoff.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[jerk]cl","cl[jerk]"],
+	{	"code": ["[jerk]cl"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20070329160655/evchk/images/5/50/P343y64o5e.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["[offtopic]cl2","cl[offtopic]2"],
+	{	"code": ["[offtopic]cl2"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20070329160714/evchk/images/d/d6/P35clownmoney.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["fuckcl","clfuck"],
+	{	"code": ["fuckcl"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20070329160752/evchk/images/c/c2/P37clownf.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#kill#cl","cl#kill#"],
+	{	"code": ["#kill#cl"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20070329160823/evchk/images/6/64/P38clownkill.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#kill2#cl","cl#kill2#"],
+	{	"code": ["#kill2#cl"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20070329160842/evchk/images/b/b1/P39clownkill2.gif",
 		"genre": ["小丑"]
 	}
