@@ -1,10 +1,10 @@
-﻿var infoName = 'Hihibox';
+﻿var infoName = 'Hihibox Beta';
 var infoCredit = 'Designed by VannZic, Lemon';
 var infoVersion = 'v1.5.1';
 var infoLastUpdate = 'Last Updated on 2014-03-10';
 
 var defaultGenre = 'HKG';
-var listGenre = ['Recent','HKG','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
+var listGenre = ['Recent','HKG','HKG2','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
 var listParse = [];
 var listIcon = [].concat(
 
@@ -18,6 +18,10 @@ var listIcon = [].concat(
 	},
 	{	"code": ["xx("],
 		"icon": "http://forum11.hkgolden.com/faces/dead.gif",
+		"genre": ["HKG"]
+	},
+	{	"code": [":)",'<img src="http://edge.vie.hitbox.tv/static/img/chat/default/smile1.png" title=":smile:, :)" alt="" class="smiley">'],
+		"icon": "http://forum11.hkgolden.com/faces/smile.gif",
 		"genre": ["HKG"]
 	},
 	{	"code": [":o)"],
@@ -46,6 +50,14 @@ var listIcon = [].concat(
 	},
 	{	"code": [":D",'<img src="http://edge.vie.hitbox.tv/static/img/chat/default/lol1.png" title=":lol:, :D" alt="" class="smiley">'],
 		"icon": "http://forum11.hkgolden.com/faces/biggrin.gif",
+		"genre": ["HKG"]
+	},
+	{	"code": [":O",'<img src="http://edge.vie.hitbox.tv/static/img/chat/default/surprised2.png" title="omg, :O" alt="" class="smiley">'],
+		"icon": "http://forum11.hkgolden.com/faces/oh.gif",
+		"genre": ["HKG"]
+	},
+	{	"code": [":P",'<img src="http://edge.vie.hitbox.tv/static/img/chat/default/tongue2.png" title=":P, :p" alt="" class="smiley">'],
+		"icon": "http://forum11.hkgolden.com/faces/tongue.gif",
 		"genre": ["HKG"]
 	},
 	{	"code": ["^3^"],
@@ -86,10 +98,6 @@ var listIcon = [].concat(
 	},
 	{	"code": ["[sosad]"],
 		"icon": "http://forum11.hkgolden.com/faces/sosad.gif",
-		"genre": ["HKG"]
-	},
-	{	"code": ["[369]"],
-		"icon": "http://forum11.hkgolden.com/faces/369.gif",
 		"genre": ["HKG"]
 	},
 	{	"code": ["#good#"],
@@ -152,12 +160,16 @@ var listIcon = [].concat(
 		"icon": "http://forum11.hkgolden.com/faces/photo.gif",
 		"genre": ["HKG"]
 	},
+	{	"code": ["#fire#"],
+		"icon": "http://forum11.hkgolden.com/faces/fire.gif",
+		"genre": ["HKG"]
+	},
 	{	"code": ["[yipes]"],
 		"icon": "http://forum11.hkgolden.com/faces/yipes.gif",
 		"genre": ["HKG"]
 	},
-	{	"code": ["#fire#"],
-		"icon": "http://forum11.hkgolden.com/faces/fire.gif",
+	{	"code": ["[369]"],
+		"icon": "http://forum11.hkgolden.com/faces/369.gif",
 		"genre": ["HKG"]
 	},
 	{	"code": ["[bomb]"],
@@ -184,65 +196,53 @@ var listIcon = [].concat(
 		"icon": "http://forum11.hkgolden.com/faces/offtopic.gif",
 		"genre": ["HKG"]
 	},
-	{	"code": [":)",'<img src="http://edge.vie.hitbox.tv/static/img/chat/default/smile1.png" title=":smile:, :)" alt="" class="smiley">'],
-		"icon": "http://forum11.hkgolden.com/faces/smile.gif",
-		"genre": ["HKG"]
-	},
-	{	"code": [":O",'<img src="http://edge.vie.hitbox.tv/static/img/chat/default/surprised2.png" title="omg, :O" alt="" class="smiley">'],
-		"icon": "http://forum11.hkgolden.com/faces/oh.gif",
-		"genre": ["HKG"]
-	},
-	{	"code": [":P",'<img src="http://edge.vie.hitbox.tv/static/img/chat/default/tongue2.png" title=":P, :p" alt="" class="smiley">'],
-		"icon": "http://forum11.hkgolden.com/faces/tongue.gif",
-		"genre": ["HKG"]
-	},
 	{	"code": ["[sosad369]"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20060327033446/evchk/images/5/55/Sosad-369.gif",
-		"genre": ["HKG"]
+		"genre": ["HKG2"]
 	},
 	{	"code": ["[sosad369ex]"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20100901112145/evchk/images/b/b9/2010818205939156567860.gif",
-		"genre": ["HKG"]
+		"genre": ["HKG2"]
 	},
 	{	"code": ["[369flowerface]"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20060327040053/evchk/images/3/35/369face.gif",
-		"genre": ["HKG"]
+		"genre": ["HKG2"]
 	},
 	{	"code": ["[ass369]"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20060327040129/evchk/images/2/27/Ass3.gif",
-		"genre": ["HKG"]
+		"genre": ["HKG2"]
 	},
 	{	"code": ["[assclown]"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20060327040144/evchk/images/6/65/AssC.gif",
-		"genre": ["HKG"]
+		"genre": ["HKG2"]
 	},
 	{	"code": ["[sosadbouncer]"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20060327040204/evchk/images/b/bc/Bounsad.gif",
-		"genre": ["HKG"]
+		"genre": ["HKG2"]
 	},
 	{	"code": ["[369sosad]"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20060327040538/evchk/images/a/a9/Hahaha.gif",
-		"genre": ["HKG"]
+		"genre": ["HKG2"]
 	},
 	{	"code": ["[sosadgood]"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20060327040613/evchk/images/9/98/Sogood.gif",
-		"genre": ["HKG"]
+		"genre": ["HKG2"]
 	},
 	{	"code": ["[clownbouncy]"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20080620050648/evchk/images/a/a5/Soft_plastic.gif",
-		"genre": ["HKG"]
+		"genre": ["HKG2"]
 	},
 	{	"code": ["[clownbouncer]"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20080623080121/evchk/images/e/eb/Clownbouncer.gif",
-		"genre": ["HKG"]
+		"genre": ["HKG2"]
 	},
 	{	"code": ["[369bye]"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20080623075949/evchk/images/e/e9/369bye.gif",
-		"genre": ["HKG"]
+		"genre": ["HKG2"]
 	},
 	{	"code": ["[clownbye]"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20080803074219/evchk/images/5/55/CBye.gif",
-		"genre": ["HKG"]
+		"genre": ["HKG2"]
 	}
 ],
 /********************\
