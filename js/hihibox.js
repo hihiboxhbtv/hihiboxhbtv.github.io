@@ -129,6 +129,10 @@ $(document).ready(function() {
 							$(this).attr('hhb-genre',tgenre+' Recent');
 							
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+							console.log($(this),$(this).find('.hhb_msgicon').hasClass('resized'));
+>>>>>>> 2e4c84a2e41c39a73e48e49c886e39f88977d55a
 =======
 							console.log($(this),$(this).find('.hhb_msgicon').hasClass('resized'));
 >>>>>>> 2e4c84a2e41c39a73e48e49c886e39f88977d55a
