@@ -128,14 +128,6 @@ $(document).ready(function() {
 							var tgenre = $(this).attr('hhb-genre');
 							$(this).attr('hhb-genre',tgenre+' Recent');
 							
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-							console.log($(this),$(this).find('.hhb_msgicon').hasClass('resized'));
->>>>>>> 2e4c84a2e41c39a73e48e49c886e39f88977d55a
-=======
-							console.log($(this),$(this).find('.hhb_msgicon').hasClass('resized'));
->>>>>>> 2e4c84a2e41c39a73e48e49c886e39f88977d55a
 							if ($(this).find('.hhb_msgicon').hasClass('resized')) {
 								$('#hhb_iconset .icon').removeClass('hhb-filter-not-match hhb-filter-match hhb-filter-selected');
 								$('#hhb_holder').hide(0);
