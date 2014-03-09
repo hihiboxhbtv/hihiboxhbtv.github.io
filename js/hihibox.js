@@ -68,7 +68,10 @@ $(document).ready(function() {
 		if (palChat.length > 0 && palInput.length > 0) {
 			// create HihiBox object
 			var palHolder = $('<div id="hhb_holder">'+
-								'<h3 id="hhb_header" title="Designed by VannZic, Lemon">HihiBox</h3>'+
+								'<div id="hhb_header" title="Designed by VannZic, Lemon">'+
+								'<a href="http://scaryplayttv.wix.com/hkghitbox" target="_new"><div class="icon hhb" title="Website"></div></a>'+
+								'<a href="https://www.facebook.com/hihiboxhbtv" target="_new"><div class="icon fb" title="Facebook Page"></div></a>'+
+								'HihiBox</div>'+
 								'<div id="hhb_genre"></div>'+
 								'<div id="hhb_iconset"></div>'+
 								'</div>').hide();
@@ -113,7 +116,7 @@ $(document).ready(function() {
 								tmp = tmp.replace(filterSeperator,'');
 								isFiltering = false;
 							}
-							var newMsg = tmp+$(this).data('hhb-code');
+							var newMsg = tmp+$(this).data('hhb-code')+' ';
 							$('#chatInput')
 								.focus()
 								.val(newMsg);
@@ -264,7 +267,7 @@ $(document).ready(function() {
 			}
 		}
 	}).keyup(function(e) {
-		if ((e.which == 8 || e.which == 46) ||	/* backspace , delete */
+		if ((e.which == 8 || e.which == 32 || e.which == 46) ||	/* backspace, space, delete */
 			(e.which >= 48 && e.which <= 90) ||	/* 0-9, a-z */
 			(e.which >= 96 && e.which <= 111) || /* numpad */
 			(e.which >= 186 && e.which <= 222) /* symbol */

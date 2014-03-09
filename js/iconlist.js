@@ -947,7 +947,7 @@ var listIcon = [].concat(
 		"width": 80
 	},
 	{	"code": ["[payback]"],
-		"icon": "http://hihiboxhbtv.github.io/images/[payback].jpg",
+		"icon": "http://hihiboxhbtv.github.io/images/icons/[payback].jpg",
 		"width": 80
 	},
 	{	"code": ["[kingcheck]"],
@@ -979,7 +979,7 @@ var listIcon = [].concat(
 		"width": 80
 	},
 	{	"code": ["[summonvannzic]"],
-		"icon": "http://hihiboxhbtv.github.io/images/[summonvannzic].jpg",
+		"icon": "http://hihiboxhbtv.github.io/images/icons/[summonvannzic].jpg",
 		"width": 80
 	}
 ]
