@@ -1,7 +1,7 @@
 ﻿var infoName = 'Hihibox';
 var infoCredit = 'Designed by VannZic, Lemon';
 var infoVersion = 'v1.5.1';
-var infoLastUpdate = 'Last Updated on 2014-03-09';
+var infoLastUpdate = 'Last Updated on 2014-03-10';
 
 var defaultGenre = 'HKG';
 var listGenre = ['Recent','HKG','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
@@ -469,6 +469,16 @@ var listIcon = [].concat(
 	},
 	{	"code": [":deskflip:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Angry2/angry-desk-flip.png",
+		"genre": ["meme"],
+		"width": 80
+	},
+	{	"code": [":yaoface:"],
+		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Laughing/34.png",
+		"genre": ["meme"],
+		"width": 80
+	},
+	{	"code": [":accept:"],
+		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Determined/ChallengeAccepted.png",
 		"genre": ["meme"],
 		"width": 80
 	},
