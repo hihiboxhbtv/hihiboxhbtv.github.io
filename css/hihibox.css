@@ -9,8 +9,6 @@
 }
 #hhb_header {
 	font-size: 26px;
-	font-weight: bold;
-	text-transform: none;
 	text-align: right;
 	color: #EEEEEE;
 }
@@ -20,12 +18,24 @@
 	border: 0px;
 	width: 24px;
 	height: 24px;
+	cursor: pointer;
 }
 #hhb_header .icon.fb {
 	background: url('http://hihiboxhbtv.github.io/images/fb.png') no-repeat center;
 }
 #hhb_header .icon.hhb {
 	background: url('http://hihiboxhbtv.github.io/images/hhb.png') no-repeat center;
+}
+#hhb_header span.name {
+	font-weight: bold;
+	text-transform: none;
+	cursor: pointer;
+}
+#hhb_header span.version {
+	margin-left: 5px;
+	font-size: 12px;
+	font-weight: normal;
+	cursor: pointer;
 }
 #hhb_genre {
 	padding-bottom: 2px;

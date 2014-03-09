@@ -1,4 +1,9 @@
-﻿var defaultGenre = 'HKG';
+﻿var infoName = 'Hihibox';
+var infoCredit = 'Designed by VannZic, Lemon';
+var infoVersion = 'v1.5.1';
+var infoLastUpdate = 'Last Updated on 2014-03-09';
+
+var defaultGenre = 'HKG';
 var listGenre = ['Recent','HKG','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
 var listParse = [];
 var listIcon = [].concat(
@@ -911,7 +916,7 @@ var listIcon = [].concat(
 	}
 ],
 /************\
-	Others
+	Other
 \************/
 [
 	{	"code": ["[wonggiyin]"],
