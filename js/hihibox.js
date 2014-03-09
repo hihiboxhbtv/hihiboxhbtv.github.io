@@ -22,7 +22,7 @@ $(document).ready(function() {
 					// parse Icon
 					var code = [].concat(obj.code);
 					var icon = obj.icon;
-					var genre = [].concat((obj.genre) ? obj.genre : 'Others');
+					var genre = [].concat((obj.genre) ? obj.genre : 'Other');
 					var title = code.join(", ").replace(/(<([^>]+)>)/ig,'').replace(/, $/,'');
 					var img = '<img src="'+icon+'" title="'+title+'" class="hhb_msgicon'+(obj.width ? ' resized' : '')+'"'+(obj.width ? ' style="width:'+obj.width+'px;"' : '') +'/>';
 					var re = "";
@@ -39,7 +39,7 @@ $(document).ready(function() {
 					// add to genre list
 					$.each(genre,function(idx3,iconGenre) {
 						var cg = 0;
-						if (iconGenre != 'Others') {
+						if (iconGenre != 'Other') {
 							if (defaultGenre=='') defaultGenre = iconGenre;
 							$.each(listGenre,function(idx4,genrei) {
 								if (genrei == iconGenre) cg++;
@@ -52,7 +52,7 @@ $(document).ready(function() {
 					listParse.push(obj);
 				});
 				
-				listGenre.push('Others');
+				listGenre.push('Other');
 				listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
 				
 				clearInterval(timerIcon);
@@ -68,10 +68,11 @@ $(document).ready(function() {
 		if (palChat.length > 0 && palInput.length > 0) {
 			// create HihiBox object
 			var palHolder = $('<div id="hhb_holder">'+
-								'<div id="hhb_header" title="Designed by VannZic, Lemon">'+
+								'<div id="hhb_header">'+
 								'<a href="http://scaryplayttv.wix.com/hkghitbox" target="_new"><div class="icon hhb" title="Website"></div></a>'+
 								'<a href="https://www.facebook.com/hihiboxhbtv" target="_new"><div class="icon fb" title="Facebook Page"></div></a>'+
-								'HihiBox</div>'+
+								'<span class="name" title="'+infoCredit+'">'+infoName+'</span>'+
+								'<span class="version" title="'+infoLastUpdate+'">'+infoVersion+'</span></div>'+
 								'<div id="hhb_genre"></div>'+
 								'<div id="hhb_iconset"></div>'+
 								'</div>').hide();
@@ -116,7 +117,7 @@ $(document).ready(function() {
 								tmp = tmp.replace(filterSeperator,'');
 								isFiltering = false;
 							}
-							var newMsg = tmp+$(this).data('hhb-code')+' ';
+							var newMsg = tmp+$(this).data('hhb-code');
 							$('#chatInput')
 								.focus()
 								.val(newMsg);
@@ -126,6 +127,11 @@ $(document).ready(function() {
 							});
 							var tgenre = $(this).attr('hhb-genre');
 							$(this).attr('hhb-genre',tgenre+' Recent');
+							
+							if ($(this).find('.hhb_msgicon').hasClass('resized')) {
+								$('#hhb_iconset .icon').removeClass('hhb-filter-not-match hhb-filter-match hhb-filter-selected');
+								$('#hhb_holder').hide(0);
+							}
 						})
 				);
 			});
@@ -173,16 +179,18 @@ $(document).ready(function() {
 				$('#hhb_iconset .icon').removeClass('hhb-filter-not-match hhb-filter-match hhb-filter-selected');
 				$('#hhb_holder').hide(0);
 			}
-		} else if (e.which == 9) {	/* Press [Tab] */
+		} else if (e.which == 9 || e.which == 45) {	/* Press [Tab], [Insert] */
 			if ($('#hhb_holder').is(':visible')) {
 				var selected = $('#hhb_iconset .icon.hhb-filter-selected');
 				if (selected.length > 0) {
 					var msg = $('#chatInput').val();
-					var matches = msg.match(filterSeperator);
-					var iconhead = (matches) ? matches[0] : '';
 					var objIcon = selected.first();
 					var tmp = $('#chatInput').val();
-					var newMsg = tmp.replace(filterSeperator,'')+objIcon.data('hhb-code')+' ';
+					if (isFiltering) {
+						tmp = tmp.replace(filterSeperator,'');
+						isFiltering = false;
+					}
+					var newMsg = tmp+objIcon.data('hhb-code');
 					$('#chatInput')
 						.focus()
 						.val(newMsg);
@@ -192,8 +200,11 @@ $(document).ready(function() {
 					});
 					var tgenre = objIcon.attr('hhb-genre');
 					objIcon.attr('hhb-genre',tgenre+' Recent');
-					$('#hhb_iconset .icon').removeClass('hhb-filter-not-match hhb-filter-match hhb-filter-selected');
-					$('#hhb_holder').hide(0);
+					
+					if (e.which == 9 || objIcon.find('.hhb_msgicon').hasClass('resized')) {
+						$('#hhb_iconset .icon').removeClass('hhb-filter-not-match hhb-filter-match hhb-filter-selected');
+						$('#hhb_holder').hide(0);
+					}
 				}
 				return false;
 			}
