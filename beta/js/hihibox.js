@@ -69,7 +69,7 @@ $(document).ready(function() {
 			// create HihiBox object
 			var palHolder = $('<div id="hhb_holder">'+
 								'<div id="hhb_header">'+
-								'<a href="http://bit.ly/hihibox" target="_new"><div class="icon hhb" title="Website"></div></a>'+
+								'<a href="http://bit.ly/hihiboxhbtv" target="_new"><div class="icon hhb" title="Website"></div></a>'+
 								'<a href="https://www.facebook.com/hihiboxhbtv" target="_new"><div class="icon fb" title="Facebook Page"></div></a>'+
 								'<span class="name" title="'+infoCredit+'">'+infoName+'</span>'+
 								'<span class="version" title="'+infoLastUpdate+'">'+infoVersion+'</span></div>'+
