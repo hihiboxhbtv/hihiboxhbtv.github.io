@@ -1,6 +1,6 @@
 ﻿var infoName = 'Hihibox';
 var infoCredit = 'Designed by VannZic, Lemon';
-var infoVersion = 'v1.5.1';
+var infoVersion = 'v1.5.1.1';
 var infoLastUpdate = 'Last Updated on 2014-03-10';
 
 var defaultGenre = 'HKG';
@@ -36,7 +36,7 @@ var listIcon = [].concat(
 		"icon": "http://forum11.hkgolden.com/faces/cry.gif",
 		"genre": ["HKG"]
 	},
-	{	"code": [";-)"],
+	{	"code": [";-)",'<img src="http://edge.vie.hitbox.tv/static/img/chat/default/wink1.png" title=";-), ;)" alt="" class="smiley">'],
 		"icon": "http://forum11.hkgolden.com/faces/wink.gif",
 		"genre": ["HKG"]
 	},
