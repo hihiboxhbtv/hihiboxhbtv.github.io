@@ -1,4 +1,4 @@
-﻿var infoName = 'Hihibox';
+﻿var infoName = 'Hihibox β';
 var infoCredit = 'Designed by VannZic, Lemon';
 var infoVersion = 'v1.5.2';
 var infoLastUpdate = 'Last Updated on 2014-03-11';
