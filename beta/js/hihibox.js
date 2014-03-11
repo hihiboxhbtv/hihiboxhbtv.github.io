@@ -138,6 +138,11 @@ $(document).ready(function() {
 			});
 			
 			// Activate dark mode button
+			if ($('body').hasClass('hhb_darkmode')) {
+				$(this).text('Light Mode');
+			} else {
+				$(this).text('Dark Mode');
+			}
 			$('#hhb_darkmode').click(function() {
 				if ($('body').hasClass('hhb_darkmode')) {
 					$('body').removeClass('hhb_darkmode');
@@ -147,8 +152,6 @@ $(document).ready(function() {
 					$(this).text('Light Mode');
 				}
 			});
-			$('body').addClass('hhb_darkmode');
-			$('#hhb_darkmode').text('Light Mode');
 			
 			// select default genre
 			$('#hhb_genre .genre[hhb-genre="'+defaultGenre+'"]').trigger("click");
