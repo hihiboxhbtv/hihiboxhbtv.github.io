@@ -79,7 +79,7 @@ body.hhb_darkmode {
 .hhb_darkmode .detail .meta {
 	color: #D9D9D9;
 	border-bottom-color: #333333;
-	background: linear-gradient(to bottom, hsla(0,0%,0%,0) 0%,hsla(0,0%,0%,0) 40%,hsla(0,0%,0%,0.6) 0%);
+	background: none;
 }
 .hhb_darkmode button.following {
 	background-color: black;
