@@ -1,7 +1,7 @@
-﻿var infoName = 'Hihibox Beta';
+﻿var infoName = 'Hihibox';
 var infoCredit = 'Designed by VannZic, Lemon';
-var infoVersion = 'v1.5.1';
-var infoLastUpdate = 'Last Updated on 2014-03-10';
+var infoVersion = 'v1.5.2';
+var infoLastUpdate = 'Last Updated on 2014-03-11';
 
 var defaultGenre = 'HKG';
 var listGenre = ['Recent','HKG','HKG2','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
@@ -36,7 +36,7 @@ var listIcon = [].concat(
 		"icon": "http://forum11.hkgolden.com/faces/cry.gif",
 		"genre": ["HKG"]
 	},
-	{	"code": [";-)"],
+	{	"code": [";-)",'<img src="http://edge.vie.hitbox.tv/static/img/chat/default/wink1.png" title=";-), ;)" alt="" class="smiley">'],
 		"icon": "http://forum11.hkgolden.com/faces/wink.gif",
 		"genre": ["HKG"]
 	},
@@ -527,7 +527,7 @@ var listIcon = [].concat(
 		"genre": ["meme"],
 		"width": 80
 	},
-	{	"code": [":spiderman:"],
+	{	"code": [":spiderman:",":iamhay:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Miscellaneous/spiderpman.png",
 		"genre": ["meme"],
 		"width": 80

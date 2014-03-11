@@ -1,0 +1,158 @@
+.hhb_darkmode #hhb_darkmode {
+	background-color: #CCCCCC;
+	color: #333333;
+}
+#hhb_iconset::-webkit-scrollbar {
+	width: 8px !important;
+}
+#hhb_iconset::-webkit-scrollbar-track {
+	background-color: hsla(0,0%,0%,0);
+}
+#hhb_iconset::-webkit-scrollbar-thumb {
+	background-color: hsl(0,0%,40%);
+}
+#hhb_iconset::-webkit-scrollbar-button {
+	height: 0px;
+}
+#hhb_iconset::-webkit-scrollbar-corner {
+	background-color: black;
+}
+
+body.hhb_darkmode {
+	color: #FFFFFF;
+}
+.hhb_darkmode a 
+{
+	color: #CCC;
+}
+.hhb_darkmode a:hover, .hhb_darkmode .hover:hover, .hhb_darkmode .hoverB:hover
+{
+	color: #7040FF;
+}
+.hhb_darkmode h1 {
+    color:#CCC;
+}
+.hhb_darkmode h2 {
+    color:black;
+}
+.hhb_darkmode h3 {
+    color: #0D0D0D;
+}
+.hhb_darkmode h4 {
+	color: #F3F3F3;
+}
+.hhb_darkmode h5, .hhb_darkmode h7 {
+    color: #CCCCCC;
+}
+.hhb_darkmode h8 {
+    color: black;
+}
+.hhb_darkmode input, .hhb_darkmode select, .hhb_darkmode textarea {
+	color: #AAA;
+	border-color: #272727;
+}
+.hhb_darkmode .t1 .tTitle {
+	color: #E6E6E6;
+}
+.hhb_darkmode .t1 .tStatus {
+	color: #CCCCCC;
+}
+.hhb_darkmode .t1 .tMetaSmall {
+	color: #999999;
+}
+.hhb_darkmode .btnBlue, .hhb_darkmode .btnBlue:hover, .hhb_darkmode .btnBlueHover:hover, .hhb_darkmode .btnHoverBlue:hover
+{
+	background-color: #CE7129 !important;
+	border-color: #CE7129 !important;
+	color: black !important;
+}
+.hhb_darkmode .btnGreen, .hhb_darkmode .btnHoverGreen:hover, .hhb_darkmode .btnGreen:hover {
+	background-color: #6A39FF !important;
+}
+.hhb_darkmode .subNav {
+	background-color: hsla(0,0%,5%,.97);
+}
+.hhb_darkmode .detailInner .lower {
+	background-color: #171717;
+	background-image: none;
+}
+.hhb_darkmode .detail .meta {
+	color: #D9D9D9;
+	border-bottom-color: #333333;
+	background: linear-gradient(to bottom, hsla(0,0%,0%,0) 0%,hsla(0,0%,0%,0) 40%,hsla(0,0%,0%,0.6) 0%);
+}
+.hhb_darkmode button.following {
+	background-color: black;
+	color: #CCCCCC;
+}
+.hhb_darkmode .followBubble {
+	background-color: black;
+	color: #E6E6E6;
+	border-color: #272727;
+}
+.hhb_darkmode .followBubble:before {
+	border-color: transparent #CCCCCC;
+}
+.hhb_darkmode .detail .btns .active {
+	color: white;
+	border-bottom-color: white;
+}
+.hhb_darkmode .userDescription div, .hhb_darkmode .userDescription span, .hhb_darkmode .userDescription li, .hhb_darkmode .userDescription p {
+	color: #CCCCCC;
+}
+
+.hhb_darkmode.channel .pollWrap {
+	background-color: #0D0D0D;
+	border-bottom-color: #E6E6E6;
+}
+.hhb_darkmode.channel .poll .bar div
+{
+	background-color: #7040FF;
+}
+.hhb_darkmode.channel .poll .votes {
+	color: white;
+}
+
+.hhb_darkmode .chatBody li.user {
+	background-color: #171717;
+}
+.hhb_darkmode .chatContent,
+.hhb_darkmode .chatBody .bufferTimestamp {
+	background-color: #0D0D0D;
+}
+.hhb_darkmode .chatBody .bufferTimestamp div {
+	border-top-color: #333333;
+	color: #666666;
+}
+
+.hhb_darkmode .chatSettings {
+background-color: #0D0D0D;
+box-shadow: 0 0 4em hsla(0,0%,100%,.5);
+}
+.hhb_darkmode .chatSettings .close {
+	color: #333333;
+}
+.hhb_darkmode .chatSettings section {
+	color: #B3B3B3;
+}
+.hhb_darkmode .hoverG2bg:hover, .hhb_darkmode .activeG2bg {
+	color: black;
+	background-color: #531AFF;
+	border-color: #531AFF;
+}
+.hhb_darkmode .checkbox input[type=checkbox]:checked + label:before {
+	color: #8D66FF;
+}
+
+.hhb_darkmode .chatInput
+{
+	border-top-color: #333333;
+	background-color: black;
+}
+.hhb_darkmode  .userContent {
+	background-color: black;
+}
+.hhb_darkmode .chatBody .time 
+{
+	color: #777;
+}
