@@ -139,9 +139,9 @@ $(document).ready(function() {
 			
 			// Activate dark mode button
 			if ($('body').hasClass('hhb_darkmode')) {
-				$(this).text('Light Mode');
+				$('#hhb_darkmode').text('Light Mode');
 			} else {
-				$(this).text('Dark Mode');
+				$('#hhb_darkmode').text('Dark Mode');
 			}
 			$('#hhb_darkmode').click(function() {
 				if ($('body').hasClass('hhb_darkmode')) {
