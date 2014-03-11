@@ -124,10 +124,19 @@ body.hhb_darkmode {
 	border-top-color: #333333;
 	color: #666666;
 }
-
+.hhb_darkmode .btnNone, .hhb_darkmode .btnNoneOpacity, .hhb_darkmode .btnOutline, .hhb_darkmode .btnOutline.btnDisabled:hover
+{
+	color: #FFFFFF;
+}
+.hhb_darkmode .btnOutline:hover, .hhb_darkmode .btnHoverOutline:hover
+{
+	background: #000000 none;
+	border-color: #404040;
+	color: #E6E6E6;
+}
 .hhb_darkmode .chatSettings {
-background-color: #0D0D0D;
-box-shadow: 0 0 4em hsla(0,0%,100%,.5);
+	background-color: #0D0D0D;
+	box-shadow: 0 0 4em hsla(0,0%,100%,.5);
 }
 .hhb_darkmode .chatSettings .close {
 	color: #333333;
