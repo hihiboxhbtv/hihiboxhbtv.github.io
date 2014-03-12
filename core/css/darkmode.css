@@ -136,6 +136,9 @@ body.hhb_darkmode {
 	border-top-color: #333333;
 	color: #666666;
 }
+.hhb_darkmode .chatBody li.admin {
+	background-color: #171717;
+}
 .hhb_darkmode .btnNone, .hhb_darkmode .btnNoneOpacity, .hhb_darkmode .btnOutline, .hhb_darkmode .btnOutline.btnDisabled:hover
 {
 	color: #FFFFFF;
