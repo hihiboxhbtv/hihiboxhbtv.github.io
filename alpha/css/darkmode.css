@@ -93,6 +93,9 @@ body.hhb_darkmode {
 	border-bottom-color: #333333;
 	background: none;
 }
+.hhb_darkmode .detail .meta .title {
+	color: #D9D9D9;
+}
 .hhb_darkmode button.following {
 	background-color: black;
 	color: #CCCCCC;
@@ -135,6 +138,9 @@ body.hhb_darkmode {
 .hhb_darkmode .chatBody .bufferTimestamp div {
 	border-top-color: #333333;
 	color: #666666;
+}
+.hhb_darkmode .chatBody li.admin {
+	background-color: #171717;
 }
 .hhb_darkmode .btnNone, .hhb_darkmode .btnNoneOpacity, .hhb_darkmode .btnOutline, .hhb_darkmode .btnOutline.btnDisabled:hover
 {
