@@ -71,7 +71,6 @@ $(document).ready(function() {
 								'<div id="hhb_header">'+
 								'<a href="http://bit.ly/hihiboxhbtv" target="_new"><div class="icon hhb" title="Website"></div></a>'+
 								'<a href="https://www.facebook.com/hihiboxhbtv" target="_new"><div class="icon fb" title="Facebook Page"></div></a>'+
-								'<div id="hhb_darkmode">Dark Mode</div>'+
 								'<span class="name" title="'+infoCredit+'">'+infoName+'</span>'+
 								'<span class="version" title="'+infoLastUpdate+'">'+infoVersion+'</span></div>'+
 								'<div id="hhb_genre"></div>'+
@@ -137,22 +136,6 @@ $(document).ready(function() {
 				);
 			});
 			
-			// Activate dark mode button
-			if ($('body').hasClass('hhb_darkmode')) {
-				$('#hhb_darkmode').text('Light Mode');
-			} else {
-				$('#hhb_darkmode').text('Dark Mode');
-			}
-			$('#hhb_darkmode').click(function() {
-				if ($('body').hasClass('hhb_darkmode')) {
-					$('body').removeClass('hhb_darkmode');
-					$(this).text('Dark Mode');
-				} else {
-					$('body').addClass('hhb_darkmode');
-					$(this).text('Light Mode');
-				}
-			});
-			
 			// select default genre
 			$('#hhb_genre .genre[hhb-genre="'+defaultGenre+'"]').trigger("click");
 			
@@ -179,10 +162,10 @@ $(document).ready(function() {
 					.addClass(classCheckedMsg)
 					.children('.hhb_msgicon.resized')
 						.click(function() {
-							if ($(this).hasClass('org_size')) {
-								$(this).removeClass('org_size');
+							if ($(this).hasClass('orgSize')) {
+								$(this).removeClass('orgSize');
 							} else {
-								$(this).addClass('org_size');
+								$(this).addClass('orgSize');
 							}
 						});
 			});
