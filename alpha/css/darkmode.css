@@ -48,6 +48,13 @@ body.hhb_darkmode {
 	color: #AAA;
 	border-color: #272727;
 }
+.hhb_darkmode .radioBtns input[type=radio]:checked + label:before {
+	background-color: #E6E6E6;
+	box-shadow: inset 0px 0px 0px 2px #191919;
+}
+.hhb_darkmode .radioBtns label:before {
+	border-color: #808080;
+}
 .hhb_darkmode .checkbox label:before {
 	background: hsla(0,0%,0%,.5);
 	border-color: #333333;
