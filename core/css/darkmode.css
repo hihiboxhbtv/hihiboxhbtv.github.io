@@ -93,6 +93,9 @@ body.hhb_darkmode {
 	border-bottom-color: #333333;
 	background: none;
 }
+.hhb_darkmode .detail .meta .title {
+	color: #D9D9D9;
+}
 .hhb_darkmode button.following {
 	background-color: black;
 	color: #CCCCCC;
