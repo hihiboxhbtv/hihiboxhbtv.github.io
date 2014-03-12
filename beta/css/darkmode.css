@@ -15,7 +15,6 @@
 .hhb_darkmode :-ms-input-placeholder { /* Internet Explorer 10+ */
 	color: #333;
 }
-
 body.hhb_darkmode {
 	color: #FFFFFF;
 }
@@ -25,7 +24,7 @@ body.hhb_darkmode {
 }
 .hhb_darkmode a:hover, .hhb_darkmode .hover:hover, .hhb_darkmode .hoverB:hover
 {
-	color: #7040FF;
+	color: #7040FF !important;
 }
 .hhb_darkmode h1 {
     color:#CCC;
@@ -48,6 +47,14 @@ body.hhb_darkmode {
 .hhb_darkmode input, .hhb_darkmode select, .hhb_darkmode textarea {
 	color: #AAA;
 	border-color: #272727;
+}
+.hhb_darkmode .checkbox label:before {
+	background: hsla(0,0%,0%,.5);
+	border-color: #333333;
+	color: #000000;
+}
+.hhb_darkmode .checkbox label:hover::before {
+	color: hsla(255,100%,70%,.5);
 }
 .hhb_darkmode .t1 .tTitle {
 	color: #E6E6E6;
@@ -144,8 +151,11 @@ body.hhb_darkmode {
 }
 .hhb_darkmode .hoverG2bg:hover, .hhb_darkmode .activeG2bg {
 	color: black;
-	background-color: #531AFF;
-	border-color: #531AFF;
+	background-color: #531AFF !important;
+	border-color: #531AFF !important;
+}
+.hhb_darkmode .hoverGd:hover, .hhb_darkmode .hoverG2:hover {
+	color: #531AFF !important;
 }
 .hhb_darkmode .checkbox input[type=checkbox]:checked + label:before {
 	color: #8D66FF;
