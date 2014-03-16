@@ -146,3 +146,10 @@
 #hhb_button:before {
 	content: initial;
 }
+<<<<<<< HEAD
+=======
+
+.chatBody li span {
+	vertical-align: text-bottom !important;
+}
+>>>>>>> ffb1d2b432f71e3904b0a787f39796e54d67a1ac
