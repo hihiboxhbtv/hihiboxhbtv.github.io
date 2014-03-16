@@ -62,10 +62,14 @@ $(document).ready(function() {
 	}, refreshIcon);
 	
 	var timerInit = setInterval(function() {
+		var palChatBody = $('.chatBody');
 		var palChat = $('.chatContent');
 		var palInput = $('.chatInput');
 		// check object existance
-		if (palChat.length > 0 && palInput.length > 0) {
+		if (palChatBody.length > 0 && palChat.length > 0 && palInput.length > 0) {
+			// change message css
+			palChatBody.addClass('hhb_chatBody');
+			
 			// create HihiBox object
 			var palHolder = $('<div id="hhb_holder">'+
 								'<div id="hhb_header">'+

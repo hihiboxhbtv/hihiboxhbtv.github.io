@@ -124,6 +124,9 @@
 	border-radius: 5px;
 }
 
+.hhb_chatBody.chatBody li span {
+	vertical-align: text-bottom;
+}
 .hhb_msgicon {
 	cursor: pointer;
 }
