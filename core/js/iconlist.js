@@ -1,7 +1,7 @@
 ﻿var infoName = 'Hihibox';
 var infoCredit = 'Designed by VannZic, Lemon';
-var infoVersion = 'v1.5';
-var infoLastUpdate = 'Last Updated on 2014-03-12';
+var infoVersion = 'v1.5.0';
+var infoLastUpdate = 'Last Updated on 2014-03-16';
 
 var defaultGenre = 'HKG';
 var listGenre = ['Recent','HKG','HKG2','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
