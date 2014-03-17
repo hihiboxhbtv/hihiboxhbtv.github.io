@@ -24,7 +24,7 @@ $(document).ready(function() {
 					var icon = obj.icon;
 					var genre = [].concat((obj.genre) ? obj.genre : 'Other');
 					var title = code.join(", ").replace(/(<([^>]+)>)/ig,'').replace(/, $/,'');
-					var img = '<img src="'+icon+'" title="'+title+'" class="hhb_msgicon'+(obj.width ? ' resized' : '')+'"'+(obj.width ? ' style="width:'+obj.width+'px;"' : '') +'/>';
+					var img = '<img src="'+icon+'" title="'+title+'" class="hhb_msgicon'+(obj.height ? ' resized' : '')+'"'+(obj.height ? ' style="height:'+obj.height+'px;"' : '') +'/>';
 					var re = "";
 					$.each(code,function(idx2,code2) {
 						var isTag = code2.match(/^<[^>]+>$/g);

@@ -4,7 +4,7 @@ var infoVersion = 'v1.5.2';
 var infoLastUpdate = 'Last Updated on 2014-03-11';
 
 var defaultGenre = 'HKG';
-var listGenre = ['Recent','HKG','HKG2','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
+var listGenre = ['Recent','HKG','HKG2','meme','pkmon','腦魔','禿伯','小丑'];
 var listParse = [];
 var listIcon = [].concat(
 
@@ -200,10 +200,6 @@ var listIcon = [].concat(
 		"icon": "http://img3.wikia.nocookie.net/__cb20060327033446/evchk/images/5/55/Sosad-369.gif",
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[sosad369ex]"],
-		"icon": "http://img2.wikia.nocookie.net/__cb20100901112145/evchk/images/b/b9/2010818205939156567860.gif",
-		"genre": ["HKG2"]
-	},
 	{	"code": ["[369flowerface]"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20060327040053/evchk/images/3/35/369face.gif",
 		"genre": ["HKG2"]
@@ -251,8 +247,7 @@ var listIcon = [].concat(
 [
 	{	"code": ["[打打打渣b]"],
 		"icon": "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/10/10/1381417466775/Beyond-Two-Souls-008.jpg",
-		"genre": ["壯膽同學會"],
-		"width": 80
+		"height": 60
 	}
 ],
 /********************\
@@ -455,147 +450,147 @@ var listIcon = [].concat(
 	{	"code": [":troll:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Malicious-Troll/30.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":no:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Angry2/NO.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":kidding:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Angry2/AreYouKiddingMe.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":deskflip:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Angry2/angry-desk-flip.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":yaoface:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Laughing/34.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":accept:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Determined/ChallengeAccepted.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":why:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Female-Blonde-3/blonde_why.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":gtfo:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Victorious/gtfo.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":soon:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Determined/SoonComputer.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":sir:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Miscellaneous-2/feel-like-a-sir.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":yeah:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Victorious/Freddie.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":isee:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Happy/iseewhatyoudidthere.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":lolol:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Laughing/LOL.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":badass:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Neutral-2/watch-out-badass.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":jackiechan:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Stupidity/EpicJackieChan.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":spiderman:",":iamhay:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Miscellaneous/spiderpman.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":truestory:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Miscellaneous/TrueStory.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":ohgod:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Miscellaneous/oh%20god.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":bean:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Miscellaneous-2/if-you-know-what-i-mean.jpg",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":pokerface:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Neutral/38.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":jesus:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Pleasure/sweetjesusface.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":fap:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Pleasure/FapFap.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":fuuu:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Rage/rage%20super.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":okay:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Sad/okay%20with%20words.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":1week:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Some-Time-Later-3/06%20-%201%20week.jpg",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":alone:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Sad/39.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":sad:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Sad/TheSaddestGuy.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":soclose:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Sad/FreddieSoClose.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	},
 	{	"code": [":ohgodwhy:"],
 		"icon": "http://ragegenerator.com/images/ragebuilder-faces/Stupidity/OhGodWhy.png",
 		"genre": ["meme"],
-		"width": 80
+		"height": 60
 	}
 ],
 /********************\
@@ -931,71 +926,71 @@ var listIcon = [].concat(
 [
 	{	"code": ["[wonggiyin]"],
 		"icon": "http://static2.wikia.nocookie.net/__cb20121104181931/evchk/images/thumb/f/fa/IbvexqKQrPKgRe.jpg/500px-IbvexqKQrPKgRe.jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[talkthis]"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20131015004820/evchk/images/c/cb/Dew_chatting_this_1080p.png",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[specialskill]"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20140107085615/evchk/images/3/38/Recitation_002.gif",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[youknowrules]"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20110616150001/evchk/images/a/a5/Di-JN2V.jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[repeaterror]"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20070902105305/evchk/images/1/16/Repetitive_error.jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[whynotboth]"],
 		"icon": "http://cdn.androidpolice.com/wp-content/uploads/2012/08/nexusae0_whynotboth.jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[bitchplease]"],
 		"icon": "http://www.reactionimage.org/img/gallery/918476615.jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[sundaydriver]"],
 		"icon": "http://subspecies.files.wordpress.com/2011/10/elderly-female-driver.jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[payback]"],
 		"icon": "http://hihiboxhbtv.github.io/images/icons/[payback].jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[kingcheck]"],
 		"icon": "http://static.apple.nextmedia.com/images/e-paper/20130319/large/1363674373_416d.jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[pccw]"],
 		"icon": "http://www.designerhk.com/sites/designerhk.com/files/blog/59/6118/02.jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[what]"],
 		"icon": "http://img.jpnxcn.com/pics/2013/0423/20130423041830583.jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[kimchi]"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20091204132509/evchk/images/a/a9/U_are_korean.jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[goldbird]"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20101025162933/evchk/images/f/f7/S18925goldenbitextl121.gif",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[never]"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20080104213913/evchk/images/thumb/f/f7/Liulaughat.jpg/185px-Liulaughat.jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[ahaha]"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20071214025759/evchk/images/thumb/7/7c/1188230991.jpg/200px-1188230991.jpg",
-		"width": 80
+		"height": 60
 	},
 	{	"code": ["[summonvannzic]"],
 		"icon": "http://hihiboxhbtv.github.io/images/icons/[summonvannzic].jpg",
-		"width": 80
+		"height": 60
 	}
 ]
 /********************\
