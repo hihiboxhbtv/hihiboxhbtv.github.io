@@ -1,7 +1,7 @@
 ﻿var infoName = 'Hihibox β';
-var infoCredit = 'Designed by VannZic, Lemon';
+var infoCredit = 'Designed by VannZic, Lemon\nResearched by 希治閣, 小維';
 var infoVersion = 'v1.5.2';
-var infoLastUpdate = 'Last Updated on 2014-03-11';
+var infoLastUpdate = 'Last Updated on 2014-03-17';
 
 var defaultGenre = 'HKG';
 var listGenre = ['Recent','HKG','HKG2','meme','pkmon','腦魔','禿伯','小丑'];

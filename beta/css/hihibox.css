@@ -132,6 +132,7 @@
 }
 .hhb_msgicon.org_size {
 	width: 100% !important;
+	height: auto !important;
 }
 
 #hhb_button {
