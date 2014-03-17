@@ -106,7 +106,7 @@
 	cursor: pointer;
 }
 #hhb_iconset .icon img {
-	max-width: 50px;
+	max-height: 50px;
 }
 #hhb_iconset .icon.hhb-filter-not-match {
 	display: none !important;
