@@ -314,7 +314,7 @@ $(document).ready(function() {
 						var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
 						var recodehead = codehead.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 						
-						if (iconhead.length >= filterLengthMin) {
+						if (recodehead.length >= filterLengthMin) {
 							var selector = function() { 
 								var ism = false, clist = $(this).data('hhb-code').toLowerCase().split(' ');
 								for (idx in clist) if (clist[idx].match(new RegExp('^'+recodehead))) return true;
