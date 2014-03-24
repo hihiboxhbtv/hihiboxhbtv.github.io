@@ -1,7 +1,7 @@
 ﻿var infoName = 'Hihibox';
 var infoCredit = 'Designed by VannZic, Lemon\nResearched by 希治閣, 小維';
 var infoVersion = 'v1.5';
-var infoLastUpdate = 'Last Updated on 2014-03-17';
+var infoLastUpdate = 'Last Updated on 2014-03-25';
 
 var defaultGenre = 'HKG';
 var listGenre = ['Recent','HKG','HKG2','meme','pkmon','腦魔','禿伯','小丑'];
@@ -990,6 +990,10 @@ var listIcon = [].concat(
 	},
 	{	"code": ["[summonvannzic]"],
 		"icon": "http://hihiboxhbtv.github.io/images/icons/[summonvannzic].jpg",
+		"height": 60
+	},
+	{	"code": ["[summonlemon]"],
+		"icon": "http://hihiboxhbtv.github.io/images/icons/[summonlemon].jpg",
 		"height": 60
 	}
 ]
