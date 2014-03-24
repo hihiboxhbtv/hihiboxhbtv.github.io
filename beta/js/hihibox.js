@@ -6,7 +6,7 @@ var refreshParse = 200;
 var delayFilter = 300;
 
 var isFiltering = false;
-var filterSeperator = /([\:\#\[]*?)[^ \;\#\[]*?(?! )$/;
+var filterSeperator = /(^|)[^ ]+(?!\s)$/;
 var filterLengthMin = 1;
 var filterPageSize = 10;
 
@@ -311,10 +311,15 @@ $(document).ready(function() {
 				if (msg) {
 					if (msg.length >= filterLengthMin) {
 						var matches = msg.match(filterSeperator);
-						var iconhead = (matches) ? matches[0].toLowerCase().replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&") : '';
+						var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
+						var recodehead = codehead.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 						
 						if (iconhead.length >= filterLengthMin) {
-							var selector = function() { return $(this).data('hhb-code').toLowerCase().match(new RegExp('^'+iconhead)); };
+							var selector = function() { 
+								var ism = false, clist = $(this).data('hhb-code').toLowerCase().split(' ');
+								for (idx in clist) if (clist[idx].match(new RegExp('^'+recodehead))) return true;
+								return false;
+							};
 							$('#hhb_iconset .icon').not(selector)
 								.removeClass('hhb-filter-match hhb-filter-selected').addClass('hhb-filter-not-match');
 							var filter = $('#hhb_iconset .icon').filter(selector)
@@ -340,4 +345,13 @@ $(document).ready(function() {
 			},delayFilter);
 		}
 	});
+	
+	// Google Analytics
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-48929186-1', 'hihiboxhbtv.github.io');
+	ga('send', 'pageview');
 });
