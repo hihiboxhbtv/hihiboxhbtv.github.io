@@ -382,7 +382,7 @@ var listIcon = [].concat(
 		"icon": "http://img4.wikia.nocookie.net/__cb20100617143429/evchk/images/4/43/Th_1_78.gif",
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[bom]lm2","lm[bomb]2"],
+	{	"code": ["[bomb2]lm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20110419143501/evchk/images/2/28/BomblmJ.gif",
 		"genre": ["腦魔"]
 	},
@@ -617,11 +617,11 @@ var listIcon = [].concat(
 		"icon": "http://img3.wikia.nocookie.net/__cb20091018111219/evchk/images/0/07/Tube8icon5.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": ["[369]t8","T8[369"],
+	{	"code": ["[369]t8"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20091018111358/evchk/images/a/a9/Tube8icon6.gif",
 		"genre": ["禿伯"]
 	},
-	{	"code": ["[light]t8","t8[lught]"],
+	{	"code": ["[light]t8"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20091018111517/evchk/images/9/9c/Tube8icon7.gif",
 		"genre": ["禿伯"]
 	},
@@ -726,7 +726,7 @@ var listIcon = [].concat(
 		"icon": "http://img2.wikia.nocookie.net/__cb20070329155652/evchk/images/2/2c/P12no2.gif",
 		"genre": ["小丑"]
 	},
-	{	"code": ["#adore#cl","cl#adore"],
+	{	"code": ["#adore#cl"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20070329155718/evchk/images/f/fe/P13adore.gif",
 		"genre": ["小丑"]
 	},
@@ -827,95 +827,95 @@ var listIcon = [].concat(
 	pkmon
 \********************/
 [
-	{	"code": ["#pkmbye#"],
+	{	"code": ["#bye#pkm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20130317132637/evchk/images/4/48/CHZISme.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm???"],
+	{	"code": ["???pkm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20090507051125/evchk/images/9/90/3questionmarkpkmn.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm:~("],
+	{	"code": [":~(pkm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20090507051233/evchk/images/c/c1/Crypkmn.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm#hehe#"],
+	{	"code": ["#hehe#pkm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20090314033455/evchk/images/3/3b/Aipomhehe.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm#no#"],
+	{	"code": ["#no#pkm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20090314033847/evchk/images/0/07/Bearno.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm[censored]"],
+	{	"code": ["[censored]pkm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20090314034008/evchk/images/6/6b/Cenegg.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm[banghead]"],
+	{	"code": ["[banghead]pkm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20090507051934/evchk/images/2/2c/Bangjig2.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm[police]"],
+	{	"code": ["[police]pkm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20090314034102/evchk/images/0/06/Eggeggpolice.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm@_@"],
+	{	"code": ["@_@pkm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20090314034258/evchk/images/5/5a/Exeshock.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm:-]"],
+	{	"code": [":-]pkm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20090314034327/evchk/images/5/50/Evilsmilepkmnbug.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm:o)"],
+	{	"code": [":o)pkm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20090314034403/evchk/images/5/56/Wfc.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm#adore#"],
+	{	"code": ["#adore#pkm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20090314034729/evchk/images/3/3c/Formcastadore2.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm#kill2#"],
+	{	"code": ["#kill2#pkm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20090314034752/evchk/images/5/5c/Geodudekill.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm[shocking]"],
+	{	"code": ["[shocking]pkm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20090314034835/evchk/images/6/6b/Kabutoshock.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm[bomb]"],
+	{	"code": ["[bomb]pkm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20090314034858/evchk/images/6/63/Magnitebomb.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm#kill#"],
+	{	"code": ["#kill#pkm"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20090314034937/evchk/images/d/d0/Mewgun.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm#love#"],
+	{	"code": ["#love#pkm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20090314035002/evchk/images/4/4e/Todolove.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm#hoho#"],
+	{	"code": ["#hoho#pkm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20090314035100/evchk/images/3/3b/Sudowokkuplasticwine.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm[seed]"],
+	{	"code": ["[seed]pkm"],
 		"icon": "http://img1.wikia.nocookie.net/__cb20090507051901/evchk/images/a/a7/Seedwhere.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm[flowerface]"],
+	{	"code": ["[flowerface]pkm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20090314035343/evchk/images/7/73/Starfishface.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm:-("],
+	{	"code": [":-(pkm"],
 		"icon": "http://img4.wikia.nocookie.net/__cb20090314035424/evchk/images/f/ff/Poisonwoffe.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm[369]"],
+	{	"code": ["[369]pkm"],
 		"icon": "http://img3.wikia.nocookie.net/__cb20090314035453/evchk/images/6/63/Shell.gif",
 		"genre": ["pkmon"]
 	},
-	{	"code": ["pkm[sosad]"],
+	{	"code": ["[sosad]pkm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20090514113614/evchk/images/3/3a/Pika897.gif",
 		"genre": ["pkmon"]
 	}
