@@ -2,9 +2,8 @@
 		name: 'HihiBox β',
 		credit: 'Designed by VannZic, Lemon\nResearched by 希治閣, 小維',
 		version: 'v1.6.0',
-		lastUpdate: 'Last Updated on 2014-03-25'
+		lastUpdate: 'Last Updated on 2014-03-28'
 	};
-info.name = 'Hihibox α';
 
 defaultGenre = 'HKG';
 listGenre = ['Recent','HKG','HKG2','meme','pkmon','腦魔','禿伯','小丑'];
@@ -473,7 +472,7 @@ listIcon = [].concat(
 		"width": 33, 	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[bom]lm2","lm[bomb]2"],
+	{	"code": ["[bomb2]lm"],
 		"icon": "http://img2.wikia.nocookie.net/__cb20110419143501/evchk/images/2/28/BomblmJ.gif",
 		"width": 33, 	"height": 32,
 		"genre": ["腦魔"]
