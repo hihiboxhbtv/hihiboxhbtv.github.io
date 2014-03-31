@@ -122,7 +122,7 @@ $(document).ready(function() {
 								tmp = tmp.replace(filterSeperator,'');
 								isFiltering = false;
 							}
-							var newMsg = trim(tmp)+' '+$(this).data('hhb-code')+' ';
+							var newMsg = tmp.trim()+' '+$(this).data('hhb-code')+' ';
 							$('#chatInput')
 								.focus()
 								.val(newMsg);
@@ -211,7 +211,7 @@ $(document).ready(function() {
 						tmp = tmp.replace(filterSeperator,'');
 						isFiltering = false;
 					}
-					var newMsg = trim(tmp)+' '+objIcon.data('hhb-code')+' ';
+					var newMsg = tmp.trim()+' '+objIcon.data('hhb-code')+' ';
 					$('#chatInput')
 						.focus()
 						.val(newMsg);
