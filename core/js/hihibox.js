@@ -117,7 +117,7 @@ $(document).ready(function() {
 						.click(function() {
 							console.log('[HihiBox] Icon : ',$(this).data('hhb-code'));
 							
-							var tmp = $('#chatInput').val().trim();
+							var tmp = $('#chatInput').val();
 							if (isFiltering) {
 								tmp = tmp.replace(filterSeperator,'');
 								isFiltering = false;
@@ -206,7 +206,7 @@ $(document).ready(function() {
 				if (selected.length > 0) {
 					var msg = $('#chatInput').val();
 					var objIcon = selected.first();
-					var tmp = $('#chatInput').val().trim();
+					var tmp = $('#chatInput').val();
 					if (isFiltering) {
 						tmp = tmp.replace(filterSeperator,'');
 						isFiltering = false;
