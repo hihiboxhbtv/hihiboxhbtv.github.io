@@ -117,12 +117,12 @@ $(document).ready(function() {
 						.click(function() {
 							console.log('[HihiBox] Icon : ',$(this).data('hhb-code'));
 							
-							var tmp = $('#chatInput').val();
+							var tmp = $('#chatInput').val().trim();
 							if (isFiltering) {
 								tmp = tmp.replace(filterSeperator,'');
 								isFiltering = false;
 							}
-							var newMsg = tmp.trim()+' '+$(this).data('hhb-code')+' ';
+							var newMsg = tmp+((tmp.length>0) ? ' ':'')+$(this).data('hhb-code')+' ';
 							$('#chatInput')
 								.focus()
 								.val(newMsg);
@@ -206,12 +206,12 @@ $(document).ready(function() {
 				if (selected.length > 0) {
 					var msg = $('#chatInput').val();
 					var objIcon = selected.first();
-					var tmp = $('#chatInput').val();
+					var tmp = $('#chatInput').val().trim();
 					if (isFiltering) {
 						tmp = tmp.replace(filterSeperator,'');
 						isFiltering = false;
 					}
-					var newMsg = tmp.trim()+' '+objIcon.data('hhb-code')+' ';
+					var newMsg = tmp+((tmp.length>0) ? ' ':'')+objIcon.data('hhb-code')+' ';
 					$('#chatInput')
 						.focus()
 						.val(newMsg);
