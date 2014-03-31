@@ -122,7 +122,7 @@ $(document).ready(function() {
 								tmp = tmp.replace(filterSeperator,'');
 								isFiltering = false;
 							}
-							var newMsg = tmp+' '$(this).data('hhb-code');
+							var newMsg = tmp+' '+$(this).data('hhb-code');
 							$('#chatInput')
 								.focus()
 								.val(newMsg);
