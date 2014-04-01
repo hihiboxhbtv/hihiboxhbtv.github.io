@@ -1,5 +1,6 @@
 @import "darkmode_hitbox.css";
 @import "darkmode_twitch.css";
+@import "darkmode_justin.css";
 
 #hhb-holder {
 	position: absolute;
@@ -189,6 +190,17 @@
 }
 .hhb-pf-twitch #hhb-button:nth-child(4) {
 	left: 7px;
+}
+.hhb-pf-justin #hhb-button {
+	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 22px;
+	height: 22px;
+	display: block;
+	position: absolute;
+	bottom: 2px;
+	right: 2px;
 }
 #hhb-button:hover {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon_hover.png');
