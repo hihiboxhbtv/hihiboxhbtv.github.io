@@ -1,19 +1,10 @@
 ﻿var infoName = 'Hihibox';
-<<<<<<< HEAD:js/iconlist.js
-var infoCredit = 'Designed by VannZic, Lemon';
-var infoVersion = 'v1.5.1';
-var infoLastUpdate = 'Last Updated on 2014-03-09';
-
-var defaultGenre = 'HKG';
-var listGenre = ['Recent','HKG','meme','pkmon','腦魔','禿伯','小丑','壯膽同學會'];
-=======
 var infoCredit = 'Designed by VannZic, Lemon\nResearched by 希治閣, 小維';
 var infoVersion = 'v1.5';
 var infoLastUpdate = 'Last Updated on 2014-03-25';
 
 var defaultGenre = 'HKG';
 var listGenre = ['Recent','HKG','HKG2','meme','pkmon','腦魔','禿伯','小丑'];
->>>>>>> ebe5fb4e43de61a820e417f44e75cd315ce45f51:core/js/iconlist.js
 var listParse = [];
 var listIcon = [].concat(
 
@@ -929,15 +920,9 @@ var listIcon = [].concat(
 		"genre": ["pkmon"]
 	}
 ],
-<<<<<<< HEAD:js/iconlist.js
-/************\
-	Other
-\************/
-=======
 /********************\
 	Other
 \********************/
->>>>>>> ebe5fb4e43de61a820e417f44e75cd315ce45f51:core/js/iconlist.js
 [
 	{	"code": ["[wonggiyin]"],
 		"icon": "http://static2.wikia.nocookie.net/__cb20121104181931/evchk/images/thumb/f/fa/IbvexqKQrPKgRe.jpg/500px-IbvexqKQrPKgRe.jpg",

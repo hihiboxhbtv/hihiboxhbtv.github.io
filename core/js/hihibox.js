@@ -73,14 +73,9 @@ $(document).ready(function() {
 			// create HihiBox object
 			var palHolder = $('<div id="hhb_holder">'+
 								'<div id="hhb_header">'+
-<<<<<<< HEAD:js/hihibox.js
-								'<a href="http://scaryplayttv.wix.com/hkghitbox" target="_new"><div class="icon hhb" title="Website"></div></a>'+
-								'<a href="https://www.facebook.com/hihiboxhbtv" target="_new"><div class="icon fb" title="Facebook Page"></div></a>'+
-=======
 								'<a href="http://bit.ly/hihiboxhbtv" target="_new"><div class="icon hhb" title="Website"></div></a>'+
 								'<a href="https://www.facebook.com/hihiboxhbtv" target="_new"><div class="icon fb" title="Facebook Page"></div></a>'+
 								'<div id="hhb_darkmode">Dark Mode</div>'+
->>>>>>> ebe5fb4e43de61a820e417f44e75cd315ce45f51:core/js/hihibox.js
 								'<span class="name" title="'+infoCredit+'">'+infoName+'</span>'+
 								'<span class="version" title="'+infoLastUpdate+'">'+infoVersion+'</span></div>'+
 								'<div id="hhb_genre"></div>'+
@@ -127,7 +122,7 @@ $(document).ready(function() {
 								tmp = tmp.replace(filterSeperator,'');
 								isFiltering = false;
 							}
-							var newMsg = tmp+$(this).data('hhb-code');
+							var newMsg = tmp.trim()+' '+$(this).data('hhb-code')+' ';
 							$('#chatInput')
 								.focus()
 								.val(newMsg);
@@ -216,11 +211,7 @@ $(document).ready(function() {
 						tmp = tmp.replace(filterSeperator,'');
 						isFiltering = false;
 					}
-<<<<<<< HEAD:js/hihibox.js
-					var newMsg = tmp+objIcon.data('hhb-code');
-=======
-					var newMsg = tmp+objIcon.data('hhb-code')+' ';
->>>>>>> ebe5fb4e43de61a820e417f44e75cd315ce45f51:core/js/hihibox.js
+					var newMsg = tmp.trim()+' '+objIcon.data('hhb-code')+' ';
 					$('#chatInput')
 						.focus()
 						.val(newMsg);
