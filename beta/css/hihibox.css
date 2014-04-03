@@ -1,0 +1,214 @@
+@import "darkmode_hitbox.css";
+@import "darkmode_twitch.css";
+@import "darkmode_justin.css";
+
+#hhb-holder {
+	position: absolute;
+	height: 300px;
+	overflow: hidden;
+	padding: 5px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	line-height: 12px;
+	background-color: hsla(0,0%,0%,0.9);
+	
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box
+}
+#hhb-holder * {
+	vertical-align: baseline !important;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box
+}
+#hhb-header {
+	font-size: 26px;
+	text-align: right;
+	color: #EEEEEE;
+	height: 26px;
+}
+#hhb-header .icon {
+	margin: -1px 5px 0px 0px;
+	float: left;
+	border: 0px;
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	font-size: 12px;
+}
+#hhb-darkmode {
+	margin: 0px 6px 0px 0px;
+	padding: 5px;
+	float: left;
+	cursor: pointer;
+	font-size: 12px;
+	background-color: #333333;
+	color: #CCCCCC;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+#hhb-header .icon.fb {
+	background: url('http://hihiboxhbtv.github.io/images/fb.png') no-repeat center;
+}
+#hhb-header .icon.hhb {
+	background: url('http://hihiboxhbtv.github.io/images/hhb.png') no-repeat center;
+}
+#hhb-header span.name {
+	font-weight: bold;
+	text-transform: none;
+	cursor: pointer;
+	line-height: 26px;
+}
+#hhb-header span.version {
+	margin-left: 5px;
+	font-size: 12px;
+	font-weight: normal;
+	cursor: pointer;
+}
+#hhb-genrelist {
+	padding: 2px 0px;
+	width: 100%;
+	font-size: 12px;
+	border-top: 1px solid #EEEEEE;
+}
+#hhb-genrelist .hhb-genre {
+	margin: 2px 2px 2px 2px;
+	padding: 3px;
+	display: inline-block;
+	padding: 3px;
+	cursor: pointer;
+	color: #CCCCCC;
+	background-color: #333333;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+#hhb-genrelist .hhb-genre:hover {
+	color: #333333;
+	background-color: #FFFFFF;
+}
+#hhb-genrelist .hhb-genre.hhb-active {
+	color: #333333;
+	background-color: #EEEEEE;
+}
+
+#hhb-iconset::-webkit-scrollbar {
+	width: 8px !important;
+}
+#hhb-iconset::-webkit-scrollbar-track {
+	background-color: hsla(0,0%,0%,0);
+}
+#hhb-iconset::-webkit-scrollbar-thumb {
+	background-color: hsl(0,0%,40%);
+}
+#hhb-iconset::-webkit-scrollbar-button {
+	height: 0px;
+}
+#hhb-iconset::-webkit-scrollbar-corner {
+	background-color: hsla(0,0%,0%,0);
+}
+#hhb-iconset {
+	overflow: scroll;
+	height: 250px;
+	border-top: 1px solid #EEEEEE;
+	padding-bottom: 20px;
+}
+#hhb-iconset .hhb-icon {
+	display: inline-block;
+	margin: 1px;
+	padding: 2px;
+	cursor: pointer;
+}
+#hhb-iconset .hhb-icon.hhb-hide {
+	display: none;
+}
+#hhb-iconset .hhb-icon.hhb-missing,
+#hhb-iconset .hhb-icon.hhb-missing.hhb-filter-match {
+	display: none !important;
+}
+#hhb-iconset .hhb-icon img {
+	max-height: 50px;
+}
+#hhb-iconset .hhb-icon.hhb-filter-not-match {
+	display: none !important;
+}
+
+#hhb-iconset .hhb-icon.hhb-filter-match {
+	display: inline-block !important;
+}
+#hhb-iconset .hhb-icon.hhb-filter-selected,
+#hhb-iconset .hhb-icon:hover {
+	background-color: rgba(0, 255, 255, 0.5);
+	border: 1px solid #EEEEEE;
+	margin: 0px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+#hhb-iconset #hhb-msgbox {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+	padding: 6px 20px;
+	border: 1px solid #AAAAAA;
+	border-bottom: 0px;
+	background-color: hsla(0,0%,0%,0.8);
+	color: #CCCCCC;
+	text-align: center;
+	font-size: 10px;
+	cursor: pointer;
+}
+.hhb-msgicon {
+	cursor: pointer;
+}
+.hhb-msgicon.hhb-resized {
+	height: 60px;
+	width: auto;
+}
+.hhb-msgicon.hhb-org-size {
+	width: auto;
+	height: auto;
+	max-width: 100%;
+}
+
+.hhb-pf-hitbox #hhb-button {
+	background: url('http://hihiboxhbtv.github.io/images/hihiicon.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	top: 2.5em;
+	width: 22px;
+	height: 22px;
+}
+.hhb-pf-twitch #hhb-button {
+	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	left: 2px;
+}
+.hhb-pf-twitch #hhb-button:nth-child(4) {
+	left: 7px;
+}
+.hhb-pf-justin #hhb-button {
+	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 22px;
+	height: 22px;
+	display: block;
+	position: absolute;
+	bottom: 2px;
+	right: 2px;
+}
+#hhb-button:hover {
+	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon_hover.png');
+}
+#hhb-button:before {
+	content: initial;
+}
+
+.chatBody li span {
+	vertical-align: text-bottom !important;
+}

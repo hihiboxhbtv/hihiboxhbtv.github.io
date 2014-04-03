@@ -1,0 +1,188 @@
+.hhb-pf-hitbox.hhb-darkmode #hhb-darkmode {
+	background-color: #CCCCCC;
+	color: #333333;
+}
+
+.hhb-pf-hitbox.hhb-darkmode ::-webkit-input-placeholder { /* WebKit browsers */
+	color: #333;
+}
+.hhb-pf-hitbox.hhb-darkmode :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	color: #333;
+}
+.hhb-pf-hitbox.hhb-darkmode ::-moz-placeholder { /* Mozilla Firefox 19+ */
+	color: #333;
+}
+.hhb-pf-hitbox.hhb-darkmode :-ms-input-placeholder { /* Internet Explorer 10+ */
+	color: #333;
+}
+body.hhb-pf-hitbox.hhb-darkmode {
+	color: #FFFFFF;
+}
+.hhb-pf-hitbox.hhb-darkmode a 
+{
+	color: #CCC;
+}
+.hhb-pf-hitbox.hhb-darkmode a:hover, .hhb-pf-hitbox.hhb-darkmode .hover:hover, .hhb-pf-hitbox.hhb-darkmode .hoverB:hover
+{
+	color: #7040FF !important;
+}
+.hhb-pf-hitbox.hhb-darkmode h1 {
+    color:#CCC;
+}
+.hhb-pf-hitbox.hhb-darkmode h2 {
+    color:black;
+}
+.hhb-pf-hitbox.hhb-darkmode h3 {
+    color: #0D0D0D;
+}
+.hhb-pf-hitbox.hhb-darkmode h4 {
+	color: #F3F3F3;
+}
+.hhb-pf-hitbox.hhb-darkmode h5, .hhb-pf-hitbox.hhb-darkmode h7 {
+    color: #CCCCCC;
+}
+.hhb-pf-hitbox.hhb-darkmode h8 {
+    color: black;
+}
+.hhb-pf-hitbox.hhb-darkmode input, .hhb-pf-hitbox.hhb-darkmode select, .hhb-pf-hitbox.hhb-darkmode textarea {
+	color: #AAA;
+	border-color: #272727;
+}
+.hhb-pf-hitbox.hhb-darkmode .radioBtns input[type=radio]:checked + label:before {
+	background-color: #E6E6E6;
+	box-shadow: inset 0px 0px 0px 2px #191919;
+}
+.hhb-pf-hitbox.hhb-darkmode .radioBtns label:before {
+	border-color: #808080;
+}
+.hhb-pf-hitbox.hhb-darkmode .checkbox label:before {
+	background: hsla(0,0%,0%,.5);
+	border-color: #333333;
+	color: #000000;
+}
+.hhb-pf-hitbox.hhb-darkmode .checkbox label:hover::before {
+	color: hsla(255,100%,70%,.5);
+}
+.hhb-pf-hitbox.hhb-darkmode .t1 .tTitle {
+	color: #E6E6E6;
+}
+.hhb-pf-hitbox.hhb-darkmode .t1 .tStatus {
+	color: #CCCCCC;
+}
+.hhb-pf-hitbox.hhb-darkmode .t1 .tMetaSmall {
+	color: #999999;
+}
+.hhb-pf-hitbox.hhb-darkmode .btnBlue, .hhb-pf-hitbox.hhb-darkmode .btnBlue:hover, .hhb-pf-hitbox.hhb-darkmode .btnBlueHover:hover, .hhb-pf-hitbox.hhb-darkmode .btnHoverBlue:hover
+{
+	background-color: #CE7129 !important;
+	border-color: #CE7129 !important;
+	color: black !important;
+}
+.hhb-pf-hitbox.hhb-darkmode .btnGreen, .hhb-pf-hitbox.hhb-darkmode .btnHoverGreen:hover, .hhb-pf-hitbox.hhb-darkmode .btnGreen:hover {
+	background-color: #6A39FF !important;
+}
+.hhb-pf-hitbox.hhb-darkmode .subNav {
+	background-color: hsla(0,0%,5%,.97);
+}
+.hhb-pf-hitbox.hhb-darkmode .detailInner .lower {
+	background-color: #171717;
+	background-image: none;
+}
+.hhb-pf-hitbox.hhb-darkmode .detail .meta {
+	color: #D9D9D9;
+	border-bottom-color: #333333;
+	background: none;
+}
+.hhb-pf-hitbox.hhb-darkmode .detail .meta .title {
+	color: #D9D9D9;
+}
+.hhb-pf-hitbox.hhb-darkmode button.following {
+	background-color: black;
+	color: #CCCCCC;
+}
+.hhb-pf-hitbox.hhb-darkmode .followBubble {
+	background-color: black;
+	color: #E6E6E6;
+	border-color: #272727;
+}
+.hhb-pf-hitbox.hhb-darkmode .followBubble:before {
+	border-color: transparent #CCCCCC;
+}
+.hhb-pf-hitbox.hhb-darkmode .detail .btns .active {
+	color: white;
+	border-bottom-color: white;
+}
+.hhb-pf-hitbox.hhb-darkmode .userDescription div, .hhb-pf-hitbox.hhb-darkmode .userDescription span, .hhb-pf-hitbox.hhb-darkmode .userDescription li, .hhb-pf-hitbox.hhb-darkmode .userDescription p {
+	color: #CCCCCC;
+}
+
+.hhb-pf-hitbox.hhb-darkmode.channel .pollWrap {
+	background-color: #0D0D0D;
+	border-bottom-color: #E6E6E6;
+}
+.hhb-pf-hitbox.hhb-darkmode.channel .poll .bar div
+{
+	background-color: #7040FF;
+}
+.hhb-pf-hitbox.hhb-darkmode.channel .poll .votes {
+	color: white;
+}
+
+.hhb-pf-hitbox.hhb-darkmode .chatBody li.user {
+	background-color: #171717;
+}
+.hhb-pf-hitbox.hhb-darkmode .chatContent,
+.hhb-pf-hitbox.hhb-darkmode .chatBody .bufferTimestamp {
+	background-color: #0D0D0D;
+}
+.hhb-pf-hitbox.hhb-darkmode .chatBody .bufferTimestamp div {
+	border-top-color: #333333;
+	color: #666666;
+}
+.hhb-pf-hitbox.hhb-darkmode .chatBody li.admin {
+	background-color: #171717;
+}
+.hhb-pf-hitbox.hhb-darkmode .btnNone, .hhb-pf-hitbox.hhb-darkmode .btnNoneOpacity, .hhb-pf-hitbox.hhb-darkmode .btnOutline, .hhb-pf-hitbox.hhb-darkmode .btnOutline.btnDisabled:hover
+{
+	color: #FFFFFF;
+}
+.hhb-pf-hitbox.hhb-darkmode .btnOutline:hover, .hhb-pf-hitbox.hhb-darkmode .btnHoverOutline:hover
+{
+	background: #000000 none;
+	border-color: #404040;
+	color: #E6E6E6;
+}
+.hhb-pf-hitbox.hhb-darkmode .chatSettings {
+	background-color: #0D0D0D;
+	box-shadow: 0 0 4em hsla(0,0%,100%,.5);
+}
+.hhb-pf-hitbox.hhb-darkmode .chatSettings .close {
+	color: #333333;
+}
+.hhb-pf-hitbox.hhb-darkmode .chatSettings section {
+	color: #B3B3B3;
+}
+.hhb-pf-hitbox.hhb-darkmode .hoverG2bg:hover, .hhb-pf-hitbox.hhb-darkmode .activeG2bg {
+	color: black;
+	background-color: #531AFF !important;
+	border-color: #531AFF !important;
+}
+.hhb-pf-hitbox.hhb-darkmode .hoverGd:hover, .hhb-pf-hitbox.hhb-darkmode .hoverG2:hover {
+	color: #531AFF !important;
+}
+.hhb-pf-hitbox.hhb-darkmode .checkbox input[type=checkbox]:checked + label:before {
+	color: #8D66FF;
+}
+
+.hhb-pf-hitbox.hhb-darkmode .chatInput
+{
+	border-top-color: #333333;
+	background-color: black;
+}
+.hhb-pf-hitbox.hhb-darkmode  .userContent {
+	background-color: black;
+}
+.hhb-pf-hitbox.hhb-darkmode .chatBody .time 
+{
+	color: #777;
+}
