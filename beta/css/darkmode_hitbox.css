@@ -1,8 +1,6 @@
-.hhb-pf-hitbox.hhb-darkmode #hhb-darkmode {
-	background-color: #CCCCCC;
-	color: #333333;
+body.hhb-pf-hitbox.hhb-darkmode {
+	color: #FFFFFF;
 }
-
 .hhb-pf-hitbox.hhb-darkmode ::-webkit-input-placeholder { /* WebKit browsers */
 	color: #333;
 }
@@ -14,9 +12,6 @@
 }
 .hhb-pf-hitbox.hhb-darkmode :-ms-input-placeholder { /* Internet Explorer 10+ */
 	color: #333;
-}
-body.hhb-pf-hitbox.hhb-darkmode {
-	color: #FFFFFF;
 }
 .hhb-pf-hitbox.hhb-darkmode a 
 {

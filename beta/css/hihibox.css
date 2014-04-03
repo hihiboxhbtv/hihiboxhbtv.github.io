@@ -41,7 +41,9 @@
 	cursor: pointer;
 	font-size: 12px;
 }
-#hhb-darkmode {
+#hhb-darkmode,
+#hhb-sortmode,
+#hhb-reset {
 	margin: 0px 6px 0px 0px;
 	padding: 5px;
 	float: left;
@@ -52,6 +54,14 @@
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 }
+#hhb-darkmode:hover,
+#hhb-sortmode:hover,
+#hhb-reset:hover,
+.hhb-darkmode #hhb-darkmode {
+	background-color: #CCCCCC;
+	color: #333333;
+}
+
 #hhb-header .icon.fb {
 	background: url('http://hihiboxhbtv.github.io/images/fb.png') no-repeat center;
 }

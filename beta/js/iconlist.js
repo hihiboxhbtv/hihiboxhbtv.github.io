@@ -1,11 +1,10 @@
 ﻿info = {
-		name: 'HihiBox β',
+		name: 'HihiBox',
 		credit: 'Designed by VannZic, Lemon\nResearched by 希治閣, 小維',
 		version: 'v1.6.0',
-		lastUpdate: 'Last Updated on 2014-04-01'
+		lastUpdate: 'Last Updated on 2014-04-04'
 	};
 
-defaultGenre = 'HKG';
 listGenre = ['Recent','HKG','HKG2','meme','pkmon','腦魔','禿伯','小丑','Pixel','食鬼','聖誕','北極','口罩'];
 listIcon = [].concat(
  
@@ -2195,5 +2194,3 @@ listIcon = [].concat(
 \********************/
 
 );
-
-iconListLoaded = true;
