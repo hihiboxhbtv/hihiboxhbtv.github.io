@@ -196,10 +196,7 @@
 	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon.png');
 	background-repeat: no-repeat;
 	background-position: center;
-	left: 2px;
-}
-.hhb-pf-twitch #hhb-button:nth-child(4) {
-	left: 7px;
+	margin-left: 10px;
 }
 .hhb-pf-justin #hhb-button {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon.png');

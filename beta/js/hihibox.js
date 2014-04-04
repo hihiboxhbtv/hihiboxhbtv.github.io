@@ -98,7 +98,7 @@
 				name: 'HihiBox',
 				credit: 'Designed by VannZic, Lemon\nResearched by 希治閣, 小維',
 				version: 'v1.6.0',
-				lastUpdate: 'Last Updated on 2014-04-03'
+				lastUpdate: 'Last Updated on 2014-04-04'
 			},
 			config: {
 				genre: 'HKG',
@@ -197,6 +197,7 @@
 				_platform.initialize = function() { $('body').addClass('hhb-pf-hitbox'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
+				_platform.getButtonFront = function() {	return [];	};
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
 				_platform.genToggleButton = function(id) {
 					return $('<div id="'+id+'" class="icon-cog hoverG2" title="HihiBox"></div>');
@@ -350,7 +351,8 @@
 						showChatBtn: 'a.button-simple.primary:contains("Show Chat")',
 						holderContainer: '.chat-messages',
 						buttonContainer: '.chat-option-buttons',
-						msgBox: 'textarea[placeholder="Chat about this channel"]',
+						buttonFront: '.viewers.button.normal_button',
+						msgBox: 'textarea[placeholder="Send a message"]',
 						newMsg: 'span.message:not(.hhb-msg)',
 						emoticon: 'span.emoticon',
 						timestampsBox: '.chat-menu-content .ember-checkbox:contains("Time Stamps")'
@@ -360,15 +362,16 @@
 				_platform.initialize = function() { $('body').addClass('hhb-pf-twitch'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
+				_platform.getButtonFront = function() {	return $(selector.buttonFront);	};
 				_platform.genHolder = function(idObj,infoObj) {
 					return _platformObj.default.genHolder(idObj,infoObj);
 				};
 				_platform.genToggleButton = function(id) {
-					return $('<button id="'+id+'" class="button-simple light tooltip" original-title="HihiBox"></div>');
+					return $('<button id="'+id+'" class="button normal_button tooltip" original-title="HihiBox" title="HihiBox"></div>');
 				};
 				_platform.onBindedToggleButton = function() {
 					var btnc = $('.chat-option-buttons button').length;
-					var btnw = 30;
+					var btnw = 40;
 					
 					$(".send-chat-button").css("left", (btnw*btnc)+"px");
 				};
@@ -594,6 +597,7 @@
 				_platform.initialize = function() { $('body').addClass('hhb-pf-justin'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
+				_platform.getButtonFront = function() {	return [];	};
 				_platform.genHolder = function(idObj,infoObj) {
 					return _platformObj.default.genHolder(idObj,infoObj);
 				};
@@ -1108,7 +1112,9 @@
 					.click(function() {
 						toggleHolder('toggle');
 					});
-				$buttonCon.append(palButton);
+				var palButtonFront = platformObj.getButtonFront();
+				if (palButtonFront.length > 0) palButton.insertAfter(palButtonFront);
+				else $buttonCon.append(palButton);
 				platformObj.onBindedToggleButton();
 				retryCount.bindButtonUI = 0;
 				debugMsg('Binded Toggle Button UI');
@@ -1186,13 +1192,18 @@
 		};
 		var selectGenre = function(genre) {
 			genre = (genre) ? genre : config.genre;
+			if (genre=='sort') genre = config.genre;
+			else sortIconList(true);
 			var $icon = $(selector.iconsetIcon).removeClass(cssClass.iconHide);
-			var $hicon = $icon.not(selector.icon+'[hhb-genre~="'+genre+'"]').addClass(cssClass.iconHide);
+			var $hicon = $icon.not([
+								selector.icon,
+								'[hhb-genre~="'+genre+'"]',
+								((genre=='Recent') ? ':lt(50)' : '')].join('')
+							).addClass(cssClass.iconHide);
 			$(selector.genreContainerGenre).removeClass(cssClass.active)
 				.filter(selector.genre+'[hhb-genre="'+genre+'"]').addClass(cssClass.active);
 			var csicon = $icon.length-$hicon.length;
 			showIconMsg();
-			sortIconList(true);
 			saveConfig({ genre: genre });
 			debugMsg('Selected Genre [G:',genre,',I:',csicon,']');
 		};
@@ -1404,15 +1415,17 @@
 			}
 			var f_sort_usage = function(a, b) {
 				return 	($(a).data('hhb-object').usage.count>$(b).data('hhb-object').usage.count) ? -1 :
-						($(a).data('hhb-object').usage.count<$(b).data('hhb-object').usage.count) ? 1 : 
-							($(a).data('hhb-object').id<$(b).data('hhb-object').id) ? -1 :
-							($(a).data('hhb-object').id>$(b).data('hhb-object').id) ? 1 : 0;
+						($(a).data('hhb-object').usage.count<$(b).data('hhb-object').usage.count) ? 1 :
+							($(a).data('hhb-object').usage.lastUsed>$(b).data('hhb-object').usage.lastUsed) ? -1 :
+							($(a).data('hhb-object').usage.lastUsed<$(b).data('hhb-object').usage.lastUsed) ? 1 : 
+								($(a).data('hhb-object').id<$(b).data('hhb-object').id) ? -1 :
+								($(a).data('hhb-object').id>$(b).data('hhb-object').id) ? 1 : 0;
 			}
 			var f_sort_recent = function(a, b) {
 				return 	($(a).data('hhb-object').usage.lastUsed>$(b).data('hhb-object').usage.lastUsed) ? -1 :
 						($(a).data('hhb-object').usage.lastUsed<$(b).data('hhb-object').usage.lastUsed) ? 1 : 
-							($(a).data('hhb-object').id<$(b).data('hhb-object').id) ? -1 :
-							($(a).data('hhb-object').id>$(b).data('hhb-object').id) ? 1 : 0;
+								($(a).data('hhb-object').id<$(b).data('hhb-object').id) ? -1 :
+								($(a).data('hhb-object').id>$(b).data('hhb-object').id) ? 1 : 0;
 			}
 			var f_current_sort = function() {
 				switch (config.sortMode) {
@@ -1425,6 +1438,7 @@
 			var f_sort = f_current_sort();
 			$(selector.iconsetIcon).sort(f_sort).appendTo(selector.iconset);
 			
+			selectGenre('sort');
 			currSortVersion = appendingSortVersion;
 			debugMsg('Sort Icon List [M:',$(selector.sortModeBtn).text(),',V:',currSortVersion,']');
 		};
@@ -1463,7 +1477,6 @@
 				icon.usage.lastUsed = 0;
 				icon.domObject.attr('hhb-genre',icon.genre.join(' '));
 			});
-			console.log('resetUsage',listIcon,listParse);
 			listUsage = {};
 			$.cookie('hhb-iconUsage',listUsage,{ expires: 0 });
 			appendingSortVersion++;
@@ -1479,11 +1492,11 @@
 	
 	$(document).ready(function() {
 		var host = 'http://hihiboxhbtv.github.io/beta';
+		//host = 'chrome-extension://dcihicbmfgjcjommlfnamlomfjhccdjo';
 		
 		// load icon list
 		$.getScript([host,"/js/iconlist.js"].join(''))
 			.done(function( script, textStatus ) {
-				info.name = 'Hihibox β';
 				var hhb = 	new HihiBox({
 									info: window.info,
 									listGenre: window.listGenre,
