@@ -1187,7 +1187,7 @@
 				palIconset.append($icon);
 			});
 			injectIcon();
-			selectGenre('refresh');	// select default genre
+			selectGenre('init');	// select default genre
 			version.iconList.current = version.iconList.pending;
 			debugMsg('Binded Icon List [I:',listIcon.length,']');
 		};
@@ -1339,9 +1339,10 @@
 			sortIconList(true);
 		};
 		var selectGenre = function(genre) {
+			var act = 'select';
 			genre = (genre) ? genre : config.genre;
 			if (genre==config.genre) return false;
-			if (genre=='refresh') { genre = config.genre; version.sort.pending++; }
+			if (genre=='init'||genre=='refresh') { act = genre; genre = config.genre; version.sort.pending++; }
 			sortIconList(true);
 			var $genre = $(selector.genreContainerGenre).removeClass(cssClass.active)
 				.filter(selector.genre+'[hhb-genre="'+genre+'"]').addClass(cssClass.active);
@@ -1362,7 +1363,7 @@
 			ga('send', {
 				'hitType': 'event',			// Required.
 				'eventCategory': 'genre',	// Required.
-				'eventAction': 'select',	// Required.
+				'eventAction': act,			// Required.
 				'eventLabel': genre
 			});
 			debugMsg('Selected Genre [G:',genre,',I:',csicon,']');
