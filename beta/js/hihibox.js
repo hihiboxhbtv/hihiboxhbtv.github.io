@@ -71,8 +71,9 @@
 				resetBtn: '#hhb-reset'
 			},
 			delay: {
-				analyzePlatformIcon: 200,
 				analyzeBuiltinIcon: 200,
+				analyzePlatformIcon: 200,
+				analyzeGJTVIcon: 200,
 				activateRebindUIBtn: 1000,
 				bindHolderUI: 1000,
 				bindButtonUI: 1000,
@@ -89,7 +90,8 @@
 			limit: {
 				msgIconHeight: 60,
 				analyzeBuildinIcon: 30,
-				analyzePlatformIcon: 30
+				analyzePlatformIcon: 30,
+				analyzeGJTVIcon: 30,
 			},
 			supportedPlatform: ['hitbox','twitch','justin'],
 			listGenre: [],
@@ -100,6 +102,11 @@
 				version: 'v1.6.0',
 				lastUpdate: 'Last Updated on 2014-04-04'
 			},
+			defaultConfig: {
+				genre: 'HKG',
+				darkMode: 'light',
+				sortMode: 'usage'
+			},
 			config: {
 				genre: 'HKG',
 				darkMode: 'light',
@@ -108,7 +115,6 @@
 		};
 		var _settings = $.extend(_defaultSettings, settings);
 		
-				
 		/* Private variables */
 		var _this = this,
 			_hhb = this,
@@ -123,17 +129,22 @@
 			listGenre = _settings.listGenre,
 			listIcon = _settings.listIcon,
 			info = _settings.info,
+			defaultConfig = _settings.defaultConfig;
 			config = _settings.config,
 			env = {
 				hasjQuery: false,
 				platform: '',
 				builtinIconLoaded: false,
 				platformIconLoaded: false,
+				gjtvIconLoaded: false,
+				holderUIBinded: false,
+				buttonUIBinded: false,
 				iconInjected: false
 			},
 			retryCount = {
-				analyzePlatformIcon: 0,
 				analyzeBuiltinIcon: 0,
+				analyzePlatformIcon: 0,
+				analyzeGJTVIcon: 0,
 				activateRebindUIBtn: 0,
 				bindHolderUI: 0,
 				bindButtonUI: 0,
@@ -142,16 +153,32 @@
 			timestamps = {
 				sortIconList: 0
 			},
+			version = {
+				iconList: { pending: 0, current: 0 },
+				sort: { pending: 0, current: 0 },
+				usage: { pending: 0, current: 0 }
+			},
+			timer = {
+				initialize: { start: 0, end: 0, duration: 0 },
+				analyzeIconSource: { start: 0, end: 0, duration: 0 },
+				analyzeBuiltinIcon: { start: 0, end: 0, duration: 0 },
+				analyzePlatformIcon: { start: 0, end: 0, duration: 0 },
+				analyzeGJTVIcon: { start: 0, end: 0, duration: 0 },
+				injectIcon: { start: 0, end: 0, duration: 0 },
+				bindUI: { start: 0, end: 0, duration: 0 },
+				bindHolderUI: { start: 0, end: 0, duration: 0 },
+				bindButtonUI: { start: 0, end: 0, duration: 0 },
+				sort: { start: 0, end: 0, duration: 0 }
+			},
 			platformObj = null,
+			listPendingUsage = {};
 			listUsage = {},
 			listParse = [],
 			listLookup = {},
 			nextIconID = 1,
 			isFiltering = false,
 			timerFilter = null,
-			currFilterCodeHead = '',
-			appendingSortVersion = 0,
-			currSortVersion = 0;
+			currFilterCodeHead = '';
 			
 		/* Public Variables */
 		_hhb.cssClass = cssClass;
@@ -230,7 +257,8 @@
 							list.push({
 								code: tcode,
 								src: tsrc,
-								genre: dgenre
+								width: 0, height: 0,
+								genre: dgenre,
 							});
 						}
 					}
@@ -262,7 +290,7 @@
 							limitHeight = limit.msgIconHeight;
 						// Re-define window.emotify
 						window.emotify=function(e){var t,n,r={},i=[];t=function(t,s){s=s||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};return t.replace(n,function(e,t,n){var o=0,u=n,a=r[n];if(!a){while(o<i.length&&!i[o].regexp.test(n)){o++}u=i[o].name;a=r[u]}return a?t+s(a[0],a[1],a.width,a.height,u,n):e})};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|\\s)("+a.join("|")+")(?=(?:$|\\s))","g")}return r};return t}(_hhb);
-						emotify.emoticons(true,list);
+						var ijlist = emotify.emoticons(true,list);
 					}
 					return count;
 				};
@@ -463,6 +491,16 @@
 					} catch(e) {
 						return;
 					}
+					/* cleaning */
+					for (var idx=0;idx<defaultSet.length;idx++) {
+						var obj = defaultSet[idx];
+						if (obj && obj.isHHBEmoticon) {
+							defaultSet.splice(idx,1);
+							idx--;
+						}
+					}
+					
+					/* injecting */
 					limitHeight = limit.msgIconHeight;
 					while (icon = iconlist.pop()) {
 						var classname = 'emo-hhb-'+count
@@ -503,7 +541,6 @@
 						$('style.hhb-style').detach();
 						$('<style type="text/css" class="hhb-style">').text(style).appendTo("head");
 					}
-					
 					return count;
 				};
 				_platform.getNewMsg = function() {	return $(selector.newMsg);	};
@@ -729,19 +766,20 @@
 					/* Injecting emoticonize */					
 					var method = 'emoticonize',
 						objChat = (CurrentChat) ? CurrentChat : Chat.prototype;
-					if (!method in objChat || '__hhb_'+method in objChat) return;
-					var orgMethod = objChat[method];
-					objChat['__hhb_'+method] = true;
-					objChat[method] = function() {
-						try {
-							var args = [	orgMethod.bind(this),
-											Array.prototype.slice.apply(arguments)
-										];
-							return emotify_main.apply(this,args);
-						} catch(e) {
-							return orgMethod.apply(this,arguments);
-						}
-					};
+					if (method in objChat && !('__hhb_'+method in objChat)) {
+						var orgMethod = objChat[method];
+						objChat['__hhb_'+method] = true;
+						objChat[method] = function() {
+							try {
+								var args = [	orgMethod.bind(this),
+												Array.prototype.slice.apply(arguments)
+											];
+								return emotify_main.apply(this,args);
+							} catch(e) {
+								return orgMethod.apply(this,arguments);
+							}
+						};
+					}
 					return count;
 				},
 				_platform.getNewMsg = function() {	return $(selector.newMsg);	};
@@ -821,9 +859,59 @@
 			args.unshift("[HihiBox]");
 			console.log.apply(console,args);
 		};
+		var setTimerStart = function(target) {	return setTimer('start',target);	};
+		var setTimerEnd = function(target) {	return setTimer('end',target);	};
+		var setTimer = function(act,target) {
+			if (!act||!target) return;
+			if ($.inArray(act,['start','end'])<0) return;
+			var ttimer = timer[target];
+			if (!ttimer) return;
+			switch (act) {
+			case 'start':
+				ttimer.start = new Date().getTime();
+				break;
+			case 'end':
+				ttimer.end = new Date().getTime();
+				ttimer.duration = ttimer.end-ttimer.start;
+				break;
+			}
+			if (act=='end') {
+				switch (target) {
+				case 'analyzeBuiltinIcon':	env.builtinIconLoaded = true;	break;
+				case 'analyzePlatformIcon':	env.platformIconLoaded = true;	break;
+				case 'analyzeGJTVIcon':		env.gjtvIconLoaded = true;	break;
+				case 'bindHolderUI':		env.holderUIBinded = true;	break;
+				case 'bindButtonUI':		env.buttonUIBinded = true;	break;
+				case 'injectIcon':			env.iconInjected = true;	break;
+				}
+				switch (target) {
+				case 'bindHolderUI':
+				case 'bindButtonUI':
+					if (env.holderUIBinded && env.buttonUIBinded) setTimerEnd('bindUI');
+					break;
+				case 'analyzeBuiltinIcon':
+				case 'analyzePlatformIcon':
+				case 'analyzeGJTVIcon':
+					if (env.builtinIconLoaded && env.platformIconLoaded) setTimerEnd('analyzeIconSource');
+					break;
+				case 'injectIcon':
+					if (env.builtinIconLoaded && env.platformIconLoaded && env.iconInjected) setTimerEnd('initialize');
+					break;
+				}
+			}
+			if (ttimer.start > 0 && ttimer.duration > 0) {
+				ga('send', {
+					'hitType': 'event',			// Required.
+					'eventCategory': 'core',	// Required.
+					'eventAction': 'process',	// Required.
+					'eventLabel': target,
+					'eventValue': ttimer.duration
+				});
+			}
+		};
 		var envCheck = function() {
 			debugMsg('Detecting Platform...');
-			env.hasjQuery = (!(typeof $ == 'undefined'));
+			env.hasjQuery = (!(typeof $ === 'undefined'));
 			var url = document.URL.toLowerCase();
 			env.platform = (url.match("^http:\/\/[^\/]*hitbox\.tv\/") ? 'hitbox' :
 								(url.match("^http:\/\/[^\/]*twitch\.tv\/") ? 'twitch' : 
@@ -835,17 +923,24 @@
 			if (env.platform!='') {
 				platformObj = new _platformObj[env.platform];
 				debugMsg('Detected [',env,']');
+				ga('send', {
+					'hitType': 'event',			// Required.
+					'eventCategory': 'core',	// Required.
+					'eventAction': 'platform',	// Required.
+					'eventLabel': env.platform
+				});
 				initialize();
 			} else {
 				debugMsg('Platform not detected! Initialization aborted!');
 			}
 		};
 		var initialize = function() {
+			setTimerStart('initialize');
 			debugMsg('Initalizing...');
 			$.cookie.json = true;
 			loadUsage();
 			loadConfig();
-			analyzeBuiltinIcon();
+			analyzeIconSource();
 			platformObj.initialize();
 			detectUI();
 			initializeHotkey();
@@ -853,23 +948,27 @@
 			debugMsg('Initialized');
 		};
 		var injectIcon = function() {
-			if (env.builtinIconLoaded && env.platformIconLoaded) {
-				debugMsg('Injecting Icon...');
-				var count = platformObj.injectIcon(listParse);
-				if (count > 0) {
-					debugMsg('Injected Icon [I:',count,']');
-					env.iconInjected = true;
-				} else {
-					debugMsg('Injected Icon Failed!');
-				}
+			setTimerStart('injectIcon');
+			debugMsg('Injecting Icon...');
+			var count = platformObj.injectIcon(listParse);
+			if (count > 0) {
+				debugMsg('Injected Icon [I:',count,']');
+				setTimerEnd('injectIcon');
+			} else {
+				debugMsg('Injected Icon Failed!');
 			}
 		};
+		var analyzeIconSource = function() {
+			setTimerStart('analyzeIconSource');
+			setTimerStart('analyzeBuiltinIcon');
+			analyzeBuiltinIcon();
+			setTimerStart('analyzePlatformIcon');
+			analyzePlatformIcon();
+			setTimerStart('analyzeGJTVIcon');
+			analyzeGJTVIcon();
+		};
 		var analyzeBuiltinIcon = function() {
-			if (retryCount.analyzeBuiltinIcon > 0) {
-				debugMsg('Analyzing Built-in Icon Retry...[ R:',retryCount.analyzeBuiltinIcon,']');
-			} else {
-				debugMsg('Analyzing Built-in Icon...');
-			}
+			debugMsg('Analyzing Built-in Icon Retry...',(retryCount.analyzeBuiltinIcon>0)?'Retry':'','...');
 			var iconlist = listIcon;
 			if (!analyzeIcon(iconlist)) {
 				if (retryCount.analyzeBuiltinIcon < limit.analyzeBuiltinIcon) {
@@ -880,18 +979,17 @@
 				}
 				return;
 			}
-			env.builtinIconLoaded = true;
-			analyzePlatformIcon();
-			injectIcon();
+			setTimerEnd('analyzeBuiltinIcon');
+			version.iconList.pending++;
+			bindIconList();	// list all HihiBox icon
 		};
 		var analyzePlatformIcon = function() {
-			if (retryCount.analyzePlatformIcon > 0) {
-				debugMsg('Analyzing Platform Icon Retry...[ R:',retryCount.analyzePlatformIcon,']');
-			} else {
-				debugMsg('Analyzing Platform Icon...');
+			debugMsg('Analyzing Platform Icon',(retryCount.analyzePlatformIcon>0)?'Retry':'','...');
+			var iconlist, analyzediconlist;
+			if (env.builtinIconLoaded) {
+				iconlist = platformObj.getPlatformIcon();
+				analyzediconlist = analyzeIcon(iconlist);
 			}
-			var iconlist = platformObj.getPlatformIcon();
-			var analyzediconlist = analyzeIcon(iconlist);
 			if (!analyzediconlist) {
 				if (retryCount.analyzePlatformIcon < limit.analyzePlatformIcon) {
 					setTimeout(function() { analyzePlatformIcon(); },delay.analyzePlatformIcon);
@@ -902,9 +1000,51 @@
 				return;
 			}
 			listIcon = listIcon.concat(analyzediconlist);
-			env.platformIconLoaded = true;
+			setTimerEnd('analyzePlatformIcon');
+			version.iconList.pending++;
 			bindIconList();	// list all HihiBox icon
-			injectIcon();
+		};
+		var analyzeGJTVIcon = function() {
+			debugMsg('Analyzing GJTV Icon',(retryCount.analyzeGJTVIcon>0)?'Retry':'','...');
+			var iconlist, analyzediconlist;
+			if (env.builtinIconLoaded) {
+				var getGJTVIcon = function() {
+					var list = [], dgenre = [].concat('GJTV');
+					if (	typeof(gjtv_icon_base) !== 'undefined' && 
+							typeof(gjtv_icon_list) !== 'undefined'
+						) {
+						$.each(gjtv_icon_list,function(idx,obj) {
+							var tcode = [].concat(obj[0]),
+								tsrc = obj[1].match(/^([^']+)\'/)[1],
+								twidth = obj[1].match(/width=\'(\d+)\'/)[1],
+								theight = obj[1].match(/height=\'(\d+)\'/)[1];
+							if (tsrc.indexOf("http") == -1) tsrc = gjtv_icon_base + tsrc;
+							list.push({
+								code: tcode,
+								src: tsrc,
+								width: twidth, height: theight,
+								genre: dgenre
+							});
+						});
+					}
+					return list;
+				};
+				iconlist = getGJTVIcon();
+				analyzediconlist = analyzeIcon(iconlist);
+			}
+			if (!analyzediconlist) {
+				if (retryCount.analyzeGJTVIcon < limit.analyzeGJTVIcon) {
+					setTimeout(function() { analyzeGJTVIcon(); },delay.analyzeGJTVIcon);
+					retryCount.analyzeGJTVIcon++;
+				} else {
+					debugMsg('Analyzing GJTV Icon Failed!');
+				}
+				return;
+			}
+			listIcon = listIcon.concat(analyzediconlist);
+			setTimerEnd('analyzeGJTVIcon');
+			version.iconList.pending++;
+			bindIconList();	// list all HihiBox icon
 		};
 		var analyzeIcon = function(iconlist) {
 			var genreOther = 'Other';
@@ -926,7 +1066,8 @@
 				var genre = []	.concat((obj.genre) ? obj.genre : genreOther)
 								.concat((listUsage[code[0]]) ? 'Recent' : []);
 				var title = code.join(", ").replace(/(<([^>]+)>)/ig,'').replace(/, $/,'');
-				var img = '<img src="'+src+'" title="'+title+'" class="'+cssClass.msgIcon+((obj.height > limit.msgIconHeight) ? ' '+cssClass.resized : '')+'"/>';
+				var tstyle = (obj.width>0&&obj.height>0) ? ' style="width:'+obj.width+'px;height:'+obj.height+'px;"' : '';
+				var img = '<img src="'+src+'" title="'+title+'"'+tstyle+' class="'+cssClass.msgIcon+((obj.height > limit.msgIconHeight) ? ' '+cssClass.resized : '')+'"/>';
 				var re = "";
 				$.each(code,function(idx2,code2) {
 					var isTag = code2.match(/^<[^>]+>$/g);
@@ -991,6 +1132,7 @@
 			setTimeout(function() { detectUI(); },delay.detectUI);
 		};
 		var bindUI = function() {
+			setTimerStart('bindUI');
 			debugMsg('Binding UI...');
 			activateRebindUIBtn();
 			bindHolderUI();
@@ -1027,7 +1169,8 @@
 			debugMsg('Binded Genre List [G:',listGenre.length,']');
 		};
 		var bindIconList = function() {
-			if (!(env.builtinIconLoaded || env.platformIconLoaded)) return;
+		//	if (!(env.builtinIconLoaded || env.platformIconLoaded)) return;
+			if (version.iconList.current==version.iconList.pending) return;
 			var palIconset = $(selector.iconset).empty();
 			if (!palIconset.length > 0) return;
 			palIconset.append($('<div id="'+id.iconMsgBox+'">-</div>'));
@@ -1043,8 +1186,10 @@
 				obj.domObject = $icon;
 				palIconset.append($icon);
 			});
+			injectIcon();
+			selectGenre('refresh');	// select default genre
+			version.iconList.current = version.iconList.pending;
 			debugMsg('Binded Icon List [I:',listIcon.length,']');
-			selectGenre(config.genre);	// select default genre
 		};
 		var showIconMsg = function() {
 			var $icon = $(selector.iconsetIcon);
@@ -1061,15 +1206,13 @@
 			$iconMsgBox.filter(':visible').delay(delay).fadeTo(fodur,foop);
 		};
 		var bindHolderUI = function() {
+			if (retryCount.bindHolderUI==0) setTimerStart('bindHolderUI');
 			var $holderCon = platformObj.getHolderContainer();
 			if ($holderCon.length) {
 				var $holder = $(selector.holder);
 				if (!$holder.length > 0) {
 					var palHolder = platformObj.genHolder(id,info).hide();
 					$holderCon.append(palHolder);
-					
-					bindGenreList();	// list all HihiBox Genre
-					bindIconList();	// list all HihiBox icon
 					
 					// Activate dark mode button
 					$(selector.darkModeBtn).click(function() {
@@ -1094,8 +1237,12 @@
 					// Show timestamps
 					toggleTimestamps('show');
 					
+					bindGenreList();	// list all HihiBox Genre
+					bindIconList();	// list all HihiBox icon
+					
 					retryCount.bindHolderUI = 0;
 					debugMsg('Binded Holder UI [G:',listGenre.length,', I:',listIcon.length,']');
+					setTimerEnd('bindHolderUI');
 				}
 			} else {
 				setTimeout(function() { bindHolderUI(); },delay.bindHolderUI);
@@ -1104,8 +1251,8 @@
 			}
 		};
 		var bindButtonUI = function() {
+			if (retryCount.bindButtonUI==0) setTimerStart('bindButtonUI');
 			var $button = $(selector.button);
-			
 			var $buttonCon = platformObj.getButtonContainer();
 			if ($buttonCon.length > 0) {
 				var palButton = platformObj.genToggleButton(id.button)
@@ -1118,6 +1265,7 @@
 				platformObj.onBindedToggleButton();
 				retryCount.bindButtonUI = 0;
 				debugMsg('Binded Toggle Button UI');
+				setTimerEnd('bindButtonUI');
 			} else {
 				setTimeout(function() { bindButtonUI(); },delay.bindButtonUI);
 				retryCount.bindButtonUI++;
@@ -1186,40 +1334,39 @@
 			saveConfig({ sortMode: nextact });
 			txt = [txt,config.sortMode.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();})].join('');
 			$(selector.sortModeBtn).text(txt);
-			appendingSortVersion++;
+			version.sort.pending++;
 			
 			sortIconList(true);
 		};
 		var selectGenre = function(genre) {
 			genre = (genre) ? genre : config.genre;
-			if (genre=='sort') genre = config.genre;
-			else sortIconList(true);
+			if (genre==config.genre) return false;
+			if (genre=='refresh') { genre = config.genre; version.sort.pending++; }
+			sortIconList(true);
+			var $genre = $(selector.genreContainerGenre).removeClass(cssClass.active)
+				.filter(selector.genre+'[hhb-genre="'+genre+'"]').addClass(cssClass.active);
+			if ($genre.length==0) {
+				selectGenre(defaultConfig.genre);
+				return false;
+			}
 			var $icon = $(selector.iconsetIcon).removeClass(cssClass.iconHide);
 			var $hicon = $icon.not([
 								selector.icon,
 								'[hhb-genre~="'+genre+'"]',
 								((genre=='Recent') ? ':lt(50)' : '')].join('')
 							).addClass(cssClass.iconHide);
-			$(selector.genreContainerGenre).removeClass(cssClass.active)
-				.filter(selector.genre+'[hhb-genre="'+genre+'"]').addClass(cssClass.active);
 			var csicon = $icon.length-$hicon.length;
 			showIconMsg();
 			saveConfig({ genre: genre });
+			
+			ga('send', {
+				'hitType': 'event',			// Required.
+				'eventCategory': 'genre',	// Required.
+				'eventAction': 'select',	// Required.
+				'eventLabel': genre
+			});
 			debugMsg('Selected Genre [G:',genre,',I:',csicon,']');
-		};
-		var addIconToRecent = function(obj) {
-			var objIcon = obj.data('hhb-object');
-			var code = obj.data('hhb-code').split(' ')[0];
-			if (!listUsage[code]) {
-				var tgenre = obj.attr('hhb-genre').replace(' Recent','');
-				obj.attr('hhb-genre',tgenre+' Recent');
-			}
-			var usage = {	count: objIcon.usage.count+1, 
-							lastUsed: new Date().getTime()	};
-			objIcon.usage = $.extend(objIcon.usage,usage);
-			listUsage[code] = usage;
-			saveUsage();
-			appendingSortVersion++;
+			return true;
 		};
 		var insertIcon = function(obj) {
 			var msg = platformObj.getMsgInput();
@@ -1235,16 +1382,23 @@
 			}
 			var code = obj.data('hhb-code').split(' ')[cidx];
 			insertText(code);
-			addIconToRecent(obj);
-			/*
-			var tgenre = obj.attr('hhb-genre').replace(' Recent','');
-			obj.attr('hhb-genre',tgenre+' Recent');
-			*/
+			addIconToRecent(obj,code);
+			
 			// Large icon can only be inserted once in a time
 			if (obj.find(selector.msgIcon).hasClass(cssClass.resized)) {
 				toggleHolder('hide');
 			}
 			debugMsg('Inserted Icon Code [',code,']');
+		};
+		var addIconToRecent = function(obj,code) {
+			var objIcon = obj.data('hhb-object');
+			var idxcode = obj.data('hhb-code').split(' ')[0];
+			if (!listUsage[idxcode]) {
+				var tgenre = obj.attr('hhb-genre').replace(' Recent','');
+				obj.attr('hhb-genre',tgenre+' Recent');
+			}
+			addPendingUsage(idxcode,objIcon,code);
+			version.appendSort++;
 		};
 		var toggleTimestamps = function(act) {
 			platformObj.toggleTimestamps(act);
@@ -1253,6 +1407,17 @@
 			if (isFiltering) {
 				platformObj.replaceText(text,filter.finder);
 				isFiltering = false;
+				var msg = platformObj.getMsgInput();
+				msg = (msg) ? msg : '';
+				var matches = msg.match(filter.finder);
+				var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
+				ga('send', {
+					  'hitType': 'event',			// Required.
+					  'eventCategory': 'icon',	// Required.
+					  'eventAction': 'filter',		// Required.
+					  'eventLabel': 'found',
+					  'eventValue': codehead.length
+					});
 			} else {
 				platformObj.insertText(text);
 			}
@@ -1374,6 +1539,10 @@
 						selectIconNext();
 						return false;
 					}
+				} else {
+					if (e.which == 13) {	/* Press [Enter] (Send Message) */
+						commitUsage();
+					}
 				}
 			}).keyup(function(e) {
 				if ((e.which == 8 || e.which == 32 || e.which == 46) ||	/* backspace, space, delete */
@@ -1401,13 +1570,14 @@
 			setTimeout(function() { bindResizer(); },delay.bindResizer);
 		};
 		var sortIconList = function(forced) {
-			if (currSortVersion==appendingSortVersion) return;
+			if (version.sort.current==version.sort.pending) return;
 			
 			var tsNow = new Date().getTime();
 			if (!forced && tsNow<timestamps.sortIconList+delay.sortIconList) {
 				debugMsg('Sort Icon List Skipped');
 				return;
 			}
+			setTimerStart('sort');
 			timestamps.sortIconList = tsNow;
 			var f_sort_id = function(a, b) {
 				return 	($(a).data('hhb-object').id<$(b).data('hhb-object').id) ? -1 :
@@ -1438,9 +1608,9 @@
 			var f_sort = f_current_sort();
 			$(selector.iconsetIcon).sort(f_sort).appendTo(selector.iconset);
 			
-			selectGenre('sort');
-			currSortVersion = appendingSortVersion;
-			debugMsg('Sort Icon List [M:',$(selector.sortModeBtn).text(),',V:',currSortVersion,']');
+			version.sort.current = version.sort.pending;
+			debugMsg('Sort Icon List [M:',$(selector.sortModeBtn).text(),',V:',version.sort.current,']');
+			setTimerEnd('sort');
 		};
 		var loadConfig = function() {
 			var cookieData = $.cookie('hhb-config');
@@ -1455,6 +1625,36 @@
 			$.cookie('hhb-config',config);
 			debugMsg('Config Saved');
 		};
+		
+		var addPendingUsage = function(idxcode,objIcon,code) {
+			var usage = (listPendingUsage[idxcode]) ? listPendingUsage[idxcode].usage : { count:0, lastUsed:0 };
+			usage = {	count: usage.count+1, 
+						lastUsed: new Date().getTime()	};
+			code = (code) ? code : objIcon.code[0];
+			listPendingUsage[idxcode] = { icon: objIcon, code: code, usage: usage };
+		};
+		var commitUsage = function() {
+			var pre = $.extend({},listPendingUsage);
+			$.each(listPendingUsage, function(key,obj) {
+				var icon = obj.icon;
+				var code = obj.code;
+				var pusage = obj.usage;
+				var usage = { 	usage: icon.usage.count+pusage.count, 
+								lastUsed: pusage.lastUsed };
+				icon.usage = usage;
+				listUsage[key] = usage;
+				ga('send', {
+					  'hitType': 'event',			// Required.
+					  'eventCategory': 'icon',		// Required.
+					  'eventAction': 'send',		// Required.
+					  'eventLabel': code,
+					  'eventValue': pusage.count
+					});
+				delete listPendingUsage[key];
+			});
+			saveUsage();
+			debugMsg('Icon Usage Committed');
+		};
 		var loadUsage = function() {
 			var cookieData = $.cookie('hhb-iconUsage');
 			if (!cookieData) cookieData = {};
@@ -1465,6 +1665,9 @@
 		var saveUsage = function(data) {
 			if (!data) data = {};
 			listUsage = $.extend(listUsage,data);
+			$.each(listUsage, function(key,obj) {
+				if (obj.count == 0 && obj.lastUsed == 0) delete listUsage[key];
+			});
 			$.cookie('hhb-iconUsage',listUsage);
 			debugMsg('Icon Usage Saved');
 		};
@@ -1479,9 +1682,8 @@
 			});
 			listUsage = {};
 			$.cookie('hhb-iconUsage',listUsage,{ expires: 0 });
-			appendingSortVersion++;
-			sortIconList(true);
-			selectGenre();
+			version.sort.pending++;
+			selectGenre('refresh');
 			debugMsg('Cookie Reset');
 		};
 		
@@ -1491,8 +1693,17 @@
 	};
 	
 	$(document).ready(function() {
+		// Google Analytics
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-48929186-1', 'hihiboxhbtv.github.io');
+		ga('require','displayfeatures');
+		ga('send', 'pageview');
+
 		var host = 'http://hihiboxhbtv.github.io/beta';
-		//host = 'chrome-extension://dcihicbmfgjcjommlfnamlomfjhccdjo';
 		
 		// load icon list
 		$.getScript([host,"/js/iconlist.js"].join(''))
@@ -1507,15 +1718,5 @@
 			.fail(function( jqxhr, settings, exception ) {
 				console.log('[HihiBox]','Fail',jqxhr,settings,exception);
 			});
-		
-		// Google Analytics
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-		ga('create', 'UA-48929186-1', 'hihiboxhbtv.github.io');
-		ga('send', 'pageview');
-
 	});
 }(window,document));
