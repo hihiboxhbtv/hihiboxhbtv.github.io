@@ -1,0 +1,94 @@
+body.hhb-pf-justin.hhb-darkmode {
+	color: #e2d0be;
+	background-color: #060606;
+}
+.hhb-pf-justin.hhb-darkmode a {
+	color: #FF9933;
+}
+.hhb-pf-justin.hhb-darkmode .channel-wrapper {
+	background-color: #101010;
+	color: #dddddd;
+}
+.hhb-pf-justin.hhb-darkmode .channel-player-followers {
+	border-left: 1px #333333 solid;
+}
+.hhb-pf-justin.hhb-darkmode .channel-player-views, .hhb-pf-justin.hhb-darkmode .channel-player-viewers, .hhb-pf-justin.hhb-darkmode .channel-player-followers {
+	color: #666666;
+}
+.hhb-pf-justin.hhb-darkmode .channel-player-views span, .hhb-pf-justin.hhb-darkmode .channel-player-viewers span, .hhb-pf-justin.hhb-darkmode .channel-player-followers span{
+	color: #dddddd
+}
+.hhb-pf-justin.hhb-darkmode .channel-player-info, .hhb-pf-justin.hhb-darkmode .channel-category, .hhb-pf-justin.hhb-darkmode .channel-details {
+	background-color: #101010;
+	color: #e2d0be;
+}
+.hhb-pf-justin.hhb-darkmode .channel-player-info,
+.hhb-pf-justin.hhb-darkmode .channel-settings {
+	border-color: #333333;
+}
+.hhb-pf-justin.hhb-darkmode .subcategory-text,
+.hhb-pf-justin.hhb-darkmode .channel-username, 
+.hhb-pf-justin.hhb-darkmode .channel-status,
+.hhb-pf-justin.hhb-darkmode .channel-description span,
+.hhb-pf-justin.hhb-darkmode .channel-apps a {
+	color: #e2d0be;
+}
+.hhb-pf-justin.hhb-darkmode .global-header, 
+.hhb-pf-justin.hhb-darkmode .global-header-wrapper,
+.hhb-pf-justin.hhb-darkmode .global-footer,
+.hhb-pf-justin.hhb-darkmode .global-footer-wrapper {
+	background: #101010;
+}
+.hhb-pf-justin.hhb-darkmode .global-header-explore-content, 
+.hhb-pf-justin.hhb-darkmode .global-header-user-content {
+	background-color: #1a1a1a;
+	color: #e2d0be
+}
+.hhb-pf-justin.hhb-darkmode .global-header-search,
+.hhb-pf-justin.hhb-darkmode #chat_speak {
+	background-color: #111111;
+}
+
+.hhb-pf-justin.hhb-darkmode .chat-column-title {
+	background: #060606;
+	color: #e2d0be;
+}
+.hhb-pf-justin.hhb-darkmode .chat-column-head i {
+	border-right-color: #666666;
+}
+.hhb-pf-justin.hhb-darkmode .chat-column-body {
+	background: #090909;
+}
+.hhb-pf-justin.hhb-darkmode #chat_line_list .line.fromjtv {
+	background: rgba(255,255,255, 0.04);
+	color: #888888;
+	text-shadow: 1px 1px 1px #101010;
+}
+.hhb-pf-justin.hhb-darkmode #chat_line_list .line {
+	color: #cccccc;
+}
+.hhb-pf-justin.hhb-darkmode #chat_text_input_wrapper {
+	background: #101010;
+	border: 1px #333333 solid;
+	color: #cccccc;
+}
+.hhb-pf-justin.hhb-darkmode #chat-settings, 
+.hhb-pf-justin.hhb-darkmode #chat-viewers {
+	background-color: #101010;
+	box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 12px rgba(255, 255, 255, 0.5);
+	color: #eeeeee;
+}
+.hhb-pf-justin.hhb-darkmode .related-videos p {
+	color: #999999;
+}
+.hhb-pf-justin.hhb-darkmode .related-videos .user-link {
+	color: #decab5;
+}
+.hhb-pf-justin.hhb-darkmode input, 
+.hhb-pf-justin.hhb-darkmode textarea, 
+.hhb-pf-justin.hhb-darkmode keygen, 
+.hhb-pf-justin.hhb-darkmode select, 
+.hhb-pf-justin.hhb-darkmode button, 
+.hhb-pf-justin.hhb-darkmode isindex {
+	color: #ffffff;
+}
