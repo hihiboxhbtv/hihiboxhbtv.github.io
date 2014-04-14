@@ -2,7 +2,7 @@
 		name: 'HihiBox',
 		credit: 'Designed by VannZic, Lemon\nResearched by 希治閣, 小維',
 		version: 'v1.6.0',
-		lastUpdate: 'Last Updated on 2014-04-04'
+		lastUpdate: 'Last Updated on 2014-04-14'
 	};
 
 listGenre = ['Recent','HKG','HKG2','meme','pkmon','腦魔','禿伯','小丑','Pixel','食鬼','聖誕','北極','口罩'];
@@ -27,6 +27,7 @@ listIcon = [].concat(
 		"width": 15, 	"height": 15,
 		"genre": ["HKG"]
 	},
+	
 	{	"code": [":o)"],
 		"src": "http://forum11.hkgolden.com/faces/clown.gif",
 		"width": 15, 	"height": 15,
@@ -2173,8 +2174,8 @@ listIcon = [].concat(
 		"width": 210, 	"height": 134,
 	},
 	{	"code": ["[never]"],
-		"src": "http://img2.wikia.nocookie.net/__cb20080104213913/evchk/images/thumb/f/f7/Liulaughat.jpg/185px-Liulaughat.jpg",
-		"width": 185, 	"height": 139,
+		"src": "http://hihiboxhbtv.github.io/images/icons/[never].jpg",
+		"width": 344, 	"height": 280,
 	},
 	{	"code": ["[ahaha]"],
 		"src": "http://img4.wikia.nocookie.net/__cb20071214025759/evchk/images/thumb/7/7c/1188230991.jpg/200px-1188230991.jpg",

@@ -4,6 +4,10 @@ body.hhb-pf-twitch.hhb-darkmode {
 .hhb-pf-twitch.hhb-darkmode .app-main {
 	background:#0A0A0A;
 }
+.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-header.all-rooms-header { background-color: #1d1d1d; }
+.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu .list-header {color: #949494;border-bottom: 1px solid #202020;background: #050505;box-shadow: 0 0 2px rgba(255,255,255,0.1);}
+.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-room { background-color: #1d1d1d; }
+.hhb-pf-twitch.hhb-darkmode .ember-chat .top-notification.room-invitation {background-color: #9a5d2a;}
 .hhb-pf-twitch.hhb-darkmode .noise {background-color:#d9d9d9;}
 .hhb-pf-twitch.hhb-darkmode a {color:#9bbe5a;}
 .hhb-pf-twitch.hhb-darkmode .dark_wrapper .darken,.hhb-pf-twitch.hhb-darkmode .dark_wrapper .dropmenu,.hhb-pf-twitch.hhb-darkmode .dark_wrapper .ui-menu,.hhb-pf-twitch.hhb-darkmode .dark_wrapper .ui-multiselect-menu {color:#777;}
@@ -453,7 +457,7 @@ body.hhb-pf-twitch.hhb-darkmode.error_500,body.hhb-pf-twitch.hhb-darkmode.error_
 .hhb-pf-twitch.hhb-darkmode .ember-chat {background-color:#1b1b1b;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-hidden-overlay {background-color:#303030;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .moderation-card {box-shadow:0 2px 4px rgba(255,255,255,0.2);background-color:#fff;}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .moderation-card .card-header {background:#fff;}
+.hhb-pf-twitch.hhb-darkmode .ember-chat .moderation-card .card-header {/*background:#fff;*/}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .moderation-card .interface {background:#000;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .moderation-card .channel_background_cover {background:rgba(255,255,255,0.5);}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .moderation-card img.channel_logo {background:#000;border:3px solid #000;}
@@ -474,7 +478,7 @@ body.hhb-pf-twitch.hhb-darkmode.error_500,body.hhb-pf-twitch.hhb-darkmode.error_
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu .chat-menu-header {color:#9f9e9e;background:#363636;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-settings .chat-colors .chat-colors-swatch:hover,.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-settings .chat-colors .chat-colors-swatch.selected {border:2px solid #00f;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .mod-icons a:hover {background-color:#151515;}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .badges .broadcaster {background:#fff url(../images/xarth/g/g18_camera-FFFFFF80.png);}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .badges .turbo {background:#9bbe5a url(../images/xarth/g/g18_turbo-FFFFFF80.png);}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .badges .staff {background:#9bbe5a url(../images/xarth/g/g18_wrench-FFFFFF80.png);}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .badges .moderator {background:#f6f url(../images/xarth/g/g18_sword-FFFFFF80.png);}
+.hhb-pf-twitch.hhb-darkmode .ember-chat .badges .broadcaster {/*background:#fff url(../images/xarth/g/g18_camera-FFFFFF80.png);*/}
+.hhb-pf-twitch.hhb-darkmode .ember-chat .badges .turbo {/*background:#9bbe5a url(../images/xarth/g/g18_turbo-FFFFFF80.png);*/}
+.hhb-pf-twitch.hhb-darkmode .ember-chat .badges .staff {/*background:#9bbe5a url(../images/xarth/g/g18_wrench-FFFFFF80.png);*/}
+.hhb-pf-twitch.hhb-darkmode .ember-chat .badges .moderator {/*background:#f6f url(../images/xarth/g/g18_sword-FFFFFF80.png);*/}

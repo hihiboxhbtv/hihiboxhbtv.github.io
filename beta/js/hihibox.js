@@ -10,6 +10,9 @@
 	/*! jQuery Cookie Plugin v1.4.0 | https://github.com/carhartl/jquery-cookie | Copyright 2013 Klaus Hartl | Released under the MIT license */
 	(function(e){if(typeof define==="function"&&define.amd){define(["jquery"],e)}else{e(jQuery)}})(function(e){function n(e){return u.raw?e:encodeURIComponent(e)}function r(e){return u.raw?e:decodeURIComponent(e)}function i(e){return n(u.json?JSON.stringify(e):String(e))}function s(e){if(e.indexOf('"')===0){e=e.slice(1,-1).replace(/\\"/g,'"').replace(/\\\\/g,"\\")}try{e=decodeURIComponent(e.replace(t," "))}catch(n){return}try{return u.json?JSON.parse(e):e}catch(n){}}function o(t,n){var r=u.raw?t:s(t);return e.isFunction(n)?n(r):r}var t=/\+/g;var u=e.cookie=function(t,s,a){if(s!==undefined&&!e.isFunction(s)){a=e.extend({},u.defaults,a);if(typeof a.expires==="number"){var f=a.expires,l=a.expires=new Date;l.setDate(l.getDate()+f)}return document.cookie=[n(t),"=",i(s),a.expires?"; expires="+a.expires.toUTCString():"",a.path?"; path="+a.path:"",a.domain?"; domain="+a.domain:"",a.secure?"; secure":""].join("")}var c=t?undefined:{};var h=document.cookie?document.cookie.split("; "):[];for(var p=0,d=h.length;p<d;p++){var v=h[p].split("=");var m=r(v.shift());var g=v.join("=");if(t&&t===m){c=o(g,s);break}if(!t&&(g=o(g))!==undefined){c[m]=g}}return c};u.defaults={};e.removeCookie=function(t,n){if(e.cookie(t)!==undefined){e.cookie(t,"",e.extend({},n,{expires:-1}));return true}return false}});
 
+	/*! jQuery Easing v1.3 | http://gsgd.co.uk/sandbox/jquery/easing/ */
+	jQuery.easing["jswing"]=jQuery.easing["swing"];jQuery.extend(jQuery.easing,{def:"easeOutQuad",swing:function(a,b,c,d,e){return jQuery.easing[jQuery.easing.def](a,b,c,d,e)},easeInQuad:function(a,b,c,d,e){return d*(b/=e)*b+c},easeOutQuad:function(a,b,c,d,e){return-d*(b/=e)*(b-2)+c},easeInOutQuad:function(a,b,c,d,e){if((b/=e/2)<1)return d/2*b*b+c;return-d/2*(--b*(b-2)-1)+c},easeInCubic:function(a,b,c,d,e){return d*(b/=e)*b*b+c},easeOutCubic:function(a,b,c,d,e){return d*((b=b/e-1)*b*b+1)+c},easeInOutCubic:function(a,b,c,d,e){if((b/=e/2)<1)return d/2*b*b*b+c;return d/2*((b-=2)*b*b+2)+c},easeInQuart:function(a,b,c,d,e){return d*(b/=e)*b*b*b+c},easeOutQuart:function(a,b,c,d,e){return-d*((b=b/e-1)*b*b*b-1)+c},easeInOutQuart:function(a,b,c,d,e){if((b/=e/2)<1)return d/2*b*b*b*b+c;return-d/2*((b-=2)*b*b*b-2)+c},easeInQuint:function(a,b,c,d,e){return d*(b/=e)*b*b*b*b+c},easeOutQuint:function(a,b,c,d,e){return d*((b=b/e-1)*b*b*b*b+1)+c},easeInOutQuint:function(a,b,c,d,e){if((b/=e/2)<1)return d/2*b*b*b*b*b+c;return d/2*((b-=2)*b*b*b*b+2)+c},easeInSine:function(a,b,c,d,e){return-d*Math.cos(b/e*(Math.PI/2))+d+c},easeOutSine:function(a,b,c,d,e){return d*Math.sin(b/e*(Math.PI/2))+c},easeInOutSine:function(a,b,c,d,e){return-d/2*(Math.cos(Math.PI*b/e)-1)+c},easeInExpo:function(a,b,c,d,e){return b==0?c:d*Math.pow(2,10*(b/e-1))+c},easeOutExpo:function(a,b,c,d,e){return b==e?c+d:d*(-Math.pow(2,-10*b/e)+1)+c},easeInOutExpo:function(a,b,c,d,e){if(b==0)return c;if(b==e)return c+d;if((b/=e/2)<1)return d/2*Math.pow(2,10*(b-1))+c;return d/2*(-Math.pow(2,-10*--b)+2)+c},easeInCirc:function(a,b,c,d,e){return-d*(Math.sqrt(1-(b/=e)*b)-1)+c},easeOutCirc:function(a,b,c,d,e){return d*Math.sqrt(1-(b=b/e-1)*b)+c},easeInOutCirc:function(a,b,c,d,e){if((b/=e/2)<1)return-d/2*(Math.sqrt(1-b*b)-1)+c;return d/2*(Math.sqrt(1-(b-=2)*b)+1)+c},easeInElastic:function(a,b,c,d,e){var f=1.70158;var g=0;var h=d;if(b==0)return c;if((b/=e)==1)return c+d;if(!g)g=e*.3;if(h<Math.abs(d)){h=d;var f=g/4}else var f=g/(2*Math.PI)*Math.asin(d/h);return-(h*Math.pow(2,10*(b-=1))*Math.sin((b*e-f)*2*Math.PI/g))+c},easeOutElastic:function(a,b,c,d,e){var f=1.70158;var g=0;var h=d;if(b==0)return c;if((b/=e)==1)return c+d;if(!g)g=e*.3;if(h<Math.abs(d)){h=d;var f=g/4}else var f=g/(2*Math.PI)*Math.asin(d/h);return h*Math.pow(2,-10*b)*Math.sin((b*e-f)*2*Math.PI/g)+d+c},easeInOutElastic:function(a,b,c,d,e){var f=1.70158;var g=0;var h=d;if(b==0)return c;if((b/=e/2)==2)return c+d;if(!g)g=e*.3*1.5;if(h<Math.abs(d)){h=d;var f=g/4}else var f=g/(2*Math.PI)*Math.asin(d/h);if(b<1)return-.5*h*Math.pow(2,10*(b-=1))*Math.sin((b*e-f)*2*Math.PI/g)+c;return h*Math.pow(2,-10*(b-=1))*Math.sin((b*e-f)*2*Math.PI/g)*.5+d+c},easeInBack:function(a,b,c,d,e,f){if(f==undefined)f=1.70158;return d*(b/=e)*b*((f+1)*b-f)+c},easeOutBack:function(a,b,c,d,e,f){if(f==undefined)f=1.70158;return d*((b=b/e-1)*b*((f+1)*b+f)+1)+c},easeInOutBack:function(a,b,c,d,e,f){if(f==undefined)f=1.70158;if((b/=e/2)<1)return d/2*b*b*(((f*=1.525)+1)*b-f)+c;return d/2*((b-=2)*b*(((f*=1.525)+1)*b+f)+2)+c},easeInBounce:function(a,b,c,d,e){return d-jQuery.easing.easeOutBounce(a,e-b,0,d,e)+c},easeOutBounce:function(a,b,c,d,e){if((b/=e)<1/2.75){return d*7.5625*b*b+c}else if(b<2/2.75){return d*(7.5625*(b-=1.5/2.75)*b+.75)+c}else if(b<2.5/2.75){return d*(7.5625*(b-=2.25/2.75)*b+.9375)+c}else{return d*(7.5625*(b-=2.625/2.75)*b+.984375)+c}},easeInOutBounce:function(a,b,c,d,e){if(b<e/2)return jQuery.easing.easeInBounce(a,b*2,0,d,e)*.5+c;return jQuery.easing.easeOutBounce(a,b*2-e,0,d,e)*.5+d*.5+c}})
+
 	/* restore original jQuery */
 	jQuery = orgjQuery;
 	
@@ -41,10 +44,13 @@
 				iconHide: 'hhb-hide',
 				iconMissing: 'hhb-missing',
 				checkedMsg: 'hhb-msg',
+				checkedName: 'hhb-name',
 				msgIcon: 'hhb-msgicon',
 				msgIconResized: 'hhb-resized',
 				resized: 'hhb-resized',
 				orgSize: 'hhb-org-size',
+				nameBanner: 'hhb-name-banner',
+				nameName: 'hhb-name-name',
 				darkMode: 'hhb-darkmode',
 				filterMatch: 'hhb-filter-match',
 				filterNotMatch: 'hhb-filter-not-match',
@@ -78,12 +84,12 @@
 				bindHolderUI: 1000,
 				bindButtonUI: 1000,
 				detectUI: 60000,
-				bindResizer: 50,
+				parseIncoming: 50,
 				filter: 300,
-				sortIconList: 1000
+				sortIconList: 1000,
 			},
 			filter: {
-				finder: /(^|)[^ ]+(?!\s)$/,
+				finder: /(^|)[^\s]+(?!\s)$/,
 				minLength: 1,
 				pageSize: 10
 			},
@@ -92,6 +98,7 @@
 				analyzeBuildinIcon: 30,
 				analyzePlatformIcon: 30,
 				analyzeGJTVIcon: 30,
+				activateRebindUIBtn: 30
 			},
 			supportedPlatform: ['hitbox','twitch','justin'],
 			listGenre: [],
@@ -100,7 +107,7 @@
 				name: 'HihiBox',
 				credit: 'Designed by VannZic, Lemon\nResearched by 希治閣, 小維',
 				version: 'v1.6.0',
-				lastUpdate: 'Last Updated on 2014-04-04'
+				lastUpdate: 'Last Updated on 2014-04-14'
 			},
 			defaultConfig: {
 				genre: 'HKG',
@@ -129,17 +136,20 @@
 			listGenre = _settings.listGenre,
 			listIcon = _settings.listIcon,
 			info = _settings.info,
-			defaultConfig = _settings.defaultConfig;
+			defaultConfig = _settings.defaultConfig,
 			config = _settings.config,
 			env = {
 				hasjQuery: false,
 				platform: '',
+				channel: '',
+				userid: '',
 				builtinIconLoaded: false,
 				platformIconLoaded: false,
 				gjtvIconLoaded: false,
 				holderUIBinded: false,
 				buttonUIBinded: false,
-				iconInjected: false
+				iconInjected: false,
+				nameBannerEnabled: false
 			},
 			retryCount = {
 				analyzeBuiltinIcon: 0,
@@ -164,6 +174,7 @@
 				analyzeBuiltinIcon: { start: 0, end: 0, duration: 0 },
 				analyzePlatformIcon: { start: 0, end: 0, duration: 0 },
 				analyzeGJTVIcon: { start: 0, end: 0, duration: 0 },
+				analyzeNameBanner: { start: 0, end: 0, duration: 0 },
 				injectIcon: { start: 0, end: 0, duration: 0 },
 				bindUI: { start: 0, end: 0, duration: 0 },
 				bindHolderUI: { start: 0, end: 0, duration: 0 },
@@ -171,10 +182,11 @@
 				sort: { start: 0, end: 0, duration: 0 }
 			},
 			platformObj = null,
-			listPendingUsage = {};
+			listPendingUsage = {},
 			listUsage = {},
 			listParse = [],
 			listLookup = {},
+			listNameBanner = {},
 			nextIconID = 1,
 			isFiltering = false,
 			timerFilter = null,
@@ -193,15 +205,60 @@
 							'<div id="hhb-header">'+
 							'<a href="http://bit.ly/hihiboxhbtv" target="_new"><div class="icon hhb" title="Website"></div></a>'+
 							'<a href="https://www.facebook.com/hihiboxhbtv" target="_new"><div class="icon fb" title="Facebook Page"></div></a>'+
-							'<div id="'+idObj.darkModeBtn+'">Dark</div>'+
-							'<div id="'+idObj.sortModeBtn+'">Sort: -</div>'+
-							'<div id="'+idObj.resetBtn+'">Reset</div>'+
+							'<div id="'+idObj.darkModeBtn+'">&nbsp;</div>'+
+							'<div id="'+idObj.sortModeBtn+'">&nbsp;</div>'+
+							'<div id="'+idObj.resetBtn+'" title="Reset">&nbsp;</div>'+
 							'<span class="name" title="'+infoObj.credit+'">'+infoObj.name+'</span>'+
 							'<span class="version" title="'+infoObj.lastUpdate+'">'+infoObj.version+'</span></div>'+
 							'<div id="'+idObj.genreContainer+'"></div>'+
 							'<div id="'+idObj.iconset+'"></div>'+
 							'</div>');
 				},
+				bindNameBanner: function(names) {
+					var bicount = 0;
+					if (names.length > 0) {
+						var galist = {}, dur = 400;
+						names.each(function() {
+							$(this).addClass(cssClass.checkedName);
+							var namestr = $(this).text();
+							var nameid = namestr.trim().toLowerCase();
+							var nb = listNameBanner[nameid];
+							if (nb && nb.cssClass) {
+								var bspan = "<span class='"+nb.cssClass+"'>&nbsp;</span>";
+								var nspan = "<span class='"+cssClass.nameName+"'>"+namestr+"</span>";
+								$(this).text('');
+								var _pspan = $(this);
+								$(bspan).animate(
+										{ 'width': [nb.width,'px'].join('') },
+										{ easing: "easeOutExpo", duration: dur }
+									).prependTo($(this));
+								var $nspan = $(nspan).appendTo($(this))
+								$nspan.width($nspan.width())
+									.animate(
+										{  'width': '1px' },
+										{ easing: "easeOutExpo", duration: dur }
+									);
+								if (env.gjtvIconLoaded) {
+									var gjtvnb = $(this).find('.custom_Nickname');
+									if (gjtvnb.length>0) gjtvnb.detach();
+								}
+								bicount++;
+								
+								/* Google Analytics - name banner */
+								var id = [nameid,env.channel,env.platform].join('@');
+								galist[id] = (galist[id]) ? galist[id]+1 : 1;
+							}
+						});
+						/* Google Analytics - name banner */
+						$.each(galist,function(key,obj) {
+							_gaTracker('nameBanner','show',key,obj);
+						});
+					}
+					return {
+						name: names.length,
+						binded: bicount
+					};
+				}
 			},
 			hitbox: function() {
 				/* Private variables */
@@ -217,10 +274,14 @@
 						buttonContainer: '.chatInput',
 						msgBox: '#chatInput',
 						newMsg: '.message.ng-binding:not(.hhb-msg)',
-						timestampsBox: '#timestampsBox'
+						newName: '.chatBody .name.ng-binding:not(.hhb-name)',
+						timestampsBox: '#timestampsBox',
+						userName: '.navItemsUser .item.user:first-child span',
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/www\.hitbox\.tv\/(?:\w+\/)?(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
+				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.initialize = function() { $('body').addClass('hhb-pf-hitbox'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
@@ -289,7 +350,7 @@
 							classResized = cssClass.resized
 							limitHeight = limit.msgIconHeight;
 						// Re-define window.emotify
-						window.emotify=function(e){var t,n,r={},i=[];t=function(t,s){s=s||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};return t.replace(n,function(e,t,n){var o=0,u=n,a=r[n];if(!a){while(o<i.length&&!i[o].regexp.test(n)){o++}u=i[o].name;a=r[u]}return a?t+s(a[0],a[1],a.width,a.height,u,n):e})};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|\\s)("+a.join("|")+")(?=(?:$|\\s))","g")}return r};return t}(_hhb);
+						window.emotify=function(e){var t,n,r={},i=[];t=function(t,s){s=s||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};return t.replace(n,function(e,t,n){var o=0,u=n,a=r[n];if(!a){while(o<i.length&&!i[o].regexp.test(n)){o++}u=i[o].name;a=r[u]}return a?t+s(a[0],a[1],a.width,a.height,u,n):e})};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|)("+a.join("|")+")(?=(?:$|))","g")}return r};return t}(_hhb);
 						var ijlist = emotify.emoticons(true,list);
 					}
 					return count;
@@ -297,17 +358,14 @@
 				_platform.getNewMsg = function() {	return $(selector.newMsg);	};
 				_platform.bindResizer = function() {
 					var msgs = _platform.getNewMsg();
+					var bicount = 0;
 					if (msgs.length > 0) {
-						var count = 0;
-						var bicount = 0;
-						msgs.each(function() {
-							bicount = $(this)
-								.addClass(cssClass.checkedMsg)
-								.children(selector.msgIconResized)
-									.click(function() {
-										$(this).toggleClass(cssClass.orgSize);
-									}).length;
-						});
+						bicount = msgs
+									.addClass(cssClass.checkedMsg)
+									.children(selector.msgIconResized)
+										.click(function() {
+											$(this).toggleClass(cssClass.orgSize);
+										}).length;
 					}
 					return {
 						msg: msgs.length, 
@@ -341,8 +399,9 @@
 							strPosE = txtarea.selectionEnd;
 						}
 
-						var front = (txtarea.value).substring(0,strPos);  
-						var back = (txtarea.value).substring(strPosE,txtarea.value.length); 
+						var front = (txtarea.value).substring(0,strPos).trim();  
+						var back = (txtarea.value).substring(strPosE,txtarea.value.length);
+						text = ((front.length>0)?' ':'')+text;
 						txtarea.value=front+text+back;
 						strPos = strPos + text.length;
 						if (br == "ie") { 
@@ -366,6 +425,11 @@
 						});
 					}
 				}
+				_platform.getNewNames = function() {	return $(selector.newName);	};
+				_platform.bindNameBanner = function() {
+					var names = _platform.getNewNames();
+					return _platformObj.default.bindNameBanner(names);
+				};
 			},
 			twitch: function() {
 				/* Private variables */
@@ -382,11 +446,15 @@
 						buttonFront: '.viewers.button.normal_button',
 						msgBox: 'textarea[placeholder="Send a message"]',
 						newMsg: 'span.message:not(.hhb-msg)',
+						newName: '.chat-line .from:not(.hhb-name)',
 						emoticon: 'span.emoticon',
-						timestampsBox: '.chat-menu-content .ember-checkbox:contains("Time Stamps")'
+						timestampsBox: '.chat-menu-content .ember-checkbox:contains("Time Stamps")',
+						userName: '#nav_personal .username',
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
+				_platform.getChannelID = function() { var m = document.URL.match(/^^https?\:\/\/www\.twitch\.tv\/(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
+				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.initialize = function() { $('body').addClass('hhb-pf-twitch'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
@@ -538,8 +606,8 @@
 						count++;
 					}
 					if (count > 0) {
-						$('style.hhb-style').detach();
-						$('<style type="text/css" class="hhb-style">').text(style).appendTo("head");
+						$('style.hhb-emo-style').detach();
+						$('<style type="text/css" class="hhb-emo-style">').text(style).appendTo("head");
 					}
 					return count;
 				};
@@ -592,7 +660,8 @@
 						else if (br == "ff") strPos = txtarea.selectionStart;
 
 						var front = (txtarea.value).substring(0,strPos);  
-						var back = (txtarea.value).substring(strPos,txtarea.value.length); 
+						var back = (txtarea.value).substring(strPos,txtarea.value.length);
+						text = ((front.length>0)?' ':'')+text;
 						txtarea.value=front+text+back;
 						strPos = strPos + text.length;
 						if (br == "ie") { 
@@ -611,6 +680,11 @@
 						txtarea.scrollTop = scrollPos;
 					}
 				}
+				_platform.getNewNames = function() {	return $(selector.newName);	};
+				_platform.bindNameBanner = function() {
+					var names = _platform.getNewNames();
+					return _platformObj.default.bindNameBanner(names);
+				};
 			},
 			justin: function() {
 				/* Private variables */
@@ -626,11 +700,15 @@
 						buttonContainer: '#chat_text_input_wrapper',
 						msgBox: 'textarea[placeholder="Say something..."]',
 						newMsg: '.chat_line span.message:not(.hhb-msg)',
+						newName: '.chat_line .nick:not(.hhb-name)',
 						emoticon: 'span.emoticon',
-						timestampsBox: '#toggle-timestamp'
+						timestampsBox: '#toggle-timestamp',
+						userName: '.global-header-user-info .global-header-username'
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/www\.justin\.tv\/(\w+)(?:\/\w+\?channel=(\w+))?/i); return (m && m[2]) ? m[2] : ((m && m[1]) ? m[1] : ''); }
+				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.initialize = function() { $('body').addClass('hhb-pf-justin'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
@@ -831,7 +909,8 @@
 						else if (br == "ff") strPos = txtarea.selectionStart;
 
 						var front = (txtarea.value).substring(0,strPos);  
-						var back = (txtarea.value).substring(strPos,txtarea.value.length); 
+						var back = (txtarea.value).substring(strPos,txtarea.value.length);
+						text = ((front.length>0)?' ':'')+text;
 						txtarea.value=front+text+back;
 						strPos = strPos + text.length;
 						if (br == "ie") { 
@@ -850,6 +929,11 @@
 						txtarea.scrollTop = scrollPos;
 					}
 				};
+				_platform.getNewNames = function() {	return $(selector.newName);	};
+				_platform.bindNameBanner = function() {
+					var names = _platform.getNewNames();
+					return _platformObj.default.bindNameBanner(names);
+				};
 			},
 		};
 		var debugMsg = function() {
@@ -866,20 +950,28 @@
 			if ($.inArray(act,['start','end'])<0) return;
 			var ttimer = timer[target];
 			if (!ttimer) return;
+			var gaSubmit = false;
 			switch (act) {
 			case 'start':
 				ttimer.start = new Date().getTime();
+				gaSubmit = false;
 				break;
 			case 'end':
 				ttimer.end = new Date().getTime();
 				ttimer.duration = ttimer.end-ttimer.start;
+				gaSubmit = true;
 				break;
+			}
+			switch (target) {
+			case 'bindHolderUI':	if (env.holderUIBinded) gaSubmit = false;	break;
+			case 'bindButtonUI':	if (env.buttonUIBinded) gaSubmit = false;	break;
 			}
 			if (act=='end') {
 				switch (target) {
 				case 'analyzeBuiltinIcon':	env.builtinIconLoaded = true;	break;
 				case 'analyzePlatformIcon':	env.platformIconLoaded = true;	break;
 				case 'analyzeGJTVIcon':		env.gjtvIconLoaded = true;	break;
+				case 'analyzeNameBanner':	break;
 				case 'bindHolderUI':		env.holderUIBinded = true;	break;
 				case 'bindButtonUI':		env.buttonUIBinded = true;	break;
 				case 'injectIcon':			env.iconInjected = true;	break;
@@ -899,14 +991,8 @@
 					break;
 				}
 			}
-			if (ttimer.start > 0 && ttimer.duration > 0) {
-				ga('send', {
-					'hitType': 'event',			// Required.
-					'eventCategory': 'core',	// Required.
-					'eventAction': 'process',	// Required.
-					'eventLabel': target,
-					'eventValue': ttimer.duration
-				});
+			if (gaSubmit && ttimer.start > 0 && ttimer.duration > 0) {
+				_gaTracker('core','process',target,ttimer.duration);
 			}
 		};
 		var envCheck = function() {
@@ -920,16 +1006,23 @@
 							).toLowerCase();
 			env.platform = (($.inArray(env.platform,supportedPlatform) >= 0) ? env.platform : '');
 			env.platform = ((_platformObj[env.platform]) ? env.platform : '');
+			
 			if (env.platform!='') {
 				platformObj = new _platformObj[env.platform];
-				debugMsg('Detected [',env,']');
-				ga('send', {
-					'hitType': 'event',			// Required.
-					'eventCategory': 'core',	// Required.
-					'eventAction': 'platform',	// Required.
-					'eventLabel': env.platform
-				});
-				initialize();
+				env.channel = platformObj.getChannelID();
+				env.userid = platformObj.getUsername();
+				if (env.channel && env.channel!='') {
+					debugMsg('Detected [',env,']');
+					_gaTracker('env','platform',env.platform);
+					_gaTracker('env','channel',env.channel);
+					if (env.userid && env.userid!='') {
+						_gaTracker('env','user',[env.userid,env.platform].join('@'));
+						_gaTracker('env','audience',[env.userid,env.channel,env.platform].join('@'));
+					}
+					initialize();
+				} else {
+					debugMsg('Channel not detected! Initialization aborted!');
+				}
 			} else {
 				debugMsg('Platform not detected! Initialization aborted!');
 			}
@@ -944,7 +1037,7 @@
 			platformObj.initialize();
 			detectUI();
 			initializeHotkey();
-			bindResizer();
+			parseIncoming();
 			debugMsg('Initialized');
 		};
 		var injectIcon = function() {
@@ -960,17 +1053,16 @@
 		};
 		var analyzeIconSource = function() {
 			setTimerStart('analyzeIconSource');
-			setTimerStart('analyzeBuiltinIcon');
 			analyzeBuiltinIcon();
-			setTimerStart('analyzePlatformIcon');
 			analyzePlatformIcon();
-			setTimerStart('analyzeGJTVIcon');
 			analyzeGJTVIcon();
 		};
 		var analyzeBuiltinIcon = function() {
-			debugMsg('Analyzing Built-in Icon Retry...',(retryCount.analyzeBuiltinIcon>0)?'Retry':'','...');
-			var iconlist = listIcon;
-			if (!analyzeIcon(iconlist)) {
+			if (retryCount.analyzeBuiltinIcon==0) setTimerStart('analyzeBuiltinIcon');
+			debugMsg('Analyzing Built-in Icon',(retryCount.analyzeBuiltinIcon>0)?'Retry':'','...');
+			var iconlist = listIcon, analyzediconlist;
+			analyzediconlist = analyzeIcon(iconlist);
+			if (!analyzediconlist || analyzediconlist.length==0) {
 				if (retryCount.analyzeBuiltinIcon < limit.analyzeBuiltinIcon) {
 					setTimeout(function() { analyzeBuiltinIcon(); },delay.analyzeBuiltinIcon);
 					retryCount.analyzeBuiltinIcon++;
@@ -980,17 +1072,18 @@
 				return;
 			}
 			setTimerEnd('analyzeBuiltinIcon');
+			retryCount.analyzeBuiltinIcon = 0;
 			version.iconList.pending++;
 			bindIconList();	// list all HihiBox icon
 		};
 		var analyzePlatformIcon = function() {
+			if (retryCount.analyzeBuiltinIcon==0) setTimerStart('analyzePlatformIcon');
 			debugMsg('Analyzing Platform Icon',(retryCount.analyzePlatformIcon>0)?'Retry':'','...');
 			var iconlist, analyzediconlist;
-			if (env.builtinIconLoaded) {
-				iconlist = platformObj.getPlatformIcon();
-				analyzediconlist = analyzeIcon(iconlist);
-			}
-			if (!analyzediconlist) {
+			if (!env.builtinIconLoaded) return;
+			iconlist = platformObj.getPlatformIcon();
+			analyzediconlist = analyzeIcon(iconlist);
+			if (!analyzediconlist || analyzediconlist.length==0) {
 				if (retryCount.analyzePlatformIcon < limit.analyzePlatformIcon) {
 					setTimeout(function() { analyzePlatformIcon(); },delay.analyzePlatformIcon);
 					retryCount.analyzePlatformIcon++;
@@ -1001,38 +1094,44 @@
 			}
 			listIcon = listIcon.concat(analyzediconlist);
 			setTimerEnd('analyzePlatformIcon');
+			retryCount.analyzePlatformIcon = 0;
 			version.iconList.pending++;
 			bindIconList();	// list all HihiBox icon
 		};
 		var analyzeGJTVIcon = function() {
+			if (retryCount.analyzeGJTVIcon==0) setTimerStart('analyzeGJTVIcon');
 			debugMsg('Analyzing GJTV Icon',(retryCount.analyzeGJTVIcon>0)?'Retry':'','...');
 			var iconlist, analyzediconlist;
-			if (env.builtinIconLoaded) {
-				var getGJTVIcon = function() {
-					var list = [], dgenre = [].concat('GJTV');
-					if (	typeof(gjtv_icon_base) !== 'undefined' && 
-							typeof(gjtv_icon_list) !== 'undefined'
-						) {
-						$.each(gjtv_icon_list,function(idx,obj) {
+			if (!env.builtinIconLoaded) return;
+			var getGJTVIcon = function() {
+				var list = [], dgenre = [].concat('GJTV');
+				if (	typeof(gjtv_icon_base) !== 'undefined' && 
+						typeof(gjtv_icon_list) !== 'undefined'
+					) {
+					$.each(gjtv_icon_list,function(idx,obj) {
+						if (obj && obj.length>=2) {
 							var tcode = [].concat(obj[0]),
 								tsrc = obj[1].match(/^([^']+)\'/)[1],
 								twidth = obj[1].match(/width=\'(\d+)\'/)[1],
 								theight = obj[1].match(/height=\'(\d+)\'/)[1];
 							if (tsrc.indexOf("http") == -1) tsrc = gjtv_icon_base + tsrc;
-							list.push({
-								code: tcode,
-								src: tsrc,
-								width: twidth, height: theight,
-								genre: dgenre
-							});
-						});
-					}
-					return list;
-				};
-				iconlist = getGJTVIcon();
-				analyzediconlist = analyzeIcon(iconlist);
-			}
-			if (!analyzediconlist) {
+							
+							if (tcode && tsrc && twidth && theight && twidth>0 && theight>0) {
+								list.push({
+									code: tcode,
+									src: tsrc,
+									width: twidth, height: theight,
+									genre: dgenre
+								});
+							}
+						}
+					});
+				}
+				return list;
+			};
+			iconlist = getGJTVIcon();
+			analyzediconlist = analyzeIcon(iconlist);
+			if (!analyzediconlist || analyzediconlist.length==0) {
 				if (retryCount.analyzeGJTVIcon < limit.analyzeGJTVIcon) {
 					setTimeout(function() { analyzeGJTVIcon(); },delay.analyzeGJTVIcon);
 					retryCount.analyzeGJTVIcon++;
@@ -1043,10 +1142,12 @@
 			}
 			listIcon = listIcon.concat(analyzediconlist);
 			setTimerEnd('analyzeGJTVIcon');
+			retryCount.analyzeGJTVIcon = 0;
 			version.iconList.pending++;
 			bindIconList();	// list all HihiBox icon
 		};
 		var analyzeIcon = function(iconlist) {
+			var count = 0;
 			var genreOther = 'Other';
 			if (!(iconlist && iconlist.length > 0)) return false;
 			var analyzediconlist = [];
@@ -1061,7 +1162,6 @@
 				var code = [].concat(obj.code);
 				if (codeIsDuplicated(code)) return true;
 				for (var i=0;i<code.length;i++) listLookup[code[i]] = obj;
-				
 				var src = obj.src;
 				var genre = []	.concat((obj.genre) ? obj.genre : genreOther)
 								.concat((listUsage[code[0]]) ? 'Recent' : []);
@@ -1099,6 +1199,7 @@
 				listParse.push(obj);
 				// add to new icon list
 				analyzediconlist.push(obj);
+				count++;
 			});
 			
 			if ($.inArray(genreOther,listGenre) < 0) {
@@ -1111,8 +1212,204 @@
 			bindGenreList();	// list all HihiBox Genre
 			bindIconList();	// list all HihiBox icon
 			
-			debugMsg('Analyzed [ T:',iconlist.length,', G:',listGenre.length,', P:',listParse.length,']');
+			if (count>0) debugMsg('Analyzed Icon List [ T:',iconlist.length,', G:',listGenre.length,', P:',listParse.length,']');
 			return analyzediconlist;
+		};
+		var analyzeNameBanner = function(nblist,nbcon) {
+			if (env.platform==''|| env.channel=='') return false;
+			setTimer('start','analyzeNameBanner');
+			var nbdict = {},objChannel = null;
+			var clist,olist=[];
+			var reCh = new RegExp('^'+env.channel+'(?:@'+env.platform+')?$','i');
+			var reName = new RegExp('^(\\w+)(?:@'+env.channel+')?(?:@'+env.platform+')?$','i');
+			var filterName = function(arr,idonly) {
+				var res=[],arr=[].concat(arr);
+				$.each(arr,function(idx,obj) {
+					var m = obj.match(reName);
+					if (m) res.push((idonly) ? m[1] : obj);
+				});
+				return res;
+			};
+			var style = '';
+			/* Search Match Channel */
+			$.each(nbcon,function(idx,obj) {
+				for(var i=0;i<obj.channel.length;i++) {
+					if (obj.channel[i].match(reCh)) {
+						objChannel = obj;
+						break;
+					}
+				}
+			});
+			
+			/* Channel Object */
+			objChannel = $.extend({	whitelistonly:false,
+									whitelist: [],
+									blacklist: []
+								},objChannel);
+								
+			/* Channel Badge */
+			if (objChannel.badge) {
+				var badge = objChannel.badge;
+				var badges = $.extend({ enable: false, broadcaster: null, moderator: null },badge['default']);
+				badges = $.extend(badges,badge[env.platform]);
+				
+				if (badges.enable) {
+					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
+					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
+					
+					switch (env.platform) {
+					case "hitbox":
+						if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
+							style += [	
+								'.hhb-pf-hitbox .chatBody .admin span > .hhb-name {',
+									'padding-left:',(broadcaster.width+3),'px;',
+									'min-height:',(broadcaster.height),'px;',
+									'background: url(',broadcaster.img,') no-repeat left bottom;',
+								'}'].join('');
+						}
+						if (moderator.img && moderator.width>0 && moderator.height>0) {
+							style += [	
+								'.hhb-pf-hitbox .chatBody .user span > .hhb-name {',
+									'padding-left:',(moderator.width+3),'px;',
+									'min-height:',(moderator.height),'px;',
+									'background: url(',moderator.img,') no-repeat left bottom;',
+								'}'].join('');
+						}
+						break;
+					case "twitch":
+						if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
+							style += [	
+								'.hhb-pf-twitch .ember-chat .badges .broadcaster {',
+									'margin-top:-6px;',
+									'min-width:',(broadcaster.width),'px;',
+									'height:',(broadcaster.width),'px;',
+									'background: url(',broadcaster.img,') no-repeat center center;',
+								'}'].join('');
+						}
+						if (moderator.img && moderator.width>0 && moderator.height>0) {
+							style += [	
+								'.hhb-pf-twitch .ember-chat .badges .moderator {',
+									'margin-top:-6px;',
+									'min-width:',(moderator.width),'px;',
+									'height:',(moderator.width),'px;',
+									'background: url(',moderator.img,') no-repeat center center;',
+								'}'].join('');
+						}
+						break;
+					case "justin":
+						if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
+							style += [	
+								'.hhb-pf-justin .tag.broadcaster {',
+									'display:inline-block;',
+									'padding:0px;',
+									'border-radius:0px;',
+									'text-indent: -9999px;',
+									'width:',(broadcaster.width),'px;',
+									'height:',(broadcaster.width),'px;',
+									'background: url(',broadcaster.img,') no-repeat center center;',
+								'}'].join('');
+						}
+						if (moderator.img && moderator.width>0 && moderator.height>0) {
+							style += [	
+								'.hhb-pf-justin .tag.mod {',
+									'display:inline-block;',
+									'padding:0px;',
+									'border-radius:0px;',
+									'text-indent: -9999px;',
+									'width:',(moderator.width),'px;',
+									'height:',(moderator.width),'px;',
+									'background: url(',moderator.img,') no-repeat center center;',
+								'}'].join('');
+						}
+						break;
+					}
+				}
+			}
+			
+			/* Check Channel COnfig */
+			if (objChannel.whitelistonly) {
+				/* Whitelist */
+				if (objChannel.whitelist.length > 0) {
+					clist = filterName(objChannel.whitelist);
+					$.each(nblist,function(idx,obj){
+						obj = $.extend({id:[],img:'',width:100,height:16,specialEnroll:false},obj);
+						if (obj.specialEnroll) {	/* Special Enroll (always included) */
+							var idlist = filterName(obj.id);
+							$.each(idlist,function(idx2,obj2) {
+								olist[obj2] = obj;
+							});
+						} else {
+							$.each(clist,function(idx2,obj2){
+								if ($.inArray(obj2,obj.id)>=0) {
+									clist.splice(idx2,1);
+									olist[obj2] = obj;
+								}
+							});
+						}
+					});
+				}
+			} else {
+				/* import All Name Banner */
+				$.each(nblist,function(idx,obj){
+					obj = $.extend({id:[],img:'',width:100,height:16,specialEnroll:false},obj);
+					clist = filterName(obj.id);
+					$.each(clist,function(idx2,obj2){
+						//olist.push({ id: obj2, banner: obj });
+						olist[obj2] = obj;
+					});
+				});
+			}
+			/* Channel blacklist handle */
+			if (objChannel.blacklist.length > 0) {
+				clist = filterName(objChannel.blacklist);
+				for (var i=0;i<clist.length;i++) {
+					if (olist[clist[i]] && !olist[clist[i]].specialEnroll) {
+						delete olist[clist[i]];
+					}
+				}
+			}
+			/* remove namespace */
+			/* generate css */
+			var tlist = $.extend({},olist);
+			var count=0;
+			olist = {};
+			$.each(tlist,function(key,obj) {
+				var m = key.match(reName);
+				if (m.length>=2) {
+					var classname = 'nb-hhb-'+count;
+					var nobj = $.extend(obj,{
+							cssClass: [cssClass.nameBanner,classname].join(' '),
+							style: [	'.',cssClass.nameBanner,'.',classname,'{',
+										'height: ',obj.height,'px;',
+										'background-image: url(',obj.img,');',
+										'}'
+									].join('')
+						});
+					olist[m[1]] = nobj;
+					style+=nobj.style;
+					count++;
+				}
+			});
+			
+			if (count>0) {
+				/* bind css */
+				$('style.hhb-nb-style').detach();
+				$('<style type="text/css" class="hhb-nb-style">').text(style).appendTo("head");
+				env.nameBannerEnabled = true;
+			}
+			setTimer('end','analyzeNameBanner');
+			debugMsg('Analyzed Name Banner List [NB:',count,']');
+			return olist;
+		};
+		this.importNameBanner = function(nblist,nbcontrol) {
+			if (nblist && nbcontrol) {
+				var res = analyzeNameBanner(nblist,nbcontrol);
+				listNameBanner = (res) ? res : {};
+				
+				debugMsg('Imported Name Banner List [NBL:',listNameBanner,']');
+			} else {
+				debugMsg('Import Name Banner Failed!');
+			}
 		};
 		var detectUI = function() {
 			if (listParse.length > 0) {
@@ -1148,9 +1445,13 @@
 					debugMsg('Activated Rebind UI Button');
 				}
 			} else {
-				setTimeout(function() { activateRebindUIBtn(); },delay.activateRebindUIBtn);
-				retryCount.activateRebindUIBtn++;
-				debugMsg('Activating Rebind UI Button Retry...[ R:',retryCount.activateRebindUIBtn,']');
+				if (retryCount.activateRebindUIBtn < limit.activateRebindUIBtn) {
+					setTimeout(function() { activateRebindUIBtn(); },delay.activateRebindUIBtn);
+					retryCount.activateRebindUIBtn++;
+					debugMsg('Activating Rebind UI Button Retry...[ R:',retryCount.activateRebindUIBtn,']');
+				} else {
+					debugMsg('Activating Rebind UI Button Failed!');
+				}
 			}
 		};
 		var bindGenreList = function() {
@@ -1195,15 +1496,15 @@
 			var $icon = $(selector.iconsetIcon);
 			var $sicon = $icon.filter(':visible');
 			var i=$icon.length, si=$sicon.length;
-			var delay = 3000, fidur = 0, fiop = 1, fodur = 400, foop = 0.3;
+			var delay = 3000, fidur = 0, fiop = 1, fodur = 400, foop = 0.3 ,fease = "easeOutQuad";
 			var $iconMsgBox = $(selector.iconMsgBox)
-								.mouseenter(function() { $(this).clearQueue().fadeTo(fidur,fiop); })
-								.mouseleave(function() { $(this).clearQueue().delay(delay).fadeTo(fodur,foop); });
+								.mouseenter(function() { $(this).clearQueue().fadeTo(fidur,fiop,fease); })
+								.mouseleave(function() { $(this).clearQueue().delay(delay).fadeTo(fodur,foop,fease); });
 			if (si > 0) 
-				if (isFiltering) $iconMsgBox.text(['Filtering...( ',si,'/',i,' )'].join('')).clearQueue().show().fadeTo(fidur,fiop);
+				if (isFiltering) $iconMsgBox.text(['Filtering...( ',si,'/',i,' )'].join('')).clearQueue().show().fadeTo(fidur,fiop,fease);
 				else $iconMsgBox.hide()
-			else $iconMsgBox.text('Icon not found').clearQueue().show().fadeTo(fidur,fiop);
-			$iconMsgBox.filter(':visible').delay(delay).fadeTo(fodur,foop);
+			else $iconMsgBox.text('Icon not found').clearQueue().show().fadeTo(fidur,fiop,fease);
+			$iconMsgBox.filter(':visible').delay(delay).fadeTo(fodur,foop,fease);
 		};
 		var bindHolderUI = function() {
 			if (retryCount.bindHolderUI==0) setTimerStart('bindHolderUI');
@@ -1218,14 +1519,14 @@
 					$(selector.darkModeBtn).click(function() {
 						toggleDarkMode('toggle');
 					});
-					toggleDarkMode(config.darkMode);
+					toggleDarkMode('init');
 					debugMsg('Activated Dark/Light Mode');
 					
 					// Activate sort mode button
 					$(selector.sortModeBtn).click(function() {
 						toggleSortMode('toggle');
 					});
-					toggleSortMode(config.sortMode);
+					toggleSortMode('init');
 					debugMsg('Activated Sort Mode');
 					
 					// Activate reset button
@@ -1237,6 +1538,7 @@
 					// Show timestamps
 					toggleTimestamps('show');
 					
+					version.iconList.pending++;
 					bindGenreList();	// list all HihiBox Genre
 					bindIconList();	// list all HihiBox icon
 					
@@ -1299,44 +1601,64 @@
 			sortIconList(true);
 			showIconMsg();
 		};
-		var toggleDarkMode = function(act) {
-			if (act == 'toggle') {
-				if ($(selector.darkModeAcceptor).hasClass(cssClass.darkMode)) {
-					return toggleDarkMode('light');
-				} else {
-					return toggleDarkMode('dark');
-				}
-			} else if (act == 'dark') {
+		var toggleDarkMode = function(darkMode) {
+			var act = 'select';
+			darkMode = (darkMode) ? darkMode : config.darkMode;
+			if (darkMode==config.darkMode) return false;
+			if (darkMode=='init') { act = darkMode; darkMode = config.darkMode; }
+			
+			switch (darkMode) {
+			case 'toggle':
+				return ($(selector.darkModeAcceptor).hasClass(cssClass.darkMode)) ?
+							toggleDarkMode('light') : toggleDarkMode('dark');
+				break;
+			case 'dark':
 				if (!$(selector.darkModeAcceptor).hasClass(cssClass.darkMode)) {
 					$(selector.darkModeAcceptor).addClass(cssClass.darkMode);
 				}
-				$(selector.darkModeBtn).text('Dark');
-			} else if (act == 'light') {
+				break;
+			case 'light':
 				if ($(selector.darkModeAcceptor).hasClass(cssClass.darkMode)) {
 					$(selector.darkModeAcceptor).removeClass(cssClass.darkMode);
 				}
-				$(selector.darkModeBtn).text('Light');
+				break;
+			default:	return false;	break;
 			}
-			saveConfig({ darkMode: act });
+			$(selector.darkModeBtn).attr('title',darkMode.charAt(0).toUpperCase() + darkMode.substr(1).toLowerCase()+' Mode');
+			saveConfig({ darkMode: darkMode });
+			_gaTracker('darkMode',act,darkMode);
 			return true;
 		};
-		var toggleSortMode = function(act) {
-			var nextact = act;
-			var txt = 'By ';
-			if (act=='toggle') {
-				nextact = 	(config.sortMode=='default') ? 'usage' : 
-							(config.sortMode=='usage') ? 'recent' : 
-							(config.sortMode=='recent') ? 'default' : 'usage';
-				return toggleSortMode(nextact);
-			} else {
-				nextact = act;
+		var toggleSortMode = function(sortMode) {
+			var act = 'select';
+			sortMode = (sortMode) ? sortMode : config.sortMode;
+			if (sortMode==config.sortMode) return false;
+			if (sortMode=='init') { act = sortMode; sortMode = config.sortMode; }
+			
+			var txt = '';
+			switch (sortMode) {
+			case 'toggle':
+				var nextSort = 	(config.sortMode=='default') ? 'usage' : 
+								(config.sortMode=='usage') ? 'recent' : 
+								(config.sortMode=='recent') ? 'default' : 'usage';
+				return toggleSortMode(nextSort);
+				break;
+			case 'usage':
+			case 'recent':
+			case 'default':
+				break;
+			default:	return false;	break;
 			}
-			saveConfig({ sortMode: nextact });
-			txt = [txt,config.sortMode.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();})].join('');
-			$(selector.sortModeBtn).text(txt);
+			$(selector.sortModeBtn)
+				.attr('title','Sort by '+sortMode.charAt(0).toUpperCase()+sortMode.substr(1).toLowerCase())
+				.removeClass('usage recent default')
+				.addClass(sortMode);
+			saveConfig({ sortMode: sortMode });
 			version.sort.pending++;
 			
 			sortIconList(true);
+			_gaTracker('sortMode',act,sortMode);
+			return true;
 		};
 		var selectGenre = function(genre) {
 			var act = 'select';
@@ -1360,12 +1682,7 @@
 			showIconMsg();
 			saveConfig({ genre: genre });
 			
-			ga('send', {
-				'hitType': 'event',			// Required.
-				'eventCategory': 'genre',	// Required.
-				'eventAction': act,			// Required.
-				'eventLabel': genre
-			});
+			_gaTracker('genre',act,genre);
 			debugMsg('Selected Genre [G:',genre,',I:',csicon,']');
 			return true;
 		};
@@ -1412,13 +1729,7 @@
 				msg = (msg) ? msg : '';
 				var matches = msg.match(filter.finder);
 				var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
-				ga('send', {
-					  'hitType': 'event',			// Required.
-					  'eventCategory': 'icon',	// Required.
-					  'eventAction': 'filter',		// Required.
-					  'eventLabel': 'found',
-					  'eventValue': codehead.length
-					});
+				_gaTracker('icon','filter','found',codehead.length);
 			} else {
 				platformObj.insertText(text);
 			}
@@ -1564,11 +1875,20 @@
 				}
 			});
 		};
-		var bindResizer = function() {
-			var result = platformObj.bindResizer();
-			if (result.msg > 0) 
-				debugMsg('Messages Parsed [M:',result.msg,',R:',result.resized,']');
-			setTimeout(function() { bindResizer(); },delay.bindResizer);
+		var parseIncoming = function() {
+			/* bind name banner */
+			if (env.nameBannerEnabled) {
+				var result = platformObj.bindNameBanner();
+				if (result.name > 0) 
+					debugMsg('Names Parsed [M:',result.name,',B:',result.binded,']');
+			}
+			/* bind icon resizer */
+			if (env.iconInjected) {
+				var result = platformObj.bindResizer();
+				if (result.msg > 0) 
+					debugMsg('Messages Parsed [M:',result.msg,',R:',result.resized,']');
+			}
+			setTimeout(function() { parseIncoming(); },delay.parseIncoming);
 		};
 		var sortIconList = function(forced) {
 			if (version.sort.current==version.sort.pending) return;
@@ -1610,7 +1930,7 @@
 			$(selector.iconsetIcon).sort(f_sort).appendTo(selector.iconset);
 			
 			version.sort.current = version.sort.pending;
-			debugMsg('Sort Icon List [M:',$(selector.sortModeBtn).text(),',V:',version.sort.current,']');
+			debugMsg('Sort Icon List [M:',config.sortMode,',V:',version.sort.current,']');
 			setTimerEnd('sort');
 		};
 		var loadConfig = function() {
@@ -1636,25 +1956,24 @@
 		};
 		var commitUsage = function() {
 			var pre = $.extend({},listPendingUsage);
+			var count=0;
 			$.each(listPendingUsage, function(key,obj) {
 				var icon = obj.icon;
 				var code = obj.code;
 				var pusage = obj.usage;
-				var usage = { 	usage: icon.usage.count+pusage.count, 
+				var usage = { 	count: icon.usage.count+pusage.count, 
 								lastUsed: pusage.lastUsed };
 				icon.usage = usage;
 				listUsage[key] = usage;
-				ga('send', {
-					  'hitType': 'event',			// Required.
-					  'eventCategory': 'icon',		// Required.
-					  'eventAction': 'send',		// Required.
-					  'eventLabel': code,
-					  'eventValue': pusage.count
-					});
+				_gaTracker('icon','send',code,pusage.count);
 				delete listPendingUsage[key];
+				count++;
 			});
-			saveUsage();
-			debugMsg('Icon Usage Committed');
+			if (count>0) {
+				version.sort.pending++;
+				saveUsage();
+				debugMsg('Icon Usage Committed');
+			}
 		};
 		var loadUsage = function() {
 			var cookieData = $.cookie('hhb-iconUsage');
@@ -1687,14 +2006,26 @@
 			selectGenre('refresh');
 			debugMsg('Cookie Reset');
 		};
-		
+		var _gaTracker = function(category,action,label,value) {
+			label = (label) ? label : '';
+			value = (value) ? value : 1;
+			ga('send', {
+				'hitType': 'event',			// Required.
+				'eventCategory': category,	// Required.
+				'eventAction': action,		// Required.
+				'eventLabel': label,
+				'eventValue': value
+			});
+			//debugMsg('Google Analytics Data Submitted');
+			//[C:',category,', A:',action,', L:',label,', V:',value,']');
+		};
 		envCheck();
 		
 		return this;
 	};
 	
 	$(document).ready(function() {
-		// Google Analytics
+		/* Google Analytics */
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -1706,15 +2037,24 @@
 
 		var host = 'http://hihiboxhbtv.github.io/beta';
 		
-		// load icon list
+		/* load icon list */
 		$.getScript([host,"/js/iconlist.js"].join(''))
-			.done(function( script, textStatus ) {
-				var hhb = 	new HihiBox({
+			.done(function(script,textStatus) {
+				info.name = 'HihiBox β';
+				//var hhb = ...
+				hhb = 	new HihiBox({
 									info: window.info,
 									listGenre: window.listGenre,
 									listIcon: window.listIcon
 								});
 				console.log('[HihiBox]','Created',hhb);
+				/* load name banner list */
+				$.getScript([host,"/js/namebannerlist.js"].join(''))
+					.done(function(script,textStatus) {
+						var listNBControlList = [].concat(window.listNBControlList);
+						var listNameBanner = [].concat(window.listNameBanner);
+						hhb.importNameBanner(listNameBanner,listNBControlList);
+					});
 			})
 			.fail(function( jqxhr, settings, exception ) {
 				console.log('[HihiBox]','Fail',jqxhr,settings,exception);
