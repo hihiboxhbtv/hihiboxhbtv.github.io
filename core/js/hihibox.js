@@ -1014,7 +1014,7 @@
 				if (env.channel && env.channel!='') {
 					debugMsg('Detected [',env,']');
 					_gaTracker('env','platform',env.platform);
-					_gaTracker('env','channel',env.channel);
+					_gaTracker('env','channel',[env.channel,env.platform].join('@'));
 					if (env.userid && env.userid!='') {
 						_gaTracker('env','user',[env.userid,env.platform].join('@'));
 						_gaTracker('env','audience',[env.userid,env.channel,env.platform].join('@'));
