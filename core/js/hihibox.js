@@ -453,7 +453,7 @@
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
-				_platform.getChannelID = function() { var m = document.URL.match(/^^https?\:\/\/www\.twitch\.tv\/(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/www\.twitch\.tv\/(?:settings|subscriptions|inbox|directory|(\w+))/i); return (m && m[1]) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.initialize = function() { $('body').addClass('hhb-pf-twitch'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
@@ -707,7 +707,7 @@
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
-				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/www\.justin\.tv\/(\w+)(?:\/\w+\?channel=(\w+))?/i); return (m && m[2]) ? m[2] : ((m && m[1]) ? m[1] : ''); }
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/www\.justin\.tv\/(?:dashboard|message|settings|(\w+))(?:\/\w+\?channel=(\w+))?/i); return (m && m[2]) ? m[2] : ((m && m[1]) ? m[1] : ''); }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.initialize = function() { $('body').addClass('hhb-pf-justin'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
