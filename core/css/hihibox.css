@@ -91,16 +91,15 @@
 	cursor: pointer;
 }
 #hhb-genrelist {
-	padding: 2px 0px;
+	padding: 3px 0px;
 	width: 100%;
 	font-size: 12px;
 	border-top: 1px solid #EEEEEE;
 }
 #hhb-genrelist .hhb-genre {
-	margin: 2px 2px 2px 2px;
-	padding: 3px;
+	margin: 3px;
+	padding: 3px 5px;
 	display: inline-block;
-	padding: 3px;
 	cursor: pointer;
 	color: #CCCCCC;
 	background-color: #333333;
@@ -156,7 +155,7 @@
 	display: none !important;
 }
 #hhb-iconset .hhb-icon img {
-	max-height: 50px;
+	max-height: 40px;
 	width: auto !important;
 }
 #hhb-iconset .hhb-icon.hhb-filter-not-match {
