@@ -354,7 +354,7 @@
 							classResized = cssClass.resized
 							limitHeight = limit.msgIconHeight;
 						// Re-define window.emotify
-						window.emotify=function(e){var t,n,r={},i=[];t=function(e,t){t=t||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};var s=[],o=[].concat(e.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi));for(var u=0;u<o.length;u++){s[u]=o[u];e=e.replace(s[u],"___hhb_html_"+u+"___")}e=e.replace(n,function(e,n,s){var o=0,u=s,a=r[s];if(!a){while(o<i.length&&!i[o].regexp.test(s)){o++}u=i[o].name;a=r[u]}return a?n+t(a[0],a[1],a.width,a.height,u,s):e});for(var u=0;u<s.length;u++){e=e.replace(new RegExp("___hhb_html_"+u+"___","g"),s[u])}return e};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|\\s)("+a.join("|")+")(?=(?:$|\\s))","g")}return r};return t}(_hhb);
+						window.emotify=function(e){var t,n,r={},i=[];t=function(e,t){t=t||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};var s=[],o=[].concat(e.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi));for(var u=0;u<o.length;u++){s[u]=o[u];e=e.replace(s[u],"___hhb_html_"+u+"___")}e=e.replace(n,function(e,n,s){var o=0,u=s,a=r[s];if(!a){while(o<i.length&&!i[o].regexp.test(s)){o++}u=i[o].name;a=r[u]}return a?n+t(a[0],a[1],a.width,a.height,u,s):e});for(var u=0;u<s.length;u++){e=e.replace(new RegExp("___hhb_html_"+u+"___","g"),s[u])}return e};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|)("+a.join("|")+")(?=(?:$|))","g")}return r};return t}(_hhb);
 						var ijlist = emotify.emoticons(true,list);
 					}
 					return count;
@@ -764,8 +764,8 @@
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
-				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/www\.justin\.tv\/(?:dashboard|message|settings|user|(?:\w+)\/about)/i);return ((m) ? m.length>0 : false); }
-				_platform.getChannelID = function() { var m=document.URL.match(/^https?\:\/\/www\.justin\.tv\/(?:dashboard|message|settings|user|chat|(\w+))(?:\/\w+\?channel=(\w+))?/i); return ((m && m[2]) ? m[2] : ((m && m[1]) ? m[1] : '')); }
+				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/www\.justin\.tv\/(?:dashboard|message|settings|user|p|(?:\w+)\/about)/i);return ((m) ? m.length>0 : false); }
+				_platform.getChannelID = function() { var m=document.URL.match(/^https?\:\/\/www\.justin\.tv\/(?:dashboard|message|settings|user|p|chat|(\w+))(?:\/\w+\?channel=(\w+))?/i); return ((m && m[2]) ? m[2] : ((m && m[1]) ? m[1] : '')); }
 				_platform.getUsername = function() { var uname=$(selector.userName).text().trim().toLowerCase(); return (uname!='guest user') ? uname : ''; };
 				_platform.initialize = function() { $('body').addClass('hhb-pf-justin'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
