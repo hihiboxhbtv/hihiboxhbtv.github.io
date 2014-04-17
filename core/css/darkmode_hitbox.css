@@ -13,13 +13,16 @@ body.hhb-pf-hitbox.hhb-darkmode {
 .hhb-pf-hitbox.hhb-darkmode :-ms-input-placeholder { /* Internet Explorer 10+ */
 	color: #333;
 }
+.hhb-pf-hitbox.hhb-darkmode  .chatBody li {
+	color: hsl(0,0%,80%);
+}
 .hhb-pf-hitbox.hhb-darkmode a 
 {
-	color: #CCC;
+	color: #7040FF;
 }
 .hhb-pf-hitbox.hhb-darkmode a:hover, .hhb-pf-hitbox.hhb-darkmode .hover:hover, .hhb-pf-hitbox.hhb-darkmode .hoverB:hover
 {
-	color: #7040FF !important;
+	color: #8FBF00 !important;
 }
 .hhb-pf-hitbox.hhb-darkmode h1 {
     color:#CCC;
