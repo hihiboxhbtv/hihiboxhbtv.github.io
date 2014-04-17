@@ -115,9 +115,11 @@
 	color: #333333;
 	background-color: #EEEEEE;
 }
+/*
 #hhb-genrelist .hhb-genre[hhb-genre="GJTV"] {
 	display: none;
 }
+*/
 
 #hhb-iconset::-webkit-scrollbar {
 	width: 8px !important;
@@ -258,6 +260,6 @@ a:hover > .hhb-name-name {
 	content: initial;
 }
 
-.chatBody li span {
+.hhb-pf-hitbox .chatBody .title, .hhb-pf-hitbox  .chatBody .message {
 	vertical-align: text-bottom !important;
 }
