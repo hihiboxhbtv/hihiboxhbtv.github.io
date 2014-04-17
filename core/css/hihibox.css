@@ -260,6 +260,8 @@ a:hover > .hhb-name-name {
 	content: initial;
 }
 
-.hhb-pf-hitbox .chatBody .title, .hhb-pf-hitbox  .chatBody .message {
+.hhb-pf-hitbox .chatBody .title, 
+.hhb-pf-hitbox .chatBody .message,
+.hhb-pf-hitbox .chatBody li span {
 	vertical-align: text-bottom !important;
 }
