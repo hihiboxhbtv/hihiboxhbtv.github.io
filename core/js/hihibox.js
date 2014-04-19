@@ -860,12 +860,11 @@
 				};
 				_platform.injectIcon = function(iconlist) {
 					var iconlist = [].concat(iconlist);
-					var html = [],
-						count = iconlist.length;
+					var count = iconlist.length;
 					
 					function toRegExp(str) { return (str+'').replace(/([.?*+^$[\]\\(){}|\-\:])/g, "\\$1"); }
 					function emotify_pre(msg) {
-						var map = {};
+						var map = {},html=[];
 						/* extract html tag */
 						var mhtml = msg.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi);
 						for (var i=0;i<mhtml.length;i++) {
@@ -882,6 +881,11 @@
 								msg = msg.replace(regex, "___hhb_emote_"+i+"___");
 							}
 						}
+						
+						/* restore html tag */
+						for (var i=0;i<html.length;i++) {
+							msg = msg.replace(new RegExp("___hhb_html_"+i+"___","g"), html[i]);
+						}
 						return msg;
 					}
 					function emotify_post(msg)
@@ -897,11 +901,6 @@
 							var tw = (emo.width > 0) ? emo.width : 0;
 							var th = (emo.height > 0) ? emo.height : 0;
 							msg = msg.replace(new RegExp("___hhb_emote_"+i+"___","g"), '<img src="'+tsrc+'" title="'+ttitle+'" class="'+classMsgIcon+(th>limitHeight?" "+classResized:"")+'"/>');
-						}
-						
-						/* restore html tag */
-						for (var i=0;i<html.length;i++) {
-							msg = msg.replace(new RegExp("___hhb_html_"+i+"___","g"), html[i]);
 						}
 						return msg;
 					}
