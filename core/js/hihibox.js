@@ -867,11 +867,12 @@
 						var map = {},html=[];
 						/* extract html tag */
 						var mhtml = msg.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi);
-						for (var i=0;i<mhtml.length;i++) {
-							html[i] = mhtml[i];
-							msg = msg.replace(html[i],"___hhb_html_"+i+"___");
+						if (mhtml) {
+							for (var i=0;i<mhtml.length;i++) {
+								html[i] = mhtml[i];
+								msg = msg.replace(html[i],"___hhb_html_"+i+"___");
+							}
 						}
-						
 						/* extract emoticon */
 						for(var i = 0; i < iconlist.length; i++) {
 							var code = [].concat(iconlist[i].code);
@@ -883,8 +884,10 @@
 						}
 						
 						/* restore html tag */
-						for (var i=0;i<html.length;i++) {
-							msg = msg.replace(new RegExp("___hhb_html_"+i+"___","g"), html[i]);
+						if (mhtml) {
+							for (var i=0;i<html.length;i++) {
+								msg = msg.replace(new RegExp("___hhb_html_"+i+"___","g"), html[i]);
+							}
 						}
 						return msg;
 					}
