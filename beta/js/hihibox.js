@@ -1142,9 +1142,9 @@
 					env.isInitialize = true;
 					
 					/* update last watching datetime of current channel to extension */
-					var _channel = { platform: env.platform, channel: env.channel, lastWatch: new Date().getTime() };
-					chrome.runtime.sendMessage(editorExtensionId, {updateChannelInfo: _channel},function(response) {});
-						
+					var _channel = { platform: env.platform, channel: env.channel };
+					chrome.runtime.sendMessage(editorExtensionId, {updateLastWatch: _channel},function(response) {});
+					
 					/* initialize core */
 					initialize();
 				} else {
