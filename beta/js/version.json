@@ -1,0 +1,130 @@
+﻿{
+	"name": "HihiBox",
+	"credit": "Designed by VannZic, Lemon\nResearched by 希治閣, 小維",
+	"extensionVersion": "v1.7",
+	"lastRelease": "2014-04-24",
+	"lastSummary": "[概要] 新增Bookmark, 開台提示等功能",
+	"downloadURI": "https://docs.google.com/file/d/0B75izxj9WNpGcXFuZ3d3aHpwSmM/edit",
+	"siteURI": "http://bit.ly/hihiboxhbtv",
+	"pageURI": "https://www.facebook.com/hihiboxhbtv",
+	"coreVersion": "v1.7.0",
+	"lastUpdate": "2014-04-24",
+	"history": [
+		{
+			"version": "v1.7.0",
+			"lastUpdate": "2014-04-24",
+			"summary": [
+				"[概要] 新增Bookmark, 開台提示等功能"
+			],
+			"detail": [
+				"[新增] Bookmark 功能",
+				"[新增] 開台提示等功能",
+				"[新增] 新功能相關參數設定"
+			]
+		},
+		{
+			"version": "v1.6.0",
+			"lastUpdate": "2014-04-17",
+			"summary": [
+				"[概要] 支援Twitch.tv 及Justin.tv, 並加入多項新功能"
+			],
+			"detail": [
+				"[新增] 支援平台 (Twitch.tv, Justin.tv)",
+				"[新增] 自動取得當前平台內建表情列表",
+				"[新增] 自動取得Golden JTV(如有安裝並已啟用) 表情列表",
+				"[新增] 表情排序(載入順序, 使用次數, 最近使用)",
+				"[新增] 表情使用記錄重設",
+				"[新增] 本機儲存表情使用記錄, 所選分類, Dark mode 開關及排序方式等資料",
+				"[新增] 表情篩選功能相關訊息",
+				"[新增] 自定義name banner, 管理員徽章",
+				"[新增] Pixel, 食鬼, 聖誕, 北極, 口罩系列",
+				"[優化] 沿用當前平台轉換表情之方法",
+				"[優化] 點擊後顯示表情原圖大小",
+				"[優化] 需時較長功能的觸發方式",
+				"[優化] Google analytics 事件追蹤",
+				"[微調] Dark mode 樣式修改"
+			]
+		},
+		{
+			"version": "v1.5.0",
+			"lastUpdate": "2014-03-17",
+			"summary": [
+				"[概要] 新增代碼篩選及Dark mode 功能",
+				"[概要] 新增Plugin 自動更新功能 (如非重大版本, Plugin會自動更新)"
+			],
+			"detail": [
+				"[新增] 代碼篩選功能",
+				"[新增] Dark Mode/Light Mode 切換功能",
+				"[新增] Plugin 自動更新功能 (如非重大版本, Plugin 會自動更新)",
+				"[新增] 官方網站及Facebook 專頁 連結",
+				"[優化] 聊天訊息會與底線對齊",
+				"[優化] 較大的icon 會被進一步限制其顯示尺寸",
+				"[優化] :spiderman: 現在也可寫為:iamhay:",
+				"[移除] icon 代碼 [sosad369ex]",
+				"[次要] HihiBox 樣式修改"
+			]
+		},
+		{
+			"version": "v1.4.0",
+			"lastUpdate": "2014-03-07",
+			"summary": [
+				"[概要] 新增icon 詳細列表 及 數個icon 系列"
+				],
+			"detail": [
+				"[新增] icon 一覽表, 可點選圖示即時輸入",
+				"[改善] icon 代碼說明 (將游標移至icon 上顯示)",
+				"[改善] 某些較大的icon 會被限制其闊度 (可於圖上點擊放大)",
+				"[新增] icon 禿伯, 小丑, 腦魔系列",
+				"[修正] icon pkmon 系列"
+			]
+		},
+		{
+			"version": "v1.3.0",
+			"lastUpdate": "2014-03-06",
+			"summary": [
+				"[概要] 新增icon"
+				],
+			"detail": [
+				"[新增] icon pkmon 系列",
+				"[新增] 數個特別icon"
+			]
+		},
+		{
+			"version": "v1.2.0",
+			"lastUpdate": "2014-03-05",
+			"summary": [
+				"[概要] 更多icon 已正常運作"
+				],
+			"detail": [
+				"[修正] icon 代碼 :), :O, :p, f__k"
+			]
+		},
+		{
+			"version": "v1.1.0",
+			"lastUpdate": "2014-03-04",
+			"summary": [
+				"[概要] 大部份icon 已正常運作"
+				],
+			"detail": [
+				"[修正] icon 代碼 :-[",
+				"[移除] icon 代碼 f__k",
+				"[新增] icon 代碼 數個"
+			]
+		},
+		{
+			"version": "v1.0.0",
+			"lastUpdate": "2014-03-03",
+			"summary": [
+				"[概要] 以圖像顯示icon 代碼"
+				],
+			"detail": [
+				"[新增] 以圖像顯示icon 代碼"
+			]
+		}
+	],
+	"help" : [
+		"<style>.faq { font-weight: bold; }</style>",
+		"<div class=\"faq\">FAQ</div>",
+		"<div class=\"q\"> ??????</div>"
+	]
+}

@@ -2,6 +2,9 @@ body.hhb-pf-justin.hhb-darkmode {
 	color: #e2d0be;
 	background-color: #060606;
 }
+body.hhb-pf-justin.hhb-darkmode, .hhb-pf-justin.hhb-darkmode .jtv_chat_wrapper {
+	background: #000000;
+}
 .hhb-pf-justin.hhb-darkmode a {
 	color: #FF9933;
 }
