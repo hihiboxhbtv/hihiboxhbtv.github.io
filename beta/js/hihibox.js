@@ -495,8 +495,8 @@
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
-				_platform.isExcluded = function() { return false; }
-				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:settings|subscriptions|inbox|directory|message|(\w+))/i); return (m && m[1]) ? m[1] : ''; }
+				_platform.isExcluded = function() {  var m=document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:assets|crossdomain|settings|subscriptions|inbox|directory|message)/i);return ((m) ? m.length>0 : false); }
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:assets|crossdomain|settings|subscriptions|inbox|directory|message|(\w+))/i); return (m && m[1]) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.initialize = function() { $('body').addClass('hhb-pf-twitch'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
