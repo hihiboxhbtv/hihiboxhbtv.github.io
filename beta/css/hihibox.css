@@ -48,27 +48,7 @@
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-color: #333333;
-	color: #888888;
 	border-radius: 5px;
-	padding: 0px 3px;
-}
-#hhb-header .funcIcon:hover {
-	background-color: #888888;
-	color: #333333;
-}
-/* Darkmode - Dark */
-.hhb-darkmode #hhb-header #hhb-darkmode.funcIcon { background-image: url('http://hihiboxhbtv.github.io/images/darkmode_dark.png'); }
-/* Darkmode - Light */
-#hhb-header #hhb-darkmode.funcIcon { text-indent: -999px; background-image: url('http://hihiboxhbtv.github.io/images/darkmode_light.png'); }
-
-#hhb-header #hhb-sortmode.funcIcon { width: 32px;background-image: url('http://hihiboxhbtv.github.io/images/sort_default.png'); }
-#hhb-header #hhb-sortmode.funcIcon.usage { background-image: url('http://hihiboxhbtv.github.io/images/sort_usage.png'); }
-#hhb-header #hhb-sortmode.funcIcon.recent { background-image: url('http://hihiboxhbtv.github.io/images/sort_recent.png'); }
-
-#hhb-header #hhb-reset.funcIcon { background-image: url('http://hihiboxhbtv.github.io/images/reset.png'); }
-#hhb-header #hhb-reset.funcIcon:hover { background-image: url('http://hihiboxhbtv.github.io/images/reset.png'); }
-
-#hhb-header #hhb-bookmark.funcIcon {
 	padding: 7px 0px 0px 3px;
 	font-size: 18px;
 	font-family: "fontello";
@@ -76,6 +56,22 @@
 	font-weight: normal;
 	color: #dddddd !important;
 }
+#hhb-header .funcIcon:hover {
+	background-color: #888888;
+	color: #333333;
+}
+
+/* Darkmode - Light */
+#hhb-header #hhb-darkmode.funcIcon:before { content: '\e803'; }
+/* Darkmode - Dark */
+.hhb-darkmode #hhb-header #hhb-darkmode.funcIcon:before { content: '\e801'; }
+
+#hhb-header #hhb-sortmode.funcIcon { width: 32px;background-image: url('http://hihiboxhbtv.github.io/images/sort_default.png'); }
+#hhb-header #hhb-sortmode.funcIcon.usage { background-image: url('http://hihiboxhbtv.github.io/images/sort_usage.png'); }
+#hhb-header #hhb-sortmode.funcIcon.recent { background-image: url('http://hihiboxhbtv.github.io/images/sort_recent.png'); }
+
+#hhb-header #hhb-reset.funcIcon { background-image: url('http://hihiboxhbtv.github.io/images/reset.png'); }
+#hhb-header #hhb-reset.funcIcon:hover { background-image: url('http://hihiboxhbtv.github.io/images/reset.png'); }
 
 #hhb-header #hhb-bookmark.funcIcon:before { content: '\e802'; } /* '–I' */
 #hhb-header #hhb-bookmark.funcIcon.isBookmarked:before { content: '\e800'; } /* '–G' */

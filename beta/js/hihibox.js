@@ -23,7 +23,7 @@
 		name: 'HihiBox β',
 		credit: 'Designed by VannZic, Lemon\nResearched by 希治閣, 小維',
 		coreVersion: 'v1.7.0',
-		lastUpdate: '2014-04-27'
+		lastUpdate: '2014-04-28'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
