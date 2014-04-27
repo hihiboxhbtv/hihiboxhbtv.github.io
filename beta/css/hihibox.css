@@ -98,6 +98,7 @@
 	font-weight: normal;
 	cursor: pointer;
 }
+.newRelease { color: #FF3333 !important; }
 #hhb-header span.version.newRelease .update {
 	display: inline-block;
 	position: absolute;
