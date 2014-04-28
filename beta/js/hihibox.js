@@ -1570,8 +1570,8 @@
 						// For v1.6 or lower
 						$.extend(versionInfo,{
 							newRelease: true,
-							newExtensionVersion: 'v1.7',
-							newLastSummary: '[概要] 新增Bookmark, 開台提示, 管理頁面, HihiBox 更新提示等功能'
+							lastExtensionVersion: 'v1.7',
+							lastSummary: '[概要] 新增Bookmark, 開台提示, 管理頁面, HihiBox 更新提示等功能'
 						});
 					} else {
 						$.extend(versionInfo,response.versionInfo);
@@ -1589,7 +1589,7 @@
 				
 			if (versionInfo.newRelease) {
 				var $update = $('<span class="update"></span>');
-				$update.attr('title',versionInfo.name+' '+versionInfo.newExtensionVersion+' - '+versionInfo.newLastSummary);
+				$update.attr('title',versionInfo.name+' '+versionInfo.lastExtensionVersion+' - '+versionInfo.lastSummary);
 				$name.addClass('newRelease');
 				$version.addClass('newRelease').append($update);
 			}
