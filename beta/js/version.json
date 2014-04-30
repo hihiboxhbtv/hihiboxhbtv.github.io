@@ -1,6 +1,10 @@
 ﻿{
-	"name": "HihiBox β",
+	"name": "HihiBox α",
 	"credit": "Designed by VannZic, Lemon\nResearched by 希治閣, 小維",
+	"credits": {
+		"developer": ["VannZic", "Lemon"],
+		"specialThanks": ["希治閣", "小維"]
+	},
 	"lastExtensionVersion": "v1.7",
 	"lastRelease": "2014-04-28",
 	"lastSummary": "[概要] 新增Bookmark, 開台提示, 管理頁面, HihiBox 更新提示等功能",
@@ -12,7 +16,7 @@
 	"history": [
 		{
 			"version": "v1.7.0",
-			"lastUpdate": "2014-04-28",
+			"lastUpdate": "2014-04-27",
 			"summary": [
 				"[概要] 新增Bookmark, 開台提示, 管理頁面等功能",
 				"[概要] 新增HihiBox 更新提示"
