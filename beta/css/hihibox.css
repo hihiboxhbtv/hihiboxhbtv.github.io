@@ -3,6 +3,10 @@
 @import "darkmode_twitch.css";
 @import "darkmode_justin.css";
 
+#hhb-genrelist .hhb-genre[hhb-genre="GJTV"] {
+	display: none;
+}
+
 #hhb-holder {
 	position: absolute;
 	height: 300px;
@@ -93,6 +97,13 @@
 	font-size: 12px;
 	font-weight: normal;
 	cursor: pointer;
+	margin-top: 12px;
+}
+#hhb-header .icon.fb,
+#hhb-header .icon.hhb,
+#hhb-header span.name,
+#hhb-header span.version {
+	float: right;
 }
 .newRelease { color: #FF3333 !important; }
 #hhb-header span.version.newRelease .update {
@@ -130,12 +141,6 @@
 	color: #333333;
 	background-color: #EEEEEE;
 }
-/*
-#hhb-genrelist .hhb-genre[hhb-genre="GJTV"] {
-	display: none;
-}
-*/
-
 #hhb-iconset::-webkit-scrollbar {
 	width: 5px !important;
 }
