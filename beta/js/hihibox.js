@@ -409,6 +409,7 @@
 							limitHeight = limit.msgIconHeight;
 						// Re-define window.emotify
 						window.emotify=function(e){var t,n,r={},i=[];t=function(e,t){t=t||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};var s=[],o=[].concat(e.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi));for(var u=0;u<o.length;u++){s[u]=o[u];e=e.replace(s[u],"___hhb_html_"+u+"___")}e=e.replace(n,function(e,n,s){var o=0,u=s,a=r[s];if(!a){while(o<i.length&&!i[o].regexp.test(s)){o++}u=i[o].name;a=r[u]}return a?n+t(a[0],a[1],a.width,a.height,u,s):e});for(var u=0;u<s.length;u++){e=e.replace(new RegExp("___hhb_html_"+u+"___","g"),s[u])}return e};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|)("+a.join("|")+")(?=(?:$|))","g")}return r};return t}(_hhb);
+						
 						var ijlist = emotify.emoticons(true,list);
 					}
 					return count;
@@ -430,6 +431,7 @@
 						resized: bicount
 					};
 				};
+				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
 				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
@@ -721,6 +723,7 @@
 						resized: resized.length
 					};
 				};
+				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
 				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
@@ -807,7 +810,7 @@
 						showChatBtn: '#show-chat:contains("Click to show chat")',
 						holderContainer: '#jtv_chat',
 						buttonContainer: '#chat_text_input_wrapper',
-						msgBox: 'textarea[placeholder="Say something..."]',
+						msgBox: '#chat_text_input',
 						newMsg: '.chat_line span.message:not(.hhb-msg)',
 						newName: '.chat_line .nick:not(.hhb-name)',
 						emoticon: 'span.emoticon',
@@ -1010,6 +1013,7 @@
 						resized: resized.length
 					};
 				};
+				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
 				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
@@ -1397,7 +1401,9 @@
 				for (var i=0;i<code.length;i++) listLookup[code[i]] = obj;
 				var src = obj.src,
 					genre = (function(genre,code) { var tgenre=[]; if (genre) $.each(genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,code[0]),
-					title = code.join(", "),
+					usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {}),
+					codelist = code.join(", "),
+					title = codelist,
 					tstyle = (obj.width>0&&obj.height>0) ? ' style="width:'+obj.width+'px;height:'+obj.height+'px;"' : '',
 					img = '<img src="'+src+'" title="'+title+'"'+tstyle+' class="'+cssClass.msgIcon+((obj.height > limit.msgIconHeight) ? ' '+cssClass.resized : '')+'"/>',
 					re = "";
@@ -1408,7 +1414,7 @@
 				obj.title = title;
 				obj.regex = regex;
 				obj.img = img;
-				obj.usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {});
+				obj.usage = usage;
 				
 				if (listGenre[listGenre.length-1] == genreOther) {
 					listGenre.pop();
@@ -2051,7 +2057,9 @@
 			}
 		};
 		var initializeHotkey = function() {
-			$(document).keydown(function(e) {
+			var $target = platformObj.getMsgBox(),
+				$target = ($target.length > 0 ? $target : $(document));
+			$target.keydown(function(e) {
 				if ($(selector.holder).is(':visible')) {
 					if (e.which == 9 || e.which == 13) {	/* Press [Tab], [Enter] */
 						filterIcon();
@@ -2183,10 +2191,8 @@
 				});
 				listPendingUsage = {};
 				if (count==0) return false;
-				console.log(tpusage);
 				sendMessage({commitUsage: tpusage},
 					function(response) {
-						console.log(response);
 						if (!response) return;
 						if (!response.success) return;
 						if (!response.count) return;
