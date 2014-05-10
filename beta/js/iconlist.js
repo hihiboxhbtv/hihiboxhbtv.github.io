@@ -670,7 +670,7 @@ listIcon = [].concat(
 		"width": 325, 	"height": 240,
 		"genre": ["meme"]
 	},
-	{	"code": [":alone:"],
+	{	"code": [":foreveralone:",":alone:"],
 		"src": "http://ragegenerator.com/images/ragebuilder-faces/Sad/39.png",
 		"width": 142, 	"height": 144,
 		"genre": ["meme"]
@@ -688,6 +688,11 @@ listIcon = [].concat(
 	{	"code": [":ohgodwhy:"],
 		"src": "http://ragegenerator.com/images/ragebuilder-faces/Stupidity/OhGodWhy.png",
 		"width": 215, 	"height": 223,
+		"genre": ["meme"]
+	},
+	{	"code": [":iknowthatfeelbro:"],
+		"src": "http://hihiboxhbtv.github.io/images/icons/_iknowthatfeelbro_.png",
+		"width": 400, 	"height": 369,
 		"genre": ["meme"]
 	}
 ],

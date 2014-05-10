@@ -6,7 +6,6 @@
 #hhb-genrelist .hhb-genre[hhb-genre="GJTV"] {
 	display: none;
 }
-
 #hhb-holder {
 	position: absolute;
 	height: 300px;
@@ -46,9 +45,8 @@
 	width: 24px;
 	height: 24px;
 	cursor: pointer;
-	font-size: 12px;
 }
-#hhb-header .funcIcon {
+.funcIcon {
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-color: #333333;
@@ -60,7 +58,7 @@
 	font-weight: normal;
 	color: #dddddd !important;
 }
-#hhb-header .funcIcon:hover {
+.funcIcon:hover {
 	background-color: #888888;
 	color: #333333;
 }
@@ -77,8 +75,8 @@
 #hhb-header #hhb-reset.funcIcon { background-image: url('http://hihiboxhbtv.github.io/images/reset.png'); }
 #hhb-header #hhb-reset.funcIcon:hover { background-image: url('http://hihiboxhbtv.github.io/images/reset.png'); }
 
-#hhb-header #hhb-bookmark.funcIcon:before { content: '\e802'; } /* '–I' */
-#hhb-header #hhb-bookmark.funcIcon.isBookmarked:before { content: '\e800'; } /* '–G' */
+#hhb-header #hhb-bookmark.funcIcon:before { content: '\e802'; }
+#hhb-header #hhb-bookmark.funcIcon.isBookmarked:before { content: '\e800'; } 
 
 #hhb-header .icon.fb {
 	background: url('http://hihiboxhbtv.github.io/images/fb.png') no-repeat center;
@@ -141,6 +139,7 @@
 	color: #333333;
 	background-color: #EEEEEE;
 }
+
 #hhb-iconset::-webkit-scrollbar {
 	width: 5px !important;
 }
@@ -211,13 +210,19 @@
 	cursor: pointer;
 }
 .hhb-msgicon.hhb-resized {
-	height: 60px;
+	max-height: 60px;
 	width: auto;
 }
+.hhb-pf-justin .hhb-msgicon.hhb-resized {
+	width: auto !important;
+}
 .hhb-msgicon.hhb-org-size {
-	width: auto;
-	height: auto;
 	max-width: 100%;
+	max-height: none;
+}
+.hhb-pf-hitbox .hhb-msgicon.hhb-org-size,
+.hhb-pf-justin .hhb-msgicon.hhb-org-size {
+	height: auto !important;
 }
 .hhb-name-banner {
 	margin-right:2px;
@@ -241,6 +246,39 @@ span:hover > .hhb-name-name,
 a:hover > .hhb-name-name {
 	width: auto !important;
 }
+
+#hhb-player-bookmark {
+	position: absolute;
+	padding: 8px 10px;
+	border-radius: 0px 0px 15px 0px;
+	width: 40px;
+	height: 40px;
+	float: left;
+	cursor: pointer;
+	background-color: rgba(51,51,51,0.7);
+	font-size: 20px;
+	line-height: 20px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	opacity: 0.9;
+}
+#hhb-player-bookmark.funcIcon.isBookmarked {
+	padding: 6px 5px;
+	border-radius: 0px 0px 10px 0px;
+	width: 24px;
+	height: 24px;
+	font-size: 14px;
+	line-height: 14px;
+}
+#hhb-player-bookmark.funcIcon:hover {
+	background-color: rgba(64,64,64,1);
+	opacity: initial;
+}
+#hhb-player-bookmark.funcIcon:before { content: '\e802'; }
+#hhb-player-bookmark.funcIcon.isBookmarked:before { content: '\e800'; } 
+
+
 .hhb-pf-twitch span .hhb-name-name { margin-bottom: -6px; }
 .hhb-pf-twitch span:hover .hhb-name-name { text-decoration: underline; }
 .hhb-pf-justin a .hhb-name-name { margin-bottom: -3px; }

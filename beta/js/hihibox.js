@@ -1,4 +1,35 @@
 ﻿(function(window,document,undefined) {
+	const 	DEBUG_EXT				= 1 << 1,
+			DEBUG_INIT				= 1 << 2,
+			DEBUG_RETRY				= 1 << 2,
+			DEBUG_FAIL				= 1 << 3,
+			DEBUG_SUCCESS			= 1 << 4,
+			DEBUG_ENV				= 1 << 5,
+			DEBUG_ENV_INIT			= 1 << 6,
+			DEBUG_ENV_RETRY			= 1 << 7,
+			DEBUG_ENV_FAIL			= 1 << 8,
+			DEBUG_ENV_SUCCESS		= 1 << 9,
+			DEBUG_FEATURES			= 1 << 10,
+			DEBUG_FEATURES_INIT		= 1 << 11,
+			DEBUG_FEATURES_RETRY	= 1 << 12,
+			DEBUG_FEATURES_FAIL		= 1 << 13,
+			DEBUG_FEATURES_SUCCESS	= 1 << 14,
+			DEBUG_SUB				= 1 << 15,
+			DEBUG_SUB_INIT			= 1 << 16,
+			DEBUG_SUB_RETRY			= 1 << 17,
+			DEBUG_SUB_FAIL			= 1 << 18,
+			DEBUG_SUB_SUCCESS		= 1 << 19,
+			DEBUG_RUNTIME			= 1 << 20,
+			DEBUG_REFRESH			= 1 << 21,
+			DEBUG_GA				= 1 << 22,
+			DEBUG_ALL				= (1 << 23) - 1,
+			DEBUG					= 
+				DEBUG_ENV | 
+				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
+				DEBUG_SUB_SUCCESS | 
+				DEBUG_RUNTIME | DEBUG_REFRESH
+			;
+			
 	/* JavaScript Date.prototype.toLocalISOString | */
 	Date.prototype.toLocalISOString=function(){var e=this,t=function(e){return e<10?"0"+e:e},n=e.getTimezoneOffset(),r=(n>0?"-":"+")+t(parseInt(Math.abs(n/60)));if(n%60!=0)r+=t(Math.abs(n%60));if(n===0)r="Z";return e.getFullYear()+"-"+t(e.getMonth()+1)+"-"+t(e.getDate())+"T"+t(e.getHours())+":"+t(e.getMinutes())+":"+t(e.getSeconds())+r}
 
@@ -16,7 +47,6 @@
 	/* JavaScript Pretty Date | http://ejohn.org/blog/javascript-pretty-date/ | Copyright (c) 2011 John Resig (ejohn.org) | Licensed under the MIT and GPL licenses. */
 	function prettyDate(e){
 		var t=new Date((e||"").replace(/-/g,"/").replace(/[TZ]/g," ").replace(/[+-]\d{2}$/,"")),n=((new Date).getTime()-t.getTime())/1e3,r=Math.floor(n/86400);month_diff=Math.floor(r/30);year_diff=Math.floor(month_diff/12);if(isNaN(r)||r<0)return;
-			//return r==0&&(n<60&&"Live"||n<300&&"1 minute ago"||n<3600&&Math.floor(n/60)+" minutes ago"||n<7200&&"1 hour ago"||n<86400&&Math.floor(n/3600)+" hours ago")||r==1&&"Yesterday"||r<7&&r+" days ago"||r<31&&Math.ceil(r/7)+" weeks ago"||month_diff==1&&"1 month ago"||month_diff<12&&month_diff+" months ago"||year_diff==1&&"1 year ago"||year_diff+" years ago"
 		var objMsg = locale.getLocaleMsgGroup('popup.stream');
 		if (objMsg.error) {
 			objMsg = {
@@ -53,10 +83,11 @@
 	var $ = jQuery.noConflict();
 	
 	/* restore original jQuery */
-	if (orgjQuery != null) jQuery = orgjQuery;
+	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
 
 	var editorExtensionId = "aejkcagcbcgkplkckbfebfdipmkcndka";
 	var host = 'http://hihiboxhbtv.github.io/beta';
+	var enableGA = true;
 	var versionInfo = {
 		name: 'HihiBox β',
 		credits: {
@@ -64,7 +95,7 @@
 			specialThanks: ["希治閣", "小維"]
 		},
 		coreVersion: 'v1.7.0',
-		lastUpdate: '2014-04-24'
+		lastUpdate: '2014-05-10'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -74,11 +105,12 @@
 	}
 	var HihiBox = function(options) {
 		var _defaultSettings = {
-			debug: true,
+			debug: DEBUG,
 			id: {
 				holder: 'hhb-holder',
 				header: 'hhb-header',
 				button: 'hhb-button',
+				playerBookmark: 'hhb-player-bookmark',
 				genreContainer: 'hhb-genrelist',
 				iconset: 'hhb-iconset',
 				iconMsgBox: 'hhb-msgbox',
@@ -111,6 +143,7 @@
 				holder: '#hhb-holder',
 				header: '#hhb-header',
 				button: '#hhb-button',
+				playerBookmark: '#hhb-player-bookmark',
 				genreContainer: '#hhb-genrelist',
 				genreContainerGenre: '#hhb-genrelist .hhb-genre',
 				genre: '.hhb-genre',
@@ -130,15 +163,23 @@
 			},
 			delay: {
 				analyzeBuiltinIcon: 200,
-				analyzePlatformIcon: 200,
+				analyzePlatformIcon: 500,
 				analyzeGJTVIcon: 1000,
-				activateRebindUIBtn: 1000,
-				bindHolderUI: 5000,
-				bindButtonUI: 5000,
 				detectUI: 60000,
-				parseIncoming: 50,
-				filter: 300,
+				bindHolderUI: 1000,
+				bindButtonUI: 1000,
+				activateRebindUIBtn: 1000,
+				bindHolderToggleBtn: 1000,
+				activateSortMode: 1000,
+				toggleTimestamps: 1000,
+				bindGenreList: 1000,
+				bindIconList: 1000,
+				bindDarkModeBtn: 1000,
+				bindBookmarkBtn: 1000,
+				bindPlayerBookmarkBtn: 1000,
 				sortIconList: 1000,
+				filter: 300,
+				parseIncoming: 50,
 			},
 			filter: {
 				finder: /(^|)[^\s]+(?!\s)$/,
@@ -150,9 +191,10 @@
 				analyzeBuildinIcon: 30,
 				analyzePlatformIcon: 30,
 				analyzeGJTVIcon: 30,
-				activateRebindUIBtn: 30
+				activateRebindUIBtn: 30,
+				bindPlayerBookmarkBtn: 30
 			},
-			supportedPlatform: ['hitbox','twitch','justin'],
+			supportedPlatform: ['hitbox','twitch','justin','ustream'],
 			listGenre: [],
 			listIcon: [],
 			defaultConfig: {
@@ -197,17 +239,35 @@
 				platform: '',
 				channel: '',
 				userid: '',
+				
+				features: [],
+				loadedFeatures: [],
+				listeningIconListData: false,
+				listeningNameBannerData: false,
 				isInitialize: false,
-				builtinIconLoaded: false,
-				platformIconLoaded: false,
-				gjtvIconLoaded: false,
-				holderUIBinded: false,
-				buttonUIBinded: false,
-				iconInjected: false,
-				nameBannerEnabled: false,
+					isIconListDataInited: false,
+						iconInjected: false,
+						builtinIconLoaded: false,
+						platformIconLoaded: false,
+						gjtvIconLoaded: false,
+					isUserInterfaceInited: false,
+						holderUIBinded: false,
+						buttonUIBinded: false,
+					isEmoticonInited: false,
+						sortModeActivated: false,
+					isNameBannerInited: false,
+						nameBannerEnabled: false,
+					isDarkModeInited: false,
+						darkModeActivated: false,
+					isBookmarkInited: false,
+						playerBookmarkBtnActivated: false,
+						bookmarkBtnActivated: false,
+					isIncomingParserInited: false,
+				
 				settingsLoaded: false,
 				usageLoaded: false
 			},
+			loadingStatus = {},
 			retryCount = {
 				analyzeBuiltinIcon: 0,
 				analyzePlatformIcon: 0,
@@ -215,27 +275,45 @@
 				activateRebindUIBtn: 0,
 				bindHolderUI: 0,
 				bindButtonUI: 0,
+				bindHolderToggleBtn: 0,
+				activateSortMode: 0,
+				bindDarkModeBtn: 0,
+				bindBookmarkBtn: 0,
+				bindPlayerBookmarkBtn: 0,
 				detectUI: 0
 			},
 			timestamps = {
 				sortIconList: 0
 			},
 			version = {
+				genreList: { pending: 0, current: 0 },
 				iconList: { pending: 0, current: 0 },
 				sort: { pending: 0, current: 0 },
 				usage: { pending: 0, current: 0 }
 			},
 			timer = {
-				initialize: { start: 0, end: 0, duration: 0 },
-				analyzeIconSource: { start: 0, end: 0, duration: 0 },
-				analyzeBuiltinIcon: { start: 0, end: 0, duration: 0 },
-				analyzePlatformIcon: { start: 0, end: 0, duration: 0 },
-				analyzeGJTVIcon: { start: 0, end: 0, duration: 0 },
-				analyzeNameBanner: { start: 0, end: 0, duration: 0 },
-				injectIcon: { start: 0, end: 0, duration: 0 },
-				bindUI: { start: 0, end: 0, duration: 0 },
-				bindHolderUI: { start: 0, end: 0, duration: 0 },
-				bindButtonUI: { start: 0, end: 0, duration: 0 },
+				initialize: 				{ start: 0, end: 0, duration: 0 },
+				initIconListData: 			{ start: 0, end: 0, duration: 0 },
+					injectIcon: 			{ start: 0, end: 0, duration: 0 },
+					analyzeBuiltinIcon: 	{ start: 0, end: 0, duration: 0 },
+					analyzePlatformIcon: 	{ start: 0, end: 0, duration: 0 },
+					analyzeGJTVIcon: 		{ start: 0, end: 0, duration: 0 },
+				initUserInterface: 			{ start: 0, end: 0, duration: 0 },
+					bindUI:					{ start: 0, end: 0, duration: 0 },
+					bindHolderUI:			{ start: 0, end: 0, duration: 0 },
+					bindButtonUI:			{ start: 0, end: 0, duration: 0 },
+				initEmoticon: 				{ start: 0, end: 0, duration: 0 },
+					bindHolderToggleBtn: 	{ start: 0, end: 0, duration: 0 },
+					activateSortMode: 		{ start: 0, end: 0, duration: 0 },
+				initNameBanner: 			{ start: 0, end: 0, duration: 0 },
+					analyzeNameBanner: 		{ start: 0, end: 0, duration: 0 },
+				initDarkMode: 				{ start: 0, end: 0, duration: 0 },
+					bindDarkModeBtn: 		{ start: 0, end: 0, duration: 0 },
+				initBookmark: 				{ start: 0, end: 0, duration: 0 },
+					bindPlayerBookmarkBtn: 	{ start: 0, end: 0, duration: 0 },
+					bindBookmarkBtn: 		{ start: 0, end: 0, duration: 0 },
+				initIncomingParser:			{ start: 0, end: 0, duration: 0 },
+				
 				sort: { start: 0, end: 0, duration: 0 }
 			},
 			platformObj = null,
@@ -257,19 +335,23 @@
 		/* Private platform object */
 		var _platformObj = {
 			default: {
+				supportedFeatures: ['iconlist_data','ui','emoticon','name_banner','darkmode','bookmark','incoming_parser'],
 				genHolder: function(idObj,infoObj) {
 					return $('<div id="'+idObj.holder+'">'+
-							'<div id="hhb-header">'+
-							'<div id="'+idObj.bookmarkBtn+'" hhb-locale-title="{{iconlist.bookmark}}" title="Bookmark" class="funcIcon">&nbsp;</div>'+
-							'<div id="'+idObj.darkModeBtn+'" class="funcIcon">&nbsp;</div>'+
-							'<div id="'+idObj.sortModeBtn+'" class="funcIcon">&nbsp;</div>'+
-							'<span class="version" title="">'+infoObj.coreVersion+'</span>'+
-							'<span class="name" title="">'+infoObj.name+'</span>'+
-							'<a href="http://bit.ly/hihiboxhbtv" target="_new" class="hhb"><div class="icon hhb" hhb-locale-title="{{iconlist.site}}" title="Website"></div></a>'+
-							'<a href="https://www.facebook.com/hihiboxhbtv" target="_new" class="fb"><div class="icon fb" hhb-locale-title="{{iconlist.fbpage}}" title="Facebook Page"></div></a></div>'+
-							'<div id="'+idObj.genreContainer+'"></div>'+
-							'<div id="'+idObj.iconset+'"></div>'+
+								'<div id="hhb-header">'+
+								'<div id="'+idObj.bookmarkBtn+'" hhb-locale-title="{{iconlist.bookmark}}" title="Bookmark" class="funcIcon">&nbsp;</div>'+
+								'<div id="'+idObj.darkModeBtn+'" class="funcIcon">&nbsp;</div>'+
+								'<div id="'+idObj.sortModeBtn+'" class="funcIcon">&nbsp;</div>'+
+								'<span class="version" title="">'+infoObj.coreVersion+'</span>'+
+								'<span class="name" title="">'+infoObj.name+'</span>'+
+								'<a href="http://bit.ly/hihiboxhbtv" target="_new" class="hhb"><div class="icon hhb" hhb-locale-title="{{iconlist.site}}" title="Website"></div></a>'+
+								'<a href="https://www.facebook.com/hihiboxhbtv" target="_new" class="fb"><div class="icon fb" hhb-locale-title="{{iconlist.fbpage}}" title="Facebook Page"></div></a></div>'+
+								'<div id="'+idObj.genreContainer+'"></div>'+
+								'<div id="'+idObj.iconset+'"></div>'+
 							'</div>');
+				},
+				genPlayerBookmarkBtn: function(idBtn) {
+					return $('<div id="'+idBtn+'" class="funcIcon" hhb-locale-title="{{info.name}} - {{iconlist.bookmark}}">&nbsp;</div>');
 				},
 				bindNameBanner: function(names) {
 					var bicount = 0;
@@ -321,6 +403,7 @@
 				/* Private variables */
 				var _platform = this,
 					id = 'hitbox',
+					supportedFeatures = ['ui','emoticon','name_banner','darkmode','bookmark'],
 					cssClass = $.extend(_hhb.cssClass,{
 						darkMode: 'hhb-darkmode'
 					}),
@@ -334,16 +417,20 @@
 						newName: '.chatBody .name:not(.hhb-name)',
 						timestampsBox: '#timestampsBox',
 						userName: '.navItemsUser .item.user:first-child span',
+						player: 'mediaplayer'
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
-				_platform.isExcluded = function() { return false; }
-				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:\w+\/)?(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
+				/* Initialize */
+				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:dashboard|settings)\//i);return ((m) ? m.length>0 : false); }
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:embed\/|embedchat\/)?(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
+				_platform.getFeatures = function() {	return supportedFeatures;	};
 				_platform.initialize = function() { $('body').addClass('hhb-pf-hitbox'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
 				_platform.getButtonFront = function() {	return [];	};
+				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
 				_platform.genToggleButton = function(id) {
 					return $('<div id="'+id+'" class="icon-cog hoverG2" title="HihiBox"></div>');
@@ -352,6 +439,7 @@
 				_platform.getShowChatBtn = function() {	return $(selector.showChatBtn);	};
 				_platform.toggleTimestamps = function(act) {
 					var scope = angular.element($(selector.timestampsBox)).scope();
+					if (!scope) return false;
 					if (act == 'toggle') {
 						scope.$apply(function(){	scope.timestamps = !scope.timestamps;	});
 					} else if (act == 'show') {
@@ -359,6 +447,7 @@
 					} else {
 						scope.$apply(function(){	scope.timestamps = false;	});
 					}
+					return true;
 				};
 				_platform.getPlatformIcon = function() {
 					var list = [], dgenre = [].concat('HBTV');
@@ -383,6 +472,16 @@
 					}
 					return list;
 				};
+				_platform.getPlayer = function() {
+					var selectors = [].concat(selector.player), $tplayer = $();
+					$.each(selectors,function(idx,selector) {
+						$tplayer = $(selector);
+						if ($tplayer.length>0) return false;
+					});
+					return $tplayer;
+				}
+			
+				/* Icon emotify */
 				_platform.injectIcon = function(iconlist) {
 					var iconlist = [].concat(iconlist);
 					var list = [];
@@ -407,7 +506,7 @@
 						var classMsgIcon = cssClass.msgIcon,
 							classResized = cssClass.resized
 							limitHeight = limit.msgIconHeight;
-						// Re-define window.emotify
+						/* Re-define window.emotify */
 						window.emotify=function(e){var t,n,r={},i=[];t=function(e,t){t=t||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};var s=[],o=[].concat(e.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi));for(var u=0;u<o.length;u++){s[u]=o[u];e=e.replace(s[u],"___hhb_html_"+u+"___")}e=e.replace(n,function(e,n,s){var o=0,u=s,a=r[s];if(!a){while(o<i.length&&!i[o].regexp.test(s)){o++}u=i[o].name;a=r[u]}return a?n+t(a[0],a[1],a.width,a.height,u,s):e});for(var u=0;u<s.length;u++){e=e.replace(new RegExp("___hhb_html_"+u+"___","g"),s[u])}return e};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|)("+a.join("|")+")(?=(?:$|))","g")}return r};return t}(_hhb);
 						
 						var ijlist = emotify.emoticons(true,list);
@@ -417,18 +516,19 @@
 				_platform.getNewMsg = function() {	return $(selector.newMsg);	};
 				_platform.bindResizer = function() {
 					var msgs = _platform.getNewMsg();
-					var bicount = 0;
+					var bicount = 0, bircount = 0;
 					if (msgs.length > 0) {
-						bicount = msgs
-									.addClass(cssClass.checkedMsg)
-									.children(selector.msgIconResized)
+						var $msgIcon = msgs.addClass(cssClass.checkedMsg).children(selector.msgIcon);
+						bircount = $msgIcon.filter(selector.msgIconResized)
 										.click(function() {
 											$(this).toggleClass(cssClass.orgSize);
 										}).length;
+						bicount = $msgIcon.length;
 					}
 					return {
 						msg: msgs.length, 
-						resized: bicount
+						emotified: bicount,
+						resized: bircount
 					};
 				};
 				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
@@ -478,13 +578,15 @@
 						}
 						txtarea.scrollTop = scrollPos;
 						
-						// update angular
+						/* update angular */
 						var scope = angular.element($msgBox).scope();
 						scope.$apply(function(){
 							scope.$parent.msgTxt = txtarea.value;
 						});
 					}
 				}
+			
+				/* Name banner + Badge */
 				_platform.getNewNames = function() {	return $(selector.newName);	};
 				_platform.bindNameBanner = function() {
 					var names = _platform.getNewNames();
@@ -522,6 +624,7 @@
 				/* Private variables */
 				var _platform = this,
 					id = 'twitch',
+					supportedFeatures = ['ui','emoticon','name_banner','darkmode','bookmark'],
 					cssClass = $.extend(_hhb.cssClass,{
 						darkMode: 'hhb-darkmode'
 					}),
@@ -537,16 +640,20 @@
 						emoticon: 'span.emoticon',
 						timestampsBox: '.chat-menu-content .ember-checkbox:contains("Time Stamps")',
 						userName: '#nav_personal .username',
+						player: 'object[data*="TwitchPlayer.swf"]'
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
+				/* Initialize */
 				_platform.isExcluded = function() {  var m=document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:assets|crossdomain|settings|subscriptions|inbox|directory|message)/i);return ((m) ? m.length>0 : false); }
-				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:assets|crossdomain|settings|subscriptions|inbox|directory|message|(\w+))/i); return (m && m[1]) ? m[1] : ''; }
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(\w+)/i); return (m && m[1]) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
+				_platform.getFeatures = function() {	return supportedFeatures;	};
 				_platform.initialize = function() { $('body').addClass('hhb-pf-twitch'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
 				_platform.getButtonFront = function() {	return $(selector.buttonFront);	};
+				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
 				_platform.genToggleButton = function(id) {
 					return $('<button id="'+id+'" class="button normal_button tooltip" original-title="HihiBox" title="HihiBox"></div>');
@@ -569,6 +676,7 @@
 						scope.$apply(function(){	scope.timestamps = false;	});
 					}
 					*/
+					return true;
 				};
 				_platform.getPlatformIcon = function() {
 					var list = [], tgenre = [].concat('TTV');
@@ -585,14 +693,14 @@
 					var ttvcss = '';
 					for (var i=0;i<$style.length;i++) if ($style.eq(i).text().indexOf('.emo-') != -1) ttvcss += $style.eq(i).text();
 					
-					// ------------------------------------------------------------------
-					// randexp v0.3.3
-					// Create random strings that match a given regular expression.
-					//
-					// Copyright (C) 2013 by Roly Fentanes (https://github.com/fent)
-					// MIT License
-					// http://github.com/fent/randexp.js/raw/master/LICENSE
-					// ------------------------------------------------------------------
+					/* ------------------------------------------------------------------
+					/* randexp v0.3.3
+					/* Create random strings that match a given regular expression.
+					/*
+					/* Copyright (C) 2013 by Roly Fentanes (https://github.com/fent)
+					/* MIT License
+					/* http://github.com/fent/randexp.js/raw/master/LICENSE
+					/* ------------------------------------------------------------------ */
 					!function(){var a=function(b,c){var d=a.resolve(b,c||"/"),e=a.modules[d];if(!e)throw new Error("Failed to resolve module "+b+", tried "+d);var f=e._cached?e._cached:e();return f};a.paths=[],a.modules={},a.extensions=[".js",".coffee"],a._core={assert:!0,events:!0,fs:!0,path:!0,vm:!0},a.resolve=function(){return function(b,c){function h(b){if(a.modules[b])return b;for(var c=0;c<a.extensions.length;c++){var d=a.extensions[c];if(a.modules[b+d])return b+d}}function i(b){b=b.replace(/\/+$/,"");var c=b+"/package.json";if(a.modules[c]){var e=a.modules[c](),f=e.browserify;if(typeof f=="object"&&f.main){var g=h(d.resolve(b,f.main));if(g)return g}else if(typeof f=="string"){var g=h(d.resolve(b,f));if(g)return g}else if(e.main){var g=h(d.resolve(b,e.main));if(g)return g}}return h(b+"/index")}function j(a,b){var c=k(b);for(var d=0;d<c.length;d++){var e=c[d],f=h(e+"/"+a);if(f)return f;var g=i(e+"/"+a);if(g)return g}var f=h(a);if(f)return f}function k(a){var b;a==="/"?b=[""]:b=d.normalize(a).split("/");var c=[];for(var e=b.length-1;e>=0;e--){if(b[e]==="node_modules")continue;var f=b.slice(0,e+1).join("/")+"/node_modules";c.push(f)}return c}c||(c="/");if(a._core[b])return b;var d=a.modules.path(),e=c||".";if(b.match(/^(?:\.\.?\/|\/)/)){var f=h(d.resolve(e,b))||i(d.resolve(e,b));if(f)return f}var g=j(b,e);if(g)return g;throw new Error("Cannot find module '"+b+"'")}}(),a.alias=function(b,c){var d=a.modules.path(),e=null;try{e=a.resolve(b+"/package.json","/")}catch(f){e=a.resolve(b,"/")}var g=d.dirname(e),h=(Object.keys||function(a){var b=[];for(var c in a)b.push(c);return b})(a.modules);for(var i=0;i<h.length;i++){var j=h[i];if(j.slice(0,g.length+1)===g+"/"){var k=j.slice(g.length);a.modules[c+k]=a.modules[g+k]}else j===g&&(a.modules[c]=a.modules[g])}},a.define=function(b,c){var d=a._core[b]?"":a.modules.path().dirname(b),e=function(b){return a(b,d)};e.resolve=function(b){return a.resolve(b,d)},e.modules=a.modules,e.define=a.define;var f={exports:{}};a.modules[b]=function(){return a.modules[b]._cached=f.exports,c.call(f.exports,e,f,f.exports,d,b),a.modules[b]._cached=f.exports,f.exports}},typeof process=="undefined"&&(process={}),process.nextTick||(process.nextTick=function(){var a=[],b=typeof window!="undefined"&&window.postMessage&&window.addEventListener;return b&&window.addEventListener("message",function(b){if(b.source===window&&b.data==="browserify-tick"){b.stopPropagation();if(a.length>0){var c=a.shift();c()}}},!0),function(c){b?(a.push(c),window.postMessage("browserify-tick","*")):setTimeout(c,0)}}()),process.title||(process.title="browser"),process.binding||(process.binding=function(b){if(b==="evals")return a("vm");throw new Error("No such module")}),process.cwd||(process.cwd=function(){return"."}),a.define("path",function(a,b,c,d,e){function f(a,b){var c=[];for(var d=0;d<a.length;d++)b(a[d],d,a)&&c.push(a[d]);return c}function g(a,b){var c=0;for(var d=a.length;d>=0;d--){var e=a[d];e=="."?a.splice(d,1):e===".."?(a.splice(d,1),c++):c&&(a.splice(d,1),c--)}if(b)for(;c--;c)a.unshift("..");return a}var h=/^(.+\/(?!$)|\/)?((?:.+?)?(\.[^.]*)?)$/;c.resolve=function(){var a="",b=!1;for(var c=arguments.length;c>=-1&&!b;c--){var d=c>=0?arguments[c]:process.cwd();if(typeof d!="string"||!d)continue;a=d+"/"+a,b=d.charAt(0)==="/"}return a=g(f(a.split("/"),function(a){return!!a}),!b).join("/"),(b?"/":"")+a||"."},c.normalize=function(a){var b=a.charAt(0)==="/",c=a.slice(-1)==="/";return a=g(f(a.split("/"),function(a){return!!a}),!b).join("/"),!a&&!b&&(a="."),a&&c&&(a+="/"),(b?"/":"")+a},c.join=function(){var a=Array.prototype.slice.call(arguments,0);return c.normalize(f(a,function(a,b){return a&&typeof a=="string"}).join("/"))},c.dirname=function(a){var b=h.exec(a)[1]||"",c=!1;return b?b.length===1||c&&b.length<=3&&b.charAt(1)===":"?b:b.substring(0,b.length-1):"."},c.basename=function(a,b){var c=h.exec(a)[2]||"";return b&&c.substr(-1*b.length)===b&&(c=c.substr(0,c.length-b.length)),c},c.extname=function(a){return h.exec(a)[3]||""}}),a.define("/node_modules/ret/package.json",function(a,b,c,d,e){b.exports={main:"./lib/index.js"}}),a.define("/node_modules/ret/lib/index.js",function(a,b,c,d,e){var f=a("./util"),g=a("./types"),h=a("./sets"),i=a("./positions");b.exports=function(a){var b=0,c,d,e={type:g.ROOT,stack:[]},j=e,k=e.stack,l=[],m=function(b){f.error(a,"Nothing to repeat at column "+(b-1))},n=f.strToChars(a);c=n.length;while(b<c){d=n[b++];switch(d){case"\\":d=n[b++];switch(d){case"b":k.push(i.wordBoundary());break;case"B":k.push(i.nonWordBoundary());break;case"w":k.push(h.words());break;case"W":k.push(h.notWords());break;case"d":k.push(h.ints());break;case"D":k.push(h.notInts());break;case"s":k.push(h.whitespace());break;case"S":k.push(h.notWhitespace());break;default:/\d/.test(d)?k.push({type:g.REFERENCE,value:parseInt(d,10)}):k.push({type:g.CHAR,value:d.charCodeAt(0)})}break;case"^":k.push(i.begin());break;case"$":k.push(i.end());break;case"[":var o;n[b]==="^"?(o=!0,b++):o=!1;var p=f.tokenizeClass(n.slice(b),a);b+=p[1],k.push({type:g.SET,set:p[0],not:o});break;case".":k.push(h.anyChar());break;case"(":var q={type:g.GROUP,stack:[],remember:!0};d=n[b],d==="?"&&(d=n[b+1],b+=2,d==="="?q.followedBy=!0:d==="!"?q.notFollowedBy=!0:d!==":"&&f.error(a,"Invalid group, character '"+d+"' after '?' at column "+(b-1)),q.remember=!1),k.push(q),l.push(j),j=q,k=q.stack;break;case")":l.length===0&&f.error(a,"Unmatched ) at column "+(b-1)),j=l.pop(),k=j.options?j.options[j.options.length-1]:j.stack;break;case"|":j.options||(j.options=[j.stack],delete j.stack);var r=[];j.options.push(r),k=r;break;case"{":var s=/^(\d+)(,(\d+)?)?\}/.exec(n.slice(b)),t,u;s!==null?(t=parseInt(s[1],10),u=s[2]?s[3]?parseInt(s[3],10):Infinity:t,b+=s[0].length,k.push({type:g.REPETITION,min:t,max:u,value:k.pop()})):k.push({type:g.CHAR,value:123});break;case"?":k.length===0&&m(b),k.push({type:g.REPETITION,min:0,max:1,value:k.pop()});break;case"+":k.length===0&&m(b),k.push({type:g.REPETITION,min:1,max:Infinity,value:k.pop()});break;case"*":k.length===0&&m(b),k.push({type:g.REPETITION,min:0,max:Infinity,value:k.pop()});break;default:k.push({type:g.CHAR,value:d.charCodeAt(0)})}}return l.length!==0&&f.error(a,"Unterminated group"),e},b.exports.types=g}),a.define("/node_modules/ret/lib/util.js",function(a,b,c,d,e){var f=a("./types"),g=a("./sets"),h="@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ ?",i={0:0,t:9,n:10,v:11,f:12,r:13};c.strToChars=function(a){var b=/(\[\\b\])|\\(?:u([A-F0-9]{4})|x([A-F0-9]{2})|(0?[0-7]{2})|c([@A-Z\[\\\]\^?])|([0tnvfr]))/g;return a=a.replace(b,function(a,b,c,d,e,f,g){var j=b?8:c?parseInt(c,16):d?parseInt(d,16):e?parseInt(e,8):f?h.indexOf(f):g?i[g]:undefined,k=String.fromCharCode(j);return/[\[\]{}\^$.|?*+()]/.test(k)&&(k="\\"+k),k}),a},c.tokenizeClass=function(a,b){var d=[],e=/\\(?:(w)|(d)|(s)|(W)|(D)|(S))|((?:(?:\\)(.)|([^\\]))-(?:\\)?([^\]]))|(\])|(?:\\)?(.)/g,h,i;while((h=e.exec(a))!=null)if(h[1])d.push(g.words());else if(h[2])d.push(g.ints());else if(h[3])d.push(g.whitespace());else if(h[4])d.push(g.notWords());else if(h[5])d.push(g.notInts());else if(h[6])d.push(g.notWhitespace());else if(h[7])d.push({type:f.RANGE,from:(h[8]||h[9]).charCodeAt(0),to:h[10].charCodeAt(0)});else{if(!(i=h[12]))return[d,e.lastIndex];d.push({type:f.CHAR,value:i.charCodeAt(0)})}c.error(b,"Unterminated character class")},c.error=function(a,b){throw new SyntaxError("Invalid regular expression: /"+a+"/: "+b)}}),a.define("/node_modules/ret/lib/types.js",function(a,b,c,d,e){b.exports={ROOT:0,GROUP:1,POSITION:2,SET:3,RANGE:4,REPETITION:5,REFERENCE:6,CHAR:7}}),a.define("/node_modules/ret/lib/sets.js",function(a,b,c,d,e){var f=a("./types"),g=function(){return[{type:f.RANGE,from:48,to:57}]},h=function(){return[{type:f.RANGE,from:97,to:122},{type:f.RANGE,from:65,to:90}].concat(g())},i=function(){return[{type:f.CHAR,value:12},{type:f.CHAR,value:10},{type:f.CHAR,value:13},{type:f.CHAR,value:9},{type:f.CHAR,value:11},{type:f.CHAR,value:160},{type:f.CHAR,value:5760},{type:f.CHAR,value:6158},{type:f.CHAR,value:8192},{type:f.CHAR,value:8193},{type:f.CHAR,value:8194},{type:f.CHAR,value:8195},{type:f.CHAR,value:8196},{type:f.CHAR,value:8197},{type:f.CHAR,value:8198},{type:f.CHAR,value:8199},{type:f.CHAR,value:8200},{type:f.CHAR,value:8201},{type:f.CHAR,value:8202},{type:f.CHAR,value:8232},{type:f.CHAR,value:8233},{type:f.CHAR,value:8239},{type:f.CHAR,value:8287},{type:f.CHAR,value:12288}]};c.words=function(){return{type:f.SET,set:h(),not:!1}},c.notWords=function(){return{type:f.SET,set:h(),not:!0}},c.ints=function(){return{type:f.SET,set:g(),not:!1}},c.notInts=function(){return{type:f.SET,set:g(),not:!0}},c.whitespace=function(){return{type:f.SET,set:i(),not:!1}},c.notWhitespace=function(){return{type:f.SET,set:i(),not:!0}},c.anyChar=function(){return{type:f.SET,set:[{type:f.CHAR,value:10}],not:!0}}}),a.define("/node_modules/ret/lib/positions.js",function(a,b,c,d,e){var f=a("./types");c.wordBoundary=function(){return{type:f.POSITION,value:"b"}},c.nonWordBoundary=function(){return{type:f.POSITION,value:"B"}},c.begin=function(){return{type:f.POSITION,value:"^"}},c.end=function(){return{type:f.POSITION,value:"$"}}}),a.define("/randexp.js",function(a,b,c,d,e){function h(a,b){return a+Math.floor(Math.random()*(1+b-a))}function i(a){return a+(97<=a&&a<=122?-32:65<=a&&a<=90?32:0)}function j(a,b,c,d){return a<=c&&c<=b?{from:c,to:Math.min(b,d)}:a<=d&&d<=b?{from:Math.max(a,c),to:d}:!1}function k(a,b){var c,d,e,f;if((d=a.length)!==b.length)return!1;for(c=0;c<d;c++){f=a[c];for(e in f)if(f.hasOwnProperty(e)&&f[e]!==b[c][e])return!1}return!0}function l(a,b){for(var c=0,d=a.length;c<d;c++){var e=a[c];if(e.not!==b.not&&k(e.set,b.set))return!0}return!1}function m(a,b,c){var d,e,f=[],h=!1;for(var k=0,n=a.length;k<n;k++){d=a[k];switch(d.type){case g.CHAR:e=d.value;if(e===b||c&&i(e)===b)return!0;break;case g.RANGE:if(d.from<=b&&b<=d.to||c&&((e=j(97,122,d.from,d.to))!==!1&&e.from<=b&&b<=e.to||(e=j(65,90,d.from,d.to))!==!1&&e.from<=b&&b<=e.to))return!0;break;case g.SET:f.length>0&&l(f,d)?h=!0:f.push(d);if(!h&&m(d.set,b,c)!==d.not)return!0}}return!1}function n(a,b){return String.fromCharCode(b&&Math.random()>.5?i(a):a)}function o(a,b,c){var d,e,f,i,j,k,l;switch(a.type){case g.ROOT:case g.GROUP:if(a.notFollowedBy)return"";a.remember&&(d=b.push(!1)-1),e=a.options?a.options[Math.floor(Math.random()*a.options.length)]:a.stack,f="";for(j=0,k=e.length;j<k;j++)f+=o.call(this,e[j],b);return a.remember&&(b[d]=f),f;case g.POSITION:return"";case g.SET:c=!!c,l=c!==a.not;if(!l)return a.set.length?o.call(this,a.set[Math.floor(Math.random()*a.set.length)],b,l):"";for(;;){var p=this.anyRandChar(),q=p.charCodeAt(0);if(m(a.set,q,this.ignoreCase))continue;return p}break;case g.RANGE:return n(h(a.from,a.to),this.ignoreCase);case g.REPETITION:i=h(a.min,a.max===Infinity?a.min+this.max:a.max),f="";for(j=0;j<i;j++)f+=o.call(this,a.value,b);return f;case g.REFERENCE:return b[a.value-1]||"";case g.CHAR:return n(a.value,this.ignoreCase)}}var f=a("ret"),g=f.types,p=b.exports=function(a,b){if(a instanceof RegExp)this.ignoreCase=a.ignoreCase,this.multiline=a.multiline,typeof a.max=="number"&&(this.max=a.max),typeof a.anyRandChar=="function"&&(this.anyRandChar=a.anyRandChar),a=a.source;else{if(typeof a!="string")throw new Error("Expected a regexp or string");this.ignoreCase=b&&b.indexOf("i")!==-1,this.multiline=b&&b.indexOf("m")!==-1}this.tokens=f(a)};p.prototype.max=100,p.prototype.anyRandChar=function(){return String.fromCharCode(h(0,65535))},p.prototype.gen=function(){return o.call(this,this.tokens,[])};var q=p.randexp=function(a,b){var c;return a._randexp===undefined?(c=new p(a,b),a._randexp=c):(c=a._randexp,typeof a.max=="number"&&(c.max=a.max),typeof a.anyRandChar=="function"&&(c.anyRandChar=a.anyRandChar)),c.gen()};p.sugar=function(){RegExp.prototype.gen=function(){return q(this)}}}),!function(a,b){typeof define=="function"&&typeof define.amd=="object"?define(a,function(){return b}):typeof window!="undefined"&&(window[a]=b)}("RandExp",a("/randexp.js"))}()
 
 					var reEmo = /\.emo-\d+\s*\{[^\}]+\}/g,
@@ -632,6 +740,16 @@
 					}
 					return list;
 				};
+				_platform.getPlayer = function() {
+					var selectors = [].concat(selector.player), $tplayer = $();
+					$.each(selectors,function(idx,selector) {
+						$tplayer = $(selector);
+						if ($tplayer.length>0) return false;
+					});
+					return $tplayer;
+				}
+			
+				/* Icon emotify */
 				_platform.injectIcon = function(iconlist) {
 					var iconlist = [].concat(iconlist);
 					var list = [],
@@ -678,7 +796,8 @@
 						style += ['.'+classname+','+
 								'.'+classname+'.'+cssClass.msgIcon+'.'+cssClass.orgSize+'{',
 								'background-image: url('+icon.src+');',
-								'background-size:'+ow+' '+oh+';',
+								'background-size: contain;',
+								'max-width: 100%;',
 								'width:'+ow+';',
 								'height:'+oh+';',
 								'}'].join(' ');
@@ -703,7 +822,7 @@
 						resized = [];
 					if (msgs.length > 0) {
 						var count = 0;
-						var bicount = 0;
+						var bicount = 0, bircount = 0;
 						msgs.each(function() {
 							var emoticons = $(this)
 								.addClass(cssClass.checkedMsg)
@@ -712,15 +831,18 @@
 										if ($(this).height() > limitHeight) $(this).addClass(cssClass.resized);
 										$(this).addClass(cssClass.msgIcon);
 									});
-							resized = $(this).children(selector.msgIconResized)
+							var resized = $(this).children(selector.msgIconResized)
 								.click(function() {
 									$(this).toggleClass(cssClass.orgSize);
 								});
+							bicount += emoticons.length;
+							bircount += resized.length;
 						});
 					}
 					return {
 						msg: msgs.length, 
-						resized: resized.length
+						emotified: bicount,
+						resized: bircount
 					};
 				};
 				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
@@ -767,6 +889,8 @@
 						txtarea.scrollTop = scrollPos;
 					}
 				}
+				
+				/* Name Banner + Badge */
 				_platform.getNewNames = function() {	return $(selector.newName);	};
 				_platform.bindNameBanner = function() {
 					var names = _platform.getNewNames();
@@ -802,6 +926,7 @@
 				/* Private variables */
 				var _platform = this,
 					id = 'justin',
+					supportedFeatures = ['ui','emoticon','name_banner','darkmode','bookmark'],
 					cssClass = $.extend(_hhb.cssClass,{
 						darkMode: 'hhb-darkmode'
 					}),
@@ -815,17 +940,21 @@
 						newName: '.chat_line .nick:not(.hhb-name)',
 						emoticon: 'span.emoticon',
 						timestampsBox: '#toggle-timestamp',
-						userName: '.global-header-user-info .global-header-username'
+						userName: '.global-header-user-info .global-header-username',
+						player: ['#JustinPlayer','object[data*="JustinPlayer.swf"]']
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
-				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.justin\.tv\/(?:dashboard\/|message\/|settings\/|user\/|p\/|(?:\w+)\/about)/i);return ((m) ? m.length>0 : false); }
-				_platform.getChannelID = function() { var m=document.URL.match(/^https?\:\/\/.+\.justin\.tv\/(?:dashboard\/|message\/|settings\/|user\/|p\/|chat|(\w+))(?:\/\w+\?channel=(\w+))?/i); return ((m && m[2]) ? m[2] : ((m && m[1]) ? m[1] : '')); }
+				/* Initialize */
+				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.justin\.tv\/(?:directory|broadcast|dashboard|message|settings|user|p)\/(?:(?:\w+)\/about)?/i); return ((m) ? m.length>0 : false); }
+				_platform.getChannelID = function() { var m=document.URL.match(/^https?\:\/\/.+\.justin\.tv\/(?:chat|(\w+))(?:\/embed\?channel=(\w+))?/i); return ((m && m[2]) ? m[2] : ((m && m[1]) ? m[1] : '')); }
 				_platform.getUsername = function() { var uname=$(selector.userName).text().trim().toLowerCase(); return (uname!='guest user') ? uname : ''; };
+				_platform.getFeatures = function() {	return supportedFeatures;	};
 				_platform.initialize = function() { $('body').addClass('hhb-pf-justin'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
 				_platform.getButtonFront = function() {	return [];	};
+				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
 				_platform.genToggleButton = function(id) {
 					return $('<a id="'+id+'" href="#"></a>');
@@ -846,6 +975,7 @@
 						scope.$apply(function(){	scope.timestamps = false;	});
 					}
 					*/
+					return true;
 				};
 				_platform.getPlatformIcon = function() {
 					var list = [], tgenre = [].concat('JTV');
@@ -857,14 +987,14 @@
 						return;
 					}
 					
-					// ------------------------------------------------------------------
-					// randexp v0.3.3
-					// Create random strings that match a given regular expression.
-					//
-					// Copyright (C) 2013 by Roly Fentanes (https://github.com/fent)
-					// MIT License
-					// http://github.com/fent/randexp.js/raw/master/LICENSE
-					// ------------------------------------------------------------------
+					/* ------------------------------------------------------------------
+					/* randexp v0.3.3
+					/* Create random strings that match a given regular expression.
+					/*
+					/* Copyright (C) 2013 by Roly Fentanes (https://github.com/fent)
+					/* MIT License
+					/* http://github.com/fent/randexp.js/raw/master/LICENSE
+					/* ------------------------------------------------------------------ */
 					!function(){var a=function(b,c){var d=a.resolve(b,c||"/"),e=a.modules[d];if(!e)throw new Error("Failed to resolve module "+b+", tried "+d);var f=e._cached?e._cached:e();return f};a.paths=[],a.modules={},a.extensions=[".js",".coffee"],a._core={assert:!0,events:!0,fs:!0,path:!0,vm:!0},a.resolve=function(){return function(b,c){function h(b){if(a.modules[b])return b;for(var c=0;c<a.extensions.length;c++){var d=a.extensions[c];if(a.modules[b+d])return b+d}}function i(b){b=b.replace(/\/+$/,"");var c=b+"/package.json";if(a.modules[c]){var e=a.modules[c](),f=e.browserify;if(typeof f=="object"&&f.main){var g=h(d.resolve(b,f.main));if(g)return g}else if(typeof f=="string"){var g=h(d.resolve(b,f));if(g)return g}else if(e.main){var g=h(d.resolve(b,e.main));if(g)return g}}return h(b+"/index")}function j(a,b){var c=k(b);for(var d=0;d<c.length;d++){var e=c[d],f=h(e+"/"+a);if(f)return f;var g=i(e+"/"+a);if(g)return g}var f=h(a);if(f)return f}function k(a){var b;a==="/"?b=[""]:b=d.normalize(a).split("/");var c=[];for(var e=b.length-1;e>=0;e--){if(b[e]==="node_modules")continue;var f=b.slice(0,e+1).join("/")+"/node_modules";c.push(f)}return c}c||(c="/");if(a._core[b])return b;var d=a.modules.path(),e=c||".";if(b.match(/^(?:\.\.?\/|\/)/)){var f=h(d.resolve(e,b))||i(d.resolve(e,b));if(f)return f}var g=j(b,e);if(g)return g;throw new Error("Cannot find module '"+b+"'")}}(),a.alias=function(b,c){var d=a.modules.path(),e=null;try{e=a.resolve(b+"/package.json","/")}catch(f){e=a.resolve(b,"/")}var g=d.dirname(e),h=(Object.keys||function(a){var b=[];for(var c in a)b.push(c);return b})(a.modules);for(var i=0;i<h.length;i++){var j=h[i];if(j.slice(0,g.length+1)===g+"/"){var k=j.slice(g.length);a.modules[c+k]=a.modules[g+k]}else j===g&&(a.modules[c]=a.modules[g])}},a.define=function(b,c){var d=a._core[b]?"":a.modules.path().dirname(b),e=function(b){return a(b,d)};e.resolve=function(b){return a.resolve(b,d)},e.modules=a.modules,e.define=a.define;var f={exports:{}};a.modules[b]=function(){return a.modules[b]._cached=f.exports,c.call(f.exports,e,f,f.exports,d,b),a.modules[b]._cached=f.exports,f.exports}},typeof process=="undefined"&&(process={}),process.nextTick||(process.nextTick=function(){var a=[],b=typeof window!="undefined"&&window.postMessage&&window.addEventListener;return b&&window.addEventListener("message",function(b){if(b.source===window&&b.data==="browserify-tick"){b.stopPropagation();if(a.length>0){var c=a.shift();c()}}},!0),function(c){b?(a.push(c),window.postMessage("browserify-tick","*")):setTimeout(c,0)}}()),process.title||(process.title="browser"),process.binding||(process.binding=function(b){if(b==="evals")return a("vm");throw new Error("No such module")}),process.cwd||(process.cwd=function(){return"."}),a.define("path",function(a,b,c,d,e){function f(a,b){var c=[];for(var d=0;d<a.length;d++)b(a[d],d,a)&&c.push(a[d]);return c}function g(a,b){var c=0;for(var d=a.length;d>=0;d--){var e=a[d];e=="."?a.splice(d,1):e===".."?(a.splice(d,1),c++):c&&(a.splice(d,1),c--)}if(b)for(;c--;c)a.unshift("..");return a}var h=/^(.+\/(?!$)|\/)?((?:.+?)?(\.[^.]*)?)$/;c.resolve=function(){var a="",b=!1;for(var c=arguments.length;c>=-1&&!b;c--){var d=c>=0?arguments[c]:process.cwd();if(typeof d!="string"||!d)continue;a=d+"/"+a,b=d.charAt(0)==="/"}return a=g(f(a.split("/"),function(a){return!!a}),!b).join("/"),(b?"/":"")+a||"."},c.normalize=function(a){var b=a.charAt(0)==="/",c=a.slice(-1)==="/";return a=g(f(a.split("/"),function(a){return!!a}),!b).join("/"),!a&&!b&&(a="."),a&&c&&(a+="/"),(b?"/":"")+a},c.join=function(){var a=Array.prototype.slice.call(arguments,0);return c.normalize(f(a,function(a,b){return a&&typeof a=="string"}).join("/"))},c.dirname=function(a){var b=h.exec(a)[1]||"",c=!1;return b?b.length===1||c&&b.length<=3&&b.charAt(1)===":"?b:b.substring(0,b.length-1):"."},c.basename=function(a,b){var c=h.exec(a)[2]||"";return b&&c.substr(-1*b.length)===b&&(c=c.substr(0,c.length-b.length)),c},c.extname=function(a){return h.exec(a)[3]||""}}),a.define("/node_modules/ret/package.json",function(a,b,c,d,e){b.exports={main:"./lib/index.js"}}),a.define("/node_modules/ret/lib/index.js",function(a,b,c,d,e){var f=a("./util"),g=a("./types"),h=a("./sets"),i=a("./positions");b.exports=function(a){var b=0,c,d,e={type:g.ROOT,stack:[]},j=e,k=e.stack,l=[],m=function(b){f.error(a,"Nothing to repeat at column "+(b-1))},n=f.strToChars(a);c=n.length;while(b<c){d=n[b++];switch(d){case"\\":d=n[b++];switch(d){case"b":k.push(i.wordBoundary());break;case"B":k.push(i.nonWordBoundary());break;case"w":k.push(h.words());break;case"W":k.push(h.notWords());break;case"d":k.push(h.ints());break;case"D":k.push(h.notInts());break;case"s":k.push(h.whitespace());break;case"S":k.push(h.notWhitespace());break;default:/\d/.test(d)?k.push({type:g.REFERENCE,value:parseInt(d,10)}):k.push({type:g.CHAR,value:d.charCodeAt(0)})}break;case"^":k.push(i.begin());break;case"$":k.push(i.end());break;case"[":var o;n[b]==="^"?(o=!0,b++):o=!1;var p=f.tokenizeClass(n.slice(b),a);b+=p[1],k.push({type:g.SET,set:p[0],not:o});break;case".":k.push(h.anyChar());break;case"(":var q={type:g.GROUP,stack:[],remember:!0};d=n[b],d==="?"&&(d=n[b+1],b+=2,d==="="?q.followedBy=!0:d==="!"?q.notFollowedBy=!0:d!==":"&&f.error(a,"Invalid group, character '"+d+"' after '?' at column "+(b-1)),q.remember=!1),k.push(q),l.push(j),j=q,k=q.stack;break;case")":l.length===0&&f.error(a,"Unmatched ) at column "+(b-1)),j=l.pop(),k=j.options?j.options[j.options.length-1]:j.stack;break;case"|":j.options||(j.options=[j.stack],delete j.stack);var r=[];j.options.push(r),k=r;break;case"{":var s=/^(\d+)(,(\d+)?)?\}/.exec(n.slice(b)),t,u;s!==null?(t=parseInt(s[1],10),u=s[2]?s[3]?parseInt(s[3],10):Infinity:t,b+=s[0].length,k.push({type:g.REPETITION,min:t,max:u,value:k.pop()})):k.push({type:g.CHAR,value:123});break;case"?":k.length===0&&m(b),k.push({type:g.REPETITION,min:0,max:1,value:k.pop()});break;case"+":k.length===0&&m(b),k.push({type:g.REPETITION,min:1,max:Infinity,value:k.pop()});break;case"*":k.length===0&&m(b),k.push({type:g.REPETITION,min:0,max:Infinity,value:k.pop()});break;default:k.push({type:g.CHAR,value:d.charCodeAt(0)})}}return l.length!==0&&f.error(a,"Unterminated group"),e},b.exports.types=g}),a.define("/node_modules/ret/lib/util.js",function(a,b,c,d,e){var f=a("./types"),g=a("./sets"),h="@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ ?",i={0:0,t:9,n:10,v:11,f:12,r:13};c.strToChars=function(a){var b=/(\[\\b\])|\\(?:u([A-F0-9]{4})|x([A-F0-9]{2})|(0?[0-7]{2})|c([@A-Z\[\\\]\^?])|([0tnvfr]))/g;return a=a.replace(b,function(a,b,c,d,e,f,g){var j=b?8:c?parseInt(c,16):d?parseInt(d,16):e?parseInt(e,8):f?h.indexOf(f):g?i[g]:undefined,k=String.fromCharCode(j);return/[\[\]{}\^$.|?*+()]/.test(k)&&(k="\\"+k),k}),a},c.tokenizeClass=function(a,b){var d=[],e=/\\(?:(w)|(d)|(s)|(W)|(D)|(S))|((?:(?:\\)(.)|([^\\]))-(?:\\)?([^\]]))|(\])|(?:\\)?(.)/g,h,i;while((h=e.exec(a))!=null)if(h[1])d.push(g.words());else if(h[2])d.push(g.ints());else if(h[3])d.push(g.whitespace());else if(h[4])d.push(g.notWords());else if(h[5])d.push(g.notInts());else if(h[6])d.push(g.notWhitespace());else if(h[7])d.push({type:f.RANGE,from:(h[8]||h[9]).charCodeAt(0),to:h[10].charCodeAt(0)});else{if(!(i=h[12]))return[d,e.lastIndex];d.push({type:f.CHAR,value:i.charCodeAt(0)})}c.error(b,"Unterminated character class")},c.error=function(a,b){throw new SyntaxError("Invalid regular expression: /"+a+"/: "+b)}}),a.define("/node_modules/ret/lib/types.js",function(a,b,c,d,e){b.exports={ROOT:0,GROUP:1,POSITION:2,SET:3,RANGE:4,REPETITION:5,REFERENCE:6,CHAR:7}}),a.define("/node_modules/ret/lib/sets.js",function(a,b,c,d,e){var f=a("./types"),g=function(){return[{type:f.RANGE,from:48,to:57}]},h=function(){return[{type:f.RANGE,from:97,to:122},{type:f.RANGE,from:65,to:90}].concat(g())},i=function(){return[{type:f.CHAR,value:12},{type:f.CHAR,value:10},{type:f.CHAR,value:13},{type:f.CHAR,value:9},{type:f.CHAR,value:11},{type:f.CHAR,value:160},{type:f.CHAR,value:5760},{type:f.CHAR,value:6158},{type:f.CHAR,value:8192},{type:f.CHAR,value:8193},{type:f.CHAR,value:8194},{type:f.CHAR,value:8195},{type:f.CHAR,value:8196},{type:f.CHAR,value:8197},{type:f.CHAR,value:8198},{type:f.CHAR,value:8199},{type:f.CHAR,value:8200},{type:f.CHAR,value:8201},{type:f.CHAR,value:8202},{type:f.CHAR,value:8232},{type:f.CHAR,value:8233},{type:f.CHAR,value:8239},{type:f.CHAR,value:8287},{type:f.CHAR,value:12288}]};c.words=function(){return{type:f.SET,set:h(),not:!1}},c.notWords=function(){return{type:f.SET,set:h(),not:!0}},c.ints=function(){return{type:f.SET,set:g(),not:!1}},c.notInts=function(){return{type:f.SET,set:g(),not:!0}},c.whitespace=function(){return{type:f.SET,set:i(),not:!1}},c.notWhitespace=function(){return{type:f.SET,set:i(),not:!0}},c.anyChar=function(){return{type:f.SET,set:[{type:f.CHAR,value:10}],not:!0}}}),a.define("/node_modules/ret/lib/positions.js",function(a,b,c,d,e){var f=a("./types");c.wordBoundary=function(){return{type:f.POSITION,value:"b"}},c.nonWordBoundary=function(){return{type:f.POSITION,value:"B"}},c.begin=function(){return{type:f.POSITION,value:"^"}},c.end=function(){return{type:f.POSITION,value:"$"}}}),a.define("/randexp.js",function(a,b,c,d,e){function h(a,b){return a+Math.floor(Math.random()*(1+b-a))}function i(a){return a+(97<=a&&a<=122?-32:65<=a&&a<=90?32:0)}function j(a,b,c,d){return a<=c&&c<=b?{from:c,to:Math.min(b,d)}:a<=d&&d<=b?{from:Math.max(a,c),to:d}:!1}function k(a,b){var c,d,e,f;if((d=a.length)!==b.length)return!1;for(c=0;c<d;c++){f=a[c];for(e in f)if(f.hasOwnProperty(e)&&f[e]!==b[c][e])return!1}return!0}function l(a,b){for(var c=0,d=a.length;c<d;c++){var e=a[c];if(e.not!==b.not&&k(e.set,b.set))return!0}return!1}function m(a,b,c){var d,e,f=[],h=!1;for(var k=0,n=a.length;k<n;k++){d=a[k];switch(d.type){case g.CHAR:e=d.value;if(e===b||c&&i(e)===b)return!0;break;case g.RANGE:if(d.from<=b&&b<=d.to||c&&((e=j(97,122,d.from,d.to))!==!1&&e.from<=b&&b<=e.to||(e=j(65,90,d.from,d.to))!==!1&&e.from<=b&&b<=e.to))return!0;break;case g.SET:f.length>0&&l(f,d)?h=!0:f.push(d);if(!h&&m(d.set,b,c)!==d.not)return!0}}return!1}function n(a,b){return String.fromCharCode(b&&Math.random()>.5?i(a):a)}function o(a,b,c){var d,e,f,i,j,k,l;switch(a.type){case g.ROOT:case g.GROUP:if(a.notFollowedBy)return"";a.remember&&(d=b.push(!1)-1),e=a.options?a.options[Math.floor(Math.random()*a.options.length)]:a.stack,f="";for(j=0,k=e.length;j<k;j++)f+=o.call(this,e[j],b);return a.remember&&(b[d]=f),f;case g.POSITION:return"";case g.SET:c=!!c,l=c!==a.not;if(!l)return a.set.length?o.call(this,a.set[Math.floor(Math.random()*a.set.length)],b,l):"";for(;;){var p=this.anyRandChar(),q=p.charCodeAt(0);if(m(a.set,q,this.ignoreCase))continue;return p}break;case g.RANGE:return n(h(a.from,a.to),this.ignoreCase);case g.REPETITION:i=h(a.min,a.max===Infinity?a.min+this.max:a.max),f="";for(j=0;j<i;j++)f+=o.call(this,a.value,b);return f;case g.REFERENCE:return b[a.value-1]||"";case g.CHAR:return n(a.value,this.ignoreCase)}}var f=a("ret"),g=f.types,p=b.exports=function(a,b){if(a instanceof RegExp)this.ignoreCase=a.ignoreCase,this.multiline=a.multiline,typeof a.max=="number"&&(this.max=a.max),typeof a.anyRandChar=="function"&&(this.anyRandChar=a.anyRandChar),a=a.source;else{if(typeof a!="string")throw new Error("Expected a regexp or string");this.ignoreCase=b&&b.indexOf("i")!==-1,this.multiline=b&&b.indexOf("m")!==-1}this.tokens=f(a)};p.prototype.max=100,p.prototype.anyRandChar=function(){return String.fromCharCode(h(0,65535))},p.prototype.gen=function(){return o.call(this,this.tokens,[])};var q=p.randexp=function(a,b){var c;return a._randexp===undefined?(c=new p(a,b),a._randexp=c):(c=a._randexp,typeof a.max=="number"&&(c.max=a.max),typeof a.anyRandChar=="function"&&(c.anyRandChar=a.anyRandChar)),c.gen()};p.sugar=function(){RegExp.prototype.gen=function(){return q(this)}}}),!function(a,b){typeof define=="function"&&typeof define.amd=="object"?define(a,function(){return b}):typeof window!="undefined"&&(window[a]=b)}("RandExp",a("/randexp.js"))}()
 
 					/* chatEmoticonList */
@@ -911,8 +1041,18 @@
 					}
 					return list;
 				};
+				_platform.getPlayer = function() {
+					var selectors = [].concat(selector.player), $tplayer = $();
+					$.each(selectors,function(idx,selector) {
+						$tplayer = $(selector);
+						if ($tplayer.length>0) return false;
+					});
+					return $tplayer;
+				}
+			
+				/* Icon emotify */
 				_platform.injectIcon = function(iconlist) {
-					var iconlist = [].concat(iconlist);
+					var iconlist = iconlist;
 					var count = iconlist.length;
 					
 					function toRegExp(str) { return (str+'').replace(/([.?*+^$[\]\\(){}|\-\:])/g, "\\$1"); }
@@ -956,7 +1096,7 @@
 							var ttitle = emo.code.join(", ").replace(/(<([^>]+)>)/ig,'').replace(/, $/,'');
 							var tw = (emo.width > 0) ? emo.width : 0;
 							var th = (emo.height > 0) ? emo.height : 0;
-							msg = msg.replace(new RegExp("___hhb_emote_"+i+"___","g"), '<img src="'+tsrc+'" title="'+ttitle+'" class="'+classMsgIcon+(th>limitHeight?" "+classResized:"")+'"/>');
+							msg = msg.replace(new RegExp("___hhb_emote_"+i+"___","g"), emo.img);
 						}
 						return msg;
 					}
@@ -993,7 +1133,7 @@
 						resized = [];
 					if (msgs.length > 0) {
 						var count = 0;
-						var bicount = 0;
+						var bicount = 0, bircount = 0;
 						msgs.each(function() {
 							var emoticons = $(this)
 								.addClass(cssClass.checkedMsg)
@@ -1002,15 +1142,18 @@
 										if ($(this).height() > limitHeight) $(this).addClass(cssClass.resized);
 										$(this).addClass(cssClass.msgIcon);
 									});
-							resized = $(this).children(selector.msgIconResized)
+							var resized = $(this).children(selector.msgIconResized)
 								.click(function() {
 									$(this).toggleClass(cssClass.orgSize);
 								});
+							bicount += emoticons.length;
+							bircount += resized.length;
 						});
 					}
 					return {
 						msg: msgs.length, 
-						resized: resized.length
+						emotified: bicount,
+						resized: bircount
 					};
 				};
 				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
@@ -1057,6 +1200,326 @@
 						txtarea.scrollTop = scrollPos;
 					}
 				};
+				
+				/* Name Banner + Badge */
+				_platform.getNewNames = function() {	return $(selector.newName);	};
+				_platform.bindNameBanner = function() {
+					var names = _platform.getNewNames();
+					return _platformObj.default.bindNameBanner(names);
+				};
+				_platform.genBadgeCss = function(badges) {
+					var style = '';
+					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
+					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
+				
+					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
+						style += [	
+							'.hhb-pf-justin .tag.broadcaster {',
+								'display:inline-block;',
+								'padding:0px;',
+								'border-radius:0px;',
+								'text-indent: -9999px;',
+								'width:',(broadcaster.width),'px;',
+								'height:',(broadcaster.width),'px;',
+								'background: url(',broadcaster.img,') no-repeat center center;',
+							'}'].join('');
+					}
+					if (moderator.img && moderator.width>0 && moderator.height>0) {
+						style += [	
+							'.hhb-pf-justin .tag.mod {',
+								'display:inline-block;',
+								'padding:0px;',
+								'border-radius:0px;',
+								'text-indent: -9999px;',
+								'width:',(moderator.width),'px;',
+								'height:',(moderator.width),'px;',
+								'background: url(',moderator.img,') no-repeat center center;',
+							'}'].join('');
+					}
+					return style;
+				};
+			},
+			ustream: function() {
+				/* Private variables */
+				var _platform = this,
+					id = 'ustream',
+					supportedFeatures = ['bookmark'],
+					cssClass = $.extend(_hhb.cssClass,{
+						darkMode: 'hhb-darkmode'
+					}),
+					selector = $.extend(_hhb.selector,{
+					/*	darkModeAcceptor: 'body',
+						showChatBtn: '#show-chat:contains("Click to show chat")',
+						holderContainer: '#jtv_chat',
+						buttonContainer: '#chat_text_input_wrapper',
+						msgBox: '#chat_text_input',
+						newMsg: '.chat_line span.message:not(.hhb-msg)',
+						newName: '.chat_line .nick:not(.hhb-name)',
+						emoticon: 'span.emoticon',
+						timestampsBox: '#toggle-timestamp',
+					*/
+						userName: '.userName span',
+						player: ['#UstreamViewer','object[id^="utv"]']
+					}),
+					limit = $.extend(_hhb.limit,{});
+				/* Public methods */
+				/* Initialize */
+				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.ustream\.tv\/(?:broadcasterpage|dashboard|socialstream|platform|premium-membership-management|ustream-pro|manage-show|account|metrics|information|home|search|explore|upcoming)/i);return ((m) ? m.length>0 : false); }
+				_platform.getChannelID = function() { var v=$('param[name="flashvars"]').attr('value'),v=(v ? v : ''),m=v.match(/cid=(\d+)/); return (m && m[1]) ? m[1] : ''; }
+				_platform.getUsername = function() { var uname=$(selector.userName).text().trim().toLowerCase(); return (uname!='guest user') ? uname : ''; };
+				_platform.getFeatures = function() {	return supportedFeatures;	};
+				_platform.initialize = function() { $('body').addClass('hhb-pf-ustream'); };
+				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
+				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
+				_platform.getButtonFront = function() {	return [];	};
+				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
+				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
+				_platform.genToggleButton = function(id) {
+					return $('<a id="'+id+'" href="#"></a>');
+				};
+				_platform.onBindedToggleButton = function() {
+					$('#chat_emotes_trigger').hide(0);
+					$(selector.holder).css('bottom',$('#chat_speak').outerHeight());
+				};
+				_platform.getShowChatBtn = function() {	return $(selector.showChatBtn);	};
+				_platform.toggleTimestamps = function(act) {	/* Not Applicable */
+					/*
+					var scope = angular.element($(_platform.selector.timestampsBox)).scope();
+					if (act == 'toggle') {
+						scope.$apply(function(){	scope.timestamps = !scope.timestamps;	});
+					} else if (act == 'show') {
+						scope.$apply(function(){	scope.timestamps = true;	});
+					} else {
+						scope.$apply(function(){	scope.timestamps = false;	});
+					}
+					*/
+					return true;
+				};
+				_platform.getPlatformIcon = function() {
+					var list = [], tgenre = [].concat('JTV');
+					try {
+						var chatEmoticonList = (CurrentChat) ? CurrentChat.emoticons : DefaultChatEmoticons;
+						var defaultPPEmoteList = PP.chat_emotes.sort(function(a,b){return (a.expression<b.expression)?-1:(a.expression>b.expression)?1:0;});
+						if(!chatEmoticonList||!defaultPPEmoteList) return;
+					} catch(e) {
+						return;
+					}
+					
+					/* ------------------------------------------------------------------
+					/* randexp v0.3.3
+					/* Create random strings that match a given regular expression.
+					/*
+					/* Copyright (C) 2013 by Roly Fentanes (https://github.com/fent)
+					/* MIT License
+					/* http://github.com/fent/randexp.js/raw/master/LICENSE
+					/* ------------------------------------------------------------------ */
+					!function(){var a=function(b,c){var d=a.resolve(b,c||"/"),e=a.modules[d];if(!e)throw new Error("Failed to resolve module "+b+", tried "+d);var f=e._cached?e._cached:e();return f};a.paths=[],a.modules={},a.extensions=[".js",".coffee"],a._core={assert:!0,events:!0,fs:!0,path:!0,vm:!0},a.resolve=function(){return function(b,c){function h(b){if(a.modules[b])return b;for(var c=0;c<a.extensions.length;c++){var d=a.extensions[c];if(a.modules[b+d])return b+d}}function i(b){b=b.replace(/\/+$/,"");var c=b+"/package.json";if(a.modules[c]){var e=a.modules[c](),f=e.browserify;if(typeof f=="object"&&f.main){var g=h(d.resolve(b,f.main));if(g)return g}else if(typeof f=="string"){var g=h(d.resolve(b,f));if(g)return g}else if(e.main){var g=h(d.resolve(b,e.main));if(g)return g}}return h(b+"/index")}function j(a,b){var c=k(b);for(var d=0;d<c.length;d++){var e=c[d],f=h(e+"/"+a);if(f)return f;var g=i(e+"/"+a);if(g)return g}var f=h(a);if(f)return f}function k(a){var b;a==="/"?b=[""]:b=d.normalize(a).split("/");var c=[];for(var e=b.length-1;e>=0;e--){if(b[e]==="node_modules")continue;var f=b.slice(0,e+1).join("/")+"/node_modules";c.push(f)}return c}c||(c="/");if(a._core[b])return b;var d=a.modules.path(),e=c||".";if(b.match(/^(?:\.\.?\/|\/)/)){var f=h(d.resolve(e,b))||i(d.resolve(e,b));if(f)return f}var g=j(b,e);if(g)return g;throw new Error("Cannot find module '"+b+"'")}}(),a.alias=function(b,c){var d=a.modules.path(),e=null;try{e=a.resolve(b+"/package.json","/")}catch(f){e=a.resolve(b,"/")}var g=d.dirname(e),h=(Object.keys||function(a){var b=[];for(var c in a)b.push(c);return b})(a.modules);for(var i=0;i<h.length;i++){var j=h[i];if(j.slice(0,g.length+1)===g+"/"){var k=j.slice(g.length);a.modules[c+k]=a.modules[g+k]}else j===g&&(a.modules[c]=a.modules[g])}},a.define=function(b,c){var d=a._core[b]?"":a.modules.path().dirname(b),e=function(b){return a(b,d)};e.resolve=function(b){return a.resolve(b,d)},e.modules=a.modules,e.define=a.define;var f={exports:{}};a.modules[b]=function(){return a.modules[b]._cached=f.exports,c.call(f.exports,e,f,f.exports,d,b),a.modules[b]._cached=f.exports,f.exports}},typeof process=="undefined"&&(process={}),process.nextTick||(process.nextTick=function(){var a=[],b=typeof window!="undefined"&&window.postMessage&&window.addEventListener;return b&&window.addEventListener("message",function(b){if(b.source===window&&b.data==="browserify-tick"){b.stopPropagation();if(a.length>0){var c=a.shift();c()}}},!0),function(c){b?(a.push(c),window.postMessage("browserify-tick","*")):setTimeout(c,0)}}()),process.title||(process.title="browser"),process.binding||(process.binding=function(b){if(b==="evals")return a("vm");throw new Error("No such module")}),process.cwd||(process.cwd=function(){return"."}),a.define("path",function(a,b,c,d,e){function f(a,b){var c=[];for(var d=0;d<a.length;d++)b(a[d],d,a)&&c.push(a[d]);return c}function g(a,b){var c=0;for(var d=a.length;d>=0;d--){var e=a[d];e=="."?a.splice(d,1):e===".."?(a.splice(d,1),c++):c&&(a.splice(d,1),c--)}if(b)for(;c--;c)a.unshift("..");return a}var h=/^(.+\/(?!$)|\/)?((?:.+?)?(\.[^.]*)?)$/;c.resolve=function(){var a="",b=!1;for(var c=arguments.length;c>=-1&&!b;c--){var d=c>=0?arguments[c]:process.cwd();if(typeof d!="string"||!d)continue;a=d+"/"+a,b=d.charAt(0)==="/"}return a=g(f(a.split("/"),function(a){return!!a}),!b).join("/"),(b?"/":"")+a||"."},c.normalize=function(a){var b=a.charAt(0)==="/",c=a.slice(-1)==="/";return a=g(f(a.split("/"),function(a){return!!a}),!b).join("/"),!a&&!b&&(a="."),a&&c&&(a+="/"),(b?"/":"")+a},c.join=function(){var a=Array.prototype.slice.call(arguments,0);return c.normalize(f(a,function(a,b){return a&&typeof a=="string"}).join("/"))},c.dirname=function(a){var b=h.exec(a)[1]||"",c=!1;return b?b.length===1||c&&b.length<=3&&b.charAt(1)===":"?b:b.substring(0,b.length-1):"."},c.basename=function(a,b){var c=h.exec(a)[2]||"";return b&&c.substr(-1*b.length)===b&&(c=c.substr(0,c.length-b.length)),c},c.extname=function(a){return h.exec(a)[3]||""}}),a.define("/node_modules/ret/package.json",function(a,b,c,d,e){b.exports={main:"./lib/index.js"}}),a.define("/node_modules/ret/lib/index.js",function(a,b,c,d,e){var f=a("./util"),g=a("./types"),h=a("./sets"),i=a("./positions");b.exports=function(a){var b=0,c,d,e={type:g.ROOT,stack:[]},j=e,k=e.stack,l=[],m=function(b){f.error(a,"Nothing to repeat at column "+(b-1))},n=f.strToChars(a);c=n.length;while(b<c){d=n[b++];switch(d){case"\\":d=n[b++];switch(d){case"b":k.push(i.wordBoundary());break;case"B":k.push(i.nonWordBoundary());break;case"w":k.push(h.words());break;case"W":k.push(h.notWords());break;case"d":k.push(h.ints());break;case"D":k.push(h.notInts());break;case"s":k.push(h.whitespace());break;case"S":k.push(h.notWhitespace());break;default:/\d/.test(d)?k.push({type:g.REFERENCE,value:parseInt(d,10)}):k.push({type:g.CHAR,value:d.charCodeAt(0)})}break;case"^":k.push(i.begin());break;case"$":k.push(i.end());break;case"[":var o;n[b]==="^"?(o=!0,b++):o=!1;var p=f.tokenizeClass(n.slice(b),a);b+=p[1],k.push({type:g.SET,set:p[0],not:o});break;case".":k.push(h.anyChar());break;case"(":var q={type:g.GROUP,stack:[],remember:!0};d=n[b],d==="?"&&(d=n[b+1],b+=2,d==="="?q.followedBy=!0:d==="!"?q.notFollowedBy=!0:d!==":"&&f.error(a,"Invalid group, character '"+d+"' after '?' at column "+(b-1)),q.remember=!1),k.push(q),l.push(j),j=q,k=q.stack;break;case")":l.length===0&&f.error(a,"Unmatched ) at column "+(b-1)),j=l.pop(),k=j.options?j.options[j.options.length-1]:j.stack;break;case"|":j.options||(j.options=[j.stack],delete j.stack);var r=[];j.options.push(r),k=r;break;case"{":var s=/^(\d+)(,(\d+)?)?\}/.exec(n.slice(b)),t,u;s!==null?(t=parseInt(s[1],10),u=s[2]?s[3]?parseInt(s[3],10):Infinity:t,b+=s[0].length,k.push({type:g.REPETITION,min:t,max:u,value:k.pop()})):k.push({type:g.CHAR,value:123});break;case"?":k.length===0&&m(b),k.push({type:g.REPETITION,min:0,max:1,value:k.pop()});break;case"+":k.length===0&&m(b),k.push({type:g.REPETITION,min:1,max:Infinity,value:k.pop()});break;case"*":k.length===0&&m(b),k.push({type:g.REPETITION,min:0,max:Infinity,value:k.pop()});break;default:k.push({type:g.CHAR,value:d.charCodeAt(0)})}}return l.length!==0&&f.error(a,"Unterminated group"),e},b.exports.types=g}),a.define("/node_modules/ret/lib/util.js",function(a,b,c,d,e){var f=a("./types"),g=a("./sets"),h="@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ ?",i={0:0,t:9,n:10,v:11,f:12,r:13};c.strToChars=function(a){var b=/(\[\\b\])|\\(?:u([A-F0-9]{4})|x([A-F0-9]{2})|(0?[0-7]{2})|c([@A-Z\[\\\]\^?])|([0tnvfr]))/g;return a=a.replace(b,function(a,b,c,d,e,f,g){var j=b?8:c?parseInt(c,16):d?parseInt(d,16):e?parseInt(e,8):f?h.indexOf(f):g?i[g]:undefined,k=String.fromCharCode(j);return/[\[\]{}\^$.|?*+()]/.test(k)&&(k="\\"+k),k}),a},c.tokenizeClass=function(a,b){var d=[],e=/\\(?:(w)|(d)|(s)|(W)|(D)|(S))|((?:(?:\\)(.)|([^\\]))-(?:\\)?([^\]]))|(\])|(?:\\)?(.)/g,h,i;while((h=e.exec(a))!=null)if(h[1])d.push(g.words());else if(h[2])d.push(g.ints());else if(h[3])d.push(g.whitespace());else if(h[4])d.push(g.notWords());else if(h[5])d.push(g.notInts());else if(h[6])d.push(g.notWhitespace());else if(h[7])d.push({type:f.RANGE,from:(h[8]||h[9]).charCodeAt(0),to:h[10].charCodeAt(0)});else{if(!(i=h[12]))return[d,e.lastIndex];d.push({type:f.CHAR,value:i.charCodeAt(0)})}c.error(b,"Unterminated character class")},c.error=function(a,b){throw new SyntaxError("Invalid regular expression: /"+a+"/: "+b)}}),a.define("/node_modules/ret/lib/types.js",function(a,b,c,d,e){b.exports={ROOT:0,GROUP:1,POSITION:2,SET:3,RANGE:4,REPETITION:5,REFERENCE:6,CHAR:7}}),a.define("/node_modules/ret/lib/sets.js",function(a,b,c,d,e){var f=a("./types"),g=function(){return[{type:f.RANGE,from:48,to:57}]},h=function(){return[{type:f.RANGE,from:97,to:122},{type:f.RANGE,from:65,to:90}].concat(g())},i=function(){return[{type:f.CHAR,value:12},{type:f.CHAR,value:10},{type:f.CHAR,value:13},{type:f.CHAR,value:9},{type:f.CHAR,value:11},{type:f.CHAR,value:160},{type:f.CHAR,value:5760},{type:f.CHAR,value:6158},{type:f.CHAR,value:8192},{type:f.CHAR,value:8193},{type:f.CHAR,value:8194},{type:f.CHAR,value:8195},{type:f.CHAR,value:8196},{type:f.CHAR,value:8197},{type:f.CHAR,value:8198},{type:f.CHAR,value:8199},{type:f.CHAR,value:8200},{type:f.CHAR,value:8201},{type:f.CHAR,value:8202},{type:f.CHAR,value:8232},{type:f.CHAR,value:8233},{type:f.CHAR,value:8239},{type:f.CHAR,value:8287},{type:f.CHAR,value:12288}]};c.words=function(){return{type:f.SET,set:h(),not:!1}},c.notWords=function(){return{type:f.SET,set:h(),not:!0}},c.ints=function(){return{type:f.SET,set:g(),not:!1}},c.notInts=function(){return{type:f.SET,set:g(),not:!0}},c.whitespace=function(){return{type:f.SET,set:i(),not:!1}},c.notWhitespace=function(){return{type:f.SET,set:i(),not:!0}},c.anyChar=function(){return{type:f.SET,set:[{type:f.CHAR,value:10}],not:!0}}}),a.define("/node_modules/ret/lib/positions.js",function(a,b,c,d,e){var f=a("./types");c.wordBoundary=function(){return{type:f.POSITION,value:"b"}},c.nonWordBoundary=function(){return{type:f.POSITION,value:"B"}},c.begin=function(){return{type:f.POSITION,value:"^"}},c.end=function(){return{type:f.POSITION,value:"$"}}}),a.define("/randexp.js",function(a,b,c,d,e){function h(a,b){return a+Math.floor(Math.random()*(1+b-a))}function i(a){return a+(97<=a&&a<=122?-32:65<=a&&a<=90?32:0)}function j(a,b,c,d){return a<=c&&c<=b?{from:c,to:Math.min(b,d)}:a<=d&&d<=b?{from:Math.max(a,c),to:d}:!1}function k(a,b){var c,d,e,f;if((d=a.length)!==b.length)return!1;for(c=0;c<d;c++){f=a[c];for(e in f)if(f.hasOwnProperty(e)&&f[e]!==b[c][e])return!1}return!0}function l(a,b){for(var c=0,d=a.length;c<d;c++){var e=a[c];if(e.not!==b.not&&k(e.set,b.set))return!0}return!1}function m(a,b,c){var d,e,f=[],h=!1;for(var k=0,n=a.length;k<n;k++){d=a[k];switch(d.type){case g.CHAR:e=d.value;if(e===b||c&&i(e)===b)return!0;break;case g.RANGE:if(d.from<=b&&b<=d.to||c&&((e=j(97,122,d.from,d.to))!==!1&&e.from<=b&&b<=e.to||(e=j(65,90,d.from,d.to))!==!1&&e.from<=b&&b<=e.to))return!0;break;case g.SET:f.length>0&&l(f,d)?h=!0:f.push(d);if(!h&&m(d.set,b,c)!==d.not)return!0}}return!1}function n(a,b){return String.fromCharCode(b&&Math.random()>.5?i(a):a)}function o(a,b,c){var d,e,f,i,j,k,l;switch(a.type){case g.ROOT:case g.GROUP:if(a.notFollowedBy)return"";a.remember&&(d=b.push(!1)-1),e=a.options?a.options[Math.floor(Math.random()*a.options.length)]:a.stack,f="";for(j=0,k=e.length;j<k;j++)f+=o.call(this,e[j],b);return a.remember&&(b[d]=f),f;case g.POSITION:return"";case g.SET:c=!!c,l=c!==a.not;if(!l)return a.set.length?o.call(this,a.set[Math.floor(Math.random()*a.set.length)],b,l):"";for(;;){var p=this.anyRandChar(),q=p.charCodeAt(0);if(m(a.set,q,this.ignoreCase))continue;return p}break;case g.RANGE:return n(h(a.from,a.to),this.ignoreCase);case g.REPETITION:i=h(a.min,a.max===Infinity?a.min+this.max:a.max),f="";for(j=0;j<i;j++)f+=o.call(this,a.value,b);return f;case g.REFERENCE:return b[a.value-1]||"";case g.CHAR:return n(a.value,this.ignoreCase)}}var f=a("ret"),g=f.types,p=b.exports=function(a,b){if(a instanceof RegExp)this.ignoreCase=a.ignoreCase,this.multiline=a.multiline,typeof a.max=="number"&&(this.max=a.max),typeof a.anyRandChar=="function"&&(this.anyRandChar=a.anyRandChar),a=a.source;else{if(typeof a!="string")throw new Error("Expected a regexp or string");this.ignoreCase=b&&b.indexOf("i")!==-1,this.multiline=b&&b.indexOf("m")!==-1}this.tokens=f(a)};p.prototype.max=100,p.prototype.anyRandChar=function(){return String.fromCharCode(h(0,65535))},p.prototype.gen=function(){return o.call(this,this.tokens,[])};var q=p.randexp=function(a,b){var c;return a._randexp===undefined?(c=new p(a,b),a._randexp=c):(c=a._randexp,typeof a.max=="number"&&(c.max=a.max),typeof a.anyRandChar=="function"&&(c.anyRandChar=a.anyRandChar)),c.gen()};p.sugar=function(){RegExp.prototype.gen=function(){return q(this)}}}),!function(a,b){typeof define=="function"&&typeof define.amd=="object"?define(a,function(){return b}):typeof window!="undefined"&&(window[a]=b)}("RandExp",a("/randexp.js"))}()
+
+					/* chatEmoticonList */
+					var chatEmoDefaultPath = 'http://www-cdn.jtvnw.net/static/images/emoticons/';
+					var gifEmo = ['surprised','excited','skeptical','pirate','happy','raspberry','winkberry','cool','wink','angry','drunk','bored','sad','horny'];
+					var dictEmo = { 'bunion': 'bunion2',
+									'mvg': 'mvgbest', 
+									'dylan': 'dylanlive', 
+									'sm-skull': 'spacemarine/sm-skull', 
+									'sm-orc': 'spacemarine/sm-orc'}
+					for (var i=0;i<chatEmoticonList.length;i++) {
+						var emo = chatEmoticonList[i];
+						var tcode = [];
+						var tsrc = [	chatEmoDefaultPath,
+										(dictEmo[emo.img]) ? dictEmo[emo.img] : emo.img,
+										($.inArray(emo.img,gifEmo) < 0) ? '.png' : '.gif'].join('');
+						var twidth = -1,theight = -1;
+						for (var j=0;j<2;j++) {
+							var genCode = new RandExp(emo.rx).gen();
+							tcode = tcode.concat(($.inArray(genCode,tcode) < 0) ? genCode : []);
+						}
+						list.push({
+							code: tcode,
+							src: tsrc,
+							width: twidth,
+							height: theight,
+							genre: tgenre
+						});
+					}
+					
+					/* defaultPPEmoteList */
+					for (var i=0;i<defaultPPEmoteList.length;i++) {
+						var emo = defaultPPEmoteList[i];
+						var tcode = [].concat(emo.expression);
+						var tsrc = [PP.emote_root,emo.source].join('');
+						var twidth = -1,theight = -1;
+						list.push({
+							code: tcode,
+							src: tsrc,
+							width: twidth,
+							height: theight,
+							genre: tgenre
+						});
+					}
+					return list;
+				};
+				_platform.getPlayer = function() {
+					var selectors = [].concat(selector.player), $tplayer = $();
+					$.each(selectors,function(idx,selector) {
+						$tplayer = $(selector);
+						if ($tplayer.length>0) return false;
+					});
+					return $tplayer;
+				}
+			
+				/* Icon emotify */
+				_platform.injectIcon = function(iconlist) {
+					var iconlist = iconlist;
+					var count = iconlist.length;
+					
+					function toRegExp(str) { return (str+'').replace(/([.?*+^$[\]\\(){}|\-\:])/g, "\\$1"); }
+					function emotify_pre(msg) {
+						var map = {},html=[];
+						/* extract html tag */
+						var mhtml = msg.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi);
+						if (mhtml) {
+							for (var i=0;i<mhtml.length;i++) {
+								html[i] = mhtml[i];
+								msg = msg.replace(html[i],"___hhb_html_"+i+"___");
+							}
+						}
+						/* extract emoticon */
+						for(var i = 0; i < iconlist.length; i++) {
+							var code = [].concat(iconlist[i].code);
+							for(var j = 0; j < code.length; j++) {
+								var regex = code[j];
+								if(!(regex instanceof RegExp)) regex = new RegExp(toRegExp(regex), 'g');
+								msg = msg.replace(regex, "___hhb_emote_"+i+"___");
+							}
+						}
+						
+						/* restore html tag */
+						if (mhtml) {
+							for (var i=0;i<html.length;i++) {
+								msg = msg.replace(new RegExp("___hhb_html_"+i+"___","g"), html[i]);
+							}
+						}
+						return msg;
+					}
+					function emotify_post(msg)
+					{
+						var classMsgIcon = cssClass.msgIcon,
+							classResized = cssClass.resized
+							limitHeight = limit.msgIconHeight;
+						/* restore emoticon */
+						for(var i = 0; i < iconlist.length; i++) {
+							var emo = iconlist[i];
+							var tsrc = emo.src;
+							var ttitle = emo.code.join(", ").replace(/(<([^>]+)>)/ig,'').replace(/, $/,'');
+							var tw = (emo.width > 0) ? emo.width : 0;
+							var th = (emo.height > 0) ? emo.height : 0;
+							msg = msg.replace(new RegExp("___hhb_emote_"+i+"___","g"), emo.img);
+						}
+						return msg;
+					}
+					function emotify_main(old,args) {
+						var str = args[0];
+						var msg = emotify_pre(str);
+						args[0] = msg;
+						msg = old.apply(this,args);
+						msg = emotify_post(msg);
+						return msg;
+					}
+					/* Injecting emoticonize */					
+					var method = 'emoticonize',
+						objChat = (CurrentChat) ? CurrentChat : Chat.prototype;
+					if (method in objChat && !('__hhb_'+method in objChat)) {
+						var orgMethod = objChat[method];
+						objChat['__hhb_'+method] = true;
+						objChat[method] = function() {
+							try {
+								var args = [	orgMethod.bind(this),
+												Array.prototype.slice.apply(arguments)
+											];
+								return emotify_main.apply(this,args);
+							} catch(e) {
+								return orgMethod.apply(this,arguments);
+							}
+						};
+					}
+					return count;
+				},
+				_platform.getNewMsg = function() {	return $(selector.newMsg);	};
+				_platform.bindResizer = function() {
+					var msgs = _platform.getNewMsg(),
+						resized = [];
+					if (msgs.length > 0) {
+						var count = 0;
+						var bicount = 0, bircount = 0;
+						msgs.each(function() {
+							var emoticons = $(this)
+								.addClass(cssClass.checkedMsg)
+								.children(selector.emoticon)
+									.each(function() {
+										if ($(this).height() > limitHeight) $(this).addClass(cssClass.resized);
+										$(this).addClass(cssClass.msgIcon);
+									});
+							var resized = $(this).children(selector.msgIconResized)
+								.click(function() {
+									$(this).toggleClass(cssClass.orgSize);
+								});
+							bicount += emoticons.length;
+							bircount += resized.length;
+						});
+					}
+					return {
+						msg: msgs.length, 
+						emotified: bicount,
+						resized: bircount
+					};
+				};
+				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
+				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
+				_platform.insertText = function(text) {	_platform.replaceText(text);	};
+				_platform.replaceText = function(text,reReplace) {
+					text = text+' ';
+					var $msgBox = $(selector.msgBox);
+					if ($msgBox.length > 0) {
+						var txtarea = $msgBox[0];
+						var scrollPos = txtarea.scrollTop;
+						var strPos = 0;
+						if (reReplace instanceof RegExp) {
+							txtarea.value = txtarea.value.replace(reReplace,'');
+						}
+						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+							"ff" : (document.selection ? "ie" : false ) );
+						if (br == "ie") { 
+							txtarea.focus();
+							var range = document.selection.createRange();
+							range.moveStart ('character', -txtarea.value.length);
+							strPos = range.text.length;
+						}
+						else if (br == "ff") strPos = txtarea.selectionStart;
+
+						var front = (txtarea.value).substring(0,strPos);  
+						var back = (txtarea.value).substring(strPos,txtarea.value.length);
+						text = ((front.length>0)?' ':'')+text;
+						txtarea.value=front+text+back;
+						strPos = strPos + text.length;
+						if (br == "ie") { 
+							txtarea.focus();
+							var range = document.selection.createRange();
+							range.moveStart ('character', -txtarea.value.length);
+							range.moveStart ('character', strPos);
+							range.moveEnd ('character', 0);
+							range.select();
+						}
+						else if (br == "ff") {
+							txtarea.selectionStart = strPos;
+							txtarea.selectionEnd = strPos;
+							txtarea.focus();
+						}
+						txtarea.scrollTop = scrollPos;
+					}
+				};
+				
+				/* Name Banner + Badge */
 				_platform.getNewNames = function() {	return $(selector.newName);	};
 				_platform.bindNameBanner = function() {
 					var names = _platform.getNewNames();
@@ -1095,13 +1558,37 @@
 				};
 			},
 		};
+		
 		var debugMsg = function() {
+			function isNumber(n) { return !isNaN(parseFloat(n)) && isFinite(n); }
 			if (!debug) return;
 			if (!window.console) return;
-			var args = Array.prototype.slice.apply(arguments);
+			var args = Array.prototype.slice.apply(arguments),msgDebugFlag = DEBUG_ALL,debugFlag=(isNumber(debug) ? debug : msgDebugFlag);
+			if (args && isNumber(args[0])) msgDebugFlag = args.shift();
+			var indent = (	(msgDebugFlag & DEBUG_RUNTIME) && 	'' ||
+							(msgDebugFlag & DEBUG_FEATURES) && 	'->' ||
+							(msgDebugFlag & DEBUG_SUB) && 		'--->' ||
+							(msgDebugFlag & DEBUG_GA) && 		'[ ga ]' ||
+							'');
+			if (indent!='') args.unshift(indent);
 			args.unshift("[HihiBox]");
-			console.log.apply(console,args);
+			if ((msgDebugFlag & debugFlag) > 0) console.log.apply(console,args);
 		};
+		var setLoadingStatus = function(target,status) {
+			if (!loadingStatus[target]) loadingStatus[target] = 0;
+			var tloadingStatus = loadingStatus[target];
+			var defineStatus = { init: 100, retry: 101, complete: 200, fail: 300 };
+			status = (status=='init' && tloadingStatus != 0) ? 'retry' : status;
+			var tstatus = defineStatus[status];
+			if (!tstatus) tstatus = 0;
+			loadingStatus[target] = tstatus;
+			if (tstatus==100) setTimerStart(target);
+			else if (tstatus>=200) setTimerEnd(target);
+		}
+		var isStatusInited = function(target) {		var tloadingStatus = loadingStatus[target]; if (!tloadingStatus) return false; return (tloadingStatus>=100);	}
+		var isStatusRetry = function(target) {		var tloadingStatus = loadingStatus[target]; if (!tloadingStatus) return false; return (tloadingStatus==101);	}
+		var isStatusSuccess = function(target) {	var tloadingStatus = loadingStatus[target]; if (!tloadingStatus) return false; return (tloadingStatus==200);	}
+		var isStatusFinished = function(target) {	var tloadingStatus = loadingStatus[target]; if (!tloadingStatus) return false; return (tloadingStatus>=200);	}
 		var setTimerStart = function(target) {	return setTimer('start',target);	};
 		var setTimerEnd = function(target) {	return setTimer('end',target);	};
 		var setTimer = function(act,target) {
@@ -1111,42 +1598,119 @@
 			if (!ttimer) return;
 			var gaSubmit = false;
 			switch (act) {
-			case 'start':
-				ttimer.start = new Date().getTime();
-				gaSubmit = false;
-				break;
-			case 'end':
-				ttimer.end = new Date().getTime();
-				ttimer.duration = ttimer.end-ttimer.start;
-				gaSubmit = true;
-				break;
+			case 'start':	ttimer.start = new Date().getTime(), gaSubmit = false;	break;
+			case 'end':		ttimer.end = new Date().getTime(), ttimer.duration = ttimer.end-ttimer.start, gaSubmit = true;	break;
 			}
 			switch (target) {
 			case 'bindHolderUI':	if (env.holderUIBinded) gaSubmit = false;	break;
 			case 'bindButtonUI':	if (env.buttonUIBinded) gaSubmit = false;	break;
 			}
 			if (act=='end') {
+				var loadedFeature = function(lfeature) {
+					var features = env.features, loadedFeatures = env.loadedFeatures;
+					$.each(features,function(idx,tfeature) {
+						if (tfeature==lfeature) loadedFeatures = loadedFeatures.push(lfeature);
+					});
+				};
+				var isAllFeaturesLoaded = function() {
+					var features = env.features, loadedFeatures = env.loadedFeatures, count = 0;
+					$.each(features,function(idx,feature) {
+						$.each(loadedFeatures,function(idx2,lfeature) {
+							if (feature==lfeature) {
+								count++;
+								return false;
+							}
+						});
+					});
+					return (count>=features.length);
+				};
+				/* env set */
 				switch (target) {
-				case 'analyzeBuiltinIcon':	env.builtinIconLoaded = true;	break;
-				case 'analyzePlatformIcon':	env.platformIconLoaded = true;	break;
-				case 'analyzeGJTVIcon':		env.gjtvIconLoaded = true;	break;
-				case 'analyzeNameBanner':	break;
-				case 'bindHolderUI':		env.holderUIBinded = true;	break;
-				case 'bindButtonUI':		env.buttonUIBinded = true;	break;
-				case 'injectIcon':			env.iconInjected = true;	break;
+				case 'initIconListData':		env.isIconListDataInited = true;	break;
+				case 'initUserInterface':		env.isUserInterfaceInited = true;	break;
+				case 'initEmoticon':			env.isEmoticonInited = true;	break;
+				case 'initNameBanner':			env.isNameBannerInited = true;	break;
+				case 'initDarkMode':			env.isDarkModeInited = true;	break;
+				case 'initBookmark':			env.isBookmarkInited = true;	break;
+				case 'initIncomingParser':		env.isIncomingParserInited = true;	break;
+				/* initIconListData */
+				case 'injectIcon':				env.iconInjected = true;	break;
+				case 'analyzeBuiltinIcon':		env.builtinIconLoaded = true;	break;
+				case 'analyzePlatformIcon':		env.platformIconLoaded = true;	break;
+				case 'analyzeGJTVIcon':			env.gjtvIconLoaded = true;	break;
+				/* initUserInterface */
+				case 'bindHolderUI':			env.holderUIBinded = true;	break;
+				case 'bindButtonUI':			env.buttonUIBinded = true;	break;
+				/* initEmoticon */
+				case 'activateSortMode':		env.sortModeActivated = true;	break;
+				/* initNameBanner */
+				case 'analyzeNameBanner':		/* setOnAnalyzed */	break;
+				/* initDarkMode */
+				case 'bindDarkModeBtn':			env.darkModeActivated = true; break;
+				/* initBookmark */
+				case 'bindPlayerBookmarkBtn':	env.playerBookmarkBtnActivated = true; break;
+				case 'bindBookmarkBtn':			env.bookmarkBtnActivated = true; break;
+				/* initIncomingParser*/
+				case 'initIncomingParser':		env.isIncomingParserInited = true;	break;
 				}
+				/* update loaded feature */
 				switch (target) {
-				case 'bindHolderUI':
-				case 'bindButtonUI':
-					if (env.holderUIBinded && env.buttonUIBinded) setTimerEnd('bindUI');
+				case 'initIconListData':	loadedFeature('iconlist_data');		break;
+				case 'initUserInterface':	loadedFeature('ui');					break;
+				case 'initEmoticon':		loadedFeature('emoticon');			break;
+				case 'initNameBanner':		loadedFeature('name_banner');		break;
+				case 'initDarkMode':		loadedFeature('darkmode');			break;
+				case 'initBookmark':		loadedFeature('bookmark');			break;
+				case 'initIncomingParser':	loadedFeature('incoming_parser');	break;
+				}
+				/* check timer end */
+				switch (target) {
+				case 'initIconListData':
+				case 'initUserInterface':
+				case 'initEmoticon':
+				case 'initNameBanner':
+				case 'initDarkMode':
+				case 'initBookmark':
+				case 'initIncomingParser':
+					if (isAllFeaturesLoaded()) setLoadingStatus('initialize','complete');
 					break;
+				
+				/* initIconListData */
+				case 'injectIcon':
 				case 'analyzeBuiltinIcon':
 				case 'analyzePlatformIcon':
 				case 'analyzeGJTVIcon':
-					if (env.builtinIconLoaded && env.platformIconLoaded) setTimerEnd('analyzeIconSource');
+					if (isStatusSuccess('analyzeBuiltinIcon') && isStatusFinished('analyzePlatformIcon')) setLoadingStatus('initIconListData','complete');
 					break;
-				case 'injectIcon':
-					if (env.builtinIconLoaded && env.platformIconLoaded && env.iconInjected) setTimerEnd('initialize');
+				/* initUserInterface */
+				case 'bindHolderUI':
+				case 'bindButtonUI':
+					if (isStatusSuccess('bindHolderUI') && isStatusSuccess('bindButtonUI')) {
+						setLoadingStatus('bindUI','complete');
+						setLoadingStatus('initUserInterface','complete');
+					}
+					break;
+				/* initEmoticon */
+				case 'bindHolderToggleBtn':
+				case 'activateSortMode':
+					if (isStatusSuccess('activateSortMode')) setLoadingStatus('initEmoticon','complete');
+					break;
+				/* initNameBanner */
+				case 'analyzeNameBanner':
+					if (isStatusSuccess('analyzeNameBanner')) setLoadingStatus('initNameBanner','complete');
+					break;
+				/* initDarkMode */
+				case 'bindDarkModeBtn':
+					if (isStatusSuccess('bindDarkModeBtn')) setLoadingStatus('initDarkMode','complete');
+					break;
+				/* initBookmark */
+				case 'bindPlayerBookmarkBtn':
+				case 'bindBookmarkBtn':
+					if (isStatusFinished('bindPlayerBookmarkBtn') && isStatusSuccess('bindBookmarkBtn')) setLoadingStatus('initBookmark','complete');
+					break;
+				/* initIncomingParser */
+				case 'initIncomingParser':
+					if (isStatusSuccess('initIncomingParser')) setLoadingStatus('initIncomingParser','complete');
 					break;
 				}
 			}
@@ -1154,15 +1718,16 @@
 				_gaTracker('core','process',target,ttimer.duration);
 			}
 		};
+		
 		var envCheck = function() {
 			var url = document.URL.toLowerCase();
-			debugMsg('Detecting Platform... [URI:',url,']');
+			debugMsg(DEBUG_ENV|DEBUG_ENV_INIT,'Detecting Platform... [URI:',url,']');
 			env.hasjQuery = (!(typeof $ === 'undefined'));
 			env.platform = (url.match("^http:\/\/[^\/]*hitbox\.tv\/") ? 'hitbox' :
 								(url.match("^http:\/\/[^\/]*twitch\.tv\/") ? 'twitch' : 
-									(url.match("^http:\/\/[^\/]*justin\.tv\/") ? 'justin':	'')
-								)
-							).toLowerCase();
+									(url.match("^http:\/\/[^\/]*justin\.tv\/") ? 'justin': 
+										(url.match("^http:\/\/[^\/]*ustream\.tv\/") ? 'ustream': '')
+							))).toLowerCase();
 			env.platform = (($.inArray(env.platform,supportedPlatform) >= 0) ? env.platform : '');
 			env.platform = ((_platformObj[env.platform]) ? env.platform : '');
 			
@@ -1173,9 +1738,9 @@
 				env.userid = platformObj.getUsername();
 				
 				if (env.isExcluded) {
-					debugMsg('Excluded URL! Initialization aborted! [',url,']');
+					debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Excluded URL! Initialization aborted! [',url,']');
 				} else if (env.channel && env.channel!='') {
-					debugMsg('Detected [',env,']');
+					debugMsg(DEBUG_ENV|DEBUG_ENV_SUCCESS,'Detected [',env,']');
 					_gaTracker('env','platform',env.platform);
 					_gaTracker('env','channel',[env.channel,env.platform].join('@'));
 					if (env.userid && env.userid!='') {
@@ -1183,7 +1748,7 @@
 						_gaTracker('env','audience',[env.userid,env.channel,env.platform].join('@'));
 					}
 					env.isInitialize = true;
-					
+					env.features = platformObj.getFeatures();
 					/* update last watching datetime of current channel to extension */
 					var _channel = { platform: env.platform, channel: env.channel };
 					chrome.runtime.sendMessage(editorExtensionId, {updateLastWatch: _channel},function(response) {});
@@ -1191,12 +1756,14 @@
 					pollUsage();
 					pollSettings();
 				} else {
-					debugMsg('Channel not detected! Initialization aborted! [',url,']');
+					debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Channel not detected! Initialization aborted! [',url,']');
 				}
 			} else {
-				debugMsg('Platform not detected! Initialization aborted! [',url,']');
+				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Platform not detected! Initialization aborted! [',url,']');
 			}
 		};
+		
+		/* Chrome extension communication */
 		var sendMessage = function(request,callback) {
 			chrome.runtime.sendMessage(editorExtensionId, request,
 				function(response) {
@@ -1212,7 +1779,7 @@
 					env.settingsLoaded = true;
 					$.extend(settings,response.settings);
 					bindIconListLocale();
-					debugMsg('pollSettings',settings);
+					debugMsg(DEBUG_EXT,'pollSettings',settings);
 					/* initialize core */
 					initialize();
 				});
@@ -1229,7 +1796,7 @@
 						if (!response.success) return;
 						if (!response.settings) return;
 						$.extend(settings,response.settings);
-						debugMsg('pushSettings',newSettings,settings);
+						debugMsg(DEBUG_EXT,'pushSettings',newSettings,settings);
 					});
 			}
 		};
@@ -1241,7 +1808,7 @@
 					if (!response.usage) return;
 					env.usageLoaded = true;
 					$.extend(listUsage,response.usage);
-					debugMsg('pollUsage',listUsage);
+					debugMsg(DEBUG_EXT,'pollUsage',listUsage);
 				});
 		};
 		var pushUsage = function(newUsage) {
@@ -1253,7 +1820,7 @@
 						if (!response.success) return;
 						if (!response.usage) return;
 						$.extend(listUsage,response.usage);
-						debugMsg('pushUsage',listUsage);
+						debugMsg(DEBUG_EXT,'pushUsage',listUsage);
 					});
 			}
 		};
@@ -1263,448 +1830,1111 @@
 					if (!response) return;
 					if (!response.success) return;
 					listUsage = {};
-					debugMsg('clearUsage',listUsage);
+					debugMsg(DEBUG_EXT,'clearUsage',listUsage);
 				});
 		};
+		
+		/* Initializer */
 		var initialize = function() {
-			setTimerStart('initialize');
-			debugMsg('Initalizing...');
+			setLoadingStatus('initialize','init');
+			debugMsg(DEBUG_ENV,'Initalizing...');
 			platformObj.initialize();
-			analyzeIconSource();
-			detectUI();
-			initializeHotkey();
-			parseIncoming();
-			debugMsg('Initialized');
+			$.each(env.features,function(idx,feature) {
+				switch (feature) {
+				case 'ui':				initUserInterface();	break;
+				case 'emoticon':		env.listeningIconListData = true;		break;
+				case 'name_banner':		env.listeningNameBannerData = true;		break;
+				case 'darkmode':		initDarkMode();			break;
+				case 'bookmark':		initBookmark();			break;
+				case 'incoming_parser':	initIncomingParser();	break;
+				}
+			});
+			debugMsg(DEBUG_ENV,'Initialized');
 		};
-		var injectIcon = function() {
-			setTimerStart('injectIcon');
-			debugMsg('Injecting Icon...');
-			var count = platformObj.injectIcon(listParse);
-			if (count > 0) {
-				debugMsg('Injected Icon [I:',count,']');
-				setTimerEnd('injectIcon');
-			} else {
-				debugMsg('Injected Icon Failed!');
+		var initIconListData = function() {
+			var injectIcon = function() {
+				if (!env.builtinIconLoaded || !env.platformIconLoaded) return false;
+				setLoadingStatus('injectIcon','init');
+				debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Injecting Icon...');
+				var count = platformObj.injectIcon(listParse);
+				if (count > 0) {
+					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Injected Icon [I:',count,']');
+					setLoadingStatus('injectIcon','complete');
+				} else {
+					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Injected Icon Failed!');
+					setLoadingStatus('injectIcon','fail');
+				}
+			};
+			var analyzeBuiltinIcon = function() {
+				if (retryCount.analyzeBuiltinIcon==0) setLoadingStatus('analyzeBuiltinIcon','init');
+				if (retryCount.analyzeBuiltinIcon>0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Built-in Icon...');
+				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Built-in Icon Retry...'),setLoadingStatus('analyzeBuiltinIcon','retry');
+				var iconlist = listIcon, analyzediconlist;
+				analyzediconlist = analyzeIcon(iconlist);
+				if (!analyzediconlist || analyzediconlist.length==0) {
+					if (retryCount.analyzeBuiltinIcon < limit.analyzeBuiltinIcon) {
+						setTimeout(function() { analyzeBuiltinIcon(); },delay.analyzeBuiltinIcon);
+						retryCount.analyzeBuiltinIcon++;
+					} else {
+						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Built-in Icon Failed!');
+						setLoadingStatus('analyzeBuiltinIcon','fail')
+					}
+					return;
+				}
+				setLoadingStatus('analyzeBuiltinIcon','complete');
+				retryCount.analyzeBuiltinIcon = 0;
+				refreshList();
+			};
+			var analyzePlatformIcon = function() {
+				if (retryCount.analyzeBuiltinIcon==0) setLoadingStatus('analyzePlatformIcon','init');
+				if (retryCount.analyzePlatformIcon>0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Platform Icon...');
+				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Platform Icon Retry...'),setLoadingStatus('analyzePlatformIcon','retry');
+				var iconlist, analyzediconlist;
+				if (!env.builtinIconLoaded) return false;
+				iconlist = platformObj.getPlatformIcon();
+				analyzediconlist = analyzeIcon(iconlist);
+				if (!analyzediconlist || analyzediconlist.length==0) {
+					if (retryCount.analyzePlatformIcon < limit.analyzePlatformIcon) {
+						setTimeout(function() { analyzePlatformIcon(); },delay.analyzePlatformIcon);
+						retryCount.analyzePlatformIcon++;
+					} else {
+						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Platform Icon Failed!');
+						setLoadingStatus('analyzePlatformIcon','fail');
+					}
+					return false;
+				}
+				listIcon = listIcon.concat(analyzediconlist);
+				setLoadingStatus('analyzePlatformIcon','complete');
+				retryCount.analyzePlatformIcon = 0;
+				refreshList();
+			};
+			var analyzeGJTVIcon = function() {
+				if (retryCount.analyzeGJTVIcon==0) setLoadingStatus('analyzeGJTVIcon','init');
+				if (retryCount.analyzeGJTVIcon>0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing GJTV Icon...');
+				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing GJTV Icon Retry...'),setLoadingStatus('analyzeGJTVIcon','retry');
+				var iconlist, analyzediconlist;
+				if (!env.builtinIconLoaded) return;
+				var getGJTVIcon = function() {
+					var list = [], dgenre = [].concat('GJTV');
+					if (	typeof(gjtv_icon_base) !== 'undefined' && 
+							typeof(gjtv_icon_list) !== 'undefined'
+						) {
+						$.each(gjtv_icon_list,function(idx,obj) {
+							if (obj && obj.length>=2) {
+								var tcode = [].concat(obj[0]),
+									tsrc = obj[1].match(/^([^']+)\'/)[1],
+									twidth = obj[1].match(/width=\'(\d+)\'/)[1],
+									theight = obj[1].match(/height=\'(\d+)\'/)[1];
+								if (tsrc.indexOf("http") == -1) tsrc = gjtv_icon_base + tsrc;
+								
+								if (tcode && tsrc && twidth && theight && twidth>0 && theight>0) {
+									list.push({
+										code: tcode,
+										src: tsrc,
+										width: parseInt(twidth), height: parseInt(theight),
+										genre: dgenre
+									});
+								}
+							}
+						});
+					}
+					return list;
+				};
+				iconlist = getGJTVIcon();
+				analyzediconlist = analyzeIcon(iconlist);
+				if (!analyzediconlist || analyzediconlist.length==0) {
+					if (retryCount.analyzeGJTVIcon < limit.analyzeGJTVIcon) {
+						setTimeout(function() { analyzeGJTVIcon(); },delay.analyzeGJTVIcon);
+						retryCount.analyzeGJTVIcon++;
+					} else {
+						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing GJTV Icon Failed!');
+						setLoadingStatus('analyzeGJTVIcon','fail');
+					}
+					return;
+				}
+				listIcon = listIcon.concat(analyzediconlist);
+				setLoadingStatus('analyzeGJTVIcon','complete');
+				retryCount.analyzeGJTVIcon = 0;
+				refreshList();
+			};
+			var analyzeIcon = function(iconlist) {
+				var count = 0;
+				var genreOther = 'Other',
+					genreRecent = 'Recent';
+				if (!(iconlist && iconlist.length > 0)) return false;
+				var analyzediconlist = [];
+				/* Check if code is duplicated */
+				var codeIsDuplicated = function(code) {
+					var ncode = [].concat(code);
+					for (var i=0;i<ncode.length;i++) if (listLookup[ncode[i]]) return true;
+					return false;
+				};
+				$.each(iconlist,function(idx,obj) {
+					/* analyze Icon */
+					var code = [].concat(obj.code);
+					if (codeIsDuplicated(code)) return true;
+					for (var i=0;i<code.length;i++) listLookup[code[i]] = obj;
+					var src = obj.src,
+						genre = (function(genre,code) { var tgenre=[]; if (genre) $.each(genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,code[0]),
+						usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {}),
+						codelist = code.join(", "),
+						title = codelist,
+						tstyle = (obj.width>0&&obj.height>0) ? ' style="width:'+obj.width+'px;height:'+obj.height+'px;"' : '',
+						img = '<img src="'+src+'" title="'+title+'"'+tstyle+' class="'+cssClass.msgIcon+((obj.height > limit.msgIconHeight) ? ' '+cssClass.resized : '')+'"/>',
+						re = "";
+					$.each(code,function(idx2,code2) { re += (re!="" ? '|' : '')+code2.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); });
+					var regex = new RegExp(re,'g');
+					obj.id = nextIconID;	nextIconID++;
+					obj.genre = genre;
+					obj.title = title;
+					obj.regex = regex;
+					obj.img = img;
+					obj.usage = usage;
+					
+					if (listGenre[listGenre.length-1] == genreOther) {
+						listGenre.pop();
+					}
+					/* add to genre list */
+					$.each(genre,function(idx3,iconGenre) {
+						var cg = 0;
+						if (iconGenre != genreOther) {
+							$.each(listGenre,function(idx4,genrei) {
+								if (genrei == iconGenre) cg++;
+							});
+							if (cg == 0) listGenre.push(iconGenre);
+						}
+					});
+					
+					/* add to parse list */
+					listParse.push(obj);
+					/* add to new icon list */
+					analyzediconlist.push(obj);
+					count++;
+				});
+				
+				if ($.inArray(genreOther,listGenre) < 0) {
+					listGenre.push(genreOther);
+				}
+				listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
+				
+				retryCount.analyzeIcon = 0;
+				
+				if (count>0) debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Icon List [ T:',iconlist.length,', G:',listGenre.length,', P:',listParse.length,']');
+				return analyzediconlist;
+			};
+			var refreshList = function() {
+				injectIcon();
+				version.genreList.pending++;
+				version.iconList.pending++;
 			}
-		};
-		var analyzeIconSource = function() {
-			setTimerStart('analyzeIconSource');
+			
+			if (isStatusInited('initIconListData')) return false;
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initIconListData');
+			setLoadingStatus('initIconListData','init');
 			analyzeBuiltinIcon();
 			analyzePlatformIcon();
-			analyzeGJTVIcon();
-		};
-		var analyzeBuiltinIcon = function() {
-			if (retryCount.analyzeBuiltinIcon==0) setTimerStart('analyzeBuiltinIcon');
-			debugMsg('Analyzing Built-in Icon',(retryCount.analyzeBuiltinIcon>0)?'Retry':'','...');
-			var iconlist = listIcon, analyzediconlist;
-			analyzediconlist = analyzeIcon(iconlist);
-			if (!analyzediconlist || analyzediconlist.length==0) {
-				if (retryCount.analyzeBuiltinIcon < limit.analyzeBuiltinIcon) {
-					setTimeout(function() { analyzeBuiltinIcon(); },delay.analyzeBuiltinIcon);
-					retryCount.analyzeBuiltinIcon++;
-				} else {
-					debugMsg('Analyzing Built-in Icon Failed!');
-				}
-				return;
-			}
-			setTimerEnd('analyzeBuiltinIcon');
-			retryCount.analyzeBuiltinIcon = 0;
-			version.iconList.pending++;
-			bindIconList();	// list all HihiBox icon
-		};
-		var analyzePlatformIcon = function() {
-			if (retryCount.analyzeBuiltinIcon==0) setTimerStart('analyzePlatformIcon');
-			debugMsg('Analyzing Platform Icon',(retryCount.analyzePlatformIcon>0)?'Retry':'','...');
-			var iconlist, analyzediconlist;
-			if (!env.builtinIconLoaded) return;
-			iconlist = platformObj.getPlatformIcon();
-			analyzediconlist = analyzeIcon(iconlist);
-			if (!analyzediconlist || analyzediconlist.length==0) {
-				if (retryCount.analyzePlatformIcon < limit.analyzePlatformIcon) {
-					setTimeout(function() { analyzePlatformIcon(); },delay.analyzePlatformIcon);
-					retryCount.analyzePlatformIcon++;
-				} else {
-					debugMsg('Analyzing Platform Icon Failed!');
-				}
-				return;
-			}
-			listIcon = listIcon.concat(analyzediconlist);
-			setTimerEnd('analyzePlatformIcon');
-			retryCount.analyzePlatformIcon = 0;
-			version.iconList.pending++;
-			bindIconList();	// list all HihiBox icon
-		};
-		var analyzeGJTVIcon = function() {
-			if (retryCount.analyzeGJTVIcon==0) setTimerStart('analyzeGJTVIcon');
-			debugMsg('Analyzing GJTV Icon',(retryCount.analyzeGJTVIcon>0)?'Retry':'','...');
-			var iconlist, analyzediconlist;
-			if (!env.builtinIconLoaded) return;
-			var getGJTVIcon = function() {
-				var list = [], dgenre = [].concat('GJTV');
-				if (	typeof(gjtv_icon_base) !== 'undefined' && 
-						typeof(gjtv_icon_list) !== 'undefined'
-					) {
-					$.each(gjtv_icon_list,function(idx,obj) {
-						if (obj && obj.length>=2) {
-							var tcode = [].concat(obj[0]),
-								tsrc = obj[1].match(/^([^']+)\'/)[1],
-								twidth = obj[1].match(/width=\'(\d+)\'/)[1],
-								theight = obj[1].match(/height=\'(\d+)\'/)[1];
-							if (tsrc.indexOf("http") == -1) tsrc = gjtv_icon_base + tsrc;
-							
-							if (tcode && tsrc && twidth && theight && twidth>0 && theight>0) {
-								list.push({
-									code: tcode,
-									src: tsrc,
-									width: twidth, height: theight,
-									genre: dgenre
-								});
-							}
-						}
-					});
-				}
-				return list;
-			};
-			iconlist = getGJTVIcon();
-			analyzediconlist = analyzeIcon(iconlist);
-			if (!analyzediconlist || analyzediconlist.length==0) {
-				if (retryCount.analyzeGJTVIcon < limit.analyzeGJTVIcon) {
-					setTimeout(function() { analyzeGJTVIcon(); },delay.analyzeGJTVIcon);
-					retryCount.analyzeGJTVIcon++;
-				} else {
-					debugMsg('Analyzing GJTV Icon Failed!');
-				}
-				return;
-			}
-			listIcon = listIcon.concat(analyzediconlist);
-			setTimerEnd('analyzeGJTVIcon');
-			retryCount.analyzeGJTVIcon = 0;
-			version.iconList.pending++;
-			bindIconList();	// list all HihiBox icon
-		};
-		var analyzeIcon = function(iconlist) {
-			var count = 0;
-			var genreOther = 'Other',
-				genreRecent = 'Recent';
-			if (!(iconlist && iconlist.length > 0)) return false;
-			var analyzediconlist = [];
-			// Check if code is duplicated
-			var codeIsDuplicated = function(code) {
-				var ncode = [].concat(code);
-				for (var i=0;i<ncode.length;i++) if (listLookup[ncode[i]]) return true;
-				return false;
-			};
-			$.each(iconlist,function(idx,obj) {
-				// analyze Icon
-				var code = [].concat(obj.code);
-				if (codeIsDuplicated(code)) return true;
-				for (var i=0;i<code.length;i++) listLookup[code[i]] = obj;
-				var src = obj.src,
-					genre = (function(genre,code) { var tgenre=[]; if (genre) $.each(genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,code[0]),
-					usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {}),
-					codelist = code.join(", "),
-					title = codelist,
-					tstyle = (obj.width>0&&obj.height>0) ? ' style="width:'+obj.width+'px;height:'+obj.height+'px;"' : '',
-					img = '<img src="'+src+'" title="'+title+'"'+tstyle+' class="'+cssClass.msgIcon+((obj.height > limit.msgIconHeight) ? ' '+cssClass.resized : '')+'"/>',
-					re = "";
-				$.each(code,function(idx2,code2) { re += (re!="" ? '|' : '')+code2.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); });
-				var regex = new RegExp(re,'g');
-				obj.id = nextIconID;	nextIconID++;
-				obj.genre = genre;
-				obj.title = title;
-				obj.regex = regex;
-				obj.img = img;
-				obj.usage = usage;
+			/* analyze GJTV Icon in twitch / justin */
+			if ($.inArray(env.platform,['twitch','justin']) >= 0) analyzeGJTVIcon();
+		}
+		var initUserInterface = function() {
+			var detectUI = function() {
+				setTimeout(function() { detectUI(); },delay.detectUI);
 				
-				if (listGenre[listGenre.length-1] == genreOther) {
-					listGenre.pop();
-				}
-				// add to genre list
-				$.each(genre,function(idx3,iconGenre) {
-					var cg = 0;
-					if (iconGenre != genreOther) {
-						$.each(listGenre,function(idx4,genrei) {
-							if (genrei == iconGenre) cg++;
-						});
-						if (cg == 0) listGenre.push(iconGenre);
-					}
-				});
-				
-				// add to parse list
-				listParse.push(obj);
-				// add to new icon list
-				analyzediconlist.push(obj);
-				count++;
-			});
-			
-			if ($.inArray(genreOther,listGenre) < 0) {
-				listGenre.push(genreOther);
-			}
-			listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
-			
-			retryCount.analyzeIcon = 0;
-			
-			bindGenreList();	// list all HihiBox Genre
-			bindIconList();	// list all HihiBox icon
-			
-			if (count>0) debugMsg('Analyzed Icon List [ T:',iconlist.length,', G:',listGenre.length,', P:',listParse.length,']');
-			return analyzediconlist;
-		};
-		var analyzeNameBanner = function(nblist,nbcon) {
-			if (env.platform==''|| env.channel=='') return false;
-			setTimer('start','analyzeNameBanner');
-			var nbdict = {},objChannel = null;
-			var clist,olist=[];
-			var reCh = new RegExp('^'+env.channel+'(?:@'+env.platform+')?$','i');
-			var reName = new RegExp('^(\\w+)(?:@'+env.channel+')?(?:@'+env.platform+')?$','i');
-			var filterName = function(arr,idonly) {
-				var res=[],arr=[].concat(arr);
-				$.each(arr,function(idx,obj) {
-					var m = obj.match(reName);
-					if (m) res.push((idonly) ? m[1] : obj);
-				});
-				return res;
-			};
-			var style = '';
-			/* Search Match Channel */
-			$.each(nbcon,function(idx,obj) {
-				for(var i=0;i<obj.channel.length;i++) {
-					if (obj.channel[i].match(reCh)) {
-						objChannel = obj;
-						break;
-					}
-				}
-			});
-			
-			/* Channel Object */
-			objChannel = $.extend({	whitelistonly:false,
-									whitelist: [],
-									blacklist: []
-								},objChannel);
-								
-			/* Channel Badge */
-			if (objChannel.badge) {
-				var badge = objChannel.badge;
-				var badges = $.extend({ enable: false, broadcaster: null, moderator: null },badge['default']);
-				badges = $.extend(badges,badge[env.platform]);
-				
-				if (badges.enable) style += platformObj.genBadgeCss(badges);
-			}
-			
-			/* Check Channel Config */
-			if (objChannel.whitelistonly) {
-				/* Whitelist */
-				if (objChannel.whitelist.length > 0) {
-					clist = filterName(objChannel.whitelist);
-					$.each(nblist,function(idx,obj){
-						obj = $.extend({id:[],img:'',width:100,height:16,specialEnroll:false},obj);
-						if (obj.specialEnroll) {	/* Special Enroll (always included) */
-							var idlist = filterName(obj.id);
-							$.each(idlist,function(idx2,obj2) {
-								olist[obj2] = obj;
-							});
-						} else {
-							$.each(clist,function(idx2,obj2){
-								if ($.inArray(obj2,obj.id)>=0) {
-									clist.splice(idx2,1);
-									olist[obj2] = obj;
-								}
-							});
-						}
-					});
-				}
-			} else {
-				/* import All Name Banner */
-				$.each(nblist,function(idx,obj){
-					obj = $.extend({id:[],img:'',width:100,height:16,specialEnroll:false},obj);
-					clist = filterName(obj.id);
-					$.each(clist,function(idx2,obj2){
-						//olist.push({ id: obj2, banner: obj });
-						olist[obj2] = obj;
-					});
-				});
-			}
-			/* Channel blacklist handle */
-			if (objChannel.blacklist.length > 0) {
-				clist = filterName(objChannel.blacklist);
-				for (var i=0;i<clist.length;i++) {
-					if (olist[clist[i]] && !olist[clist[i]].specialEnroll) {
-						delete olist[clist[i]];
-					}
-				}
-			}
-			/* remove namespace */
-			/* generate css */
-			var tlist = $.extend({},olist);
-			var count=0;
-			olist = {};
-			$.each(tlist,function(key,obj) {
-				var m = key.match(reName);
-				if (m.length>=2) {
-					var classname = 'nb-hhb-'+count;
-					var nobj = $.extend(obj,{
-							cssClass: [cssClass.nameBanner,classname].join(' '),
-							style: [	'.',cssClass.nameBanner,'.',classname,'{',
-										'height: ',obj.height,'px;',
-										'background-image: url(',obj.img,');',
-										'}'
-									].join('')
-						});
-					olist[m[1]] = nobj;
-					style+=nobj.style;
-					count++;
-				}
-			});
-			
-			if (count>0) {
-				/* bind css */
-				$('style.hhb-nb-style').detach();
-				$('<style type="text/css" class="hhb-nb-style">').text(style).appendTo("head");
-				env.nameBannerEnabled = true;
-			}
-			setTimer('end','analyzeNameBanner');
-			debugMsg('Analyzed Name Banner List [NB:',count,']');
-			return olist;
-		};
-		this.importNameBanner = function(nblist,nbcontrol) {
-			if (nblist && nbcontrol) {
-				var res = analyzeNameBanner(nblist,nbcontrol);
-				listNameBanner = (res) ? res : {};
-				
-				debugMsg('Imported Name Banner List [NBL:',listNameBanner,']');
-			} else {
-				debugMsg('Import Name Banner Failed!');
-			}
-		};
-		var detectUI = function() {
-			if (listParse.length > 0) {
-				debugMsg('Detecting UI...');
+				debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Detecting UI...');
 				var $holder = $(selector.holder);
 				var $button = $(selector.button);
-				
 				if ($holder.length > 0 && $button.length > 0) {
 					retryCount.detectUI = 0;
-				} else if (	retryCount.bindHolderUI == 0 &&
-							retryCount.bindButtonUI == 0) {
-					debugMsg('UI Not Detected...');
-					bindUI();
+					return true;
 				}
-			}
-			retryCount.detectUI++;
-			setTimeout(function() { detectUI(); },delay.detectUI);
-		};
-		var bindUI = function() {
-			setTimerStart('bindUI');
-			debugMsg('Binding UI...');
-			activateRebindUIBtn();
-			bindHolderUI();
-			bindButtonUI();
-		};
-		var activateRebindUIBtn = function() {
-			var $showChatBtn = platformObj.getShowChatBtn();
-			if ($showChatBtn.length > 0) {
+				debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'UI Not Detected...');
+				if (retryCount.detectUI==0) bindUI();
+				retryCount.detectUI++;
+			};
+			var bindUI = function() {
+				setLoadingStatus('bindUI','init');
+				debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Binding UI...');
+				activateRebindUIBtn();
+				bindHolderUI();
+				bindButtonUI();
+			};
+			var activateRebindUIBtn = function() {
+				var $showChatBtn = platformObj.getShowChatBtn();
+				if ($showChatBtn.length == 0) {
+					if (retryCount.activateRebindUIBtn < limit.activateRebindUIBtn) {
+						setTimeout(function() { activateRebindUIBtn(); },delay.activateRebindUIBtn);
+						retryCount.activateRebindUIBtn++;
+						debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Rebind UI Button Retry...[ R:',retryCount.activateRebindUIBtn,']');
+						setLoadingStatus('activateRebindUIBtn','retry');
+					} else {
+						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Activating Rebind UI Button Failed!');
+						setLoadingStatus('activateRebindUIBtn','fail');
+					}
+					return false;
+				}
 				if (!$showChatBtn.hasClass(cssClass.inited)) {
 					$showChatBtn.click(function() {
 						bindUI();
 					}).addClass(cssClass.inited);
-					debugMsg('Activated Rebind UI Button');
+					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Rebind UI Button');
+					setLoadingStatus('activateRebindUIBtn','complete');
 				}
-			} else {
-				if (retryCount.activateRebindUIBtn < limit.activateRebindUIBtn) {
-					setTimeout(function() { activateRebindUIBtn(); },delay.activateRebindUIBtn);
-					retryCount.activateRebindUIBtn++;
-					debugMsg('Activating Rebind UI Button Retry...[ R:',retryCount.activateRebindUIBtn,']');
-				} else {
-					debugMsg('Activating Rebind UI Button Failed!');
+			};
+			var bindHolderUI = function() {
+				var $holder = $(selector.holder);
+				if ($holder.length > 0) return true;
+				if (retryCount.bindHolderUI==0) setLoadingStatus('bindHolderUI','init');
+				var $holderCon = platformObj.getHolderContainer();
+				if ($holderCon.length > 0) {
+					var $palHolder = platformObj.genHolder(id,versionInfo).hide();
+					$palHolder.appendTo($holderCon);
+					bindIconListLocale();
+					
+					checkVersion();
+					
+					retryCount.bindHolderUI = 0;
+					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Holder UI [G:',listGenre.length,', I:',listIcon.length,']');
+					setLoadingStatus('bindHolderUI','complete');
+					return true;
 				}
-			}
-		};
-		var bindGenreList = function() {
-			var palGenre = $(selector.genreContainer).empty();
-			if (!palGenre.length > 0) return;
-			$.each(listGenre,function(idx,obj) {
-				palGenre.append(
-					$('<div class="'+cssClass.genre+'" hhb-genre="'+obj+'">'+obj+'</div>')
-						.data('hhb-genre',obj)
-						.click(function() {
-							var genre = $(this).data('hhb-genre');
-							selectGenre(genre);
-						})
-				);
-			});
-			debugMsg('Binded Genre List [G:',listGenre.length,']');
-		};
-		var bindIconList = function() {
-		//	if (!(env.builtinIconLoaded || env.platformIconLoaded)) return;
-			if (version.iconList.current==version.iconList.pending) return;
-			var palIconset = $(selector.iconset).empty();
-			if (!palIconset.length > 0) return;
-			palIconset.append($('<div id="'+id.iconMsgBox+'">-</div>'));
-			$.each(listIcon,function(idx,obj) {
-				var $icon = 
-					$('<div class="'+cssClass.icon+'" hhb-id="'+obj.id+'" hhb-code="'+obj.code[0]+'" hhb-genre="'+obj.genre.join(' ')+'"></div>')
-						.data('hhb-code',obj.code.join(' '))
-						.data('hhb-object',obj)
-						.click(function() {	insertIcon($(this)); })
-						.append($(obj.img)
-							.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
-						);
-				obj.domObject = $icon;
-				palIconset.append($icon);
-			});
-			injectIcon();
-			selectGenre('init');	// select default genre
-			version.iconList.current = version.iconList.pending;
-			debugMsg('Binded Icon List [I:',listIcon.length,']');
-		};
-		var showIconMsg = function() {
-			var $icon = $(selector.iconsetIcon);
-			var $sicon = $icon.filter(':visible');
-			var i=$icon.length, si=$sicon.length;
-			var delay = 3000, fidur = 0, fiop = 1, fodur = 400, foop = 0.3 ,fease = "easeOutQuad";
-			var $iconMsgBox = $(selector.iconMsgBox)
-								.mouseenter(function() { $(this).clearQueue().fadeTo(fidur,fiop,fease); })
-								.mouseleave(function() { $(this).clearQueue().delay(delay).fadeTo(fodur,foop,fease); });
-			if (si > 0) 
-				if (isFiltering) $iconMsgBox.text(['Filtering...( ',si,'/',i,' )'].join('')).clearQueue().show().fadeTo(fidur,fiop,fease);
-				else $iconMsgBox.hide()
-			else $iconMsgBox.text('Icon not found').clearQueue().show().fadeTo(fidur,fiop,fease);
-			$iconMsgBox.filter(':visible').delay(delay).fadeTo(fodur,foop,fease);
-		};
-		var checkVersion = function() {
-			chrome.runtime.sendMessage(editorExtensionId, {getVersionInfo: true},
-				function(response) {
-					if (!response || !response.success || !response.versionInfo) {
-						// For v1.6 or lower
-						$.extend(versionInfo,{
-							newRelease: true,
-							lastExtensionVersion: 'v1.7',
-							lastSummary: '[概要] 新增Bookmark, 開台提示, 管理頁面, HihiBox 更新提示等功能'
-						});
-					} else {
-						$.extend(versionInfo,response.versionInfo);
-					}
-					initInfo();
-				});
-		};
-		var initInfo = function() {
-			var $name = $('#hhb-header .name');
-			$name.text(versionInfo.name)
-				.attr('title',locale.getLocaleMsg('info.credit',[versionInfo.credits.developer.join(', '),versionInfo.credits.specialThanks.join(', ')]));
-			var $version = $('#hhb-header .version');
-			$version.text(versionInfo.coreVersion)
-				.attr('title',locale.getLocaleMsg('info.last_update',[versionInfo.lastUpdate]));
+				setTimeout(function() { bindHolderUI(); },delay.bindHolderUI);
+				retryCount.bindHolderUI++;
+				debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Holder UI Retry...[ R:',retryCount.bindHolderUI,']');
+				setLoadingStatus('bindHolderUI','retry');
+			};
+			var bindButtonUI = function() {
+				var $button = $(selector.button);
+				if ($button.length > 0) return true;
+				if (retryCount.bindButtonUI==0) setLoadingStatus('bindButtonUI','init');
+				var $buttonCon = platformObj.getButtonContainer();
+				if ($buttonCon.length > 0) {
+					var $palButton = platformObj.genToggleButton(id.button);
+					var palButtonFront = platformObj.getButtonFront();
+					if (palButtonFront.length > 0) $palButton.insertAfter(palButtonFront);
+					else $buttonCon.append($palButton);
+					platformObj.onBindedToggleButton();
+					retryCount.bindButtonUI = 0;
+					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Toggle Button UI');
+					setLoadingStatus('bindButtonUI','complete');
+					return true;
+				}
+				setTimeout(function() { bindButtonUI(); },delay.bindButtonUI);
+				retryCount.bindButtonUI++;
+				debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Toggle Button UI Retry...[ R:',retryCount.bindButtonUI,']');
+				setLoadingStatus('bindButtonUI','retry');
+			};
+			var checkVersion = function() {
+				chrome.runtime.sendMessage(editorExtensionId, {getVersionInfo: true},
+					function(response) {
+						if (!response || !response.success || !response.versionInfo) {
+							/* For v1.6 or lower */
+							$.extend(versionInfo,{
+								newRelease: true,
+								lastExtensionVersion: 'v1.7',
+								lastSummary: "[概要] 新增Bookmark, 開台提示, 管理頁面, HihiBox 更新提示等功能"
+							});
+						} else {
+							$.extend(versionInfo,response.versionInfo);
+						}
+						initInfo();
+					});
+			};
+			var initInfo = function() {
+				var $name = $('#hhb-header .name');
+				$name.text(versionInfo.name)
+					.attr('title',locale.getLocaleMsg('info.credit',[versionInfo.credits.developer.join(', '),versionInfo.credits.specialThanks.join(', ')]));
+				var $version = $('#hhb-header .version');
+				$version.text(versionInfo.coreVersion)
+					.attr('title',locale.getLocaleMsg('info.last_update',[versionInfo.lastUpdate]));
+					
+				if (versionInfo.newRelease) {
+					var $update = $('<span class="update"></span>');
+					$update.attr('title',versionInfo.name+' '+versionInfo.lastExtensionVersion+' - '+versionInfo.lastSummary);
+					$name.addClass('newRelease');
+					$version.addClass('newRelease').append($update);
+				}
 				
-			if (versionInfo.newRelease) {
-				var $update = $('<span class="update"></span>');
-				$update.attr('title',versionInfo.name+' '+versionInfo.lastExtensionVersion+' - '+versionInfo.lastSummary);
-				$name.addClass('newRelease');
-				$version.addClass('newRelease').append($update);
+				$('a.hhb').attr('href',versionInfo.siteURI);
+				$('a.fb').attr('href',versionInfo.pageURI);
+			};
+			
+			if (isStatusInited('initUserInterface')) return false;
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initUserInterface');
+			setLoadingStatus('initUserInterface','init');
+			detectUI();
+		};
+		var initEmoticon = function() {
+			var bindUIControl = function() {
+				bindHolderToggleBtn();		/* Activate holder toggle button */
+				toggleTimestamps('show');	/* Show timestamps */
+				activateSortMode()			/* Activate sort mode */
+				
+				version.genreList.pending++;
+				version.iconList.pending++;
+				bindGenreList();	/* list all HihiBox Genre */
+				bindIconList();	/* list all HihiBox icon */
+			};
+			var bindHolderToggleBtn = function() {
+				if (retryCount.bindHolderToggleBtn==0) setLoadingStatus('bindHolderToggleBtn','init');
+				var $button = $(selector.button)
+				if ($button.length==0) {
+					setTimeout(function() { bindHolderToggleBtn(); },delay.bindHolderToggleBtn);
+					retryCount.bindHolderToggleBtn++;
+					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Holder Toggle Button Retry...[ R:',retryCount.bindHolderToggleBtn,']');
+					setLoadingStatus('bindHolderToggleBtn','retry');
+					return false;
+				}
+				/* Activate holder toggle button */
+				$button.click(function() {
+						toggleHolder('toggle');
+					});
+				
+				retryCount.bindHolderToggleBtn = 0;
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Holder Toggle Button');
+				setLoadingStatus('bindHolderToggleBtn','complete');
+			}
+			var activateSortMode = function() {
+				if (retryCount.activateSortMode==0) setLoadingStatus('activateSortMode','init');
+				var $sortModeBtn = $(selector.sortModeBtn)
+				if ($sortModeBtn.length==0) {
+					setTimeout(function() { activateSortMode(); },delay.activateSortMode);
+					retryCount.activateSortMode++;
+					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Sort Mode Retry...[ R:',retryCount.activateSortMode,']');
+					setLoadingStatus('activateSortMode','retry');
+					return false;
+				}
+				/* Activate sort mode button */
+				$sortModeBtn.click(function() {
+					toggleSortMode('toggle');
+				});
+				toggleSortMode('init');
+				
+				retryCount.activateSortMode = 0;
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Sort Mode');
+				setLoadingStatus('activateSortMode','complete');
+			}
+			var selectGenre = function(genre) {
+				var act = 'select';
+				var aGenre = ($.inArray(genre,listGenre) >= 0 ? genre : settings.last_genre);
+				if (genre=='init'||genre=='refresh') { act = genre; aGenre = settings.last_genre; version.sort.pending++;
+				} else if (aGenre==settings.last_genre) return false;
+				
+				sortIconList(true);
+				var $genre = $(selector.genreContainerGenre).removeClass(cssClass.active)
+					.filter(selector.genre+'[hhb-genre="'+aGenre+'"]').addClass(cssClass.active);
+				if ($genre.length==0) return selectGenre(settings.default_genre);
+				var $icon = $(selector.iconsetIcon).removeClass(cssClass.iconHide);
+				var $hicon = $icon.not([
+									selector.icon,
+									'[hhb-genre~="'+aGenre+'"]',
+									((aGenre=='Recent') ? ':lt(50)' : '')].join('')
+								).addClass(cssClass.iconHide);
+				var csicon = $icon.length-$hicon.length;
+				showIconMsg();
+				pushSettings({ last_genre: aGenre });
+				
+				_gaTracker('genre',act,aGenre);
+				debugMsg(DEBUG_RUNTIME,'Selected Genre [G:',aGenre,',I:',csicon,']');
+				return true;
+			};
+			var bindGenreList = function() {
+				setTimeout(function() { bindGenreList() },delay.bindGenreList);
+				if (version.genreList.current==version.genreList.pending) return;
+				var palGenre = $(selector.genreContainer).empty();
+				if (!palGenre.length > 0) return;
+				$.each(listGenre,function(idx,obj) {
+					palGenre.append(
+						$('<div class="'+cssClass.genre+'" hhb-genre="'+obj+'">'+obj+'</div>')
+							.data('hhb-genre',obj)
+							.click(function() {
+								var genre = $(this).data('hhb-genre');
+								selectGenre(genre);
+							})
+					);
+				});
+				version.genreList.current = version.genreList.pending;
+				debugMsg(DEBUG_RUNTIME|DEBUG_REFRESH,'Binded Genre List [G:',listGenre.length,']');
+			};
+			var bindIconList = function() {
+				setTimeout(function() { bindIconList() },delay.bindIconList);
+				if (version.iconList.current==version.iconList.pending) return;
+				var palIconset = $(selector.iconset).empty();
+				if (!palIconset.length > 0) return;
+				palIconset.append($('<div id="'+id.iconMsgBox+'">-</div>'));
+				$.each(listIcon,function(idx,obj) {
+					var $icon = 
+						$('<div class="'+cssClass.icon+'" hhb-id="'+obj.id+'" hhb-code="'+obj.code[0]+'" hhb-genre="'+obj.genre.join(' ')+'"></div>')
+							.data('hhb-code',obj.code.join(' '))
+							.data('hhb-object',obj)
+							.click(function() {	insertIcon($(this)); })
+							.append($(obj.img)
+								.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
+							);
+					obj.domObject = $icon;
+					palIconset.append($icon);
+				});
+				selectGenre('init');	/* select default genre */
+				version.iconList.current = version.iconList.pending;
+				debugMsg(DEBUG_RUNTIME|DEBUG_REFRESH,'Binded Icon List [I:',listIcon.length,']');
+			};
+			var toggleHolder = function(act,keepFilter) {
+				var $holder = $(selector.holder);
+				if ($holder.is(':visible') && act == 'show') return;
+				if (!$holder.is(':visible') && act == 'hide') return;
+				var $iconset = $(selector.iconset).scrollTop(0);
+				if (!keepFilter) {
+					$iconset.find(selector.icon).removeClass([cssClass.filterMatch,cssClass.filterNotMatch,cssClass.filterSelected].join(' '));
+					currFilterCodeHead = '';
+				}
+				if (act == 'toggle') {
+					$holder.toggle(0);
+				} else if (act == 'show') {
+					$holder.show(0);
+				} else {
+					$holder.hide(0);
+				}
+				var $holder = $(selector.holder),
+					$iconMsgBox = $(selector.iconMsgBox)
+				var iconsetHeight = 
+					$holder.innerHeight()
+					-$(selector.header).outerHeight()
+					-$(selector.genreContainer).outerHeight();
+				$(selector.iconset).outerHeight(iconsetHeight);
+				
+				sortIconList(true);
+				showIconMsg();
+			};
+			var toggleTimestamps = function(act) {
+				var result = platformObj.toggleTimestamps(act);
+				if (!result) {
+					setTimeout(function() { toggleTimestamps(act); },delay.toggleTimestamps);
+				}
+			};
+			var toggleSortMode = function(sortMode) {
+				var act = 'select';
+				var aSortMode = (typeof sortMode !== 'string') ? sortMode : settings.icon_sort_by;
+				if (sortMode == 'toggle') {
+					var nSortMode = (aSortMode<3) ? aSortMode+1 : 1;
+					return toggleSortMode(nSortMode);
+				} else if (sortMode == 'init') { act = 'init'; aSortMode = settings.icon_sort_by;
+				} else if (aSortMode==settings.icon_sort_by) return false;
+
+				var sortModeStr = ['','sort_by_default','sort_by_usage','sort_by_recent'],
+					sortModeClass = ['','default','usage','recent'];
+				$(selector.sortModeBtn)
+					.attr('hhb-locale-title','{{iconlist.'+sortModeStr[aSortMode]+'}}')
+					.attr('title','Sort by ...')
+					.removeClass(sortModeClass.join(' '))
+					.addClass(sortModeClass[aSortMode]);
+				pushSettings({ icon_sort_by: aSortMode });
+				version.sort.pending++;
+				
+				sortIconList(true);
+				_gaTracker('sortMode',act,sortModeClass[aSortMode]);
+				bindIconListLocale();
+				return true;
+			};
+			var sortIconList = function(forced) {
+				if (version.sort.current==version.sort.pending) return;
+				
+				var tsNow = new Date().getTime();
+				if (!forced && tsNow<timestamps.sortIconList+delay.sortIconList) {
+					debugMsg(DEBUG_RUNTIME|DEBUG_FAIL,'Sort Icon List Skipped');
+					return;
+				}
+				setLoadingStatus('sort','init');
+				timestamps.sortIconList = tsNow;
+				var f_icon_sort_id = function(a, b) {
+					return 	($(a).data('hhb-object').id<$(b).data('hhb-object').id) ? -1 :
+							($(a).data('hhb-object').id>$(b).data('hhb-object').id) ? 1 : 0;
+				}
+				var f_icon_sort_usage = function(a, b) {
+					return 	($(a).data('hhb-object').usage.count>$(b).data('hhb-object').usage.count) ? -1 :
+							($(a).data('hhb-object').usage.count<$(b).data('hhb-object').usage.count) ? 1 :
+								($(a).data('hhb-object').usage.lastUsed>$(b).data('hhb-object').usage.lastUsed) ? -1 :
+								($(a).data('hhb-object').usage.lastUsed<$(b).data('hhb-object').usage.lastUsed) ? 1 : 
+									($(a).data('hhb-object').id<$(b).data('hhb-object').id) ? -1 :
+									($(a).data('hhb-object').id>$(b).data('hhb-object').id) ? 1 : 0;
+				}
+				var f_icon_sort_recent = function(a, b) {
+					return 	($(a).data('hhb-object').usage.lastUsed>$(b).data('hhb-object').usage.lastUsed) ? -1 :
+							($(a).data('hhb-object').usage.lastUsed<$(b).data('hhb-object').usage.lastUsed) ? 1 : 
+									($(a).data('hhb-object').id<$(b).data('hhb-object').id) ? -1 :
+									($(a).data('hhb-object').id>$(b).data('hhb-object').id) ? 1 : 0;
+				}
+				var f_current_sort = function() {
+					switch (settings.icon_sort_by) {
+					default:
+					case 1:	return f_icon_sort_id;	break;
+					case 2:	return f_icon_sort_usage;	break;
+					case 3:	return f_icon_sort_recent;	break;
+					}
+				}
+				var f_sort = f_current_sort();
+				var sortModeClass = ['','default','usage','recent'];
+				$(selector.iconsetIcon).sort(f_sort).appendTo(selector.iconset);
+				
+				version.sort.current = version.sort.pending;
+				debugMsg(DEBUG_RUNTIME|DEBUG_SUCCESS,'Sort Icon List [M:',sortModeClass[settings.icon_sort_by],',V:',version.sort.current,']');
+				setLoadingStatus('sort','complete');
+			};
+			var showIconMsg = function() {
+				var $icon = $(selector.iconsetIcon);
+				var $sicon = $icon.filter(':visible');
+				var i=$icon.length, si=$sicon.length;
+				var delay = 3000, fidur = 0, fiop = 1, fodur = 400, foop = 0.3 ,fease = "easeOutQuad";
+				var $iconMsgBox = $(selector.iconMsgBox)
+									.mouseenter(function() { $(this).clearQueue().fadeTo(fidur,fiop,fease); })
+									.mouseleave(function() { $(this).clearQueue().delay(delay).fadeTo(fodur,foop,fease); });
+				if (si > 0) 
+					if (isFiltering) $iconMsgBox.text(['Filtering...( ',si,'/',i,' )'].join('')).clearQueue().show().fadeTo(fidur,fiop,fease);
+					else $iconMsgBox.hide()
+				else $iconMsgBox.text('Icon not found').clearQueue().show().fadeTo(fidur,fiop,fease);
+				$iconMsgBox.filter(':visible').delay(delay).fadeTo(fodur,foop,fease);
+			};
+			
+			var insertIcon = function(obj) {
+				var msg = platformObj.getMsgInput();
+				var cidx = 0;
+				if (msg) {
+					if (msg.length >= filter.minLength) {
+						var matches = msg.match(filter.finder);
+						var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
+						var recodehead = codehead.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+						var clist = obj.data('hhb-code').toLowerCase().split(' ');
+						for (var idx=0;idx<clist.length;idx++) if (clist[idx].match(new RegExp('^'+recodehead))) cidx=idx;
+					}
+				}
+				var code = obj.data('hhb-code').split(' ')[cidx];
+				insertText(code);
+				addIconToRecent(obj,code);
+				
+				/* Large icon can only be inserted once in a time */
+				if (obj.find(selector.msgIcon).hasClass(cssClass.resized)) {
+					toggleHolder('hide');
+				}
+				debugMsg(DEBUG_RUNTIME,'Inserted Icon Code [',code,']');
+			};
+			var addIconToRecent = function(obj,code) {
+				var objIcon = obj.data('hhb-object');
+				var idxcode = obj.data('hhb-code').split(' ')[0];
+				if (!listUsage[idxcode]) {
+					var tgenre = obj.attr('hhb-genre').replace(' Recent','');
+					obj.attr('hhb-genre',tgenre+' Recent');
+				}
+				addPendingUsage(idxcode,objIcon,code);
+				version.appendSort++;
+			};
+			var insertText = function(text) {
+				if (isFiltering) {
+					platformObj.replaceText(text,filter.finder);
+					isFiltering = false;
+					var msg = platformObj.getMsgInput();
+					msg = (msg) ? msg : '';
+					var matches = msg.match(filter.finder);
+					var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
+					_gaTracker('icon','filter','found',codehead.length);
+				} else {
+					platformObj.insertText(text);
+				}
+			};
+			
+			var selectIcon = function(obj) {
+				var selected = $(selector.filterSelectedIcon);
+				selected.removeClass(cssClass.filterSelected);
+				obj.addClass(cssClass.filterSelected);
+				var iconset = $(selector.iconset);
+				iconset.scrollTop(obj.offset().top-iconset.offset().top+iconset.scrollTop()-5);
+			};
+			var moveIconSelection = function(direction,step) {
+				var org = $(selector.filterSelectedIcon);
+				var nicon = (direction>0) ? org.nextAll(selector.filterMatchIcon) : org.prevAll(selector.filterMatchIcon);
+				nicon = (nicon.length > step) ? nicon.slice(step-1,step) : nicon.last();
+				if (nicon.length > 0) {
+					selectIcon(nicon);
+				}
+			};
+			var selectIconNext = function() {
+				moveIconSelection(1,1);
+			};
+			var selectIconNextPage = function() {
+				moveIconSelection(1,filter.pageSize);
+			};
+			var selectIconLast = function() {
+				moveIconSelection(1,Number.MAX_VALUE);
+			};
+			var selectIconPrev = function() {
+				moveIconSelection(-1,1);
+			};
+			var selectIconPrevPage = function() {
+				moveIconSelection(-1,filter.pageSize);
+			};
+			var selectIconFirst = function() {
+				moveIconSelection(-1,Number.MAX_VALUE);
+			};
+			var insertSelectedIcon = function(dismiss) {
+				var selected = $(selector.filterSelectedIcon);
+				if (selected.length > 0) {
+					var objIcon = selected.first();
+					insertIcon(objIcon);
+				}
+				if (dismiss) {
+					toggleHolder('hide');
+				}
+			};
+			var filterIcon = function() {
+				isFiltering = false;
+				var msg = platformObj.getMsgInput();
+				if (msg) {
+					if (msg.length >= filter.minLength) {
+						var matches = msg.match(filter.finder);
+						var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
+						var recodehead = codehead.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+						
+						if (recodehead.length >= filter.minLength) {
+							var fselector = function() { 
+								var ism = false, clist = $(this).data('hhb-code').toLowerCase().split(' ');
+								for (var idx=0;idx<clist.length;idx++) if (clist[idx].match(new RegExp('^'+recodehead))) return true;
+								return false;
+							};
+							var $icons = $(selector.iconsetIcon);
+							var filterNotMatch = $icons.not(fselector);
+							var filterMatch = $icons.not(selector.iconMissing).filter(fselector);
+							if (currFilterCodeHead!=codehead) {
+								filterNotMatch.removeClass([cssClass.filterMatch,cssClass.filterSelected].join(' ')).addClass(cssClass.filterNotMatch);
+								filterMatch.removeClass([cssClass.filterNotMatch,cssClass.filterSelected].join(' ')).addClass(cssClass.filterMatch);
+								if (filterMatch.length > 0) selectIcon(filterMatch.first());
+							}
+							if (filterMatch.length > 0) {
+								isFiltering = true;
+								toggleHolder('show',true);
+								showIconMsg();
+							} else {
+								toggleHolder('hide',true);
+							}
+							showIconMsg();
+							currFilterCodeHead = codehead;
+							debugMsg(DEBUG_RUNTIME,'Filtered [C:',codehead,',F:',filterMatch.length,']');
+						}
+					}
+					if (!isFiltering) {
+						toggleHolder('hide');
+					}
+				} else {
+					toggleHolder('hide');
+				}
+			};
+			var initializeHotkey = function() {
+				var $target = platformObj.getMsgBox(),
+					$target = ($target.length > 0 ? $target : $(document));
+				$target.keydown(function(e) {
+					if ($(selector.holder).is(':visible')) {
+						if (e.which == 9 || e.which == 13) {	/* Press [Tab], [Enter] */
+							filterIcon();
+							insertSelectedIcon(true);
+							if (env.platform=='justin') commitUsage();
+							return false;
+						} else if (e.which == 45) {	/* Press [Insert] */
+							insertSelectedIcon();
+							return false;
+						} else if (e.which == 27) {	/* Press [Escape] */
+							toggleHolder('hide');
+							return false;
+						} else if (e.which == 33) {	/* Press [PageUp] */
+							selectIconPrevPage();
+							return false;
+						} else if (e.which == 34) {	/* Press [PageDown] */
+							selectIconNextPage();
+							return false;
+						} else if (e.which == 36) {	/* Press [Home] */
+							selectIconFirst();
+							return false;
+						} else if (e.which == 35) {	/* Press [End] */
+							selectIconLast();
+							return false;
+						} else if (e.which == 37) {	/* Press [Left] */
+							selectIconPrev();
+							return false;
+						} else if (e.which == 39) {	/* Press [Right] */
+							selectIconNext();
+							return false;
+						}
+					} else {
+						if (e.which == 13) {	/* Press [Enter] (Send Message) */
+							commitUsage();
+						}
+					}
+				}).keyup(function(e) {
+					if ((e.which == 8 || e.which == 32 || e.which == 46) ||	/* backspace, space, delete */
+						(e.which >= 48 && e.which <= 90) ||	/* 0-9, a-z */
+						(e.which >= 96 && e.which <= 111) || /* numpad */
+						(e.which >= 186 && e.which <= 222) /* symbol */
+					) {
+						if (timerFilter) clearTimeout(timerFilter);
+						timerFilter = setTimeout(function() {
+							filterIcon();
+						},delay.filter);
+					}
+					if ($(selector.holder).is(':visible')) {
+						if (e.which == 13) {	/* Press [Enter] */
+							toggleHolder('hide');
+							return false;
+						}
+					}
+				});
+			};
+			
+			var addPendingUsage = function(idxcode,objIcon,code) {
+				var usage = (listPendingUsage[idxcode]) ? listPendingUsage[idxcode].usage : { count:0, lastUsed:0 };
+				usage = {	count: usage.count+1, 
+							lastUsed: new Date().getTime()	};
+				code = (code) ? code : objIcon.code[0];
+				listPendingUsage[idxcode] = { icon: objIcon, code: code, usage: usage };
+			};
+			var commitUsage = function() {
+				if (env.usageLoaded) {
+					var count=0,tpusage={};
+					$.each(listPendingUsage, function(key,obj) {
+						var tusage = $.extend({count:0,lastUsed:0},obj.usage);
+						tpusage[key] = tusage;
+						count++;
+					});
+					listPendingUsage = {};
+					if (count==0) return false;
+					sendMessage({commitUsage: tpusage},
+						function(response) {
+							if (!response) return;
+							if (!response.success) return;
+							if (!response.count) return;
+							if (response.count==0) return;
+							version.sort.pending++;
+							debugMsg(DEBUG_EXT,'Icon Usage Committed');
+						});
+				}
+			};
+			var resetUsage = function() {
+				$.each(listIcon,function(key,obj) {
+					var icon = obj;
+					var idx = icon.genre.indexOf('Recent');
+					if (idx > -1) icon.genre.splice(idx, 1);
+					icon.usage.count = 0;
+					icon.usage.lastUsed = 0;
+					icon.domObject.attr('hhb-genre',icon.genre.join(' '));
+				});
+				listUsage = {};
+				clearUsage();
+				version.sort.pending++;
+				selectGenre('refresh');
+				debugMsg(DEBUG_EXT,'Usage Data Reset!');
+			};
+			
+			if (isStatusInited('initEmoticon')) return false;
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initEmoticon');
+			setLoadingStatus('initEmoticon','init');
+			initializeHotkey();
+			bindUIControl();
+		};
+		var initNameBanner = function(nblist,nbcontrol) {
+			if (!nblist || !nbcontrol) return false;
+			var analyzeNameBanner = function(nblist,nbcontroll) {
+				if (env.platform==''|| env.channel=='') return false;
+				setLoadingStatus('analyzeNameBanner','init');
+				var nbdict = {},objChannel = null;
+				var clist,olist=[];
+				var reCh = new RegExp('^'+env.channel+'(?:@'+env.platform+')?$','i');
+				var reName = new RegExp('^(\\w+)(?:@'+env.channel+')?(?:@'+env.platform+')?$','i');
+				var filterName = function(arr,idonly) {
+					var res=[],arr=[].concat(arr);
+					$.each(arr,function(idx,obj) {
+						var m = obj.match(reName);
+						if (m) res.push((idonly) ? m[1] : obj);
+					});
+					return res;
+				};
+				var style = '';
+				/* Search Match Channel */
+				$.each(nbcontrol,function(idx,obj) {
+					for(var i=0;i<obj.channel.length;i++) {
+						if (obj.channel[i].match(reCh)) {
+							objChannel = obj;
+							break;
+						}
+					}
+				});
+				
+				/* Channel Object */
+				objChannel = $.extend({	whitelistonly:false,
+										whitelist: [],
+										blacklist: []
+									},objChannel);
+									
+				/* Channel Badge */
+				if (objChannel.badge) {
+					var badge = objChannel.badge;
+					var badges = $.extend({ enable: false, broadcaster: null, moderator: null },badge['default']);
+					badges = $.extend(badges,badge[env.platform]);
+					
+					if (badges.enable) style += platformObj.genBadgeCss(badges);
+				}
+				
+				/* Check Channel Config */
+				if (objChannel.whitelistonly) {
+					/* Whitelist */
+					if (objChannel.whitelist.length > 0) {
+						clist = filterName(objChannel.whitelist);
+						$.each(nblist,function(idx,obj){
+							obj = $.extend({id:[],img:'',width:100,height:16,specialEnroll:false},obj);
+							if (obj.specialEnroll) {	/* Special Enroll (always included) */
+								var idlist = filterName(obj.id);
+								$.each(idlist,function(idx2,obj2) {
+									olist[obj2] = obj;
+								});
+							} else {
+								$.each(clist,function(idx2,obj2){
+									if ($.inArray(obj2,obj.id)>=0) {
+										clist.splice(idx2,1);
+										olist[obj2] = obj;
+									}
+								});
+							}
+						});
+					}
+				} else {
+					/* import All Name Banner */
+					$.each(nblist,function(idx,obj){
+						obj = $.extend({id:[],img:'',width:100,height:16,specialEnroll:false},obj);
+						clist = filterName(obj.id);
+						$.each(clist,function(idx2,obj2){
+							olist[obj2] = obj;
+						});
+					});
+				}
+				/* Channel blacklist handle */
+				if (objChannel.blacklist.length > 0) {
+					clist = filterName(objChannel.blacklist);
+					for (var i=0;i<clist.length;i++) {
+						if (olist[clist[i]] && !olist[clist[i]].specialEnroll) {
+							delete olist[clist[i]];
+						}
+					}
+				}
+				/* remove namespace */
+				/* generate css */
+				var tlist = $.extend({},olist);
+				var count=0;
+				olist = {};
+				$.each(tlist,function(key,obj) {
+					var m = key.match(reName);
+					if (m.length>=2) {
+						var classname = 'nb-hhb-'+count;
+						var nobj = $.extend(obj,{
+								cssClass: [cssClass.nameBanner,classname].join(' '),
+								style: [	'.',cssClass.nameBanner,'.',classname,'{',
+											'height: ',obj.height,'px;',
+											'background-image: url(',obj.img,');',
+											'}'
+										].join('')
+							});
+						olist[m[1]] = nobj;
+						style+=nobj.style;
+						count++;
+					}
+				});
+				
+				if (count>0) {
+					/* bind css */
+					$('style.hhb-nb-style').detach();
+					$('<style type="text/css" class="hhb-nb-style">').text(style).appendTo("head");
+					env.nameBannerEnabled = true;
+				}
+				setLoadingStatus('analyzeNameBanner','complete');
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Name Banner List [NB:',count,']');
+				return olist;
+			};
+
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initNameBanner');
+			setLoadingStatus('initNameBanner','init');
+			return analyzeNameBanner(nblist,nbcontrol);
+		};
+		var initDarkMode = function() {
+			var toggleDarkMode = function(darkMode) {
+				var act = 'select';
+				var aDarkMode = (typeof darkMode !== 'string') ? darkMode : !settings.dark_mode;
+				if (darkMode == 'toggle') {
+					return ($(selector.darkModeAcceptor).hasClass(cssClass.darkMode)) ?
+								toggleDarkMode(false) : toggleDarkMode(true);
+				} else if (darkMode == 'init') { act = 'init'; aDarkMode = settings.dark_mode;
+				} else if (aDarkMode==settings.dark_mode) return false;
+				if (aDarkMode) {
+					if (!$(selector.darkModeAcceptor).hasClass(cssClass.darkMode)) {
+						$(selector.darkModeAcceptor).addClass(cssClass.darkMode);
+					}
+				} else {
+					if ($(selector.darkModeAcceptor).hasClass(cssClass.darkMode)) {
+						$(selector.darkModeAcceptor).removeClass(cssClass.darkMode);
+					}
+				}
+				$(selector.darkModeBtn)
+					.attr('hhb-locale-title','{{iconlist.'+(aDarkMode?'dark_mode':'light_mode')+'}}')
+					.attr('title',(aDarkMode ? 'Dark':'Light')+' Mode');
+				pushSettings({ dark_mode: aDarkMode });
+				_gaTracker('darkMode',act,(aDarkMode ? 'dark' : 'light'));
+				bindIconListLocale();
+				return true;
+			};
+			var bindDarkModeBtn = function() {
+				if (retryCount.bindDarkModeBtn==0) setLoadingStatus('bindDarkModeBtn','init');
+				var $darkmodeBtn = $(selector.darkModeBtn);
+				if ($darkmodeBtn.length==0) {
+					setTimeout(function() { bindDarkModeBtn(); },delay.bindDarkModeBtn);
+					retryCount.bindDarkModeBtn++;
+					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Dark/Light Mode Retry...[ R:',retryCount.bindDarkModeBtn,']');
+					setLoadingStatus('bindDarkModeBtn','retry');
+					return false;
+				}
+				/* Activate dark mode button */
+				$darkmodeBtn.click(function() {
+					toggleDarkMode('toggle');
+				});
+				toggleDarkMode('init');
+				
+				retryCount.bindDarkModeBtn = 0;
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Dark/Light Mode');
+				setLoadingStatus('bindDarkModeBtn','complete');
+			};
+			
+			if (isStatusInited('initDarkMode')) return false;
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initDarkMode');
+			setLoadingStatus('initDarkMode','init');
+			bindDarkModeBtn();
+		};
+		var initBookmark = function() {
+			var checkIsBookmarked = function() {
+				var _channel = { platform: env.platform, channel: env.channel };
+				chrome.runtime.sendMessage(editorExtensionId, {isBookmarked: _channel},
+					function(response) {
+						if (!response) $(selector.bookmarkBtn).hide();
+						else if (response.success) {
+							debugMsg(DEBUG_ENV,'Bookmark Status - '+((response.isBookmarked)?'':'Not ')+'Bookmarked [C:',[env.channel,env.platform].join('@'),']');
+							if (response.isBookmarked) {
+								$(selector.bookmarkBtn)
+									.addClass('isBookmarked')
+									.attr('hhb-locale-title','{{iconlist.bookmarked}}')
+									.attr('title','Bookmarked');
+								$(selector.playerBookmark)
+									.addClass('isBookmarked')
+									.attr('hhb-locale-title','{{info.name}} - {{iconlist.bookmarked}}')
+									.attr('title','Bookmarked');
+							} else {
+								$(selector.bookmarkBtn)
+									.removeClass('isBookmarked')
+									.attr('hhb-locale-title','{{iconlist.bookmark}}')
+									.attr('title','Bookmark');
+								$(selector.playerBookmark)
+									.removeClass('isBookmarked')
+									.attr('hhb-locale-title','{{info.name}} - {{iconlist.bookmark}}')
+									.attr('title','Bookmark');
+							}
+						} else {
+							$(selector.bookmarkBtn).hide();
+						}
+						bindIconListLocale();
+					});
+			};
+			var bindPlayerBookmarkBtn = function() {
+				var $playerBookmark = $(selector.playerBookmark);
+				if ($playerBookmark.length > 0) return true;
+				if (retryCount.bindPlayerBookmarkBtn==0) setLoadingStatus('bindPlayerBookmarkBtn','init');
+				var $player = platformObj.getPlayer();
+				if ($player.length > 0) {
+					var $playerBookmark = platformObj.genPlayerBookmarkBtn(id.playerBookmark);
+					var isPendingHide = true;
+					var f_showBtn = function() { isPendingHide = false; $playerBookmark.css({ top: $player.position().top, left: $player.position().left }).show(); };
+					var f_hideBtn = function() { isPendingHide = true; setTimeout(function() { if (isPendingHide) $playerBookmark.hide(); },400); };
+					$playerBookmark.hide()
+						.click(function() { toggleBookmark(); })
+						.mousemove(function() { f_showBtn(); })
+						.insertAfter($player);
+					$player
+						.mouseover(function() { f_showBtn(); })
+						.mousemove(function() { f_showBtn(); })
+						.mouseout(function() { f_hideBtn(); });
+					checkIsBookmarked();
+					retryCount.bindPlayerBookmarkBtn = 0;
+					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Player Bookmark Button');
+					setLoadingStatus('bindPlayerBookmarkBtn','complete');
+					return true;
+				}
+				if (retryCount.bindPlayerBookmarkBtn < limit.bindPlayerBookmarkBtn) {
+					setTimeout(function() { bindPlayerBookmarkBtn(); },delay.bindPlayerBookmarkBtn);
+					retryCount.bindPlayerBookmarkBtn++;
+					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Player Bookmark Button Retry...[ R:',retryCount.bindPlayerBookmarkBtn,']');
+					setLoadingStatus('bindPlayerBookmarkBtn','retry');
+				} else {
+					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Binding Player Bookmark Button Failed!');
+					setLoadingStatus('bindPlayerBookmarkBtn','fail');
+				}
+			};
+			var bindBookmarkBtn = function() {
+				if (retryCount.bindBookmarkBtn==0) setLoadingStatus('bindBookmarkBtn','init');
+				var $bookmarkBtn = $(selector.bookmarkBtn);
+				if ($bookmarkBtn.length==0) {
+					setTimeout(function() { bindBookmarkBtn(); },delay.bindBookmarkBtn);
+					retryCount.bindBookmarkBtn++;
+					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Bookmark Button Retry...[ R:',retryCount.bindBookmarkBtn,']');
+					setLoadingStatus('bindBookmarkBtn','retry');
+					return false;
+				}
+				/* Activate bookmark button */
+				$bookmarkBtn.click(function() { toggleBookmark(); });
+				checkIsBookmarked();
+				
+				retryCount.bindBookmarkBtn = 0;
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Bookmark Button');
+				setLoadingStatus('bindBookmarkBtn','complete');
+			}
+			var toggleBookmark = function() {
+				/* Make a simple request: */
+				var _bookmark = { platform: env.platform, channel: env.channel };
+				chrome.runtime.sendMessage(editorExtensionId, {toggleBookmark: _bookmark},
+					function(response) {
+						if (!response) $(selector.bookmarkBtn).hide();
+						else if (response.success) checkIsBookmarked();
+					});
 			}
 			
-			$('a.hhb').attr('href',versionInfo.siteURI);
-			$('a.fb').attr('href',versionInfo.pageURI);
+			if (isStatusInited('initBookmark')) return false;
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initBookmark');
+			setLoadingStatus('initBookmark','init');
+			bindBookmarkBtn();
+			bindPlayerBookmarkBtn();
 		};
+		var initIncomingParser = function() {
+			var parseIncoming = function() {
+				var results = { msgParsed: 0, iconEmotified: 0, iconResized: 0, nameBannerShown: 0};
+				
+				/* bind name banner */
+				if (env.nameBannerEnabled) {
+					var result = platformObj.bindNameBanner();
+					if (result.name>0) $.extend(results,{ msgParsed: result.name, nameBannerShown: result.binded });
+				}
+				/* bind icon resizer */
+				if (env.iconInjected) {
+					var result = platformObj.bindResizer();
+					if (result.msg>0) $.extend(results,{ msgParsed: result.msg, iconEmotified: result.emotified, iconResized: result.resized });
+				}
+				if (results.msgParsed>0) debugMsg(DEBUG_RUNTIME,'Messages Parsed [M:',results.msgParsed,',E:',results.iconEmotified,',R:',results.iconResized,',NB:',results.nameBannerShown,']');
+				setTimeout(function() { parseIncoming(); },delay.parseIncoming);
+			};
+
+			if (isStatusInited('initIncomingParser')) return false;
+			setLoadingStatus('initIncomingParser','init');
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initIncomingParser');
+			parseIncoming();
+			setLoadingStatus('initIncomingParser','complete');
+		};
+		
+		/* Shared Methods */
 		var bindIconListLocale = function() {
 			locale.bindLocale(settings.locale,null,function() {
 				var $name = $('#hhb-header .name');
@@ -1715,526 +2945,56 @@
 					.attr('title',locale.getLocaleMsg('info.last_update',[versionInfo.lastUpdate]));
 			});
 		}
-		var bindHolderUI = function() {
-			if (retryCount.bindHolderUI==0) setTimerStart('bindHolderUI');
-			var $holderCon = platformObj.getHolderContainer();
-			if ($holderCon.length) {
-				var $holder = $(selector.holder);
-				if (!$holder.length > 0) {
-					var palHolder = platformObj.genHolder(id,versionInfo).hide();
-					$holderCon.append(palHolder);
-					bindIconListLocale();
-					
-					// Activate dark mode button
-					$(selector.darkModeBtn).click(function() {
-						toggleDarkMode('toggle');
-					});
-					toggleDarkMode('init');
-					debugMsg('Activated Dark/Light Mode');
-					
-					// Activate sort mode button
-					$(selector.sortModeBtn).click(function() {
-						toggleSortMode('toggle');
-					});
-					toggleSortMode('init');
-					debugMsg('Activated Sort Mode');
-					
-					// Activate reset button
-					$(selector.resetBtn).click(function() {
-						if (confirm(locale.getLocaleMsg('iconlist.confirm.reset_icon_usage'))) resetUsage();
-					});
-					debugMsg('Activated Reset Button');
-					
-					var checkIsBookmarked = function() {
-						var _channel = { platform: env.platform, channel: env.channel };
-						chrome.runtime.sendMessage(editorExtensionId, {isBookmarked: _channel},
-							function(response) {
-								if (!response) $(selector.bookmarkBtn).hide();
-								else if (response.success) {
-									debugMsg(((response.isBookmarked)?'':'Not ')+'Bookmark [C:',[env.channel,env.platform].join('@'),']');
-									if (response.isBookmarked) 
-										$(selector.bookmarkBtn)
-										.addClass('isBookmarked')
-										.attr('hhb-locale-title','{{iconlist.bookmarked}}')
-										.attr('title','Bookmarked');
-									else 
-										$(selector.bookmarkBtn)
-										.removeClass('isBookmarked')
-										.attr('hhb-locale-title','{{iconlist.bookmark}}')
-										.attr('title','Bookmark');
-								} else {
-									$(selector.bookmarkBtn).hide();
-								}
-								bindIconListLocale();
-							});
-					};
-					// Activate bookmark button
-					$(selector.bookmarkBtn).click(function() {
-						// Make a simple request:
-						var _bookmark = { platform: env.platform, channel: env.channel };
-						chrome.runtime.sendMessage(editorExtensionId, {toggleBookmark: _bookmark},
-							function(response) {
-								if (!response) $(selector.bookmarkBtn).hide();
-								else if (response.success) checkIsBookmarked();
-							});
-					});
-					checkIsBookmarked();
-					debugMsg('Activated Bookmark Button');
-					
-					// Show timestamps
-					toggleTimestamps('show');
-					
-					version.iconList.pending++;
-					bindGenreList();	// list all HihiBox Genre
-					bindIconList();	// list all HihiBox icon
-					
-					retryCount.bindHolderUI = 0;
-					debugMsg('Binded Holder UI [G:',listGenre.length,', I:',listIcon.length,']');
-					setTimerEnd('bindHolderUI');
-				}
-			} else {
-				setTimeout(function() { bindHolderUI(); },delay.bindHolderUI);
-				retryCount.bindHolderUI++;
-				debugMsg('Binding Holder UI Retry...[ R:',retryCount.bindHolderUI,']');
-			}
-		};
-		var bindButtonUI = function() {
-			if (retryCount.bindButtonUI==0) setTimerStart('bindButtonUI');
-			var $buttonCon = platformObj.getButtonContainer();
-			if ($buttonCon.length > 0) {
-				var $button = $(selector.button);
-				if ($button.length==0) {
-					var palButton = platformObj.genToggleButton(id.button)
-						.click(function() {
-							toggleHolder('toggle');
-						});
-					var palButtonFront = platformObj.getButtonFront();
-					if (palButtonFront.length > 0) palButton.insertAfter(palButtonFront);
-					else $buttonCon.append(palButton);
-					checkVersion();
-					platformObj.onBindedToggleButton();
-					retryCount.bindButtonUI = 0;
-					debugMsg('Binded Toggle Button UI');
-					setTimerEnd('bindButtonUI');
-				}
-			} else {
-				setTimeout(function() { bindButtonUI(); },delay.bindButtonUI);
-				retryCount.bindButtonUI++;
-				debugMsg('Binding Toggle Button UI Retry...[ R:',retryCount.bindButtonUI,']');
-			}
-		};
-		var toggleHolder = function(act,keepFilter) {
-			var $holder = $(selector.holder);
-			if ($holder.is(':visible') && act == 'show') return;
-			if (!$holder.is(':visible') && act == 'hide') return;
-			var $iconset = $(selector.iconset).scrollTop(0);
-			if (!keepFilter) {
-				$iconset.find(selector.icon).removeClass([cssClass.filterMatch,cssClass.filterNotMatch,cssClass.filterSelected].join(' '));
-				currFilterCodeHead = '';
-			}
-			if (act == 'toggle') {
-				$holder.toggle(0);
-			} else if (act == 'show') {
-				$holder.show(0);
-			} else {
-				$holder.hide(0);
-			}
-			var $holder = $(selector.holder),
-				$iconMsgBox = $(selector.iconMsgBox)
-			var iconsetHeight = 
-				$holder.innerHeight()
-				-$(selector.header).outerHeight()
-				-$(selector.genreContainer).outerHeight();
-			$(selector.iconset).outerHeight(iconsetHeight);
-			
-			sortIconList(true);
-			showIconMsg();
-		};
-		var toggleDarkMode = function(darkMode) {
-			var act = 'select';
-			var aDarkMode = (typeof darkMode !== 'string') ? darkMode : !settings.dark_mode;
-			if (darkMode == 'toggle') {
-				return ($(selector.darkModeAcceptor).hasClass(cssClass.darkMode)) ?
-							toggleDarkMode(false) : toggleDarkMode(true);
-			} else if (darkMode == 'init') { act = 'init'; aDarkMode = settings.dark_mode;
-			} else if (aDarkMode==settings.dark_mode) return false;
-			if (aDarkMode) {
-				if (!$(selector.darkModeAcceptor).hasClass(cssClass.darkMode)) {
-					$(selector.darkModeAcceptor).addClass(cssClass.darkMode);
-				}
-			} else {
-				if ($(selector.darkModeAcceptor).hasClass(cssClass.darkMode)) {
-					$(selector.darkModeAcceptor).removeClass(cssClass.darkMode);
-				}
-			}
-			$(selector.darkModeBtn)
-				.attr('hhb-locale-title','{{iconlist.'+(aDarkMode?'dark_mode':'light_mode')+'}}')
-				.attr('title',(aDarkMode ? 'Dark':'Light')+' Mode');
-			pushSettings({ dark_mode: aDarkMode });
-			_gaTracker('darkMode',act,(aDarkMode ? 'dark' : 'light'));
-			bindIconListLocale();
-			return true;
-		};
-		var toggleSortMode = function(sortMode) {
-			var act = 'select';
-			var aSortMode = (typeof sortMode !== 'string') ? sortMode : settings.icon_sort_by;
-			if (sortMode == 'toggle') {
-				var nSortMode = (aSortMode<3) ? aSortMode+1 : 1;
-				return toggleSortMode(nSortMode);
-			} else if (sortMode == 'init') { act = 'init'; aSortMode = settings.icon_sort_by;
-			} else if (aSortMode==settings.icon_sort_by) return false;
-
-			var sortModeStr = ['','sort_by_default','sort_by_usage','sort_by_recent'],
-				sortModeClass = ['','default','usage','recent'];
-			$(selector.sortModeBtn)
-				.attr('hhb-locale-title','{{iconlist.'+sortModeStr[aSortMode]+'}}')
-				.attr('title','Sort by ...')
-				.removeClass(sortModeClass.join(' '))
-				.addClass(sortModeClass[aSortMode]);
-			pushSettings({ icon_sort_by: aSortMode });
-			version.sort.pending++;
-			
-			sortIconList(true);
-			_gaTracker('sortMode',act,sortModeClass[aSortMode]);
-			bindIconListLocale();
-			return true;
-		};
-		var selectGenre = function(genre) {
-			var act = 'select';
-			var aGenre = ($.inArray(genre,listGenre) >= 0 ? genre : settings.last_genre);
-			if (genre=='init'||genre=='refresh') { act = genre; aGenre = settings.last_genre; version.sort.pending++;
-			} else if (aGenre==settings.last_genre) return false;
-			
-			sortIconList(true);
-			var $genre = $(selector.genreContainerGenre).removeClass(cssClass.active)
-				.filter(selector.genre+'[hhb-genre="'+aGenre+'"]').addClass(cssClass.active);
-			if ($genre.length==0) return selectGenre(settings.default_genre);
-			var $icon = $(selector.iconsetIcon).removeClass(cssClass.iconHide);
-			var $hicon = $icon.not([
-								selector.icon,
-								'[hhb-genre~="'+aGenre+'"]',
-								((aGenre=='Recent') ? ':lt(50)' : '')].join('')
-							).addClass(cssClass.iconHide);
-			var csicon = $icon.length-$hicon.length;
-			showIconMsg();
-			pushSettings({ last_genre: aGenre });
-			
-			_gaTracker('genre',act,aGenre);
-			debugMsg('Selected Genre [G:',aGenre,',I:',csicon,']');
-			return true;
-		};
-		var insertIcon = function(obj) {
-			var msg = platformObj.getMsgInput();
-			var cidx = 0;
-			if (msg) {
-				if (msg.length >= filter.minLength) {
-					var matches = msg.match(filter.finder);
-					var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
-					var recodehead = codehead.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-					var clist = obj.data('hhb-code').toLowerCase().split(' ');
-					for (var idx=0;idx<clist.length;idx++) if (clist[idx].match(new RegExp('^'+recodehead))) cidx=idx;
-				}
-			}
-			var code = obj.data('hhb-code').split(' ')[cidx];
-			insertText(code);
-			addIconToRecent(obj,code);
-			
-			// Large icon can only be inserted once in a time
-			if (obj.find(selector.msgIcon).hasClass(cssClass.resized)) {
-				toggleHolder('hide');
-			}
-			debugMsg('Inserted Icon Code [',code,']');
-		};
-		var addIconToRecent = function(obj,code) {
-			var objIcon = obj.data('hhb-object');
-			var idxcode = obj.data('hhb-code').split(' ')[0];
-			if (!listUsage[idxcode]) {
-				var tgenre = obj.attr('hhb-genre').replace(' Recent','');
-				obj.attr('hhb-genre',tgenre+' Recent');
-			}
-			addPendingUsage(idxcode,objIcon,code);
-			version.appendSort++;
-		};
-		var toggleTimestamps = function(act) {
-			platformObj.toggleTimestamps(act);
-		};
-		var insertText = function(text) {
-			if (isFiltering) {
-				platformObj.replaceText(text,filter.finder);
-				isFiltering = false;
-				var msg = platformObj.getMsgInput();
-				msg = (msg) ? msg : '';
-				var matches = msg.match(filter.finder);
-				var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
-				_gaTracker('icon','filter','found',codehead.length);
-			} else {
-				platformObj.insertText(text);
-			}
-		};
-		var selectIcon = function(obj) {
-			var selected = $(selector.filterSelectedIcon);
-			selected.removeClass(cssClass.filterSelected);
-			obj.addClass(cssClass.filterSelected);
-			var iconset = $(selector.iconset);
-			iconset.scrollTop(obj.offset().top-iconset.offset().top+iconset.scrollTop()-5);
-		};
-		var moveIconSelection = function(direction,step) {
-			var org = $(selector.filterSelectedIcon);
-			var nicon = (direction>0) ? org.nextAll(selector.filterMatchIcon) : org.prevAll(selector.filterMatchIcon);
-			nicon = (nicon.length > step) ? nicon.slice(step-1,step) : nicon.last();
-			if (nicon.length > 0) {
-				selectIcon(nicon);
-			}
-		};
-		var selectIconNext = function() {
-			moveIconSelection(1,1);
-		};
-		var selectIconNextPage = function() {
-			moveIconSelection(1,filter.pageSize);
-		};
-		var selectIconLast = function() {
-			moveIconSelection(1,Number.MAX_VALUE);
-		};
-		var selectIconPrev = function() {
-			moveIconSelection(-1,1);
-		};
-		var selectIconPrevPage = function() {
-			moveIconSelection(-1,filter.pageSize);
-		};
-		var selectIconFirst = function() {
-			moveIconSelection(-1,Number.MAX_VALUE);
-		};
-		var insertSelectedIcon = function(dismiss) {
-			var selected = $(selector.filterSelectedIcon);
-			if (selected.length > 0) {
-				var objIcon = selected.first();
-				insertIcon(objIcon);
-			}
-			if (dismiss) {
-				toggleHolder('hide');
-			}
-		};
-		var filterIcon = function() {
-			isFiltering = false;
-			var msg = platformObj.getMsgInput();
-			if (msg) {
-				if (msg.length >= filter.minLength) {
-					var matches = msg.match(filter.finder);
-					var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
-					var recodehead = codehead.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-					
-					if (recodehead.length >= filter.minLength) {
-						var fselector = function() { 
-							var ism = false, clist = $(this).data('hhb-code').toLowerCase().split(' ');
-							for (var idx=0;idx<clist.length;idx++) if (clist[idx].match(new RegExp('^'+recodehead))) return true;
-							return false;
-						};
-						var $icons = $(selector.iconsetIcon);
-						var filterNotMatch = $icons.not(fselector);
-						var filterMatch = $icons.not(selector.iconMissing).filter(fselector);
-						if (currFilterCodeHead!=codehead) {
-							filterNotMatch.removeClass([cssClass.filterMatch,cssClass.filterSelected].join(' ')).addClass(cssClass.filterNotMatch);
-							filterMatch.removeClass([cssClass.filterNotMatch,cssClass.filterSelected].join(' ')).addClass(cssClass.filterMatch);
-							if (filterMatch.length > 0) selectIcon(filterMatch.first());
-						}
-						if (filterMatch.length > 0) {
-							isFiltering = true;
-							toggleHolder('show',true);
-							showIconMsg();
-						} else {
-							toggleHolder('hide',true);
-						}
-						showIconMsg();
-						currFilterCodeHead = codehead;
-						debugMsg('Filtered [C:',codehead,',F:',filterMatch.length,']');
-					}
-				}
-				if (!isFiltering) {
-					toggleHolder('hide');
-				}
-			} else {
-				toggleHolder('hide');
-			}
-		};
-		var initializeHotkey = function() {
-			var $target = platformObj.getMsgBox(),
-				$target = ($target.length > 0 ? $target : $(document));
-			$target.keydown(function(e) {
-				if ($(selector.holder).is(':visible')) {
-					if (e.which == 9 || e.which == 13) {	/* Press [Tab], [Enter] */
-						filterIcon();
-						insertSelectedIcon(true);
-						if (env.platform=='justin') commitUsage();
-						return false;
-					} else if (e.which == 45) {	/* Press [Insert] */
-						insertSelectedIcon();
-						return false;
-					} else if (e.which == 27) {	/* Press [Escape] */
-						toggleHolder('hide');
-						return false;
-					} else if (e.which == 33) {	/* Press [PageUp] */
-						selectIconPrevPage();
-						return false;
-					} else if (e.which == 34) {	/* Press [PageDown] */
-						selectIconNextPage();
-						return false;
-					} else if (e.which == 36) {	/* Press [Home] */
-						selectIconFirst();
-						return false;
-					} else if (e.which == 35) {	/* Press [End] */
-						selectIconLast();
-						return false;
-					} else if (e.which == 37) {	/* Press [Left] */
-						selectIconPrev();
-						return false;
-					} else if (e.which == 39) {	/* Press [Right] */
-						selectIconNext();
-						return false;
-					}
-				} else {
-					if (e.which == 13) {	/* Press [Enter] (Send Message) */
-						commitUsage();
-					}
-				}
-			}).keyup(function(e) {
-				if ((e.which == 8 || e.which == 32 || e.which == 46) ||	/* backspace, space, delete */
-					(e.which >= 48 && e.which <= 90) ||	/* 0-9, a-z */
-					(e.which >= 96 && e.which <= 111) || /* numpad */
-					(e.which >= 186 && e.which <= 222) /* symbol */
-				) {
-					if (timerFilter) clearTimeout(timerFilter);
-					timerFilter = setTimeout(function() {
-						filterIcon();
-					},delay.filter);
-				}
-				if ($(selector.holder).is(':visible')) {
-					if (e.which == 13) {	/* Press [Enter] */
-						toggleHolder('hide');
-						return false;
-					}
-				}
-			});
-		};
-		var parseIncoming = function() {
-			/* bind name banner */
-			if (env.nameBannerEnabled) {
-				var result = platformObj.bindNameBanner();
-				if (result.name > 0) 
-					debugMsg('Names Parsed [M:',result.name,',B:',result.binded,']');
-			}
-			/* bind icon resizer */
-			if (env.iconInjected) {
-				var result = platformObj.bindResizer();
-				if (result.msg > 0) 
-					debugMsg('Messages Parsed [M:',result.msg,',R:',result.resized,']');
-			}
-			setTimeout(function() { parseIncoming(); },delay.parseIncoming);
-		};
-		var sortIconList = function(forced) {
-			if (version.sort.current==version.sort.pending) return;
-			
-			var tsNow = new Date().getTime();
-			if (!forced && tsNow<timestamps.sortIconList+delay.sortIconList) {
-				debugMsg('Sort Icon List Skipped');
-				return;
-			}
-			setTimerStart('sort');
-			timestamps.sortIconList = tsNow;
-			var f_icon_sort_id = function(a, b) {
-				return 	($(a).data('hhb-object').id<$(b).data('hhb-object').id) ? -1 :
-						($(a).data('hhb-object').id>$(b).data('hhb-object').id) ? 1 : 0;
-			}
-			var f_icon_sort_usage = function(a, b) {
-				return 	($(a).data('hhb-object').usage.count>$(b).data('hhb-object').usage.count) ? -1 :
-						($(a).data('hhb-object').usage.count<$(b).data('hhb-object').usage.count) ? 1 :
-							($(a).data('hhb-object').usage.lastUsed>$(b).data('hhb-object').usage.lastUsed) ? -1 :
-							($(a).data('hhb-object').usage.lastUsed<$(b).data('hhb-object').usage.lastUsed) ? 1 : 
-								($(a).data('hhb-object').id<$(b).data('hhb-object').id) ? -1 :
-								($(a).data('hhb-object').id>$(b).data('hhb-object').id) ? 1 : 0;
-			}
-			var f_icon_sort_recent = function(a, b) {
-				return 	($(a).data('hhb-object').usage.lastUsed>$(b).data('hhb-object').usage.lastUsed) ? -1 :
-						($(a).data('hhb-object').usage.lastUsed<$(b).data('hhb-object').usage.lastUsed) ? 1 : 
-								($(a).data('hhb-object').id<$(b).data('hhb-object').id) ? -1 :
-								($(a).data('hhb-object').id>$(b).data('hhb-object').id) ? 1 : 0;
-			}
-			var f_current_sort = function() {
-				switch (settings.icon_sort_by) {
-				default:
-				case 1:	return f_icon_sort_id;	break;
-				case 2:	return f_icon_sort_usage;	break;
-				case 3:	return f_icon_sort_recent;	break;
-				}
-			}
-			var f_sort = f_current_sort();
-			var sortModeClass = ['','default','usage','recent'];
-			$(selector.iconsetIcon).sort(f_sort).appendTo(selector.iconset);
-			
-			version.sort.current = version.sort.pending;
-			debugMsg('Sort Icon List [M:',sortModeClass[settings.icon_sort_by],',V:',version.sort.current,']');
-			setTimerEnd('sort');
-		};
-		var addPendingUsage = function(idxcode,objIcon,code) {
-			var usage = (listPendingUsage[idxcode]) ? listPendingUsage[idxcode].usage : { count:0, lastUsed:0 };
-			usage = {	count: usage.count+1, 
-						lastUsed: new Date().getTime()	};
-			code = (code) ? code : objIcon.code[0];
-			listPendingUsage[idxcode] = { icon: objIcon, code: code, usage: usage };
-		};
-		var commitUsage = function() {
-			if (env.usageLoaded) {
-				var count=0,tpusage={};
-				$.each(listPendingUsage, function(key,obj) {
-					var tusage = $.extend({count:0,lastUsed:0},obj.usage);
-					tpusage[key] = tusage;
-					count++;
-				});
-				listPendingUsage = {};
-				if (count==0) return false;
-				sendMessage({commitUsage: tpusage},
-					function(response) {
-						if (!response) return;
-						if (!response.success) return;
-						if (!response.count) return;
-						if (response.count==0) return;
-						version.sort.pending++;
-						debugMsg('Icon Usage Committed');
-					});
-			}
-		};
-		var resetUsage = function() {
-			$.each(listIcon,function(key,obj) {
-				var icon = obj;
-				var idx = icon.genre.indexOf('Recent');
-				if (idx > -1) icon.genre.splice(idx, 1);
-				icon.usage.count = 0;
-				icon.usage.lastUsed = 0;
-				icon.domObject.attr('hhb-genre',icon.genre.join(' '));
-			});
-			listUsage = {};
-			clearUsage();
-			version.sort.pending++;
-			selectGenre('refresh');
-			debugMsg('Usage Data Reset!');
-		};
+		
 		var _gaTracker = function(category,action,label,value) {
 			label = (label) ? label : '';
 			value = (value) ? value : 1;
-			ga('send', {
-				'hitType': 'event',			// Required.
-				'eventCategory': category,	// Required.
-				'eventAction': action,		// Required.
-				'eventLabel': label,
-				'eventValue': value
-			});
-			//debugMsg('Google Analytics Data Submitted');
-			//[C:',category,', A:',action,', L:',label,', V:',value,']');
+			if (enableGA)
+				ga('send', {
+					'hitType': 'event',			// Required.
+					'eventCategory': category,	// Required.
+					'eventAction': action,		// Required.
+					'eventLabel': label,
+					'eventValue': value
+				});
+			debugMsg(DEBUG_GA,'Google Analytics Data Submitted [C:',category,', A:',action,', L:',label,', V:',value,']');
 		};
 		
 		/* Public methods */
-		this.isInitialize = function() {
-			return env.isInitialize;
+		this.isInitialize = function() {	return env.isInitialize;	};
+		this.getFeatures = function() {	return env.features };
+		this.isRequireIconListData = function() {	return env.listeningIconListData;	};
+		this.isRequireNameBannerData = function() {	return env.listeningNameBannerData;	};
+		this.getLoadingStatus = function() {
+			return loadingStatus;
 		};
+		this.importIconList = function(igenre,ilist) {
+			if (!env.listeningIconListData) return false;
+			if (igenre && ilist) {
+				initIconListData();
+				initIncomingParser();
+				initEmoticon();
+				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Imported Icon List [G:',listGenre.length,', I:',listIcon.length,']');
+			} else {
+				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_FAIL,'Import Icon List Failed!');
+				setLoadingStatus('importIconList','fail');
+			}
+		};
+		this.importNameBanner = function(nblist,nbcontrol) {
+			if (!env.listeningNameBannerData) return false
+			if (nblist && nbcontrol) {
+				if ($.inArray('name_banner',env.features) < 0) return false;
+				initIncomingParser();	/* require features */
+				var res = initNameBanner(nblist,nbcontrol);
+				listNameBanner = (res) ? res : {};
+				
+				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Imported Name Banner List [NBL:',listNameBanner,']');
+			} else {
+				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_FAIL,'Import Name Banner Failed!');
+				setLoadingStatus('importNameBanner','fail');
+			}
+		};
+
 		envCheck();
 		
 		return this;
@@ -2249,31 +3009,32 @@
 
 		ga('create', 'UA-48929186-1', 'hihiboxhbtv.github.io');
 		ga('require','displayfeatures');
-		ga('send', 'pageview');
 	
-		/* load icon list */
-		$.getScript([host,"/js/iconlist.js"].join(''))
-			.done(function(script,textStatus) {
-				//var hhb = ...
-				hhb = 	new HihiBox({
-									listGenre: window.listGenre,
-									listIcon: window.listIcon
-								});
-								
-				if (hhb.isInitialize()) {
-					console.log('[HihiBox]','Created',hhb);
-				
-					/* load name banner list */
-					$.getScript([host,"/js/namebannerlist.js"].join(''))
-						.done(function(script,textStatus) {
-							var listNBControlList = [].concat(window.listNBControlList);
-							var listNameBanner = [].concat(window.listNameBanner);
-							hhb.importNameBanner(listNameBanner,listNBControlList);
-						});
-				}
-			})
-			.fail(function( jqxhr, settings, exception ) {
-				console.log('[HihiBox]','Fail',jqxhr,settings,exception);
-			});
+		var hhb = 	new HihiBox();
+						
+		if (hhb.isInitialize()) {
+			ga('send', 'pageview');
+			console.log('[HihiBox]','Created',hhb);
+			
+			var features = hhb.getFeatures();
+			/* load icon list */
+			if ($.inArray('emoticon',features) >= 0) {
+				$.getScript([host,"/js/iconlist.js"].join(''))
+					.done(function(script,textStatus) {
+						var listGenre = [].concat(window.listGenre);
+						var listIcon = [].concat(window.listIcon);
+						hhb.importIconList(listGenre,listIcon);
+					});
+			}
+			/* load name banner list */
+			if ($.inArray('name_banner',features) >= 0) {
+				$.getScript([host,"/js/namebannerlist.js"].join(''))
+					.done(function(script,textStatus) {
+						var listNBControlList = [].concat(window.listNBControlList);
+						var listNameBanner = [].concat(window.listNameBanner);
+						hhb.importNameBanner(listNameBanner,listNBControlList);
+					});
+			}
+		}
 	});
 }(window,document));
