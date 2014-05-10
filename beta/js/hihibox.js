@@ -23,7 +23,7 @@
 			DEBUG_REFRESH			= 1 << 21,
 			DEBUG_GA				= 1 << 22,
 			DEBUG_ALL				= (1 << 23) - 1,
-			DEBUG					=  |
+			DEBUG					= 
 				DEBUG_ENV | 
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
 				DEBUG_SUB_SUCCESS | 
