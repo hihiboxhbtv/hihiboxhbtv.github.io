@@ -691,7 +691,7 @@ listIcon = [].concat(
 		"genre": ["meme"]
 	},
 	{	"code": [":iknowthatfeelbro:"],
-		"src": "http://hihiboxhbtv.github.io/images/icons/_iknowthatfeelbro_.png",
+		"src": "http://hihiboxhbtv.github.io/images/icons/-iknowthatfeelbro-.png",
 		"width": 400, 	"height": 369,
 		"genre": ["meme"]
 	}
