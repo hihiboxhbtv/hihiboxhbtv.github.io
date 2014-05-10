@@ -2155,10 +2155,11 @@
 					.attr('title',locale.getLocaleMsg('info.last_update',[versionInfo.lastUpdate]));
 					
 				if (versionInfo.newRelease) {
-					var $update = $('<span class="update"></span>');
-					$update.attr('title',versionInfo.name+' '+versionInfo.lastExtensionVersion+' - '+versionInfo.lastSummary);
+					var $update = $('<span class="update"></span>')
+										.insertAfter($version)
+										.attr('title',versionInfo.name+' '+versionInfo.lastExtensionVersion+' - '+versionInfo.lastSummary);
 					$name.addClass('newRelease');
-					$version.addClass('newRelease').append($update);
+					$version.addClass('newRelease');
 				}
 				
 				$('a.hhb').attr('href',versionInfo.siteURI);
@@ -3015,8 +3016,8 @@
 		ga('create', 'UA-48929186-1', 'hihiboxhbtv.github.io');
 		ga('require','displayfeatures');
 	
-		var hhb = 	new HihiBox();
-						
+		var hhb = new HihiBox();
+		
 		if (hhb.isInitialize()) {
 			ga('send', 'pageview');
 			console.log('[HihiBox]','Created',hhb);

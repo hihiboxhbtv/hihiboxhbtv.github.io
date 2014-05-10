@@ -104,7 +104,7 @@
 	float: right;
 }
 .newRelease { color: #FF3333 !important; }
-#hhb-header span.version.newRelease .update {
+#hhb-header .update {
 	display: inline-block;
 	position: absolute;
 	top: -1px;
