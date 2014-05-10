@@ -1748,6 +1748,7 @@
 			debugMsg('hhbLoaded',$('body[class*="hhb-pf-"]'));
 			if (hhbLoaded) {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'HihiBox detected! Initialization aborted!');	return;	}
 			
+			platformObj.initialize();
 			env.userid = platformObj.getUsername();
 			debugMsg(DEBUG_ENV|DEBUG_ENV_SUCCESS,'Detected [',env,']');
 			_gaTracker('env','platform',env.platform);
@@ -1845,7 +1846,6 @@
 		var initialize = function() {
 			setLoadingStatus('initialize','init');
 			debugMsg(DEBUG_ENV,'Initalizing...');
-			platformObj.initialize();
 			$.each(env.features,function(idx,feature) {
 				switch (feature) {
 				case 'ui':				initUserInterface();	break;
