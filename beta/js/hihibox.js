@@ -1757,6 +1757,8 @@
 			}
 			env.isInitialize = true;
 			env.features = platformObj.getFeatures();
+			if ($.inArray('emoticon',env.features)>=0) env.listeningIconListData = true;
+			if ($.inArray('name_banner',env.features)>=0) env.listeningNameBannerData = true;
 			/* update last watching datetime of current channel to extension */
 			var _channel = { platform: env.platform, channel: env.channel };
 			chrome.runtime.sendMessage(editorExtensionId, {updateLastWatch: _channel},function(response) {});
@@ -2965,8 +2967,6 @@
 		/* Public methods */
 		this.isInitialize = function() {	return env.isInitialize;	};
 		this.getFeatures = function() {	return env.features };
-		this.isRequireIconListData = function() {	return env.listeningIconListData;	};
-		this.isRequireNameBannerData = function() {	return env.listeningNameBannerData;	};
 		this.getLoadingStatus = function() {
 			return loadingStatus;
 		};
