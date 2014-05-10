@@ -1741,13 +1741,14 @@
 			
 			/* check channel */
 			env.channel = platformObj.getChannelID();
-			env.userid = platformObj.getUsername();
 			if (!env.channel || env.channel=='') {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Channel not detected! Initialization aborted! [',url,']');	return;	}
 			
 			/* prevent duplicate load of HihiBox */
 			var hhbLoaded = ($('body[class*="hhb-pf-"]').length>0);
+			debugMsg('hhbLoaded',$('body[class*="hhb-pf-"]'));
 			if (hhbLoaded) {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'HihiBox detected! Initialization aborted!');	return;	}
 			
+			env.userid = platformObj.getUsername();
 			debugMsg(DEBUG_ENV|DEBUG_ENV_SUCCESS,'Detected [',env,']');
 			_gaTracker('env','platform',env.platform);
 			_gaTracker('env','channel',[env.channel,env.platform].join('@'));
@@ -1755,10 +1756,12 @@
 				_gaTracker('env','user',[env.userid,env.platform].join('@'));
 				_gaTracker('env','audience',[env.userid,env.channel,env.platform].join('@'));
 			}
+			
 			env.isInitialize = true;
 			env.features = platformObj.getFeatures();
 			if ($.inArray('emoticon',env.features)>=0) env.listeningIconListData = true;
 			if ($.inArray('name_banner',env.features)>=0) env.listeningNameBannerData = true;
+			
 			/* update last watching datetime of current channel to extension */
 			var _channel = { platform: env.platform, channel: env.channel };
 			chrome.runtime.sendMessage(editorExtensionId, {updateLastWatch: _channel},function(response) {});
