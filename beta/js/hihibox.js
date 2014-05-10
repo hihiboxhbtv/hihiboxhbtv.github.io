@@ -1731,36 +1731,38 @@
 			env.platform = (($.inArray(env.platform,supportedPlatform) >= 0) ? env.platform : '');
 			env.platform = ((_platformObj[env.platform]) ? env.platform : '');
 			
-			if (env.platform!='') {
-				platformObj = new _platformObj[env.platform];
-				env.isExcluded = platformObj.isExcluded();
-				env.channel = platformObj.getChannelID();
-				env.userid = platformObj.getUsername();
-				
-				if (env.isExcluded) {
-					debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Excluded URL! Initialization aborted! [',url,']');
-				} else if (env.channel && env.channel!='') {
-					debugMsg(DEBUG_ENV|DEBUG_ENV_SUCCESS,'Detected [',env,']');
-					_gaTracker('env','platform',env.platform);
-					_gaTracker('env','channel',[env.channel,env.platform].join('@'));
-					if (env.userid && env.userid!='') {
-						_gaTracker('env','user',[env.userid,env.platform].join('@'));
-						_gaTracker('env','audience',[env.userid,env.channel,env.platform].join('@'));
-					}
-					env.isInitialize = true;
-					env.features = platformObj.getFeatures();
-					/* update last watching datetime of current channel to extension */
-					var _channel = { platform: env.platform, channel: env.channel };
-					chrome.runtime.sendMessage(editorExtensionId, {updateLastWatch: _channel},function(response) {});
-					
-					pollUsage();
-					pollSettings();
-				} else {
-					debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Channel not detected! Initialization aborted! [',url,']');
-				}
-			} else {
-				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Platform not detected! Initialization aborted! [',url,']');
+			/* check platform */
+			if (env.platform=='') {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Platform not detected! Initialization aborted! [',url,']');	return;	}
+			
+			/* chat excluded url */
+			platformObj = new _platformObj[env.platform];
+			env.isExcluded = platformObj.isExcluded();
+			if (env.isExcluded) {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Excluded URL! Initialization aborted! [',url,']');	return;	}
+			
+			/* check channel */
+			env.channel = platformObj.getChannelID();
+			env.userid = platformObj.getUsername();
+			if (!env.channel || env.channel=='') {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Channel not detected! Initialization aborted! [',url,']');	return;	}
+			
+			/* prevent duplicate load of HihiBox */
+			var hhbLoaded = ($('body[class*="hhb-pf-"]').length>0);
+			if (!hhbLoaded) {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'HihiBox detected! Initialization aborted!');	return;	}
+			
+			debugMsg(DEBUG_ENV|DEBUG_ENV_SUCCESS,'Detected [',env,']');
+			_gaTracker('env','platform',env.platform);
+			_gaTracker('env','channel',[env.channel,env.platform].join('@'));
+			if (env.userid && env.userid!='') {
+				_gaTracker('env','user',[env.userid,env.platform].join('@'));
+				_gaTracker('env','audience',[env.userid,env.channel,env.platform].join('@'));
 			}
+			env.isInitialize = true;
+			env.features = platformObj.getFeatures();
+			/* update last watching datetime of current channel to extension */
+			var _channel = { platform: env.platform, channel: env.channel };
+			chrome.runtime.sendMessage(editorExtensionId, {updateLastWatch: _channel},function(response) {});
+			
+			pollUsage();
+			pollSettings();
 		};
 		
 		/* Chrome extension communication */
