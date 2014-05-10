@@ -23,7 +23,7 @@
 			DEBUG_REFRESH			= 1 << 21,
 			DEBUG_GA				= 1 << 22,
 			DEBUG_ALL				= (1 << 23) - 1,
-			DEBUG					= 
+			DEBUG					=  |
 				DEBUG_ENV | 
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
 				DEBUG_SUB_SUCCESS | 
@@ -95,7 +95,7 @@
 			specialThanks: ["希治閣", "小維"]
 		},
 		coreVersion: 'v1.7.0',
-		lastUpdate: '2014-05-10'
+		lastUpdate: '2014-04-24'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -946,7 +946,7 @@
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
 				/* Initialize */
-				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.justin\.tv\/(?:directory|broadcast|dashboard|message|settings|user|p)\/(?:(?:\w+)\/about)?/i); return ((m) ? m.length>0 : false); }
+				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.justin\.tv\/(?:directory|broadcast|dashboard|message|settings|user|p|(?:\w+)\/about)(?:$|\/)/i); return ((m) ? m.length>0 : false); }
 				_platform.getChannelID = function() { var m=document.URL.match(/^https?\:\/\/.+\.justin\.tv\/(?:chat|(\w+))(?:\/embed\?channel=(\w+))?/i); return ((m && m[2]) ? m[2] : ((m && m[1]) ? m[1] : '')); }
 				_platform.getUsername = function() { var uname=$(selector.userName).text().trim().toLowerCase(); return (uname!='guest user') ? uname : ''; };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
@@ -1571,7 +1571,7 @@
 							(msgDebugFlag & DEBUG_GA) && 		'[ ga ]' ||
 							'');
 			if (indent!='') args.unshift(indent);
-			args.unshift("[HihiBox]");
+			args.unshift("[HihiBox Beta]");
 			if ((msgDebugFlag & debugFlag) > 0) console.log.apply(console,args);
 		};
 		var setLoadingStatus = function(target,status) {
@@ -1750,6 +1750,7 @@
 			
 			platformObj.initialize();
 			env.userid = platformObj.getUsername();
+			env.features = platformObj.getFeatures();
 			debugMsg(DEBUG_ENV|DEBUG_ENV_SUCCESS,'Detected [',env,']');
 			_gaTracker('env','platform',env.platform);
 			_gaTracker('env','channel',[env.channel,env.platform].join('@'));
@@ -1758,8 +1759,6 @@
 				_gaTracker('env','audience',[env.userid,env.channel,env.platform].join('@'));
 			}
 			
-			env.isInitialize = true;
-			env.features = platformObj.getFeatures();
 			if ($.inArray('emoticon',env.features)>=0) env.listeningIconListData = true;
 			if ($.inArray('name_banner',env.features)>=0) env.listeningNameBannerData = true;
 			
@@ -1767,6 +1766,7 @@
 			var _channel = { platform: env.platform, channel: env.channel };
 			chrome.runtime.sendMessage(editorExtensionId, {updateLastWatch: _channel},function(response) {});
 			
+			env.isInitialize = true;
 			pollUsage();
 			pollSettings();
 		};
@@ -1845,7 +1845,7 @@
 		/* Initializer */
 		var initialize = function() {
 			setLoadingStatus('initialize','init');
-			debugMsg(DEBUG_ENV,'Initalizing...');
+			debugMsg(DEBUG_ENV,'Initializing...');
 			$.each(env.features,function(idx,feature) {
 				switch (feature) {
 				case 'ui':				initUserInterface();	break;
@@ -2183,7 +2183,7 @@
 			};
 			var bindHolderToggleBtn = function() {
 				if (retryCount.bindHolderToggleBtn==0) setLoadingStatus('bindHolderToggleBtn','init');
-				var $button = $(selector.button)
+				var $button = $(selector.button);
 				if ($button.length==0) {
 					setTimeout(function() { bindHolderToggleBtn(); },delay.bindHolderToggleBtn);
 					retryCount.bindHolderToggleBtn++;
@@ -2202,7 +2202,7 @@
 			}
 			var activateSortMode = function() {
 				if (retryCount.activateSortMode==0) setLoadingStatus('activateSortMode','init');
-				var $sortModeBtn = $(selector.sortModeBtn)
+				var $sortModeBtn = $(selector.sortModeBtn);
 				if ($sortModeBtn.length==0) {
 					setTimeout(function() { activateSortMode(); },delay.activateSortMode);
 					retryCount.activateSortMode++;
@@ -2964,7 +2964,7 @@
 					'eventLabel': label,
 					'eventValue': value
 				});
-			debugMsg(DEBUG_GA,'Google Analytics Data Submitted [C:',category,', A:',action,', L:',label,', V:',value,']');
+			debugMsg(DEBUG_GA,'Google Analytics Data Submitted [E:',enableGA,', C:',category,', A:',action,', L:',label,', V:',value,']');
 		};
 		
 		/* Public methods */
