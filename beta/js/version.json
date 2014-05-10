@@ -8,21 +8,21 @@
 	"lastExtensionVersion": "v1.7",
 	"lastRelease": "2014-04-28",
 	"lastSummary": "[概要] 新增Bookmark, 開台提示, 管理頁面, HihiBox 更新提示等功能",
-	"downloadURI": "https://docs.google.com/file/d/0B75izxj9WNpGcXFuZ3d3aHpwSmM/edit",
+	"downloadURI": "https://docs.google.com/file/d/0B75izxj9WNpGbzNYRi1uYkRqUHM/edit",
 	"siteURI": "http://bit.ly/hihiboxhbtv",
 	"pageURI": "https://www.facebook.com/hihiboxhbtv",
 	"coreVersion": "v1.7.0",
-	"lastUpdate": "2014-04-28",
+	"lastUpdate": "2014-05-11",
 	"history": [
 		{
 			"version": "v1.7.0",
-			"lastUpdate": "2014-04-27",
+			"lastUpdate": "2014-05-11",
 			"summary": [
-				"[概要] 新增Bookmark, 開台提示, 管理頁面等功能",
-				"[概要] 新增HihiBox 更新提示"
+				"[概要] 新增Bookmark, 開台提示, 管理頁面, HihiBox 更新提示等功能",
+				"[概要] Bookmark 功能支援Ustream.tv 平台"
 			],
 			"detail": [
-				"[新增] Bookmark 功能",
+				"[新增] Bookmark 功能 (追加支援Ustream.tv)",
 				"[新增] 開台提示相關功能",
 				"[新增] 管理頁面相關功能",
 				"[新增] 新功能相關參數設定",
