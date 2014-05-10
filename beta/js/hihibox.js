@@ -1746,7 +1746,7 @@
 			
 			/* prevent duplicate load of HihiBox */
 			var hhbLoaded = ($('body[class*="hhb-pf-"]').length>0);
-			if (!hhbLoaded) {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'HihiBox detected! Initialization aborted!');	return;	}
+			if (hhbLoaded) {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'HihiBox detected! Initialization aborted!');	return;	}
 			
 			debugMsg(DEBUG_ENV|DEBUG_ENV_SUCCESS,'Detected [',env,']');
 			_gaTracker('env','platform',env.platform);
