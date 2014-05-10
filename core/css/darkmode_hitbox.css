@@ -114,15 +114,15 @@ body.hhb-pf-hitbox.hhb-darkmode {
 	color: #CCCCCC;
 }
 
-.hhb-pf-hitbox.hhb-darkmode.channel .pollWrap {
+.hhb-pf-hitbox.hhb-darkmode .pollWrap {
 	background-color: #0D0D0D;
 	border-bottom-color: #E6E6E6;
 }
-.hhb-pf-hitbox.hhb-darkmode.channel .poll .bar div
+.hhb-pf-hitbox.hhb-darkmode .poll .bar div
 {
 	background-color: #7040FF;
 }
-.hhb-pf-hitbox.hhb-darkmode.channel .poll .votes {
+.hhb-pf-hitbox.hhb-darkmode .poll .votes {
 	color: white;
 }
 

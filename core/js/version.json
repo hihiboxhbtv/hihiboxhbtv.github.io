@@ -1,0 +1,249 @@
+﻿{
+	"name": "HihiBox",
+	"credit": "Designed by VannZic, Lemon\nResearched by 希治閣, 小維",
+	"credits": {
+		"developer": ["VannZic", "Lemon"],
+		"specialThanks": ["希治閣", "小維"]
+	},
+	"lastExtensionVersion": "v1.7",
+	"lastRelease": "2014-05-11",
+	"lastSummary": "[概要] 新增Bookmark, 開台提示, 管理頁面, HihiBox 更新提示等功能",
+	"downloadURI": "https://docs.google.com/file/d/0B75izxj9WNpGbzNYRi1uYkRqUHM/edit",
+	"siteURI": "http://bit.ly/hihiboxhbtv",
+	"pageURI": "https://www.facebook.com/hihiboxhbtv",
+	"coreVersion": "v1.7.0",
+	"lastUpdate": "2014-05-11",
+	"history": [
+		{
+			"version": "v1.7.0",
+			"lastUpdate": "2014-05-11",
+			"summary": [
+				"[概要] 新增Bookmark, 開台提示, 管理頁面, HihiBox 更新提示等功能",
+				"[概要] Bookmark 功能支援Ustream.tv 平台"
+			],
+			"detail": [
+				"[新增] Bookmark 功能 (追加支援Ustream.tv)",
+				"[新增] 開台提示相關功能",
+				"[新增] 管理頁面相關功能",
+				"[新增] 新功能相關參數設定",
+				"[新增] HihiBox 更新提示"
+			]
+		},
+		{
+			"version": "v1.6.0",
+			"lastUpdate": "2014-04-17",
+			"summary": [
+				"[概要] 支援Twitch.tv 及Justin.tv, 並加入多項新功能"
+			],
+			"detail": [
+				"[新增] 支援平台 (Twitch.tv, Justin.tv)",
+				"[新增] 自動取得當前平台內建表情列表",
+				"[新增] 自動取得Golden JTV(如有安裝並已啟用) 表情列表",
+				"[新增] 表情排序(載入順序, 使用次數, 最近使用)",
+				"[新增] 表情使用記錄重設",
+				"[新增] 本機儲存表情使用記錄, 所選分類, Dark mode 開關及排序方式等資料",
+				"[新增] 表情篩選功能相關訊息",
+				"[新增] 自定義name banner, 管理員徽章",
+				"[新增] Pixel, 食鬼, 聖誕, 北極, 口罩系列",
+				"[優化] 沿用當前平台轉換表情之方法",
+				"[優化] 點擊後顯示表情原圖大小",
+				"[優化] 需時較長功能的觸發方式",
+				"[優化] Google analytics 事件追蹤",
+				"[微調] Dark mode 樣式修改"
+			]
+		},
+		{
+			"version": "v1.5.0",
+			"lastUpdate": "2014-03-17",
+			"summary": [
+				"[概要] 新增代碼篩選及Dark mode 功能",
+				"[概要] 新增Plugin 自動更新功能 (如非重大版本, Plugin會自動更新)"
+			],
+			"detail": [
+				"[新增] 代碼篩選功能",
+				"[新增] Dark Mode/Light Mode 切換功能",
+				"[新增] Plugin 自動更新功能 (如非重大版本, Plugin 會自動更新)",
+				"[新增] 官方網站及Facebook 專頁 連結",
+				"[優化] 聊天訊息會與底線對齊",
+				"[優化] 較大的icon 會被進一步限制其顯示尺寸",
+				"[優化] :spiderman: 現在也可寫為:iamhay:",
+				"[移除] icon 代碼 [sosad369ex]",
+				"[次要] HihiBox 樣式修改"
+			]
+		},
+		{
+			"version": "v1.4.0",
+			"lastUpdate": "2014-03-07",
+			"summary": [
+				"[概要] 新增icon 詳細列表 及 數個icon 系列"
+				],
+			"detail": [
+				"[新增] icon 一覽表, 可點選圖示即時輸入",
+				"[改善] icon 代碼說明 (將游標移至icon 上顯示)",
+				"[改善] 某些較大的icon 會被限制其闊度 (可於圖上點擊放大)",
+				"[新增] icon 禿伯, 小丑, 腦魔系列",
+				"[修正] icon pkmon 系列"
+			]
+		},
+		{
+			"version": "v1.3.0",
+			"lastUpdate": "2014-03-06",
+			"summary": [
+				"[概要] 新增icon"
+				],
+			"detail": [
+				"[新增] icon pkmon 系列",
+				"[新增] 數個特別icon"
+			]
+		},
+		{
+			"version": "v1.2.0",
+			"lastUpdate": "2014-03-05",
+			"summary": [
+				"[概要] 更多icon 已正常運作"
+				],
+			"detail": [
+				"[修正] icon 代碼 :), :O, :p, f__k"
+			]
+		},
+		{
+			"version": "v1.1.0",
+			"lastUpdate": "2014-03-04",
+			"summary": [
+				"[概要] 大部份icon 已正常運作"
+				],
+			"detail": [
+				"[修正] icon 代碼 :-[",
+				"[移除] icon 代碼 f__k",
+				"[新增] icon 代碼 數個"
+			]
+		},
+		{
+			"version": "v1.0.0",
+			"lastUpdate": "2014-03-03",
+			"summary": [
+				"[概要] 以圖像顯示icon 代碼"
+				],
+			"detail": [
+				"[新增] 以圖像顯示icon 代碼"
+			]
+		}
+	],
+	"help" : [
+		"<div class=\"section\">",
+			"<div class=\"title\">前言:</div>",
+			"<div class=\"section\">",
+				"<p>感謝大家身先士卒，為同學會及hihibox捐軀。</p>",
+				"<p>煩請大家細心閱讀本文檔，以達到最佳之試用效果及免出現任何不必要之意外。</p>",
+				"<p>如果有在試用期間有任何問題，請將\"發現問題\"、\"出現時間\"及\"有關的錯誤截圖\"於任何途徑發送給我們。</p>",
+			"</div>",
+		"</div>",
+		"<div class=\"section\">",
+			"<div class=\"title\">《安裝插件》</div>",
+			"<div class=\"section\">",
+				"<ol>",
+				"<li>本插件只支援Google Chrome，如果閣下正使用其他瀏覽器，很抱歉，hihibox暫時未能為你提供服務。請先解除安裝舊版插件。</li>",
+				"<li>下載hihibox插件。試用版的hihibox v1.7 已經與本文檔共壓到一個壓縮檔內，請閣下先行解壓。</li>",
+				"<li>打開google chrome, 於右上角的 \"自定及控制google chrome\" (即網址列右方的\"≡\")，點撃\"工具\"->擴充功能。</li>",
+				"<li>將 \"試用版hihibox v1.7 試用版\" 以滑鼠 拖拉到 擴充功能頁面之內。</li>",
+				"<li>點擊\"確定\"並完成安裝。</li>",
+				"<li>hihibox 完成安裝後,將會於網址列右方新增一個icon。如果icon 並未顯示，請重新由第3步驟重試一次。</li>",
+				"</ol>",
+			"</div>",
+		"</div>",
+		"<div class=\"section\">",
+			"<div class=\"title\">《開台提示介紹》</div>",
+			"<div class=\"section\">",
+				"<p>用戶可以bookmark 任何JTV、TTV及Hitbox 實況台，以在該台開播之時得到該台的開台提示。</p>",
+				"<p>現時Hihibox 有3種開台提示可供選擇，分別為chrome 網址列旁邊的icon提示、音效提示及桌面的Popup提示。</p>",
+				"<p>用戶亦可以透過設定hihibox,以獨立設定打開或關閉 音效提示、桌面提示或只使用網址列右方的Icon提示。</p>",
+			"</div>",
+		"</div>",
+		"<div class=\"section\">",
+			"<div class=\"title\">《Bookmark 方法》</div>",
+			"<div class=\"section\">",
+				"<p>用戶只需要到有關的直播台，於hihibox介面中，點擊<span title=\"Bookmark\" class=\"funcIcon bookmark\">&nbsp;</span>，令心型icon變為實心<span title=\"Bookmarked\" class=\"funcIcon bookmark isBookmarked\">&nbsp;</span>，即完成bookmark。</p>",
+				"<p>用戶亦可以手動bookmark多個直播台。點擊網址列右方的hihibox icon，點擊<span title=\"Settings\" class=\"funcIcon settings\">&nbsp;</span>，點擊設定面最低的Manual Add Bookmark。</p>",
+				"<p>閣下可以跟據指定的格式bookmark：[channelid]@justin] 以bookmark jtv頻道，[channelid@twitch]以bookmark ttv頻道，[channel@hitbox]以bookmark hitbox頻道</p>",
+				"<div class=\"title\">例子:</div>",
+				"<ul class=\"list\">",
+					"<li><span class=\"highlight\">輸入 \"purpleb@justin\" bookmark Purple J聲電台</span></li>",
+					"<li><span class=\"highlight\">輸入 \"cslalan1985@twitch\" bookmark 高清打機台</span></li>",
+					"<li><span class=\"highlight\">輸入 \"scaryplayttv@hitbox\" bookmark 壯膽同學會 等等</span></li>",
+				"</ul>",
+			"</div>",
+		"</div>",
+		"<div class=\"section\">",
+			"<div class=\"title\">《bookmark及提示設定》</div>",
+			"<div class=\"section\">",
+				"<p>點擊網址列右方的hihibox icon，點擊<span title=\"Settings\" class=\"funcIcon settings\">&nbsp;</span>，即可以進入bookmark及提示設定。</p>",
+				
+				"<div class=\"title\">Background</div>",
+				"<div class=\"section\">",
+					"<div class=\"title\">refresh interval</div>",
+					"<div class=\"section\">",
+						"<p>開台情況的更新時間。系統會跟據用戶設定的時間去重新查詢直播台現在狀態。</p>",
+						"<p>如果用戶設定為1 min,系統會每1分鐘檢查各直播台一次，以得知 已bookmark直播台 是否on live。</p>",
+					"</div>",
+				"</div>",
+				"<div class=\"section\">",
+					"<div class=\"title\">Profile refresh interval</div>",
+					"<div class=\"section\">",
+						"<p>直播台的資料 更新時間。系統會跟據用戶設定的時間去重新查詢直播台的Title及當中說明。</p>",
+						"<p>如果用戶設定為1 day,系統會每1天 檢查各直播台一次，以得知 已bookmark直播台 最新資料。</p>",
+					"</div>",
+				"</div>",
+				"<div class=\"title\">Bookmarks</div>",
+				"<div class=\"section\">",
+					"<div class=\"title\">Sort by</div>",
+					"<div class=\"section\">",
+						"<div class=\"title\">Viewer ase</div>",
+						"<p>系統會根據現時各直播台之觀眾人數，以由少至多的方式排列。</p>",
+						"<div class=\"title\">Viewer dese</div>",
+						"<p>系統會根據現時各直播台之觀眾人數，以由多至少的方式排列。</p>",
+						"<div class=\"title\">Name A-Z</div>",
+						"<p>系統會根據現時各直播台ID, 由A為首，Z為尾排列。</p>",
+						"<div class=\"title\">Name Z-A</div>",
+						"<p>系統會根據現時各直播台ID, 由Z為首，A為尾排列。</p>",
+						"<div class=\"title\">Recent Watch</div>",
+						"<p>系統用戶最後觀看的直播台為首，按次序排列。</p>",
+						"<div class=\"title\">Recent Bookmark</div>",
+						"<p>系統用戶最後Bookmark的直播台為首，按次序排列。</p>",
+					"</div>",
+
+					"<div class=\"title\">Pin live Channel</div>",
+					"<p>只顯示現在正on live 的實況台。</p>",
+					"<div class=\"title\">Simple View</div>",
+					"<p>顯示簡單化列表。</p>",
+				"</div>",
+				"<div class=\"title\">Notifications</div>",
+				"<div class=\"section\">",
+					"<div class=\"title\">Show Badge with live bookmarked channels count</div>",
+					"<p>於右上角的hihibox icon中，顯示正on live 的直播台數量。</p>",
+					"<div class=\"title\">Show notifications when bookmarked channels go live</div>",
+					"<p>當已bookmark的直播台on live時，系統將會彈出popout 提示。</p>",
+					"<div class=\"title\">Play sound notification</div>",
+					"<p>當已bookmark的直播台on live時，系統將會播放音效提示。</p>",
+
+					"<div class=\"title\">Notification Timeout</div>",
+					"<div class=\"section\">",
+						"<p>popout 提示的時限,如果在指定時間內用戶未關閉popout，</p>",
+						"<p>popout 提示亦會自動關閉。</p>",
+					"</div>",
+					"<div class=\"title\">Notification Interval</div>",
+					"<div class=\"section\">",
+						"<p>Popout提示的相隔時間。為避免用戶被popout頻繁提示，用戶可以選擇每個提示的相隔時間。</p>",
+						"<p>60mins 即為當用戶在收到開台提示後的60分鐘，將不會收到其他開台提示。</p>",
+					"</div>",
+				"</div>",
+				"<div class=\"title\">Maunal Bookmark/Backup</div>",
+				"<div class=\"section\">",
+					"<div class=\"title\">Maunal add bookmark</div>",
+					"<p>手動加入bookmark。</p>",
+					"<div class=\"title\">Backup bookmark</div>",
+					"<p>備份已bookmark的直播台到電腦。</p>",
+				"</div>",
+			"</div>",
+		"</div>"
+	]
+}
