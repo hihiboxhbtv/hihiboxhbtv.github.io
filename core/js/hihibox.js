@@ -1745,7 +1745,6 @@
 			
 			/* prevent duplicate load of HihiBox */
 			var hhbLoaded = ($('body[class*="hhb-pf-"]').length>0);
-			debugMsg('hhbLoaded',$('body[class*="hhb-pf-"]'));
 			if (hhbLoaded) {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'HihiBox detected! Initialization aborted!');	return;	}
 			
 			platformObj.initialize();
@@ -1796,6 +1795,7 @@
 			$.each(newSettings,function(key,obj) {
 				if (settings[key]==obj) delete newSettings[key];
 			});
+			if ($.isEmptyObject(newSettings)) return;
 			$.extend(settings,newSettings);
 			if (env.settingsLoaded) {
 				sendMessage({saveSettings: newSettings},
@@ -1873,8 +1873,7 @@
 				}
 			};
 			var analyzeBuiltinIcon = function() {
-				if (retryCount.analyzeBuiltinIcon==0) setLoadingStatus('analyzeBuiltinIcon','init');
-				if (retryCount.analyzeBuiltinIcon>0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Built-in Icon...');
+				if (retryCount.analyzeBuiltinIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Built-in Icon...'),setLoadingStatus('analyzeBuiltinIcon','init');
 				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Built-in Icon Retry...'),setLoadingStatus('analyzeBuiltinIcon','retry');
 				var iconlist = listIcon, analyzediconlist;
 				analyzediconlist = analyzeIcon(iconlist);
@@ -1893,8 +1892,7 @@
 				refreshList();
 			};
 			var analyzePlatformIcon = function() {
-				if (retryCount.analyzeBuiltinIcon==0) setLoadingStatus('analyzePlatformIcon','init');
-				if (retryCount.analyzePlatformIcon>0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Platform Icon...');
+				if (retryCount.analyzePlatformIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Platform Icon...'),setLoadingStatus('analyzePlatformIcon','init';
 				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Platform Icon Retry...'),setLoadingStatus('analyzePlatformIcon','retry');
 				var iconlist, analyzediconlist;
 				if (!env.builtinIconLoaded) return false;
@@ -1916,8 +1914,7 @@
 				refreshList();
 			};
 			var analyzeGJTVIcon = function() {
-				if (retryCount.analyzeGJTVIcon==0) setLoadingStatus('analyzeGJTVIcon','init');
-				if (retryCount.analyzeGJTVIcon>0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing GJTV Icon...');
+				if (retryCount.analyzeGJTVIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing GJTV Icon...'),setLoadingStatus('analyzeGJTVIcon','init');
 				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing GJTV Icon Retry...'),setLoadingStatus('analyzeGJTVIcon','retry');
 				var iconlist, analyzediconlist;
 				if (!env.builtinIconLoaded) return;
