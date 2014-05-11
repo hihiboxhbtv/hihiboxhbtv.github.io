@@ -1892,7 +1892,7 @@
 				refreshList();
 			};
 			var analyzePlatformIcon = function() {
-				if (retryCount.analyzePlatformIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Platform Icon...'),setLoadingStatus('analyzePlatformIcon','init';
+				if (retryCount.analyzePlatformIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Platform Icon...'),setLoadingStatus('analyzePlatformIcon','init');
 				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Platform Icon Retry...'),setLoadingStatus('analyzePlatformIcon','retry');
 				var iconlist, analyzediconlist;
 				if (!env.builtinIconLoaded) return false;
