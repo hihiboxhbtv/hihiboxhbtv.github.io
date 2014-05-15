@@ -2142,7 +2142,7 @@
 			};
 			var activatePopupToggle = function() {
 				var $holderCon = platformObj.getHolderContainer();
-				var $holder = $(selector.holder).draggable().draggable('disable');
+				var $holder = $(selector.holder).draggable().draggable({ disable: true, containment: "window" });
 				var $body = $('body');
 				var $popup = $(selector.popupBtn)
 					.click(function() {
