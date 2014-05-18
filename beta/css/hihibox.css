@@ -32,6 +32,14 @@
 	width: 400px;
 	z-index: 99999;
 	border: 1px solid #aaaaaa;
+	-webkit-box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.5);
+	box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.5);
+}
+.hhb-darkmode #hhb-holder.hhb-draggable {
+	-webkit-box-shadow: 3px 3px 6px 0px rgba(255, 255, 255, 0.5);
+	-moz-box-shadow: 3px 3px 6px 0px rgba(255, 255, 255, 0.5);
+	box-shadow: 3px 3px 6px 0px rgba(255, 255, 255, 0.5);
 }
 #hhb-holder.hhb-draggable #hhb-header {
 	cursor: move;

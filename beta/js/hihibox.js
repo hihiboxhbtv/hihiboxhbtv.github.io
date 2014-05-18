@@ -101,8 +101,8 @@
 			developer: ["VannZic", "Lemon"],
 			specialThanks: ["希治閣", "小維"]
 		},
-		coreVersion: 'v1.7.0',
-		lastUpdate: '2014-04-24'
+		coreVersion: 'v1.7.1',
+		lastUpdate: '2014-05-19'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -149,6 +149,7 @@
 				isDraggable: 'hhb-draggable'
 			},
 			selector: {
+				body: 'body',
 				holder: '#hhb-holder',
 				header: '#hhb-header',
 				button: '#hhb-button',
@@ -202,6 +203,7 @@
 				analyzePlatformIcon: 30,
 				analyzeGJTVIcon: 30,
 				activateRebindUIBtn: 30,
+				bindBookmarkBtn: 30,
 				bindPlayerBookmarkBtn: 30
 			},
 			supportedPlatform: ['hitbox','twitch','justin','ustream'],
@@ -353,7 +355,7 @@
 								'<div id="'+idObj.bookmarkBtn+'" hhb-locale-title="{{iconlist.bookmark}}" title="Bookmark" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.darkModeBtn+'" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.sortModeBtn+'" class="funcIcon">&nbsp;</div>'+
-								'<div id="'+idObj.popupBtn+'" class="funcIcon">&nbsp;</div>'+
+								'<div id="'+idObj.popupBtn+'" hhb-locale-title="{{iconlist.popup_fixed}}" title="Popup" class="funcIcon">&nbsp;</div>'+
 								'<span class="version" title="">'+infoObj.coreVersion+'</span>'+
 								'<span class="name" title="">'+infoObj.name+'</span>'+
 								'<a href="http://bit.ly/hihiboxhbtv" target="_new" class="hhb"><div class="icon hhb" hhb-locale-title="{{iconlist.site}}" title="Website"></div></a>'+
@@ -438,7 +440,7 @@
 				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:embed\/|embedchat\/)?(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
-				_platform.initialize = function() { $('body').addClass('hhb-pf-hitbox'); };
+				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-hitbox'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
 				_platform.getButtonFront = function() {	return [];	};
@@ -661,7 +663,7 @@
 				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(\w+)/i); return (m && m[1]) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
-				_platform.initialize = function() { $('body').addClass('hhb-pf-twitch'); };
+				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-twitch'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
 				_platform.getButtonFront = function() {	return $(selector.buttonFront);	};
@@ -962,7 +964,7 @@
 				_platform.getChannelID = function() { var m=document.URL.match(/^https?\:\/\/.+\.justin\.tv\/(?:chat|(\w+))(?:\/embed\?channel=(\w+))?/i); return ((m && m[2]) ? m[2] : ((m && m[1]) ? m[1] : '')); }
 				_platform.getUsername = function() { var uname=$(selector.userName).text().trim().toLowerCase(); return (uname!='guest user') ? uname : ''; };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
-				_platform.initialize = function() { $('body').addClass('hhb-pf-justin'); };
+				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-justin'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
 				_platform.getButtonFront = function() {	return [];	};
@@ -1233,7 +1235,7 @@
 								'text-indent: -9999px;',
 								'width:',(broadcaster.width),'px;',
 								'height:',(broadcaster.width),'px;',
-								'background: url(',broadcaster.img,') no-repeat center center;',
+								'backgrund: url(',broadcaster.img,') no-repeat center center;',
 							'}'].join('');
 					}
 					if (moderator.img && moderator.width>0 && moderator.height>0) {
@@ -1280,7 +1282,7 @@
 				_platform.getChannelID = function() { var v=$('param[name="flashvars"]').attr('value'),v=(v ? v : ''),m=v.match(/cid=(\d+)/); return (m && m[1]) ? m[1] : ''; }
 				_platform.getUsername = function() { var uname=$(selector.userName).text().trim().toLowerCase(); return (uname!='guest user') ? uname : ''; };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
-				_platform.initialize = function() { $('body').addClass('hhb-pf-ustream'); };
+				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-ustream'); };
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
 				_platform.getButtonFront = function() {	return [];	};
@@ -1583,7 +1585,7 @@
 							(msgDebugFlag & DEBUG_GA) && 		'[ ga ]' ||
 							'');
 			if (indent!='') args.unshift(indent);
-			args.unshift("[HihiBox Beta]");
+			args.unshift("[HihiBox Alpha]");
 			if ((msgDebugFlag & debugFlag) > 0) console.log.apply(console,args);
 		};
 		var setLoadingStatus = function(target,status) {
@@ -2080,7 +2082,7 @@
 					if (retryCount.activateRebindUIBtn < limit.activateRebindUIBtn) {
 						setTimeout(function() { activateRebindUIBtn(); },delay.activateRebindUIBtn);
 						retryCount.activateRebindUIBtn++;
-						debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Rebind UI Button Retry...[ R:',retryCount.activateRebindUIBtn,']');
+						debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Rebind UI Button Retry...');
 						setLoadingStatus('activateRebindUIBtn','retry');
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Activating Rebind UI Button Failed!');
@@ -2115,7 +2117,7 @@
 				}
 				setTimeout(function() { bindHolderUI(); },delay.bindHolderUI);
 				retryCount.bindHolderUI++;
-				debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Holder UI Retry...[ R:',retryCount.bindHolderUI,']');
+				debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Holder UI Retry...');
 				setLoadingStatus('bindHolderUI','retry');
 			};
 			var bindButtonUI = function() {
@@ -2137,13 +2139,13 @@
 				}
 				setTimeout(function() { bindButtonUI(); },delay.bindButtonUI);
 				retryCount.bindButtonUI++;
-				debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Toggle Button UI Retry...[ R:',retryCount.bindButtonUI,']');
+				debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Toggle Button UI Retry...');
 				setLoadingStatus('bindButtonUI','retry');
 			};
 			var activatePopupToggle = function() {
 				var $holderCon = platformObj.getHolderContainer();
 				var $holder = $(selector.holder).draggable().draggable({ disable: true, containment: "window" });
-				var $body = $('body');
+				var $body = $(selector.body);
 				var $popup = $(selector.popupBtn)
 					.click(function() {
 						if ($holder.hasClass(cssClass.isDraggable)) {
@@ -2151,9 +2153,11 @@
 						} else {
 							var offset = $holder.offset();
 							var px = offset.left+$popup.position().left,py = offset.top;
-							$holder.addClass(cssClass.isDraggable).appendTo($('body')).draggable('enable')
+							$holder.addClass(cssClass.isDraggable).appendTo($body).draggable('enable')
 								.css({ left: px-$popup.position().left-parseInt($holder.css('border-left-width')), top: py-parseInt($holder.css('border-top-width')) });
 						}
+						$popup.attr('hhb-locale-title','{{iconlist.'+($holder.hasClass(cssClass.isDraggable)?'popup_enable':'popup_fixed')+'}}')
+						bindIconListLocale();
 					});
 			};
 			var checkVersion = function() {
@@ -2214,7 +2218,7 @@
 				if ($button.length==0) {
 					setTimeout(function() { bindHolderToggleBtn(); },delay.bindHolderToggleBtn);
 					retryCount.bindHolderToggleBtn++;
-					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Holder Toggle Button Retry...[ R:',retryCount.bindHolderToggleBtn,']');
+					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Holder Toggle Button Retry...');
 					setLoadingStatus('bindHolderToggleBtn','retry');
 					return false;
 				}
@@ -2233,7 +2237,7 @@
 				if ($sortModeBtn.length==0) {
 					setTimeout(function() { activateSortMode(); },delay.activateSortMode);
 					retryCount.activateSortMode++;
-					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Sort Mode Retry...[ R:',retryCount.activateSortMode,']');
+					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Sort Mode Retry...');
 					setLoadingStatus('activateSortMode','retry');
 					return false;
 				}
@@ -2832,7 +2836,7 @@
 				if ($darkmodeBtn.length==0) {
 					setTimeout(function() { bindDarkModeBtn(); },delay.bindDarkModeBtn);
 					retryCount.bindDarkModeBtn++;
-					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Dark/Light Mode Retry...[ R:',retryCount.bindDarkModeBtn,']');
+					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Dark/Light Mode Retry...');
 					setLoadingStatus('bindDarkModeBtn','retry');
 					return false;
 				}
@@ -2912,7 +2916,7 @@
 				if (retryCount.bindPlayerBookmarkBtn < limit.bindPlayerBookmarkBtn) {
 					setTimeout(function() { bindPlayerBookmarkBtn(); },delay.bindPlayerBookmarkBtn);
 					retryCount.bindPlayerBookmarkBtn++;
-					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Player Bookmark Button Retry...[ R:',retryCount.bindPlayerBookmarkBtn,']');
+					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Player Bookmark Button Retry...');
 					setLoadingStatus('bindPlayerBookmarkBtn','retry');
 				} else {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Binding Player Bookmark Button Failed!');
@@ -2922,20 +2926,25 @@
 			var bindBookmarkBtn = function() {
 				if (retryCount.bindBookmarkBtn==0) setLoadingStatus('bindBookmarkBtn','init');
 				var $bookmarkBtn = $(selector.bookmarkBtn);
-				if ($bookmarkBtn.length==0) {
+				if ($bookmarkBtn.length > 0) {
+					/* Activate bookmark button */
+					$bookmarkBtn.click(function() { toggleBookmark(); });
+					checkIsBookmarked();
+					retryCount.bindBookmarkBtn = 0;
+					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Bookmark Button');
+					setLoadingStatus('bindBookmarkBtn','complete');
+					return true;
+				}
+				if (retryCount.bindBookmarkBtn < limit.bindBookmarkBtn) {
 					setTimeout(function() { bindBookmarkBtn(); },delay.bindBookmarkBtn);
 					retryCount.bindBookmarkBtn++;
-					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Bookmark Button Retry...[ R:',retryCount.bindBookmarkBtn,']');
+					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Bookmark Button Retry...');
 					setLoadingStatus('bindBookmarkBtn','retry');
-					return false;
+				} else {
+					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Binding Bookmark Button Failed!');
+					setLoadingStatus('bindBookmarkBtn','fail');
 				}
-				/* Activate bookmark button */
-				$bookmarkBtn.click(function() { toggleBookmark(); });
-				checkIsBookmarked();
 				
-				retryCount.bindBookmarkBtn = 0;
-				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Bookmark Button');
-				setLoadingStatus('bindBookmarkBtn','complete');
 			}
 			var toggleBookmark = function() {
 				/* Make a simple request: */
