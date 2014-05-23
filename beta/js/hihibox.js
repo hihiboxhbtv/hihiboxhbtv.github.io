@@ -112,7 +112,8 @@
 		return (value) ? $('<div />').html(value).text() : '';
 	}
 	var getJSON = function(url,success,error) {
-		var _url = url+((url.match(/\?/)) ? "&" : "?")+"t="+new Date().getTime();
+		//var _url = url+((url.match(/\?/)) ? "&" : "?")+"t="+new Date().getTime();
+		var _url = url+((url.match(/\?/)) ? "&" : "?")+"t="+new Date().getTime()+'&callback=?';
 		var _success = (success) ? success : function(data) {};
 		var _error = (error) ? error : function(data) { console.log('error',data); };
 		try {
