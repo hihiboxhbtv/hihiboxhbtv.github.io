@@ -25,7 +25,7 @@ var HHBJSONDATA;
 			DEBUG_REFRESH			= 1 << 21,
 			DEBUG_GA				= 1 << 22,
 			DEBUG_ALL				= (1 << 23) - 1,
-			DEBUG					= 
+			DEBUG					= 		/* debug */
 				DEBUG_ENV | 
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
 				DEBUG_SUB_SUCCESS | 
@@ -94,40 +94,24 @@ var HHBJSONDATA;
 	/* restore original jQuery */
 	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
 
-	var editorExtensionId = "aejkcagcbcgkplkckbfebfdipmkcndka";
-	var host = 'http://hihiboxhbtv.github.io/beta';
-	var imgHost = 'http://hihiboxhbtv.github.io/images';
-	var enableGA = true;
+	var editorExtensionId = "aejkcagcbcgkplkckbfebfdipmkcndka";			/* debug */
+	var host = 'http://hihiboxhbtv.github.io/beta';						/* debug */
+	var imgHost = 'http://hihiboxhbtv.github.io/images';				/* debug */
+	var enableGA = true;		/* debug */
 	var versionInfo = {
-		name: 'HihiBox β',
+		name: 'HihiBox β',		/* debug */
 		credits: {
 			developer: ["VannZic", "Lemon"],
 			specialThanks: ["希治閣", "小維"]
 		},
 		coreVersion: 'v1.7.1',
-		lastUpdate: '2014-05-24'
+		lastUpdate: '2014-05-23'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
 	}
 	var htmlDecode = function(value) {
 		return (value) ? $('<div />').html(value).text() : '';
-	}
-	var getJSON = function(url,success,error) {
-		//var _url = url+((url.match(/\?/)) ? "&" : "?")+"t="+new Date().getTime();
-		var _url = url+((url.match(/\?/)) ? "&" : "?")+"t="+new Date().getTime();
-		var _success = (success) ? success : function(data) {};
-		var _error = (error) ? error : function(data) { console.log('error',data); };
-		try {
-			$.ajax({
-				type: 'GET',
-				url: _url,
-				contentType: "application/json",
-				dataType: 'jsonp',
-				success: _success,
-				error: _error
-			});
-		} catch(e) {}
 	}
 	var HihiBox = function(options) {
 		var _defaultSettings = {
@@ -1604,7 +1588,7 @@ var HHBJSONDATA;
 							(msgDebugFlag & DEBUG_GA) && 		'[ ga ]' ||
 							'');
 			if (indent!='') args.unshift(indent);
-			args.unshift("[HihiBox Alpha]");
+			args.unshift("[HihiBox Beta]");		/* debug */
 			if ((msgDebugFlag & debugFlag) > 0) console.log.apply(console,args);
 		};
 		var setLoadingStatus = function(target,status) {
@@ -2197,7 +2181,7 @@ var HHBJSONDATA;
 				chrome.runtime.sendMessage(editorExtensionId, {getVersionInfo: true},
 					function(response) {
 						$.extend(versionInfo,response.versionInfo,{
-							name: 'H.Box β',
+							name: 'H.Box β',	/* debug */
 						});
 						initInfo();
 					});
