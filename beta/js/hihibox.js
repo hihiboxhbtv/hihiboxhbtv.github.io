@@ -1,4 +1,5 @@
 ﻿/*! HihiBox | (c) 2014 Lemon, VannZic | MIT License */
+var HHBJSONDATA;
 (function(window,document,undefined) {
 	const 	DEBUG_EXT				= 1 << 1,
 			DEBUG_INIT				= 1 << 2,
@@ -24,7 +25,7 @@
 			DEBUG_REFRESH			= 1 << 21,
 			DEBUG_GA				= 1 << 22,
 			DEBUG_ALL				= (1 << 23) - 1,
-			DEBUG					=
+			DEBUG					= 
 				DEBUG_ENV | 
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
 				DEBUG_SUB_SUCCESS | 
@@ -93,9 +94,10 @@
 	/* restore original jQuery */
 	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
 
-	var editorExtensionId = "aejkcagcbcgkplkckbfebfdipmkcndka";
+	var editorExtensionId = "dcihicbmfgjcjommlfnamlomfjhccdjo";
 	var host = 'http://hihiboxhbtv.github.io/beta';
-	var enableGA = true;	// debug
+	var imgHost = 'http://hihiboxhbtv.github.io/images';
+	var enableGA = true;
 	var versionInfo = {
 		name: 'HihiBox β',
 		credits: {
@@ -103,7 +105,7 @@
 			specialThanks: ["希治閣", "小維"]
 		},
 		coreVersion: 'v1.7.1',
-		lastUpdate: '2014-05-23'
+		lastUpdate: '2014-05-24'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -113,13 +115,15 @@
 	}
 	var getJSON = function(url,success,error) {
 		//var _url = url+((url.match(/\?/)) ? "&" : "?")+"t="+new Date().getTime();
-		var _url = url+((url.match(/\?/)) ? "&" : "?")+"t="+new Date().getTime()+'&callback=?';
+		var _url = url+((url.match(/\?/)) ? "&" : "?")+"t="+new Date().getTime();
 		var _success = (success) ? success : function(data) {};
 		var _error = (error) ? error : function(data) { console.log('error',data); };
 		try {
 			$.ajax({
+				type: 'GET',
 				url: _url,
-				dataType: 'json',
+				contentType: "application/json",
+				dataType: 'jsonp',
 				success: _success,
 				error: _error
 			});
@@ -2019,7 +2023,7 @@
 						return true;
 					}
 					for (var i=0;i<code.length;i++) listLookup[code[i]] = obj;
-					var src = obj.src,
+					var src = (obj.src.match(/^https?/) ? '' : imgHost)+obj.src,
 						genre = (function(genre,code) { var tgenre=[]; if (genre) $.each(genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,code[0]),
 						usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {}),
 						codelist = code.join(", "),
@@ -2193,7 +2197,7 @@
 				chrome.runtime.sendMessage(editorExtensionId, {getVersionInfo: true},
 					function(response) {
 						$.extend(versionInfo,response.versionInfo,{
-							name: 'H.Box β',	// debug
+							name: 'H.Box β',
 						});
 						initInfo();
 					});
@@ -3124,15 +3128,25 @@
 				console.log('[HihiBox]','Import Data List Start');
 				/* load icon list */
 				if ($.inArray('emoticon',features) >= 0) {
-					getJSON([host,"/js/iconlist.json"].join(''), function(data) {
-						if (data.listGenre && data.listIcon) hhb.importIconList(data.listGenre,data.listIcon);
-					});
+					$.getScript([host,"/js/iconlist.json"].join(''))
+						.done(function(script,textStatus) {
+							var HHBJSONDATA = window.HHBJSONDATA;
+							hhb.importIconList(
+								HHBJSONDATA.listGenre,
+								HHBJSONDATA.listIcon
+							);
+						});
 				}
 				/* load name banner list */
 				if ($.inArray('name_banner',features) >= 0) {
-					getJSON([host,"/js/namebannerlist.json"].join(''), function(data) {
-						if (data.listNameBanner && data.listNBControlList) hhb.importNameBanner(data.listNameBanner,data.listNBControlList);
-					});
+					$.getScript([host,"/js/namebannerlist.json"].join(''))
+						.done(function(script,textStatus) {
+							var HHBJSONDATA = window.HHBJSONDATA;
+							hhb.importNameBanner(
+								HHBJSONDATA.listNameBanner,
+								HHBJSONDATA.listNBControlList
+							);
+						});
 				}
 			};
 			tryImport();
