@@ -1,4 +1,5 @@
-﻿(function(window,document,undefined) {
+﻿/*! HihiBox | (c) 2014 Lemon, VannZic | MIT License */
+(function(window,document,undefined) {
 	const 	DEBUG_EXT				= 1 << 1,
 			DEBUG_INIT				= 1 << 2,
 			DEBUG_RETRY				= 1 << 2,
@@ -23,7 +24,7 @@
 			DEBUG_REFRESH			= 1 << 21,
 			DEBUG_GA				= 1 << 22,
 			DEBUG_ALL				= (1 << 23) - 1,
-			DEBUG					= 
+			DEBUG					=
 				DEBUG_ENV | 
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
 				DEBUG_SUB_SUCCESS | 
@@ -91,10 +92,10 @@
 	
 	/* restore original jQuery */
 	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
-	
+
 	var editorExtensionId = "aejkcagcbcgkplkckbfebfdipmkcndka";
 	var host = 'http://hihiboxhbtv.github.io/beta';
-	var enableGA = true;
+	var enableGA = true;	// debug
 	var versionInfo = {
 		name: 'HihiBox β',
 		credits: {
@@ -102,13 +103,26 @@
 			specialThanks: ["希治閣", "小維"]
 		},
 		coreVersion: 'v1.7.1',
-		lastUpdate: '2014-05-19'
+		lastUpdate: '2014-05-23'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
 	}
 	var htmlDecode = function(value) {
 		return (value) ? $('<div />').html(value).text() : '';
+	}
+	var getJSON = function(url,success,error) {
+		var _url = url+((url.match(/\?/)) ? "&" : "?")+"t="+new Date().getTime();
+		var _success = (success) ? success : function(data) {};
+		var _error = (error) ? error : function(data) { console.log('error',data); };
+		try {
+			$.ajax({
+				url: _url,
+				dataType: 'json',
+				success: _success,
+				error: _error
+			});
+		} catch(e) {}
 	}
 	var HihiBox = function(options) {
 		var _defaultSettings = {
@@ -1912,7 +1926,7 @@
 				if (!env.builtinIconLoaded) return false;
 				iconlist = platformObj.getPlatformIcon();
 				analyzediconlist = analyzeIcon(iconlist);
-				if (!analyzediconlist || analyzediconlist.length==0) {
+				if (!iconlist || iconlist.length==0) {
 					if (retryCount.analyzePlatformIcon < limit.analyzePlatformIcon) {
 						setTimeout(function() { analyzePlatformIcon(); },delay.analyzePlatformIcon);
 						retryCount.analyzePlatformIcon++;
@@ -1921,6 +1935,9 @@
 						setLoadingStatus('analyzePlatformIcon','fail');
 					}
 					return false;
+				} else if (!analyzediconlist || analyzediconlist.length==0) {
+					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Platform Icon Failed!');
+					setLoadingStatus('analyzePlatformIcon','fail');
 				}
 				listIcon = listIcon.concat(analyzediconlist);
 				setLoadingStatus('analyzePlatformIcon','complete');
@@ -1960,7 +1977,7 @@
 				};
 				iconlist = getGJTVIcon();
 				analyzediconlist = analyzeIcon(iconlist);
-				if (!analyzediconlist || analyzediconlist.length==0) {
+				if (!iconlist || iconlist.length==0) {
 					if (retryCount.analyzeGJTVIcon < limit.analyzeGJTVIcon) {
 						setTimeout(function() { analyzeGJTVIcon(); },delay.analyzeGJTVIcon);
 						retryCount.analyzeGJTVIcon++;
@@ -1968,6 +1985,10 @@
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing GJTV Icon Failed!');
 						setLoadingStatus('analyzeGJTVIcon','fail');
 					}
+					return;
+				} else if (!analyzediconlist || analyzediconlist.length==0) {
+					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing GJTV Icon Failed!');
+					setLoadingStatus('analyzeGJTVIcon','fail');
 					return;
 				}
 				listIcon = listIcon.concat(analyzediconlist);
@@ -1987,10 +2008,15 @@
 					for (var i=0;i<ncode.length;i++) if (listLookup[ncode[i]]) return true;
 					return false;
 				};
+				var dcodelist = [];
 				$.each(iconlist,function(idx,obj) {
 					/* analyze Icon */
+					if (!obj.code || obj.code.length==0) return true;
 					var code = [].concat(obj.code);
-					if (codeIsDuplicated(code)) return true;
+					if (codeIsDuplicated(code)) {
+						dcodelist = dcodelist.concat(code);
+						return true;
+					}
 					for (var i=0;i<code.length;i++) listLookup[code[i]] = obj;
 					var src = obj.src,
 						genre = (function(genre,code) { var tgenre=[]; if (genre) $.each(genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,code[0]),
@@ -2008,6 +2034,7 @@
 					obj.regex = regex;
 					obj.img = img;
 					obj.usage = usage;
+					obj.isParsed = true;
 					
 					if (listGenre[listGenre.length-1] == genreOther) {
 						listGenre.pop();
@@ -2037,6 +2064,7 @@
 				
 				retryCount.analyzeIcon = 0;
 				
+				if (dcodelist.length>0) debugMsg(DEBUG_FAIL,'Icon Code Duplicated! [D:',dcodelist,']');
 				if (count>0) debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Icon List [ T:',iconlist.length,', G:',listGenre.length,', P:',listParse.length,']');
 				return analyzediconlist;
 			};
@@ -2163,16 +2191,9 @@
 			var checkVersion = function() {
 				chrome.runtime.sendMessage(editorExtensionId, {getVersionInfo: true},
 					function(response) {
-						if (!response || !response.success || !response.versionInfo) {
-							/* For v1.6 or lower */
-							$.extend(versionInfo,{
-								newRelease: true,
-								lastExtensionVersion: 'v1.7',
-								lastSummary: "[概要] 新增Bookmark, 開台提示, 管理頁面, HihiBox 更新提示等功能"
-							});
-						} else {
-							$.extend(versionInfo,response.versionInfo);
-						}
+						$.extend(versionInfo,response.versionInfo,{
+							name: 'H.Box β',	// debug
+						});
 						initInfo();
 					});
 			};
@@ -2300,6 +2321,7 @@
 				if (!palIconset.length > 0) return;
 				palIconset.append($('<div id="'+id.iconMsgBox+'">-</div>'));
 				$.each(listIcon,function(idx,obj) {
+					if (!obj.isParsed) return true;
 					var $icon = 
 						$('<div class="'+cssClass.icon+'" hhb-id="'+obj.id+'" hhb-code="'+obj.code[0]+'" hhb-genre="'+obj.genre.join(' ')+'"></div>')
 							.data('hhb-code',obj.code.join(' '))
@@ -2384,22 +2406,28 @@
 				timestamps.sortIconList = tsNow;
 				var f_icon_sort_id = function(a, b) {
 					var $a = $.data(a,'hhb-object'), $b = $.data(b,'hhb-object');
-					return 	($a.id<$b.id) ? -1 :
-							($a.id>$b.id) ? 1 : 0;
+					return 	(!$a.isParsed) ? 1 : 
+							(!$b.isParsed) ? -1 : 
+								($a.id<$b.id) ? -1 :
+								($a.id>$b.id) ? 1 : 0;
 				}
 				var f_icon_sort_usage = function(a, b) {
 					var $a = $.data(a,'hhb-object'), $b = $.data(b,'hhb-object');
-					return 	($a.usage.count>$b.usage.count) ? -1 :
-							($a.usage.count<$b.usage.count) ? 1 :
-								($a.usage.lastUsed>$b.usage.lastUsed) ? -1 :
-								($a.usage.lastUsed<$b.usage.lastUsed) ? 1 : 
-									($a.id<$b.id) ? -1 :
-									($a.id>$b.id) ? 1 : 0;
+					return 	(!$a.isParsed) ? 1 : 
+							(!$b.isParsed) ? -1 : 
+								($a.usage.count>$b.usage.count) ? -1 :
+								($a.usage.count<$b.usage.count) ? 1 :
+									($a.usage.lastUsed>$b.usage.lastUsed) ? -1 :
+									($a.usage.lastUsed<$b.usage.lastUsed) ? 1 : 
+										($a.id<$b.id) ? -1 :
+										($a.id>$b.id) ? 1 : 0;
 				}
 				var f_icon_sort_recent = function(a, b) {
 					var $a = $.data(a,'hhb-object'), $b = $.data(b,'hhb-object');
-					return 	($a.usage.lastUsed>$b.usage.lastUsed) ? -1 :
-							($a.usage.lastUsed<$b.usage.lastUsed) ? 1 : 
+					return 	 (!$a.isParsed) ? 1 : 
+							(!$b.isParsed) ? -1 : 
+								($a.usage.lastUsed>$b.usage.lastUsed) ? -1 :
+								($a.usage.lastUsed<$b.usage.lastUsed) ? 1 : 
 									($a.id<$b.id) ? -1 :
 									($a.id>$b.id) ? 1 : 0;
 				}
@@ -2635,15 +2663,24 @@
 				usage = {	count: usage.count+1, 
 							lastUsed: new Date().getTime()	};
 				code = (code) ? code : objIcon.code[0];
-				listPendingUsage[idxcode] = { icon: objIcon, code: code, usage: usage };
+				listPendingUsage[idxcode] = { icon: objIcon, code: code, genre: objIcon.genre, usage: usage };
 			};
 			var commitUsage = function() {
 				if (env.usageLoaded) {
 					var count=0,tpusage={};
 					$.each(listPendingUsage, function(key,obj) {
 						var tusage = $.extend({count:0,lastUsed:0},obj.usage);
+						var tcode = (obj.code ? obj.code : '');
+						var tgenre = (obj.genre ? obj.genre : []);
 						tpusage[key] = tusage;
 						count++;
+						
+						if (tcode!='') _gaTracker('icon','send',obj.code,tusage.count);
+						$.each(tgenre,function(key,obj) {
+							if (obj=='') return;
+							if (obj.toLowerCase()=='recent') return ;
+							_gaTracker('genre','use',obj,tusage.count);
+						});
 					});
 					listPendingUsage = {};
 					if (count==0) return false;
@@ -2702,11 +2739,15 @@
 				var style = '';
 				/* Search Match Channel */
 				$.each(nbcontrol,function(idx,obj) {
-					for(var i=0;i<obj.channel.length;i++) {
-						if (obj.channel[i].match(reCh)) {
-							objChannel = obj;
-							break;
+					try {
+						for(var i=0;i<obj.channel.length;i++) {
+							if (obj.channel[i].match(reCh)) {
+								objChannel = obj;
+								break;
+							}
 						}
+					} catch (e) {
+						return true;
 					}
 				});
 				
@@ -2731,19 +2772,23 @@
 					if (objChannel.whitelist.length > 0) {
 						clist = filterName(objChannel.whitelist);
 						$.each(nblist,function(idx,obj){
-							obj = $.extend({id:[],img:'',width:100,height:16,specialEnroll:false},obj);
-							if (obj.specialEnroll) {	/* Special Enroll (always included) */
-								var idlist = filterName(obj.id);
-								$.each(idlist,function(idx2,obj2) {
-									olist[obj2] = obj;
-								});
-							} else {
-								$.each(clist,function(idx2,obj2){
-									if ($.inArray(obj2,obj.id)>=0) {
-										clist.splice(idx2,1);
+							try {
+								obj = $.extend({id:[],img:'',width:100,height:16,specialEnroll:false},obj);
+								if (obj.specialEnroll) {	/* Special Enroll (always included) */
+									var idlist = filterName(obj.id);
+									$.each(idlist,function(idx2,obj2) {
 										olist[obj2] = obj;
-									}
-								});
+									});
+								} else {
+									$.each(clist,function(idx2,obj2){
+										if ($.inArray(obj2,obj.id)>=0) {
+											clist.splice(idx2,1);
+											olist[obj2] = obj;
+										}
+									});
+								}
+							} catch (e) {
+								return true;
 							}
 						});
 					}
@@ -3021,6 +3066,8 @@
 		this.importIconList = function(igenre,ilist) {
 			if (!env.listeningIconListData) return false;
 			if (igenre && ilist) {
+				listGenre = igenre;
+				listIcon = ilist;
 				initIconListData();
 				initIncomingParser();
 				initEmoticon();
@@ -3060,7 +3107,7 @@
 		ga('create', 'UA-48929186-1', 'hihiboxhbtv.github.io');
 		ga('require','displayfeatures');
 	
-		var hhb = new HihiBox();
+		hhb = new HihiBox();
 		
 		if (hhb.isInitialize()) {
 			ga('send', 'pageview');
@@ -3076,21 +3123,15 @@
 				console.log('[HihiBox]','Import Data List Start');
 				/* load icon list */
 				if ($.inArray('emoticon',features) >= 0) {
-					$.getScript([host,"/js/iconlist.js"].join(''))
-						.done(function(script,textStatus) {
-							var listGenre = [].concat(window.listGenre);
-							var listIcon = [].concat(window.listIcon);
-							hhb.importIconList(listGenre,listIcon);
-						});
+					getJSON([host,"/js/iconlist.json"].join(''), function(data) {
+						if (data.listGenre && data.listIcon) hhb.importIconList(data.listGenre,data.listIcon);
+					});
 				}
 				/* load name banner list */
 				if ($.inArray('name_banner',features) >= 0) {
-					$.getScript([host,"/js/namebannerlist.js"].join(''))
-						.done(function(script,textStatus) {
-							var listNBControlList = [].concat(window.listNBControlList);
-							var listNameBanner = [].concat(window.listNameBanner);
-							hhb.importNameBanner(listNameBanner,listNBControlList);
-						});
+					getJSON([host,"/js/namebannerlist.json"].join(''), function(data) {
+						if (data.listNameBanner && data.listNBControlList) hhb.importNameBanner(data.listNameBanner,data.listNBControlList);
+					});
 				}
 			};
 			tryImport();

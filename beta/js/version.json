@@ -6,17 +6,17 @@
 		"specialThanks": ["希治閣", "小維"]
 	},
 	"lastExtensionVersion": "v1.7.1",
-	"lastRelease": "2014-05-19",
-	"lastSummary": "[概要] 新增Bookmark, 開台提示, 管理頁面, HihiBox 更新提示等功能",
+	"lastRelease": "2014-05-23",
+	"lastSummary": "[概要] 新增開台提示音量控制, 表情代碼篩選功能開關 及HihiBox v1.7 相關錯誤修正",
 	"downloadURI": "https://docs.google.com/file/d/0B75izxj9WNpGcXFuZ3d3aHpwSmM/edit",
-	"siteURI": "http://bit.ly/hihiboxhbtv",
+	"siteURI": "http://hkghihibox.wix.com/index",
 	"pageURI": "https://www.facebook.com/hihiboxhbtv",
 	"coreVersion": "v1.7.1",
-	"lastUpdate": "2014-05-19",
+	"lastUpdate": "2014-05-23",
 	"history": [
 		{
 			"version": "v1.7.1",
-			"lastUpdate": "2014-05-19",
+			"lastUpdate": "2014-05-23",
 			"summary": [
 				"[概要] 新增開台提示音量控制, 表情代碼篩選功能開關 及HihiBox v1.7 相關錯誤修正"
 			],
