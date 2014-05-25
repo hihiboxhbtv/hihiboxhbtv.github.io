@@ -19,6 +19,7 @@ HHBJSONDATA.listNBControlList = [
 			"twitch" : "{ ... }",
 			"justin" : "{ ... }"
 		},
+		"_comment": true,
 		"_end": "***************************************"
 	},
 	{	"channel": ["scaryplayttv@hitbox","scaryplay@twitch","scary_play@justin"],

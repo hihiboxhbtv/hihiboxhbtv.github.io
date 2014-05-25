@@ -1,0 +1,13 @@
+﻿{
+	"listHHBChannelInfo": [
+		{	"_start": "***************************************",
+			"channel": ["channel id"],	
+			"hhbTags": [" ... "],
+			"_comment": true,
+			"_end": "***************************************"
+		},
+		{	"channel": ["lemontycoon@twitch"],
+			"hhbTags": ["遊戲實況","不定時開台","模擬類","Game"]
+		}
+	]
+}

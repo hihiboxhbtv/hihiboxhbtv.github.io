@@ -25,7 +25,7 @@ var HHBJSONDATA;
 			DEBUG_REFRESH			= 1 << 21,
 			DEBUG_GA				= 1 << 22,
 			DEBUG_ALL				= (1 << 23) - 1,
-			DEBUG					= 		/* debug */
+			DEBUG					= 
 				DEBUG_ENV | 
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
 				DEBUG_SUB_SUCCESS | 
@@ -95,17 +95,17 @@ var HHBJSONDATA;
 	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
 
 	var editorExtensionId = "aejkcagcbcgkplkckbfebfdipmkcndka";			/* debug */
-	var host = 'http://hihiboxhbtv.github.io/beta';						/* debug */
-	var imgHost = 'http://hihiboxhbtv.github.io/images';				/* debug */
-	var enableGA = true;		/* debug */
+	var host = 'http://hihiboxhbtv.github.io/beta';
+	var imgHost = 'http://hihiboxhbtv.github.io/images';
+	var enableGA = true;
 	var versionInfo = {
-		name: 'HihiBox β',		/* debug */
+		name: 'HihiBox β',
 		credits: {
 			developer: ["VannZic", "Lemon"],
 			specialThanks: ["希治閣", "小維"]
 		},
 		coreVersion: 'v1.7.1',
-		lastUpdate: '2014-05-23'
+		lastUpdate: '2014-05-26'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -1779,7 +1779,7 @@ var HHBJSONDATA;
 			
 			/* update last watching datetime of current channel to extension */
 			var _channel = { platform: env.platform, channel: env.channel };
-			chrome.runtime.sendMessage(editorExtensionId, {updateLastWatch: _channel},function(response) {});
+			sendMessage({updateLastWatch: _channel},function(response) {});
 			
 			env.isInitialize = true;
 			pollUsage();
@@ -2000,6 +2000,7 @@ var HHBJSONDATA;
 				var dcodelist = [];
 				$.each(iconlist,function(idx,obj) {
 					/* analyze Icon */
+					if (obj._comment) return true;
 					if (!obj.code || obj.code.length==0) return true;
 					var code = [].concat(obj.code);
 					if (codeIsDuplicated(code)) {
@@ -2178,13 +2179,12 @@ var HHBJSONDATA;
 					});
 			};
 			var checkVersion = function() {
-				chrome.runtime.sendMessage(editorExtensionId, {getVersionInfo: true},
-					function(response) {
-						$.extend(versionInfo,response.versionInfo,{
-							name: 'H.Box β',	/* debug */
-						});
-						initInfo();
+				sendMessage({getVersionInfo: true},function(response) {
+					$.extend(versionInfo,response.versionInfo,{
+						name: 'H.Box β',		/* debug */
 					});
+					initInfo();
+				});
 			};
 			var initInfo = function() {
 				var $name = $('#hhb-header .name');
@@ -2710,7 +2710,7 @@ var HHBJSONDATA;
 		};
 		var initNameBanner = function(nblist,nbcontrol) {
 			if (!nblist || !nbcontrol) return false;
-			var analyzeNameBanner = function(nblist,nbcontroll) {
+			var analyzeNameBanner = function(nblist,nbcontrol) {
 				if (env.platform==''|| env.channel=='') return false;
 				setLoadingStatus('analyzeNameBanner','init');
 				var nbdict = {},objChannel = null;
@@ -2729,6 +2729,7 @@ var HHBJSONDATA;
 				/* Search Match Channel */
 				$.each(nbcontrol,function(idx,obj) {
 					try {
+						if (obj._comment) return true;
 						for(var i=0;i<obj.channel.length;i++) {
 							if (obj.channel[i].match(reCh)) {
 								objChannel = obj;
@@ -2762,6 +2763,7 @@ var HHBJSONDATA;
 						clist = filterName(objChannel.whitelist);
 						$.each(nblist,function(idx,obj){
 							try {
+								if (obj._comment) return true;
 								obj = $.extend({id:[],img:'',width:100,height:16,specialEnroll:false},obj);
 								if (obj.specialEnroll) {	/* Special Enroll (always included) */
 									var idlist = filterName(obj.id);
@@ -2893,35 +2895,34 @@ var HHBJSONDATA;
 		var initBookmark = function() {
 			var checkIsBookmarked = function() {
 				var _channel = { platform: env.platform, channel: env.channel };
-				chrome.runtime.sendMessage(editorExtensionId, {isBookmarked: _channel},
-					function(response) {
-						if (!response) $(selector.bookmarkBtn).hide();
-						else if (response.success) {
-							debugMsg(DEBUG_ENV,'Bookmark Status - '+((response.isBookmarked)?'':'Not ')+'Bookmarked [C:',[env.channel,env.platform].join('@'),']');
-							if (response.isBookmarked) {
-								$(selector.bookmarkBtn)
-									.addClass('isBookmarked')
-									.attr('hhb-locale-title','{{iconlist.bookmarked}}')
-									.attr('title','Bookmarked');
-								$(selector.playerBookmark)
-									.addClass('isBookmarked')
-									.attr('hhb-locale-title','{{info.name}} - {{iconlist.bookmarked}}')
-									.attr('title','Bookmarked');
-							} else {
-								$(selector.bookmarkBtn)
-									.removeClass('isBookmarked')
-									.attr('hhb-locale-title','{{iconlist.bookmark}}')
-									.attr('title','Bookmark');
-								$(selector.playerBookmark)
-									.removeClass('isBookmarked')
-									.attr('hhb-locale-title','{{info.name}} - {{iconlist.bookmark}}')
-									.attr('title','Bookmark');
-							}
+				sendMessage({isBookmarked: _channel},function(response) {
+					if (!response) $(selector.bookmarkBtn).hide();
+					else if (response.success) {
+						debugMsg(DEBUG_ENV,'Bookmark Status - '+((response.isBookmarked)?'':'Not ')+'Bookmarked [C:',[env.channel,env.platform].join('@'),']');
+						if (response.isBookmarked) {
+							$(selector.bookmarkBtn)
+								.addClass('isBookmarked')
+								.attr('hhb-locale-title','{{iconlist.bookmarked}}')
+								.attr('title','Bookmarked');
+							$(selector.playerBookmark)
+								.addClass('isBookmarked')
+								.attr('hhb-locale-title','{{info.name}} - {{iconlist.bookmarked}}')
+								.attr('title','Bookmarked');
 						} else {
-							$(selector.bookmarkBtn).hide();
+							$(selector.bookmarkBtn)
+								.removeClass('isBookmarked')
+								.attr('hhb-locale-title','{{iconlist.bookmark}}')
+								.attr('title','Bookmark');
+							$(selector.playerBookmark)
+								.removeClass('isBookmarked')
+								.attr('hhb-locale-title','{{info.name}} - {{iconlist.bookmark}}')
+								.attr('title','Bookmark');
 						}
-						bindIconListLocale();
-					});
+					} else {
+						$(selector.bookmarkBtn).hide();
+					}
+					bindIconListLocale();
+				});
 			};
 			var bindPlayerBookmarkBtn = function() {
 				var $playerBookmark = $(selector.playerBookmark);
@@ -2983,11 +2984,10 @@ var HHBJSONDATA;
 			var toggleBookmark = function() {
 				/* Make a simple request: */
 				var _bookmark = { platform: env.platform, channel: env.channel };
-				chrome.runtime.sendMessage(editorExtensionId, {toggleBookmark: _bookmark},
-					function(response) {
-						if (!response) $(selector.bookmarkBtn).hide();
-						else if (response.success) checkIsBookmarked();
-					});
+				sendMessage({toggleBookmark: _bookmark},function(response) {
+					if (!response) $(selector.bookmarkBtn).hide();
+					else if (response.success) checkIsBookmarked();
+				});
 			}
 			
 			if (isStatusInited('initBookmark')) return false;

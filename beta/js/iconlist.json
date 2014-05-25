@@ -4,6 +4,7 @@ HHBJSONDATA.listGenre = ["Recent","HKG","HKG2","meme","pkmon","腦魔","禿伯",
 HHBJSONDATA.listIcon = [
 	{	"_start": 	"***************************************",
 		"comment": 	"HKG",
+		"_comment": true,
 		"_end": 	"***************************************"
 	},
 	{	"code": ["O:-)","O:)"],
@@ -363,7 +364,8 @@ HHBJSONDATA.listIcon = [
 	},
 	{	"code": ["[打打打渣b]"],
 		"src": "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/10/10/1381417466775/Beyond-Two-Souls-008.jpg",
-		"width": 460,	"height": 276
+		"width": 460,	"height": 276,
+		
 	},
 	{	"code": ["O:-)lm","O:)lm"],
 		"src": "http://img4.wikia.nocookie.net/__cb20100616154309/evchk/images/a/ab/Th_oh_copy.gif",
@@ -2775,12 +2777,12 @@ HHBJSONDATA.listIcon = [
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[summonvannzic]","[wfc]"],
+	{	"code": ["[wfc]"],
 		"src": "http://goldenjtv.github.io/GoldenJTV/resources/wfc.png",
 		"width": 83,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[summonlemon]","[yuno]"],
+	{	"code": ["[yuno]"],
 		"src": "http://goldenjtv.github.io/GoldenJTV/resources/yuno.png",
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
@@ -3779,5 +3781,15 @@ HHBJSONDATA.listIcon = [
 		"src": "http://forum.mess.be/style_emoticons/mess.be/msn_embarrassed.gif",
 		"width": 19,	"height": 19,
 		"genre": ["Discuz"]
+	},
+	{	"code": ["[summonvannzic]"],
+		"src": "http://hihiboxhbtv.github.io/images/icons/[summonvannzic].jpg",
+		"width": 200,	"height": 200,
+		
+	},
+	{	"code": ["[summonlemon]"],
+		"src": "http://hihiboxhbtv.github.io/images/icons/[summonlemon].jpg",
+		"width": 200,	"height": 200,
+		
 	}
 ];
