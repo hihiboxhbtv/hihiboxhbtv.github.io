@@ -95,17 +95,17 @@ var HHBJSONDATA;
 	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
 
 	var editorExtensionId = "aejkcagcbcgkplkckbfebfdipmkcndka";			/* debug */
-	var host = 'http://hihiboxhbtv.github.io/beta';
-	var imgHost = 'http://hihiboxhbtv.github.io/images';
-	var enableGA = true;
+	var host = 'http://hihiboxhbtv.github.io/beta';						/* debug */
+	var imgHost = 'http://hihiboxhbtv.github.io/images/icons';			/* debug */
+	var enableGA = true;		/* debug */
 	var versionInfo = {
-		name: 'HihiBox β',
+		name: 'HihiBox β',		/* debug */
 		credits: {
 			developer: ["VannZic", "Lemon"],
 			specialThanks: ["希治閣", "小維"]
 		},
 		coreVersion: 'v1.7.1',
-		lastUpdate: '2014-05-26'
+		lastUpdate: '2014-06-01'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -524,8 +524,8 @@ var HHBJSONDATA;
 							classResized = cssClass.resized
 							limitHeight = limit.msgIconHeight;
 						/* Re-define window.emotify */
-						window.emotify=function(e){var t,n,r={},i=[];t=function(e,t){t=t||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};var s=[],o=[].concat(e.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi));for(var u=0;u<o.length;u++){s[u]=o[u];e=e.replace(s[u],"___hhb_html_"+u+"___")}e=e.replace(n,function(e,n,s){var o=0,u=s,a=r[s];if(!a){while(o<i.length&&!i[o].regexp.test(s)){o++}u=i[o].name;a=r[u]}return a?n+t(a[0],a[1],a.width,a.height,u,s):e});for(var u=0;u<s.length;u++){e=e.replace(new RegExp("___hhb_html_"+u+"___","g"),s[u])}return e};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|)("+a.join("|")+")(?=(?:$|))","g")}return r};return t}(_hhb);
-						
+						window.emotify=function(e){var t,n,r={},i=[];t=function(e,t){t=t||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};var s=[],o=[].concat(e.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi)),u=[],a=[].concat(e.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi));for(var f=0;f<o.length;f++){s[f]=o[f];e=e.replace(s[f],"___hhb_html_"+f+"___")}for(var f=0;f<a.length;f++){u[f]=a[f];e=e.replace(u[f],"___hhb_url_"+f+"___")}e=e.replace(n,function(e,n,s){var o=0,u=s,a=r[s];if(!a){while(o<i.length&&!i[o].regexp.test(s)){o++}u=i[o].name;a=r[u]}return a?n+t(a[0],a[1],a.width,a.height,u,s):e});for(var f=0;f<s.length;f++){e=e.replace(new RegExp("___hhb_html_"+f+"___","g"),s[f])}for(var f=0;f<u.length;f++){e=e.replace(new RegExp("___hhb_url_"+f+"___","g"),u[f])}return e};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|)("+a.join("|")+")(?=(?:$|))","g")}return r};return t}(_hhb);
+
 						var ijlist = emotify.emoticons(true,list);
 					}
 					return count;

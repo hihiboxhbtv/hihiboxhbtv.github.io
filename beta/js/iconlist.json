@@ -862,6 +862,56 @@ HHBJSONDATA.listIcon = [
 		"width": 400,	"height": 369,
 		"genre": ["meme"]
 	},
+	{	"code": ["[dontsay?]"],
+		"src": "http://goldenjtv.github.io/GoldenJTV/resources/youdontsay.png",
+		"width": 85,	"height": 50,
+		"genre": ["meme"]
+	},
+	{	"code": ["[fuckyea]","[fu*kyea]"],
+		"src": "http://goldenjtv.github.io/GoldenJTV/resources/fuckyea.png",
+		"width": 48,	"height": 50,
+		"genre": ["meme"]
+	},
+	{	"code": ["[fullpanel]"],
+		"src": "http://goldenjtv.github.io/GoldenJTV/resources/fullpanel.png",
+		"width": 67,	"height": 50,
+		"genre": ["meme"]
+	},
+	{	"code": ["[gaayyy]"],
+		"src": "http://goldenjtv.github.io/GoldenJTV/resources/gay.png",
+		"width": 50,	"height": 50,
+		"genre": ["meme"]
+	},
+	{	"code": ["[genius]"],
+		"src": "http://goldenjtv.github.io/GoldenJTV/resources/genius.png",
+		"width": 58,	"height": 50,
+		"genre": ["meme"]
+	},
+	{	"code": ["[megusta]"],
+		"src": "http://goldenjtv.github.io/GoldenJTV/resources/megusta.png",
+		"width": 48,	"height": 50,
+		"genre": ["meme"]
+	},
+	{	"code": ["[serious?]"],
+		"src": "http://goldenjtv.github.io/GoldenJTV/resources/seriously.png",
+		"width": 48,	"height": 50,
+		"genre": ["meme"]
+	},
+	{	"code": ["[takemymoney]"],
+		"src": "http://goldenjtv.github.io/GoldenJTV/resources/shutupandtakemymoney.png",
+		"width": 80,	"height": 50,
+		"genre": ["meme"]
+	},
+	{	"code": ["[yuno]"],
+		"src": "http://goldenjtv.github.io/GoldenJTV/resources/yuno.png",
+		"width": 50,	"height": 50,
+		"genre": ["meme"]
+	},
+	{	"code": ["[notbad]"],
+		"src": "http://goldenjtv.github.io/GoldenJTV/resources/notbad.png",
+		"width": 69,	"height": 50,
+		"genre": ["meme"]
+	},
 	{	"code": [":o)t8"],
 		"src": "http://img4.wikia.nocookie.net/__cb20091018112019/evchk/images/c/c6/Tube8icon21.gif",
 		"width": 32,	"height": 32,
@@ -2647,34 +2697,9 @@ HHBJSONDATA.listIcon = [
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[dontsay?]"],
-		"src": "http://goldenjtv.github.io/GoldenJTV/resources/youdontsay.png",
-		"width": 85,	"height": 50,
-		"genre": ["Cap圖"]
-	},
 	{	"code": ["[eatsh*t]"],
 		"src": "http://goldenjtv.github.io/GoldenJTV/resources/eatshit.png",
 		"width": 46,	"height": 50,
-		"genre": ["Cap圖"]
-	},
-	{	"code": ["[fu*kyea]"],
-		"src": "http://goldenjtv.github.io/GoldenJTV/resources/fuckyea.png",
-		"width": 48,	"height": 50,
-		"genre": ["Cap圖"]
-	},
-	{	"code": ["[fullpanel]"],
-		"src": "http://goldenjtv.github.io/GoldenJTV/resources/fullpanel.png",
-		"width": 67,	"height": 50,
-		"genre": ["Cap圖"]
-	},
-	{	"code": ["[gaayyy]"],
-		"src": "http://goldenjtv.github.io/GoldenJTV/resources/gay.png",
-		"width": 50,	"height": 50,
-		"genre": ["Cap圖"]
-	},
-	{	"code": ["[genius]"],
-		"src": "http://goldenjtv.github.io/GoldenJTV/resources/genius.png",
-		"width": 58,	"height": 50,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[iamzero]"],
@@ -2692,11 +2717,6 @@ HHBJSONDATA.listIcon = [
 		"width": 66,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[megusta]"],
-		"src": "http://goldenjtv.github.io/GoldenJTV/resources/megusta.png",
-		"width": 48,	"height": 50,
-		"genre": ["Cap圖"]
-	},
 	{	"code": ["[more]"],
 		"src": "http://goldenjtv.github.io/GoldenJTV/resources/morepics.png",
 		"width": 66,	"height": 50,
@@ -2705,11 +2725,6 @@ HHBJSONDATA.listIcon = [
 	{	"code": ["[mum]"],
 		"src": "http://goldenjtv.github.io/GoldenJTV/resources/mama.jpg",
 		"width": 70,	"height": 50,
-		"genre": ["Cap圖"]
-	},
-	{	"code": ["[notbad]"],
-		"src": "http://goldenjtv.github.io/GoldenJTV/resources/notbad.png",
-		"width": 69,	"height": 50,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[playlife]"],
@@ -2732,11 +2747,6 @@ HHBJSONDATA.listIcon = [
 		"width": 67,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[serious?]"],
-		"src": "http://goldenjtv.github.io/GoldenJTV/resources/seriously.png",
-		"width": 48,	"height": 50,
-		"genre": ["Cap圖"]
-	},
 	{	"code": ["[small]"],
 		"src": "http://goldenjtv.github.io/GoldenJTV/resources/small.gif",
 		"width": 36,	"height": 22,
@@ -2750,11 +2760,6 @@ HHBJSONDATA.listIcon = [
 	{	"code": ["[stopsaying]"],
 		"src": "http://goldenjtv.github.io/GoldenJTV/resources/stopsaying.gif",
 		"width": 67,	"height": 50,
-		"genre": ["Cap圖"]
-	},
-	{	"code": ["[takemymoney]"],
-		"src": "http://goldenjtv.github.io/GoldenJTV/resources/shutupandtakemymoney.png",
-		"width": 80,	"height": 50,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[ugly]"],
@@ -2780,11 +2785,6 @@ HHBJSONDATA.listIcon = [
 	{	"code": ["[wfc]"],
 		"src": "http://goldenjtv.github.io/GoldenJTV/resources/wfc.png",
 		"width": 83,	"height": 50,
-		"genre": ["Cap圖"]
-	},
-	{	"code": ["[yuno]"],
-		"src": "http://goldenjtv.github.io/GoldenJTV/resources/yuno.png",
-		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["☺"],
