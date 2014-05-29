@@ -94,9 +94,9 @@ var HHBJSONDATA;
 	/* restore original jQuery */
 	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
 
-	var editorExtensionId = "aejkcagcbcgkplkckbfebfdipmkcndka";			/* debug */
-	var host = 'http://hihiboxhbtv.github.io/beta';						/* debug */
-	var imgHost = 'http://hihiboxhbtv.github.io/images/icons';			/* debug */
+	var editorExtensionId = "aejkcagcbcgkplkckbfebfdipmkcndka";		/* debug */
+	var host = 'http://hihiboxhbtv.github.io/beta';					/* debug */
+	var imgHost = 'http://hihiboxhbtv.github.io/images/icons/';		/* debug */
 	var enableGA = true;		/* debug */
 	var versionInfo = {
 		name: 'HihiBox β',		/* debug */
@@ -2022,6 +2022,7 @@ var HHBJSONDATA;
 					obj.genre = genre;
 					obj.title = title;
 					obj.regex = regex;
+					obj.src = src;
 					obj.img = img;
 					obj.usage = usage;
 					obj.isParsed = true;
@@ -2162,16 +2163,22 @@ var HHBJSONDATA;
 			};
 			var activatePopupToggle = function() {
 				var $holderCon = platformObj.getHolderContainer();
-				var $holder = $(selector.holder).draggable().draggable({ disable: true, containment: "window" });
+				var $holder = $(selector.holder).draggable({ disabled: true, containment: "window" })
+					.resizable({
+						disabled: true, ghost: true,
+						minWidth: 400, minHeight: 300,
+						stop: function(event,ui) { resizeIconset(); }
+					});
 				var $body = $(selector.body);
 				var $popup = $(selector.popupBtn)
 					.click(function() {
 						if ($holder.hasClass(cssClass.isDraggable)) {
-							$holder.removeClass(cssClass.isDraggable).appendTo($holderCon).draggable('disable').css({ left: '', top: '' });
+							$holder.removeClass(cssClass.isDraggable).appendTo($holderCon).draggable('disable').resizable('disable').css({ left: '', top: '', width: '', height: '' });
+							resizeIconset();
 						} else {
 							var offset = $holder.offset();
 							var px = offset.left+$popup.position().left,py = offset.top;
-							$holder.addClass(cssClass.isDraggable).appendTo($body).draggable('enable')
+							$holder.addClass(cssClass.isDraggable).appendTo($body).draggable('enable').resizable('enable')
 								.css({ left: px-$popup.position().left-parseInt($holder.css('border-left-width')), top: py-parseInt($holder.css('border-top-width')) });
 						}
 						$popup.attr('hhb-locale-title','{{iconlist.'+($holder.hasClass(cssClass.isDraggable)?'popup_enable':'popup_fixed')+'}}')
@@ -2317,6 +2324,7 @@ var HHBJSONDATA;
 							.data('hhb-object',obj)
 							.click(function() {	insertIcon($(this)); })
 							.append($(obj.img)
+								//.load(function() { console.log(this.src,this.width,this.height); }) /* debug */
 								.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
 							);
 					obj.domObject = $icon;
@@ -2344,11 +2352,7 @@ var HHBJSONDATA;
 				}
 				var $holder = $(selector.holder),
 					$iconMsgBox = $(selector.iconMsgBox)
-				var iconsetHeight = 
-					$holder.innerHeight()
-					-$(selector.header).outerHeight()
-					-$(selector.genreContainer).outerHeight();
-				$(selector.iconset).outerHeight(iconsetHeight);
+				resizeIconset();
 				
 				sortIconList(true);
 				showIconMsg();
@@ -3022,6 +3026,10 @@ var HHBJSONDATA;
 		};
 		
 		/* Shared Methods */
+		var resizeIconset = function() {
+			var iconsetHeight = $(selector.holder).innerHeight()-$(selector.header).outerHeight()-$(selector.genreContainer).outerHeight();
+			$(selector.iconset).outerHeight(iconsetHeight);
+		}
 		var bindIconListLocale = function() {
 			locale.bindLocale(settings.locale,null,function() {
 				var $name = $('#hhb-header .name');
