@@ -7,7 +7,6 @@ HHBJSONDATA.listIcon = [
 		"_comment": true,
 		"_end": 	"***************************************"
 	},
-
 	{	"code": ["O:-)","O:)"],
 		"src": "hkg/angel.gif",
 		"width": 15,	"height": 23,
@@ -882,11 +881,6 @@ HHBJSONDATA.listIcon = [
 		"width": 300,	"height": 188,
 		"genre": ["meme"]
 	},
-	{	"code": ["[notbad]"],
-		"src": "meme/notbad.png",
-		"width": 288,	"height": 228,
-		"genre": ["meme"]
-	},
 	{	"code": ["[megusta]"],
 		"src": "meme/megusta.png",
 		"width": 194,	"height": 177,
@@ -905,6 +899,11 @@ HHBJSONDATA.listIcon = [
 	{	"code": ["[yuno]"],
 		"src": "meme/yuno.png",
 		"width": 200,	"height": 203,
+		"genre": ["meme"]
+	},
+	{	"code": ["[notbad]"],
+		"src": "meme/notbad.png",
+		"width": 288,	"height": 228,
 		"genre": ["meme"]
 	},
 	{	"code": [":o)t8"],
@@ -2624,7 +2623,7 @@ HHBJSONDATA.listIcon = [
 	},
 	{	"code": ["[wonggiyin]","[ohyeah]"],
 		"src": "capture/wongchiyin.jpg",
-		"width": 500,	"height": 281,
+		"width": 250,	"height": 141,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[talkthis]","[saythese]"],
@@ -2639,47 +2638,47 @@ HHBJSONDATA.listIcon = [
 	},
 	{	"code": ["[youknowrules]"],
 		"src": "capture/youknowrules.jpg",
-		"width": 533,	"height": 300,
+		"width": 250,	"height": 141,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[repeaterror]","[error]"],
 		"src": "capture/repeaterror.jpg",
-		"width": 560,	"height": 420,
+		"width": 250,	"height": 188,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[whynotboth]"],
 		"src": "capture/whynotboth.jpg",
-		"width": 343,	"height": 262,
+		"width": 250,	"height": 191,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[sundaydriver]"],
 		"src": "capture/elderly-female-driver.jpg",
-		"width": 310,	"height": 231,
+		"width": 250,	"height": 186,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[payback]"],
 		"src": "capture/payback.jpg",
-		"width": 515,	"height": 336,
+		"width": 250,	"height": 165,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[kingcheck]"],
 		"src": "capture/kingcheck.jpg",
-		"width": 478,	"height": 345,
+		"width": 250,	"height": 180,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[pccw]"],
 		"src": "capture/pccw.jpg",
-		"width": 600,	"height": 385,
+		"width": 250,	"height": 160,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[what]"],
 		"src": "capture/what.jpg",
-		"width": 417,	"height": 550,
+		"width": 152,	"height": 200,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[kimchi]"],
 		"src": "capture/uarekorean.jpg",
-		"width": 604,	"height": 453,
+		"width": 250,	"height": 188,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[goldbird]"],
@@ -2689,7 +2688,7 @@ HHBJSONDATA.listIcon = [
 	},
 	{	"code": ["[never]","[succeed]"],
 		"src": "capture/uwillneversucceed.jpg",
-		"width": 344,	"height": 280,
+		"width": 250,	"height": 203,
 		"genre": ["Cap圖"]
 	},
 	{	"code": ["[ahaha]"],
