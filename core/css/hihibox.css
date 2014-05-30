@@ -25,6 +25,71 @@
 	-webkit-box-sizing:border-box;
 	font-family: Roboto, sans-serif;
 }
+#hhb-holder.ui-state-disabled {
+	opacity: initial;
+}
+#hhb-holder.hhb-draggable {
+	width: 400px;
+	z-index: 99999;
+	border: 1px solid #aaaaaa;
+	-webkit-box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.5);
+	box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.5);
+}
+.hhb-darkmode #hhb-holder.hhb-draggable {
+	-webkit-box-shadow: 3px 3px 6px 0px rgba(255, 255, 255, 0.5);
+	-moz-box-shadow: 3px 3px 6px 0px rgba(255, 255, 255, 0.5);
+	box-shadow: 3px 3px 6px 0px rgba(255, 255, 255, 0.5);
+}
+#hhb-holder.hhb-draggable #hhb-header {
+	cursor: move;
+}
+#hhb-holder .ui-resizable-handle {
+	position: absolute;
+	font-size: 0.1px;
+	display: block;
+}
+#hhb-holder .ui-resizable-s {
+	cursor: s-resize;
+	height: 7px;
+	width: 100%;
+	bottom: -5px;
+	left: 0;
+}
+#hhb-holder .ui-resizable-e {
+	cursor: e-resize;
+	width: 7px;
+	right: -5px;
+	top: 0;
+	height: 100%;
+}
+#hhb-holder .ui-resizable-sw {
+	cursor: sw-resize;
+	width: 9px;
+	height: 9px;
+	left: -5px;
+	bottom: -5px;
+}
+#hhb-holder .ui-resizable-se {
+	cursor: se-resize;
+	width: 12px;
+	height: 12px;
+	right: 3px;
+	bottom: 3px;
+}
+#hhb-holder.ui-draggable-disabled .ui-resizable-s,
+#hhb-holder.ui-draggable-disabled .ui-resizable-e,
+#hhb-holder.ui-draggable-disabled .ui-resizable-sw,
+#hhb-holder.ui-draggable-disabled .ui-resizable-se,
+#hhb-holder.ui-draggable-disabled .ui-icon, #hhb-holder.ui-draggable-disabled  .ui-widget-content .ui-icon {
+	display: none !important;
+}
+#hhb-holder .ui-icon, #hhb-holder .ui-widget-content .ui-icon {
+	background-image: url(images/ui-icons_222222_256x240.png);
+}
+#hhb-holder .ui-icon-gripsmall-diagonal-se {
+	background-position: -64px -224px;
+}
 #hhb-holder * {
 	vertical-align: baseline !important;
 	box-sizing:border-box;
@@ -78,6 +143,10 @@
 #hhb-header #hhb-bookmark.funcIcon:before { content: '\e802'; }
 #hhb-header #hhb-bookmark.funcIcon.isBookmarked:before { content: '\e800'; } 
 
+/* Popup toggle */
+#hhb-header #hhb-popup.funcIcon:before { content: '\e813'; }
+#hhb-holder.hhb-draggable #hhb-popup.funcIcon:before { content: '\e814'; }
+
 #hhb-header .icon.fb {
 	background: url('http://hihiboxhbtv.github.io/images/fb.png') no-repeat center;
 }
@@ -118,11 +187,14 @@
 #hhb-genrelist {
 	padding: 3px 0px;
 	width: 100%;
+	height: 52px;
 	font-size: 12px;
 	border-top: 1px solid #EEEEEE;
+	overflow: scroll;
+	overflow-x: hidden;
 }
 #hhb-genrelist .hhb-genre {
-	margin: 3px;
+	margin: 2px;
 	padding: 3px 5px;
 	display: inline-block;
 	cursor: pointer;
@@ -140,18 +212,23 @@
 	background-color: #EEEEEE;
 }
 
+#hhb-genrelist::-webkit-scrollbar,
 #hhb-iconset::-webkit-scrollbar {
 	width: 5px !important;
 }
+#hhb-genrelist::-webkit-scrollbar-track,
 #hhb-iconset::-webkit-scrollbar-track {
 	background-color: hsla(0,0%,0%,0);
 }
+#hhb-genrelist::-webkit-scrollbar-thumb,
 #hhb-iconset::-webkit-scrollbar-thumb {
 	background-color: hsl(0,0%,40%);
 }
+#hhb-genrelist::-webkit-scrollbar-button,
 #hhb-iconset::-webkit-scrollbar-button {
 	height: 0px;
 }
+#hhb-genrelist::-webkit-scrollbar-corner,
 #hhb-iconset::-webkit-scrollbar-corner {
 	background-color: hsla(0,0%,0%,0);
 }
