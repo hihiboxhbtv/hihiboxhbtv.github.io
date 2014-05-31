@@ -114,7 +114,8 @@ body.hhb-pf-hitbox.hhb-darkmode {
 	color: #CCCCCC;
 }
 
-.hhb-pf-hitbox.hhb-darkmode .pollWrap {
+.hhb-pf-hitbox.hhb-darkmode .pollWrap,
+.hhb-pf-hitbox.hhb-darkmode .chat-sticky {
 	background-color: #0D0D0D;
 	border-bottom-color: #E6E6E6;
 }
