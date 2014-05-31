@@ -3111,17 +3111,16 @@ var HHBJSONDATA,hhb;
 			hhb = hhb || new HihiBox();
 			if (hhb.isInitialize()) {
 				ga('send', 'pageview');
-				var hhbName = '[HihiBox Beta]';			/* debug */
-				console.log(hhbName,'Created',hhb);
+				console.log('[HihiBox Beta]','Created',hhb);
 				
 				var features = hhb.getFeatures();
 				var tryImport = function() {
 					if (!hhb.isReadyForImport()) {
 						setTimeout(tryImport,10);
-						console.log(hhbName,'Import Data List Retry');
+						console.log('[HihiBox Beta]','Import Data List Retry');
 						return;
 					}
-					console.log(hhbName,'Import Data List Start');
+					console.log('[HihiBox Beta]','Import Data List Start');
 					/* load icon list */
 					if ($.inArray('emoticon',features) >= 0) {
 						$.getScript([host,"/js/iconlist.json"].join(''))
