@@ -6,17 +6,17 @@
 		"specialThanks": ["希治閣", "小維"]
 	},
 	"lastExtensionVersion": "v1.7.1",
-	"lastRelease": "2014-05-26",
+	"lastRelease": "2014-05-30",
 	"lastSummary": "[概要] 新增數項新功能 及HihiBox v1.7 相關錯誤修正",
-	"downloadURI": "https://docs.google.com/file/d/0B75izxj9WNpGcXFuZ3d3aHpwSmM/edit",
+	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://hkghihibox.wix.com/index",
 	"pageURI": "https://www.facebook.com/hihiboxhbtv",
 	"coreVersion": "v1.7.1",
-	"lastUpdate": "2014-05-26",
+	"lastUpdate": "2014-05-30",
 	"history": [
 		{
 			"version": "v1.7.1",
-			"lastUpdate": "2014-05-24",
+			"lastUpdate": "2014-05-30",
 			"summary": [
 				"[概要] 新增開台提示音量控制, 表情代碼篩選功能開關, 表情列表彈出/固定視窗切換",
 				"[概要] HihiBox v1.7 相關錯誤修正"
