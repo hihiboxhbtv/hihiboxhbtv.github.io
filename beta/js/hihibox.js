@@ -94,9 +94,9 @@ var HHBJSONDATA,hhb;
 	/* restore original jQuery */
 	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
 
-	var editorExtensionId = "aejkcagcbcgkplkckbfebfdipmkcndka";			/* debug */
-	var host = 'http://hihiboxhbtv.github.io/beta';						/* debug */
-	var imgHost = 'http://hihiboxhbtv.github.io/images/icons/';			/* debug */
+	var editorExtensionId = "dcihicbmfgjcjommlfnamlomfjhccdjo";			/* debug */
+	var host = 'http://hihiboxhbtv.github.io/beta';
+	var imgHost = 'http://hihiboxhbtv.github.io/images/icons/';		/* debug */
 	var enableGA = true;		/* debug */
 	var versionInfo = {
 		name: 'HihiBox β',		/* debug */
@@ -104,8 +104,8 @@ var HHBJSONDATA,hhb;
 			developer: ["VannZic", "Lemon"],
 			specialThanks: ["希治閣", "小維"]
 		},
-		coreVersion: 'v1.7.1',
-		lastUpdate: '2014-06-01'
+		coreVersion: 'v1.7.2',
+		lastUpdate: '2014-06-05'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -2327,7 +2327,6 @@ var HHBJSONDATA,hhb;
 							.data('hhb-object',obj)
 							.click(function() {	insertIcon($(this)); })
 							.append($(obj.img)
-								//.load(function() { console.log(this.src,this.width,this.height); }) /* debug */
 								.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
 							);
 					obj.domObject = $icon;

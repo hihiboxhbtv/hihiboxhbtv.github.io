@@ -5,15 +5,26 @@
 		"developer": ["VannZic", "Lemon"],
 		"specialThanks": ["希治閣", "小維"]
 	},
-	"lastExtensionVersion": "v1.7.1",
-	"lastRelease": "2014-05-30",
-	"lastSummary": "[概要] 新增數項新功能 及HihiBox v1.7 相關錯誤修正",
+	"lastExtensionVersion": "v1.7.2",
+	"lastRelease": "2014-06-05",
+	"lastSummary": "[概要] 新增匯入/匯出書籤頁面 及HihiBox v1.7.1 相關錯誤修正",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://hkghihibox.wix.com/index",
 	"pageURI": "https://www.facebook.com/hihiboxhbtv",
-	"coreVersion": "v1.7.1",
-	"lastUpdate": "2014-05-30",
+	"coreVersion": "v1.7.2",
+	"lastUpdate": "2014-06-05",
 	"history": [
+		{
+			"version": "v1.7.2",
+			"lastUpdate": "2014-06-05",
+			"summary": [
+				"[概要] 新增匯入/匯出書籤頁面 及HihiBox v1.7.1 相關錯誤修正"
+			],
+			"detail": [
+				"[新增] 匯入/匯出書籤頁面",
+				"[修正] HihiBox v1.7.1 相關錯誤修正"
+			]
+		},
 		{
 			"version": "v1.7.1",
 			"lastUpdate": "2014-05-30",
