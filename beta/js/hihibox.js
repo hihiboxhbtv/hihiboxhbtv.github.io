@@ -94,7 +94,7 @@ var HHBJSONDATA,hhb;
 	/* restore original jQuery */
 	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
 
-	var editorExtensionId = "dcihicbmfgjcjommlfnamlomfjhccdjo";			/* debug */
+	var editorExtensionId = "nkejdiomijpipakhccdmdhhkpofemimi";			/* debug */
 	var host = 'http://hihiboxhbtv.github.io/beta';
 	var imgHost = 'http://hihiboxhbtv.github.io/images/icons/';		/* debug */
 	var enableGA = true;		/* debug */
