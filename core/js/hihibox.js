@@ -1,5 +1,5 @@
 ﻿/*! HihiBox | (c) 2014 Lemon, VannZic | MIT License */
-var HHBJSONDATA;
+var HHBJSONDATA,hhb;
 (function(window,document,undefined) {
 	const 	DEBUG_EXT				= 1 << 1,
 			DEBUG_INIT				= 1 << 2,
@@ -94,7 +94,7 @@ var HHBJSONDATA;
 	/* restore original jQuery */
 	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
 
-	var editorExtensionId = "eoiappopphdcceickjphgaaidacdkidi";		/* debug */
+	var editorExtensionId = "eoiappopphdcceickjphgaaidacdkidi";			/* debug */
 	var host = 'http://hihiboxhbtv.github.io/core';					/* debug */
 	var imgHost = 'http://hihiboxhbtv.github.io/images/icons/';		/* debug */
 	var enableGA = true;		/* debug */
@@ -104,8 +104,8 @@ var HHBJSONDATA;
 			developer: ["VannZic", "Lemon"],
 			specialThanks: ["希治閣", "小維"]
 		},
-		coreVersion: 'v1.7.1',
-		lastUpdate: '2014-06-01'
+		coreVersion: 'v1.7.2',
+		lastUpdate: '2014-06-06'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -391,7 +391,7 @@ var HHBJSONDATA;
 								var $nspan = $(nspan).appendTo($(this))
 								$nspan.width($nspan.width())
 									.animate(
-										{  'width': '1px' },
+										{  'width': '0px' },
 										{ easing: "easeOutExpo", duration: dur }
 									);
 								if (env.gjtvIconLoaded) {
@@ -525,7 +525,7 @@ var HHBJSONDATA;
 							limitHeight = limit.msgIconHeight;
 						/* Re-define window.emotify */
 						window.emotify=function(e){var t,n,r={},i=[];t=function(e,t){t=t||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};var s=[],o=[].concat(e.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi)),u=[],a=[].concat(e.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi));for(var f=0;f<o.length;f++){s[f]=o[f];e=e.replace(s[f],"___hhb_html_"+f+"___")}for(var f=0;f<a.length;f++){u[f]=a[f];e=e.replace(u[f],"___hhb_url_"+f+"___")}e=e.replace(n,function(e,n,s){var o=0,u=s,a=r[s];if(!a){while(o<i.length&&!i[o].regexp.test(s)){o++}u=i[o].name;a=r[u]}return a?n+t(a[0],a[1],a.width,a.height,u,s):e});for(var f=0;f<s.length;f++){e=e.replace(new RegExp("___hhb_html_"+f+"___","g"),s[f])}for(var f=0;f<u.length;f++){e=e.replace(new RegExp("___hhb_url_"+f+"___","g"),u[f])}return e};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|)("+a.join("|")+")(?=(?:$|))","g")}return r};return t}(_hhb);
-
+						
 						var ijlist = emotify.emoticons(true,list);
 					}
 					return count;
@@ -2013,8 +2013,11 @@ var HHBJSONDATA;
 						usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {}),
 						codelist = code.join(", "),
 						title = codelist,
-						tstyle = (obj.width>0&&obj.height>0) ? ' style="width:'+obj.width+'px;height:'+obj.height+'px;"' : '',
-						img = '<img src="'+src+'" title="'+title+'"'+tstyle+' class="'+cssClass.msgIcon+((obj.height > limit.msgIconHeight) ? ' '+cssClass.resized : '')+'"/>',
+						tstyle = '';
+						tstyle += (obj.width) ? 'width:'+obj.width+'px;' : '',
+						tstyle += (obj.height) ? 'height:'+obj.height+'px;' : '';
+					var	style = (tstyle!='') ? ' style="'+tstyle+'"' : '',
+						img = '<img src="'+src+'" title="'+title+'"'+style+' class="'+cssClass.msgIcon+((obj.height > limit.msgIconHeight) ? ' '+cssClass.resized : '')+'"/>',
 						re = "";
 					$.each(code,function(idx2,code2) { re += (re!="" ? '|' : '')+code2.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); });
 					var regex = new RegExp(re,'g');
@@ -2322,7 +2325,6 @@ var HHBJSONDATA;
 							.data('hhb-object',obj)
 							.click(function() {	insertIcon($(this)); })
 							.append($(obj.img)
-								//.load(function() { console.log(this.src,this.width,this.height); }) /* debug */
 								.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
 							);
 					obj.domObject = $icon;
@@ -3102,44 +3104,45 @@ var HHBJSONDATA;
 		ga('create', 'UA-48929186-1', 'hihiboxhbtv.github.io');
 		ga('require','displayfeatures');
 	
-		hhb = new HihiBox();
-		
-		if (hhb.isInitialize()) {
-			ga('send', 'pageview');
-			console.log('[HihiBox]','Created',hhb);
-			
-			var features = hhb.getFeatures();
-			var tryImport = function() {
-				if (!hhb.isReadyForImport()) {
-					setTimeout(tryImport,10);
-					console.log('[HihiBox]','Import Data List Retry');
-					return;
-				}
-				console.log('[HihiBox]','Import Data List Start');
-				/* load icon list */
-				if ($.inArray('emoticon',features) >= 0) {
-					$.getScript([host,"/js/iconlist.json"].join(''))
-						.done(function(script,textStatus) {
-							var HHBJSONDATA = window.HHBJSONDATA;
-							hhb.importIconList(
-								HHBJSONDATA.listGenre,
-								HHBJSONDATA.listIcon
-							);
-						});
-				}
-				/* load name banner list */
-				if ($.inArray('name_banner',features) >= 0) {
-					$.getScript([host,"/js/namebannerlist.json"].join(''))
-						.done(function(script,textStatus) {
-							var HHBJSONDATA = window.HHBJSONDATA;
-							hhb.importNameBanner(
-								HHBJSONDATA.listNameBanner,
-								HHBJSONDATA.listNBControlList
-							);
-						});
-				}
-			};
-			tryImport();
+		if (!hhb) {
+			hhb = hhb || new HihiBox();
+			if (hhb.isInitialize()) {
+				ga('send', 'pageview');
+				console.log('[HihiBox]','Created',hhb);
+				
+				var features = hhb.getFeatures();
+				var tryImport = function() {
+					if (!hhb.isReadyForImport()) {
+						setTimeout(tryImport,10);
+						console.log('[HihiBox]','Import Data List Retry');
+						return;
+					}
+					console.log('[HihiBox]','Import Data List Start');
+					/* load icon list */
+					if ($.inArray('emoticon',features) >= 0) {
+						$.getScript([host,"/js/iconlist.json"].join(''))
+							.done(function(script,textStatus) {
+								var HHBJSONDATA = window.HHBJSONDATA;
+								hhb.importIconList(
+									HHBJSONDATA.listGenre,
+									HHBJSONDATA.listIcon
+								);
+							});
+					}
+					/* load name banner list */
+					if ($.inArray('name_banner',features) >= 0) {
+						$.getScript([host,"/js/namebannerlist.json"].join(''))
+							.done(function(script,textStatus) {
+								var HHBJSONDATA = window.HHBJSONDATA;
+								hhb.importNameBanner(
+									HHBJSONDATA.listNameBanner,
+									HHBJSONDATA.listNBControlList
+								);
+							});
+					}
+				};
+				tryImport();
+			}
 		}
 	});
 }(window,document));

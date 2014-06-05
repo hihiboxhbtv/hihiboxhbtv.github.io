@@ -1,13 +1,19 @@
 ﻿{
 	"listHHBChannelInfo": [
 		{	"_start": "***************************************",
-			"channel": ["channel id"],	
+			"channel": ["channel id"],
+			"hhbDisplayName": "Display Name",
 			"hhbTags": [" ... "],
 			"_comment": true,
 			"_end": "***************************************"
 		},
-		{	"channel": ["lemontycoon@twitch"],
+		{	"channel": ["lemontycoon@twitch","17991303|lemon-tycoon@ustream"],
+			"hhbDisplayName": "Lemon Tycoon",
 			"hhbTags": ["遊戲實況","不定時開台","模擬類","Game"]
+		},
+		{	"channel": ["scaryplayttv@hitbox"],
+			"hhbDisplayName": "壯膽同學會",
+			"hhbTags": []
 		}
 	]
 }
