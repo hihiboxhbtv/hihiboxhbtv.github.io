@@ -3135,8 +3135,12 @@ var HHBJSONDATA,hhb;
 									'padding: 10px 15px;margin: 2px 10px 0px 0px;'+
 									'border-right: 1px solid #cccccc;'+
 								'}'+
+								'body.hhb-pf-twitch #hhb-update-reminder div.close {'+
+									'padding: 8px 15px;'+
+								'}'+
 								'#hhb-update-reminder div.close:before { content: "x"; }'+
-								'#hhb-update-reminder a {'+
+								'#hhb-update-reminder a,'+
+								'#hhb-update-reminder div.close {'+
 									'color: #FFFFFF;'+
 								'}'+
 								'#hhb-update-reminder a:hover .text,'+
