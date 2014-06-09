@@ -105,7 +105,7 @@ var HHBJSONDATA,hhb;
 			specialThanks: ["希治閣", "小維"]
 		},
 		coreVersion: 'v1.7.2',
-		lastUpdate: '2014-06-06'
+		lastUpdate: '2014-06-10'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -370,7 +370,8 @@ var HHBJSONDATA,hhb;
 				genPlayerBookmarkBtn: function(idBtn) {
 					return $('<div id="'+idBtn+'" class="funcIcon" hhb-locale-title="{{info.name}} - {{iconlist.bookmark}}">&nbsp;</div>');
 				},
-				bindNameBanner: function(names) {
+				bindNameBanner: function(names,callback) {
+					var callback = callback || function() {};
 					var bicount = 0;
 					if (names.length > 0) {
 						var galist = {}, dur = 400;
@@ -384,7 +385,8 @@ var HHBJSONDATA,hhb;
 								var nspan = "<span class='"+cssClass.nameName+"'>"+namestr+"</span>";
 								$(this).text('');
 								var _pspan = $(this);
-								$(bspan).animate(
+								$(bspan)
+									.animate(
 										{ 'width': [nb.width,'px'].join('') },
 										{ easing: "easeOutExpo", duration: dur }
 									).prependTo($(this));
@@ -392,7 +394,9 @@ var HHBJSONDATA,hhb;
 								$nspan.width($nspan.width())
 									.animate(
 										{  'width': '0px' },
-										{ easing: "easeOutExpo", duration: dur }
+										{ easing: "easeOutExpo", duration: dur,
+											complete: callback
+										}
 									);
 								if (env.gjtvIconLoaded) {
 									var gjtvnb = $(this).find('.custom_Nickname');
@@ -434,12 +438,14 @@ var HHBJSONDATA,hhb;
 						newName: '.chatBody .name:not(.hhb-name)',
 						timestampsBox: '#timestampsBox',
 						userName: '.navItemsUser .item.user:first-child span',
-						player: 'mediaplayer'
+						player: 'mediaplayer',
+						chatBody: '.chatBody',
+						msgList: '.chatBody li'
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
 				/* Initialize */
-				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:dashboard|settings)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
+				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:dashboard|settings|404|signup|video)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
 				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:embed\/|embedchat\/)?(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
@@ -607,7 +613,14 @@ var HHBJSONDATA,hhb;
 				_platform.getNewNames = function() {	return $(selector.newName);	};
 				_platform.bindNameBanner = function() {
 					var names = _platform.getNewNames();
-					return _platformObj.default.bindNameBanner(names);
+					return _platformObj.default.bindNameBanner(names,function() {
+								var $cbody = $(selector.chatBody);
+								var $msg = $(selector.msgList).last();
+								var scrollTop = $cbody.scrollTop();
+								var height = $cbody.height();
+								var bottom = $msg.offset().top+$msg.outerHeight();
+								if (height<bottom) $cbody.scrollTop(scrollTop+bottom-height);
+							});
 				};
 				_platform.genBadgeCss = function(badges) {
 					var style = '';
@@ -3095,6 +3108,56 @@ var HHBJSONDATA,hhb;
 	};
 	
 	$(document).ready(function() {
+		function detectExtension(extensionId, callback) { 
+			var img; 
+			img = new Image(); 
+			img.src = "chrome-extension://" + extensionId + "/css/images/animated-overlay.gif"; 
+			img.onload = function() { callback(true); }; 
+			img.onerror = function() { callback(false); }; 
+		}
+		detectExtension('eoiappopphdcceickjphgaaidacdkidi',
+			function(installed) {
+				console.log('detectExtension',installed);
+				if (!installed) {
+					$(	'<div id="hhb-update-reminder">'+
+							'<style>'+
+								'#hhb-update-reminder {'+
+									'position:absolute;top:0px;right:0px;z-index: 9999;'+
+									'padding: 0px;font-size: 12px;'+
+									'background-color: rgba(8,112,45,0.8);'+
+								'}'+
+								'#hhb-update-reminder,'+
+								'#hhb-update-reminder * {'+
+									'-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;'+
+								'}'+
+								'#hhb-update-reminder div.close {'+
+									'display: inline-block;cursor:pointer;'+
+									'padding: 10px 15px;margin: 2px 10px 0px 0px;'+
+									'border-right: 1px solid #cccccc;'+
+								'}'+
+								'#hhb-update-reminder div.close:before { content: "x"; }'+
+								'#hhb-update-reminder a {'+
+									'color: #FFFFFF;'+
+								'}'+
+								'#hhb-update-reminder a:hover .text,'+
+								'#hhb-update-reminder div.close:hover { color:#8FBF00; }'+
+								'#hhb-update-reminder a .text {'+
+									'display:inline-block;padding: 10px 10px 0px 20px;font-size: 12px;'+
+								'}'+
+								'#hhb-update-reminder a .logo {'+
+									'width:36px;height:36px;float:right'+
+								'}'+
+							'</style>'+
+							'<a href="https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi" target="_hihibox">'+
+								'<div class="text">請按此下載HihiBox 完全版</div>'+
+								'<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/t1.0-1/p50x50/10342775_552261241551569_504391291480808308_t.png" class="logo">'+
+							'</a>'+
+						'</div>'
+					).prepend($('<div class="close">').click(function() { $('#hhb-update-reminder').detach(); }))
+					.appendTo('body');
+				}
+			});
+			
 		/* Google Analytics */
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

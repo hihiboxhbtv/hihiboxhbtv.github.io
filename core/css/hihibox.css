@@ -283,6 +283,7 @@
 	font-size: 10px;
 	cursor: pointer;
 }
+.hhb-msg:before { content: ' '; }
 .hhb-msgicon {
 	cursor: pointer;
 }
@@ -302,7 +303,6 @@
 	height: auto !important;
 }
 .hhb-name-banner {
-	margin-right:2px;
 	display:inline-block;
 	width: 0px;
 	height: 16px;
@@ -317,7 +317,8 @@ a:hover > .hhb-name-banner {
 	display: inline-block;
 	overflow: hidden;
 	white-space: nowrap;
-	padding-left: 1px;
+	margin-left: 2px;
+	margin-right:2px;
 }
 span:hover > .hhb-name-name,
 a:hover > .hhb-name-name {
