@@ -547,6 +547,12 @@ var HHBJSONDATA,hhb;
 											$(this).toggleClass(cssClass.orgSize);
 										}).length;
 						bicount = $msgIcon.length;
+						var $cbody = $(selector.chatBody),
+							$msg = $(selector.msgList).last(),
+							scrollTop = $cbody.scrollTop(),
+							height = $cbody.height(),
+							bottom = $msg.offset().top+$msg.outerHeight();
+						if (height<bottom) $cbody.scrollTop(scrollTop+bottom-height);
 					}
 					return {
 						msg: msgs.length, 
@@ -614,11 +620,11 @@ var HHBJSONDATA,hhb;
 				_platform.bindNameBanner = function() {
 					var names = _platform.getNewNames();
 					return _platformObj.default.bindNameBanner(names,function() {
-								var $cbody = $(selector.chatBody);
-								var $msg = $(selector.msgList).last();
-								var scrollTop = $cbody.scrollTop();
-								var height = $cbody.height();
-								var bottom = $msg.offset().top+$msg.outerHeight();
+								var $cbody = $(selector.chatBody),
+									$msg = $(selector.msgList).last(),
+									scrollTop = $cbody.scrollTop(),
+									height = $cbody.height(),
+									bottom = $msg.offset().top+$msg.outerHeight();
 								if (height<bottom) $cbody.scrollTop(scrollTop+bottom-height);
 							});
 				};
