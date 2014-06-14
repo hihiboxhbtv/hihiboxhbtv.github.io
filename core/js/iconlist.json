@@ -1277,6 +1277,11 @@ HHBJSONDATA.listIcon = [
 		"width": 22,	"height": 22,
 		"genre": ["pkmon"]
 	},
+	{	"code": ["[sosad]pkm2"],
+		"src": "pkmon/sosadhhb.gif",
+		"width": 49,	"height": 30,
+		"genre": ["pkmon"]
+	},
 	{	"code": ["#good#pkm"],
 		"src": "pkmon/good.gif",
 		"width": 33,	"height": 26,

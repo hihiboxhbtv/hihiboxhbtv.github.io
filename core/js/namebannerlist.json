@@ -23,7 +23,7 @@ HHBJSONDATA.listNBControlList = [
 		"_end": "***************************************"
 	},
 	{	"channel": ["scaryplayttv@hitbox","scaryplay@twitch","scary_play@justin"],
-		"whitelistonly": true,
+		"whitelistonly": false,
 		"whitelist": [	"scaryplayttv@hitbox","scaryplay@twitch","scary_play@twitch","scary_play@justin",
 						"miekoball@hitbox","miekoball@twitch","miekoball@justin",
 						"snakeysnakey@hitbox"

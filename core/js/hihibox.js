@@ -3114,14 +3114,14 @@ var HHBJSONDATA,hhb;
 	};
 	
 	$(document).ready(function() {
-		function detectExtension(extensionId, callback) { 
+		function detectExtension(extensionId, path, callback) { 
 			var img; 
 			img = new Image(); 
-			img.src = "chrome-extension://" + extensionId + "/css/images/animated-overlay.gif"; 
+			img.src = "chrome-extension://" + extensionId + path; 
 			img.onload = function() { callback(true); }; 
 			img.onerror = function() { callback(false); }; 
 		}
-		detectExtension('eoiappopphdcceickjphgaaidacdkidi',
+		detectExtension('eoiappopphdcceickjphgaaidacdkidi', '/css/images/animated-overlay.gif',
 			function(installed) {
 				console.log('detectExtension',installed);
 				if (!installed) {
