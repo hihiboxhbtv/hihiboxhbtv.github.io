@@ -393,7 +393,7 @@ var HHBJSONDATA,hhb;
 								var $nspan = $(nspan).appendTo($(this))
 								$nspan.width($nspan.width())
 									.animate(
-										{  'width': '0px' },
+										{  'width': '1px' },
 										{ easing: "easeOutExpo", duration: dur,
 											complete: callback
 										}

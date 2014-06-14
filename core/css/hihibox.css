@@ -319,10 +319,12 @@ a:hover > .hhb-name-banner {
 	white-space: nowrap;
 	margin-left: 2px;
 	margin-right:2px;
+	opacity: 0;
 }
 span:hover > .hhb-name-name,
 a:hover > .hhb-name-name {
 	width: auto !important;
+	opacity: 1;
 }
 
 #hhb-player-bookmark {
