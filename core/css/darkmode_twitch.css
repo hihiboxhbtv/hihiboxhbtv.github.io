@@ -6,7 +6,6 @@ body.hhb-pf-twitch.hhb-darkmode {
 }
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-header.all-rooms-header { background-color: #1d1d1d; }
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu .list-header {color: #949494;border-bottom: 1px solid #202020;background: #050505;box-shadow: 0 0 2px rgba(255,255,255,0.1);}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-room { background-color: #1d1d1d; }
 .hhb-pf-twitch.hhb-darkmode .ember-chat .top-notification.room-invitation {background-color: #9a5d2a;}
 .hhb-pf-twitch.hhb-darkmode .noise {background-color:#d9d9d9;}
 .hhb-pf-twitch.hhb-darkmode a {color:#9bbe5a;}
@@ -36,7 +35,7 @@ body.hhb-pf-twitch.hhb-darkmode {color:#bbb;}
 .hhb-pf-twitch.hhb-darkmode pre {border-left:6px solid #465c1c;background:#050712;box-shadow:inset 0 0 0 1px #666;-moz-box-shadow:inset 0 0 0 1px #666;-webkit-box-shadow:inset 0 0 0 1px #666;}
 .hhb-pf-twitch.hhb-darkmode .main,.hhb-pf-twitch.hhb-darkmode .fullwidth_main {background:rgba(0,0,0,0.9);box-shadow:0 0 5px rgba(255,255,255,0.35);-moz-box-shadow:0 0 5px rgba(255,255,255,0.35);-webkit-box-shadow:0 0 5px rgba(255,255,255,0.35);}
 .hhb-pf-twitch.hhb-darkmode .fullwidth_light {box-shadow:inset 0 1px 0 rgba(0,0,0,0.3),inset 0 -1px 0 rgba(0,0,0,0.3),0 1px 1px rgba(255,255,255,0.2);-moz-box-shadow:inset 0 1px 0 rgba(0,0,0,0.3),inset 0 -1px 0 rgba(0,0,0,0.3),0 1px 1px rgba(255,255,255,0.2);-webkit-box-shadow:inset 0 1px 0 rgba(0,0,0,0.3),inset 0 -1px 0 rgba(0,0,0,0.3),0 1px 1px rgba(255,255,255,0.2);background:rgba(255,255,255,0.03);border-top:1px solid rgba(255,255,255,0.15);}
-.hhb-pf-twitch.hhb-darkmode .button,.hhb-pf-twitch.hhb-darkmode .primary_button,.hhb-pf-twitch.hhb-darkmode .large_primary_button,.hhb-pf-twitch.hhb-darkmode .normal_button,.hhb-pf-twitch.hhb-darkmode .large_normal_button,.hhb-pf-twitch.hhb-darkmode .dropdown,.hhb-pf-twitch.hhb-darkmode .dropdown_static,.hhb-pf-twitch.hhb-darkmode .dropdown_glyph,.hhb-pf-twitch.hhb-darkmode .fb_button,.hhb-pf-twitch.hhb-darkmode .darken .normal_button,.hhb-pf-twitch.hhb-darkmode .dropmenu .normal_button,.hhb-pf-twitch.hhb-darkmode .ui-menu .normal_button,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .normal_button,.hhb-pf-twitch.hhb-darkmode .darken .large_normal_button,.hhb-pf-twitch.hhb-darkmode .dropmenu .large_normal_button,.hhb-pf-twitch.hhb-darkmode .ui-menu .large_normal_button,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .large_normal_button,.hhb-pf-twitch.hhb-darkmode .darken .dropdown,.hhb-pf-twitch.hhb-darkmode .dropmenu .dropdown,.hhb-pf-twitch.hhb-darkmode .ui-menu .dropdown,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .dropdown,.hhb-pf-twitch.hhb-darkmode .darken .dropdown_static,.hhb-pf-twitch.hhb-darkmode .dropmenu .dropdown_static,.hhb-pf-twitch.hhb-darkmode .ui-menu .dropdown_static,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .dropdown_static,.hhb-pf-twitch.hhb-darkmode .darken .dropdown_glyph,.hhb-pf-twitch.hhb-darkmode .dropmenu .dropdown_glyph,.hhb-pf-twitch.hhb-darkmode .ui-menu .dropdown_glyph,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .dropdown_glyph {border:1px solid #fff;}
+/* [E:2014-06-17] *//* .hhb-pf-twitch.hhb-darkmode .button,.hhb-pf-twitch.hhb-darkmode .primary_button,.hhb-pf-twitch.hhb-darkmode .large_primary_button,.hhb-pf-twitch.hhb-darkmode .normal_button,.hhb-pf-twitch.hhb-darkmode .large_normal_button,.hhb-pf-twitch.hhb-darkmode .dropdown,.hhb-pf-twitch.hhb-darkmode .dropdown_static,.hhb-pf-twitch.hhb-darkmode .dropdown_glyph,.hhb-pf-twitch.hhb-darkmode .fb_button,.hhb-pf-twitch.hhb-darkmode .darken .normal_button,.hhb-pf-twitch.hhb-darkmode .dropmenu .normal_button,.hhb-pf-twitch.hhb-darkmode .ui-menu .normal_button,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .normal_button,.hhb-pf-twitch.hhb-darkmode .darken .large_normal_button,.hhb-pf-twitch.hhb-darkmode .dropmenu .large_normal_button,.hhb-pf-twitch.hhb-darkmode .ui-menu .large_normal_button,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .large_normal_button,.hhb-pf-twitch.hhb-darkmode .darken .dropdown,.hhb-pf-twitch.hhb-darkmode .dropmenu .dropdown,.hhb-pf-twitch.hhb-darkmode .ui-menu .dropdown,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .dropdown,.hhb-pf-twitch.hhb-darkmode .darken .dropdown_static,.hhb-pf-twitch.hhb-darkmode .dropmenu .dropdown_static,.hhb-pf-twitch.hhb-darkmode .ui-menu .dropdown_static,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .dropdown_static,.hhb-pf-twitch.hhb-darkmode .darken .dropdown_glyph,.hhb-pf-twitch.hhb-darkmode .dropmenu .dropdown_glyph,.hhb-pf-twitch.hhb-darkmode .ui-menu .dropdown_glyph,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .dropdown_glyph {border:1px solid #fff;} */
 .hhb-pf-twitch.hhb-darkmode .primary_button,.hhb-pf-twitch.hhb-darkmode .large_primary_button {background:-webkit-gradient(linear,left top,left bottom,from(#7d9949),to(#acc878));background:-moz-linear-gradient(top,#7d9949,#acc878);background:-o-linear-gradient(top,#7d9949,#acc878);background:linear-gradient(top,#7d9949,#acc878);background-color:#95b161;border-top:1px solid #a4c070;border-left:1px solid #bed88e;border-right:1px solid #bed88e;border-bottom:1px solid #d5ebac;box-shadow:inset 0 1px 0 rgba(0,0,0,0.1),0 1px 0 rgba(255,255,255,0.15);-moz-box-shadow:inset 0 1px 0 rgba(0,0,0,0.1),0 1px 0 rgba(255,255,255,0.15);-webkit-box-shadow:inset 0 1px 0 rgba(0,0,0,0.1),0 1px 0 rgba(255,255,255,0.15);text-shadow:0 1px 0 rgba(255,255,255,0.75);-moz-text-shadow:0 1px 0 rgba(255,255,255,0.75);-webkit-text-shadow:0 1px 0 rgba(255,255,255,0.75);color:#000;}
 .hhb-pf-twitch.hhb-darkmode .primary_button:active,.hhb-pf-twitch.hhb-darkmode .large_primary_button:active {box-shadow:inset 0 1px 1px rgba(255,255,255,0.5),0 1px 0 rgba(0,0,0,0.65);-moz-box-shadow:inset 0 1px 1px rgba(255,255,255,0.5),0 1px 0 rgba(0,0,0,0.65);-webkit-box-shadow:inset 0 1px 1px rgba(255,255,255,0.5),0 1px 0 rgba(0,0,0,0.65);border:1px solid #d5ebac;background:-webkit-gradient(linear,left top,left bottom,from(#aac378),to(#c8dc9b));background:-moz-linear-gradient(top,#aac378,#c8dc9b);background:-o-linear-gradient(top,#aac378,#c8dc9b);background:linear-gradient(top,#aac378,#c8dc9b);background-color:#b9d08a;}
 .hhb-pf-twitch.hhb-darkmode .normal_button,.hhb-pf-twitch.hhb-darkmode .large_normal_button,.hhb-pf-twitch.hhb-darkmode .dropdown,.hhb-pf-twitch.hhb-darkmode .dropdown_static,.hhb-pf-twitch.hhb-darkmode .dropdown_glyph {background:-webkit-gradient(linear,left top,left bottom,from(#222),to(#0a0a0a));background:-moz-linear-gradient(top,#222,#0a0a0a);background:-o-linear-gradient(top,#222,#0a0a0a);background:linear-gradient(top,#0a0a0a,#222);background-color:#161616;border-top:1px solid rgba(255,255,255,0.2);border-left:1px solid rgba(255,255,255,0.3);border-right:1px solid rgba(255,255,255,0.3);border-bottom:1px solid rgba(255,255,255,0.35);box-shadow:inset 0 1px 0 #222,0 1px 0 rgba(255,255,255,0.07);-moz-box-shadow:inset 0 1px 0 #222,0 1px 0 rgba(255,255,255,0.07);-webkit-box-shadow:inset 0 1px 0 #222,0 1px 0 rgba(255,255,255,0.07);text-shadow:0 1px 0 rgba(0,0,0,0.75);-moz-text-shadow:0 1px 0 rgba(0,0,0,0.75);-webkit-text-shadow:0 1px 0 rgba(0,0,0,0.75);color:#999;}
@@ -55,13 +54,13 @@ body.hhb-pf-twitch.hhb-darkmode {color:#bbb;}
 .hhb-pf-twitch.hhb-darkmode .darken .primary_button,.hhb-pf-twitch.hhb-darkmode .dropmenu .primary_button,.hhb-pf-twitch.hhb-darkmode .ui-menu .primary_button,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .primary_button,.hhb-pf-twitch.hhb-darkmode .darken .large_primary_button,.hhb-pf-twitch.hhb-darkmode .dropmenu .large_primary_button,.hhb-pf-twitch.hhb-darkmode .ui-menu .large_primary_button,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .large_primary_button {color:#000;border-color:#fff;box-shadow:inset 0 1px 0 rgba(0,0,0,0.05),0 1px 0 rgba(255,255,255,0.15);-moz-box-shadow:inset 0 1px 0 rgba(0,0,0,0.05),0 1px 0 rgba(255,255,255,0.15);-webkit-box-shadow:inset 0 1px 0 rgba(0,0,0,0.05),0 1px 0 rgba(255,255,255,0.15);}
 .hhb-pf-twitch.hhb-darkmode .darken .primary_button:active,.hhb-pf-twitch.hhb-darkmode .dropmenu .primary_button:active,.hhb-pf-twitch.hhb-darkmode .ui-menu .primary_button:active,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .primary_button:active,.hhb-pf-twitch.hhb-darkmode .darken .large_primary_button:active,.hhb-pf-twitch.hhb-darkmode .dropmenu .large_primary_button:active,.hhb-pf-twitch.hhb-darkmode .ui-menu .large_primary_button:active,.hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu .large_primary_button:active {box-shadow:inset 0 1px 1px rgba(255,255,255,0.5),0 1px 0 rgba(0,0,0,0.1);-moz-box-shadow:inset 0 1px 1px rgba(255,255,255,0.5),0 1px 0 rgba(0,0,0,0.1);-webkit-box-shadow:inset 0 1px 1px rgba(255,255,255,0.5),0 1px 0 rgba(0,0,0,0.1);}
 .hhb-pf-twitch.hhb-darkmode .subscribe-button .subscribe-price {background:rgba(255,255,255,0.5);box-shadow:inset 0 1px 0 rgba(255,255,255,0.25),0 1px 0 rgba(0,0,0,0.07);-moz-box-shadow:inset 0 1px 0 rgba(255,255,255,0.25),0 1px 0 rgba(0,0,0,0.07);-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.25),0 1px 0 rgba(0,0,0,0.07);}
-.hhb-pf-twitch.hhb-darkmode .button-simple {color:#fff;background:#444;}
+.hhb-pf-twitch.hhb-darkmode .button-simple {color:#fff;}
 .hhb-pf-twitch.hhb-darkmode .button-simple:hover:before {background:rgba(255,255,255,0.1);}
 .hhb-pf-twitch.hhb-darkmode .button-simple:active:before {background:rgba(0,0,0,0.1);}
 .hhb-pf-twitch.hhb-darkmode .button-simple.primary {background:#322052;}
 .hhb-pf-twitch.hhb-darkmode .button-simple.primary .price {background:rgba(255,255,255,0.5);}
 .hhb-pf-twitch.hhb-darkmode .button-simple.light {background:#3b3c3c;color:#d9d9d9;}
-.hhb-pf-twitch.hhb-darkmode .button-simple.dark {background:#d9d9d9;}
+/* [E:2014-06-17] *//* .hhb-pf-twitch.hhb-darkmode .button-simple.dark {background:#d9d9d9;} */
 .hhb-pf-twitch.hhb-darkmode ul.tabs,.hhb-pf-twitch.hhb-darkmode ul.tabs_fake {border-bottom:1px solid rgba(255,255,255,0.25);}
 .hhb-pf-twitch.hhb-darkmode ul.tabs li.selected a,.hhb-pf-twitch.hhb-darkmode ul.tabs_fake li.selected a {color:#d9d9d9;border-bottom:3px solid rgba(255,255,255,0.25);}
 .hhb-pf-twitch.hhb-darkmode ul.vtabs li .not_linked,.hhb-pf-twitch.hhb-darkmode ul.vtabs li a {text-shadow:0 1px 0 #000;}
@@ -243,9 +242,7 @@ body.hhb-pf-twitch.hhb-darkmode {color:#bbb;}
 .hhb-pf-twitch.hhb-darkmode #large_nav .game_filter.selected a {background-color:#e9e9e9!important;color:#000!important;border-left:4px solid #9bbe5a;}
 .hhb-pf-twitch.hhb-darkmode #large_nav .game_filter.selected a .total_count {color:#000!important;background:rgba(0,0,0,0.3)!important;}
 .hhb-pf-twitch.hhb-darkmode #large_nav .game_filter.selected:active a {box-shadow:inset 0 1px 0 rgba(0,0,0,0.04);-moz-box-shadow:inset 0 1px 0 rgba(0,0,0,0.04);-webkit-box-shadow:inset 0 1px 0 rgba(0,0,0,0.04);}
-.hhb-pf-twitch.hhb-darkmode #right_col {background:#262626;}
 .hhb-pf-twitch.hhb-darkmode #right_col:before {background:rgba(255,255,255,0.25);}
-.hhb-pf-twitch.hhb-darkmode #right_col .top #right_nav {border-bottom: 1px solid rgba(255,255,255,0.25);background: #1a1a1a;}
 /*
 .__hhb-pf-twitch.hhb-darkmode #flyout .content {background:#d7d7d7;border:1px solid #fff;box-shadow:0 1px 0 rgba(255,255,255,0.15),inset 0 1px 0 rgba(0,0,0,0.05);-moz-box-shadow:0 1px 0 rgba(255,255,255,0.15),inset 0 1px 0 rgba(0,0,0,0.05);-webkit-box-shadow:0 1px 0 rgba(255,255,255,0.15),inset 0 1px 0 rgba(0,0,0,0.05);}
 .__hhb-pf-twitch.hhb-darkmode #flyout .content .contain {background:#e4e4e4;border:1px solid #fff;box-shadow:inset 0 1px 0 rgba(255,255,255,0.15),0 1px 0 rgba(0,0,0,0.05);-moz-box-shadow:inset 0 1px 0 rgba(255,255,255,0.15),0 1px 0 rgba(0,0,0,0.05);-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.15),0 1px 0 rgba(0,0,0,0.05);}
@@ -353,7 +350,7 @@ body.hhb-pf-twitch.hhb-darkmode {color:#bbb;}
 .hhb-pf-twitch.hhb-darkmode #chat_line_list li.fromjtv .indicator,.hhb-pf-twitch.hhb-darkmode #chat_line_list li .timestamp .indicator {border-left:4px solid #9bbe5a;}
 .hhb-pf-twitch.hhb-darkmode #controls #control_buttons .emoticon-selector-container .emoticon-selector .emoticon-selector-inner {background:#222;border:1px solid rgba(255,255,255,0.25);box-shadow:inset 0 1px 1px rgba(255,255,255,0.1),inset 0 0 1px rgba(255,255,255,0.05),0 1px 0 rgba(0,0,0,0.65);-moz-box-shadow:inset 0 1px 1px rgba(255,255,255,0.1),inset 0 0 1px rgba(255,255,255,0.05),0 1px 0 rgba(0,0,0,0.65);-webkit-box-shadow:inset 0 1px 1px rgba(255,255,255,0.1),inset 0 0 1px rgba(255,255,255,0.05),0 1px 0 rgba(0,0,0,0.65);}
 .hhb-pf-twitch.hhb-darkmode #controls #control_buttons .emoticon-selector-container .emoticon-selector.not-subscribed #non-subscriber-message {border:1px solid rgba(255,255,255,0.25);color:#999;}
-.hhb-pf-twitch.hhb-darkmode #chat_viewers_dropmenu .drag_handle {color:#000;}
+/* [E:2014-06-17] *//* .hhb-pf-twitch.hhb-darkmode #chat_viewers_dropmenu .drag_handle {color:#000;} */
 .hhb-pf-twitch.hhb-darkmode #chat_colors .chat_color_swatch.current {border:2px solid #00f;}
 .hhb-pf-twitch.hhb-darkmode #chat_colors #extra_colors .chat_color_swatch {color:#0e0e0e;}
 .hhb-pf-twitch.hhb-darkmode #user_info {background:#f7f7f7;background:-webkit-gradient(linear,left top,left bottom,from(rgba(238,238,238,0.85)),to(rgba(255,255,255,0.85)));background:-moz-linear-gradient(top,rgba(238,238,238,0.85),rgba(255,255,255,0.85));}
@@ -454,7 +451,6 @@ body.hhb-pf-twitch.hhb-darkmode.error_500,body.hhb-pf-twitch.hhb-darkmode.error_
 .hhb-pf-twitch.hhb-darkmode #gom .gom-schedule .year .season.one {background:#33243e;border-bottom:18px solid #4a3d53;}
 .hhb-pf-twitch.hhb-darkmode #gom .gom-schedule .year .season.two {background:#3e2c24;border-bottom:18px solid #53433d;}
 .hhb-pf-twitch.hhb-darkmode #gom .gom-schedule .year .season.three {background:#2e3e24;border-bottom:18px solid #45533d;}
-.hhb-pf-twitch.hhb-darkmode .ember-chat {background-color:#1b1b1b;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-hidden-overlay {background-color:#303030;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .moderation-card {box-shadow:0 2px 4px rgba(255,255,255,0.2);background-color:#fff;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .moderation-card .card-header {/*background:#fff;*/}
@@ -467,18 +463,34 @@ body.hhb-pf-twitch.hhb-darkmode.error_500,body.hhb-pf-twitch.hhb-darkmode.error_
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-messages .chat-line {color:#cdcdcd;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-messages .chat-line .indicator {border-left:4px solid #9bbe5a;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-messages .chat-line.admin .message,.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-messages .chat-line.notification .message {color:#999;}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-interface {background-color:#1c1c1c;border-top:1px solid #363636;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-interface .emoticon-selector .subscribe-message {border-top:1px solid #616161;background:#595959;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-interface .more-messages-indicator {background-color:rgba(255,255,255,0.7);color:#000;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-interface .textarea-contain textarea {border:1px solid #333;}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu {background:#474848;}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu .chat-top-header {background:#6c6c6c;color:#000;}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu .chat-top-header .chat-menu-button-container {background:#727273;}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu .chat-top-header .chat-menu-button-container:hover {background:#828282;}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu .chat-menu-header {color:#9f9e9e;background:#363636;}
+/* [E:2014-06-17] *//* .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu {background:#474848;} */
+/* [E:2014-06-17] *//* .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu .chat-top-header {background:#6c6c6c;color:#000;} */
+/* [E:2014-06-17] *//* .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu .chat-top-header .chat-menu-button-container {background:#727273;} */
+/* [E:2014-06-17] *//* .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu .chat-top-header .chat-menu-button-container:hover {background:#828282;} */
+/* [E:2014-06-17] *//* .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu .chat-menu-header {color:#9f9e9e;background:#363636;} */
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-settings .chat-colors .chat-colors-swatch:hover,.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-settings .chat-colors .chat-colors-swatch.selected {border:2px solid #00f;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .mod-icons a:hover {background-color:#151515;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .badges .broadcaster {/*background:#fff url(../images/xarth/g/g18_camera-FFFFFF80.png);*/}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .badges .turbo {/*background:#9bbe5a url(../images/xarth/g/g18_turbo-FFFFFF80.png);*/}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .badges .staff {/*background:#9bbe5a url(../images/xarth/g/g18_wrench-FFFFFF80.png);*/}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .badges .moderator {/*background:#f6f url(../images/xarth/g/g18_sword-FFFFFF80.png);*/}
+
+/* [S:2014-06-17] */
+.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-header { background-color: #0d0d0d; }
+.hhb-pf-twitch.hhb-darkmode #main_col { background: #000; }
+.hhb-pf-twitch.hhb-darkmode #channel .player-column #broadcast-meta .info .edit-link a { color: #9bbe5a; }
+.hhb-pf-twitch.hhb-darkmode #right_col {background:#0d0d0d;}
+.hhb-pf-twitch.hhb-darkmode #right_col .top #right_nav {border-bottom: 1px solid rgba(255,255,255,0.25);}
+.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-menu-button-container svg path, .hhb-pf-twitch.hhb-darkmode .button.glyph svg path, .hhb-pf-twitch.hhb-darkmode .button.glyph-only svg path { fill: #9bbe5a; }
+.hhb-pf-twitch.hhb-darkmode .button.glyph:hover path, .hhb-pf-twitch.hhb-darkmode .button.glyph-only:hover path { fill: #fff; }
+.hhb-pf-twitch.hhb-darkmode .button.primary { background: #9bbe5a; color: #000; }
+.hhb-pf-twitch.hhb-darkmode .button.primary:hover { background: #8AAF45; }
+.hhb-pf-twitch.hhb-darkmode .button { color: #9bbe5a; }
+.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-room { background-color: #0d0d0d; }
+.hhb-pf-twitch.hhb-darkmode .ember-chat {background-color:#0d0d0d;}
+.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-interface {border-top:1px solid #363636;}
+.hhb-pf-twitch.hhb-darkmode .dropmenu, .hhb-pf-twitch.hhb-darkmode .ui-menu, .hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu { color: #C4C4C4; border: 1px solid rgba(255,255,255,0.2); background: #000; }
+.hhb-pf-twitch.hhb-darkmode .ember-chat .chatters-view .chatters { background: #0d0d0d; }

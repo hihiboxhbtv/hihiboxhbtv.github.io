@@ -692,13 +692,11 @@ var HHBJSONDATA,hhb;
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
 				_platform.genToggleButton = function(id) {
-					return $('<button id="'+id+'" class="button normal_button tooltip" original-title="HihiBox" title="HihiBox"></div>');
+					return $('<a id="'+id+'" class="button glyph-only" title="HihiBox"></a>');
 				};
 				_platform.onBindedToggleButton = function() {
-					var btnc = $('.chat-option-buttons button').length;
-					var btnw = 40;
-					
-					$(".send-chat-button").css("left", (btnw*btnc)+"px");
+					var btnc = $('.chat-option-buttons').outerWidth();
+					$(".send-chat-button").css("left", (btnc)+"px");
 				};
 				_platform.getShowChatBtn = function() {	return $(selector.showChatBtn);	};
 				_platform.toggleTimestamps = function(act) {	/* Not Applicable */
