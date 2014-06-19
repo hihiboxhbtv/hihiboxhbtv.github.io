@@ -9,11 +9,15 @@
 		},
 		{	"channel": ["lemontycoon@twitch","17991303|lemon-tycoon@ustream"],
 			"hhbDisplayName": "Lemon Tycoon",
-			"hhbTags": ["遊戲實況","不定時開台","模擬類","Game"]
+			"hhbTags": ["Lemon Tycoon","遊戲實況","不定時開台","模擬類","Game"]
 		},
 		{	"channel": ["scaryplayttv@hitbox"],
 			"hhbDisplayName": "壯膽同學會",
-			"hhbTags": []
+			"hhbTags": ["壯膽同學會"]
+		},
+		{	"channel": ["18077387|m-scary@ustream"],
+			"hhbDisplayName": "寂寞腎虧俱樂部",
+			"hhbTags": ["寂寞腎虧俱樂部"]
 		}
 	]
 }
