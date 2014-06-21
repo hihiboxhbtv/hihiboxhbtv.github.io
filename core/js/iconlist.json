@@ -837,7 +837,7 @@ HHBJSONDATA.listIcon = [
 		"width": 142,	"height": 144,
 		"genre": ["meme"]
 	},
-	{	"code": [":sad:","[yesucan]"],
+	{	"code": [":sad:","[sad]","[yesucan]"],
 		"src": "meme/yesucan.png",
 		"width": 210,	"height": 220,
 		"genre": ["meme"]
