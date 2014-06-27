@@ -2692,7 +2692,7 @@ HHBJSONDATA.listIcon = [
 		"width": 210,	"height": 134,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[never]","[succeed]"],
+	{	"code": ["[never]","[succeed]","[neversucceed]"],
 		"src": "capture/uwillneversucceed.jpg",
 		"width": 250,	"height": 203,
 		"genre": ["Cap圖"]
@@ -2712,7 +2712,7 @@ HHBJSONDATA.listIcon = [
 		"width": 73,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[chances]"],
+	{	"code": ["[chances]","[nochances]"],
 		"src": "capture/theseopportunities.png",
 		"width": 67,	"height": 50,
 		"genre": ["Cap圖"]
@@ -2807,7 +2807,7 @@ HHBJSONDATA.listIcon = [
 		"width": 67,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[uwants]"],
+	{	"code": ["[uwants]","[uwant?]"],
 		"src": "capture/wantit.png",
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
