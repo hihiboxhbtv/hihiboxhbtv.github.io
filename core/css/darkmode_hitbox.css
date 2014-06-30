@@ -89,7 +89,7 @@ body.hhb-pf-hitbox.hhb-darkmode {
 .hhb-pf-hitbox.hhb-darkmode .detail .meta {
 	color: #D9D9D9;
 	border-bottom-color: #333333;
-	background: none;
+	background: #0d0d0d;
 }
 .hhb-pf-hitbox.hhb-darkmode .detail .meta .title {
 	color: #D9D9D9;
