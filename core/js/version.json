@@ -11,9 +11,20 @@
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v1.7.2",
-	"lastUpdate": "2014-06-06",
+	"coreVersion": "v1.7.2.17",
+	"lastUpdate": "2014-07-03",
 	"history": [
+		{
+			"version": "v1.7.2.17",
+			"lastUpdate": "2014-07-03",
+			"summary": [
+				"[概要] Hitbox.tv 及Twitch.tv 界面更新之相關修正"
+			],
+			"detail": [
+				"[修正] Hitbox.tv 界面更新之相關修正",
+				"[修正] Twitch.tv 界面更新之相關修正"
+			]
+		},
 		{
 			"version": "v1.7.2",
 			"lastUpdate": "2014-06-06",

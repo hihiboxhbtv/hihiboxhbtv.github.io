@@ -36,6 +36,7 @@ var HHBJSONDATA,hhb;
 	Date.prototype.toLocalISOString=function(){var e=this,t=function(e){return e<10?"0"+e:e},n=e.getTimezoneOffset(),r=(n>0?"-":"+")+t(parseInt(Math.abs(n/60)));if(n%60!=0)r+=t(Math.abs(n%60));if(n===0)r="Z";return e.getFullYear()+"-"+t(e.getMonth()+1)+"-"+t(e.getDate())+"T"+t(e.getHours())+":"+t(e.getMinutes())+":"+t(e.getSeconds())+r}
 
 	var orgjQuery = (typeof jQuery !== 'undefined') ? jQuery : null;	/* backup original jQuery */
+	var pf$ = orgjQuery;
 	
 	/* HihiBox jQuery */
 	/*! jQuery v2.1.0 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
@@ -94,7 +95,7 @@ var HHBJSONDATA,hhb;
 	/* restore original jQuery */
 	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
 
-	var editorExtensionId = "eoiappopphdcceickjphgaaidacdkidi";			/* debug */
+	var editorExtensionId = "eoiappopphdcceickjphgaaidacdkidi";		/* debug */
 	var host = 'http://hihiboxhbtv.github.io/core';					/* debug */
 	var imgHost = 'http://hihiboxhbtv.github.io/images/icons/';		/* debug */
 	var enableGA = true;		/* debug */
@@ -105,7 +106,7 @@ var HHBJSONDATA,hhb;
 			specialThanks: ["希治閣", "小維"]
 		},
 		coreVersion: 'v1.7.2',
-		lastUpdate: '2014-06-10'
+		lastUpdate: '2014-07-03'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -431,14 +432,14 @@ var HHBJSONDATA,hhb;
 					selector = $.extend(_hhb.selector,{
 						darkModeAcceptor: 'body',
 						showChatBtn: '.showChat',
-						holderContainer: '.chatContent',
-						buttonContainer: '.chatInput',
-						msgBox: '#chatInput',
-						newMsg: '.chatBody .message:not(.hhb-msg)',
-						newName: '.chatBody .name:not(.hhb-name)',
+						holderContainer: '.chat-messages',
+						buttonContainer: '.chat-input-wrap',
+						msgBox: '#chat-input',
+						newMsg: '.chat-messages .message:not(.hhb-msg)',
+						newName: '.chat-messages .name:not(.hhb-name)',
 						timestampsBox: '#timestampsBox',
 						userName: '.navItemsUser .item.user:first-child span',
-						player: 'mediaplayer',
+						player: '#mediaplayer',
 						chatBody: '.chatBody',
 						msgList: '.chatBody li'
 					}),
@@ -460,7 +461,8 @@ var HHBJSONDATA,hhb;
 				};
 				_platform.onBindedToggleButton = function() {};
 				_platform.getShowChatBtn = function() {	return $(selector.showChatBtn);	};
-				_platform.toggleTimestamps = function(act) {
+				_platform.toggleTimestamps = function(act) {	/* Not Applicable */
+					/*
 					var scope = angular.element($(selector.timestampsBox)).scope();
 					if (!scope) return false;
 					if (act == 'toggle') {
@@ -470,6 +472,7 @@ var HHBJSONDATA,hhb;
 					} else {
 						scope.$apply(function(){	scope.timestamps = false;	});
 					}
+					*/
 					return true;
 				};
 				_platform.getPlatformIcon = function() {
@@ -530,8 +533,7 @@ var HHBJSONDATA,hhb;
 							classResized = cssClass.resized
 							limitHeight = limit.msgIconHeight;
 						/* Re-define window.emotify */
-						window.emotify=function(e){var t,n,r={},i=[];t=function(e,t){t=t||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};var s=[],o=[].concat(e.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi)),u=[],a=[].concat(e.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi));for(var f=0;f<o.length;f++){s[f]=o[f];e=e.replace(s[f],"___hhb_html_"+f+"___")}for(var f=0;f<a.length;f++){u[f]=a[f];e=e.replace(u[f],"___hhb_url_"+f+"___")}e=e.replace(n,function(e,n,s){var o=0,u=s,a=r[s];if(!a){while(o<i.length&&!i[o].regexp.test(s)){o++}u=i[o].name;a=r[u]}return a?n+t(a[0],a[1],a.width,a.height,u,s):e});for(var f=0;f<s.length;f++){e=e.replace(new RegExp("___hhb_html_"+f+"___","g"),s[f])}for(var f=0;f<u.length;f++){e=e.replace(new RegExp("___hhb_url_"+f+"___","g"),u[f])}return e};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|)("+a.join("|")+")(?=(?:$|))","g")}return r};return t}(_hhb);
-						
+						window.emotify=function(e){var t,n,r={},i=[];t=function(e,t){t=t||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};var s=[],o=[].concat(e.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi)),u=[],a=[].concat(e.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)/gi));if(o){for(var f=0;f<o.length;f++){s[f]=o[f];e=e.replace(s[f],"___hhb_html_"+f+"___")}}if(a){for(var f=0;f<a.length;f++){u[f]=a[f];e=e.replace(u[f],"___hhb_url_"+f+"___")}}e=e.replace(n,function(e,n,s){var o=0,u=s,a=r[s];if(!a){while(o<i.length&&!i[o].regexp.test(s)){o++}u=i[o].name;a=r[u]}return a?n+t(a[0],a[1],a.width,a.height,u,s):e});if(o){for(var f=0;f<s.length;f++){e=e.replace(new RegExp("___hhb_html_"+f+"___","g"),s[f])}}if(a){for(var f=0;f<u.length;f++){e=e.replace(new RegExp("___hhb_url_"+f+"___","g"),u[f])}}return e};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|)("+a.join("|")+")(?=(?:$|))","g")}return r};return t}(_hhb);
 						var ijlist = emotify.emoticons(true,list);
 					}
 					return count;
@@ -607,11 +609,8 @@ var HHBJSONDATA,hhb;
 						}
 						txtarea.scrollTop = scrollPos;
 						
-						/* update angular */
-						var scope = angular.element($msgBox).scope();
-						scope.$apply(function(){
-							scope.$parent.msgTxt = txtarea.value;
-						});
+						/* call Hitbox.tv textfield handler */
+						pf$(selector.msgBox).change();
 					}
 				}
 			
@@ -635,7 +634,7 @@ var HHBJSONDATA,hhb;
 					
 					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
 						style += [	
-							'.hhb-pf-hitbox .chatBody .ownerBadge {',
+							'.hhb-pf-hitbox .chat-messages .chat-badge-owner {',
 								'margin-right: 3px;',
 								'vertical-align:bottom;',
 								'width:',broadcaster.width,'px;',
@@ -645,7 +644,7 @@ var HHBJSONDATA,hhb;
 					}
 					if (moderator.img && moderator.width>0 && moderator.height>0) {
 						style += [	
-							'.hhb-pf-hitbox .chatBody .modBadge {',
+							'.hhb-pf-hitbox .chat-messages .chat-badge-mod {',
 								'color: transparent;',
 								'margin-right: 3px;',
 								'width:',moderator.width,'px;',
@@ -1091,13 +1090,22 @@ var HHBJSONDATA,hhb;
 					
 					function toRegExp(str) { return (str+'').replace(/([.?*+^$[\]\\(){}|\-\:])/g, "\\$1"); }
 					function emotify_pre(msg) {
-						var map = {},html=[];
 						/* extract html tag */
-						var mhtml = msg.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi);
+						var html = [],
+							mhtml = [].concat(msg.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi)),
+							url = [],
+							murl = [].concat(msg.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)/gi));
 						if (mhtml) {
 							for (var i=0;i<mhtml.length;i++) {
 								html[i] = mhtml[i];
 								msg = msg.replace(html[i],"___hhb_html_"+i+"___");
+							}
+						}
+						/* extract url */
+						if (murl) {
+							for (var i=0;i<murl.length;i++) {
+								url[i] = murl[i];
+								msg = msg.replace(url[i],"___hhb_url_"+i+"___");
 							}
 						}
 						/* extract emoticon */
@@ -1109,11 +1117,16 @@ var HHBJSONDATA,hhb;
 								msg = msg.replace(regex, "___hhb_emote_"+i+"___");
 							}
 						}
-						
 						/* restore html tag */
 						if (mhtml) {
 							for (var i=0;i<html.length;i++) {
 								msg = msg.replace(new RegExp("___hhb_html_"+i+"___","g"), html[i]);
+							}
+						}
+						/* restore url */
+						if (murl) {
+							for (var i=0;i<url.length;i++) {
+								msg = msg.replace(new RegExp("___hhb_url_"+i+"___","g"), url[i]);
 							}
 						}
 						return msg;
@@ -1403,82 +1416,7 @@ var HHBJSONDATA,hhb;
 				}
 			
 				/* Icon emotify */
-				_platform.injectIcon = function(iconlist) {
-					var iconlist = iconlist;
-					var count = iconlist.length;
-					
-					function toRegExp(str) { return (str+'').replace(/([.?*+^$[\]\\(){}|\-\:])/g, "\\$1"); }
-					function emotify_pre(msg) {
-						var map = {},html=[];
-						/* extract html tag */
-						var mhtml = msg.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi);
-						if (mhtml) {
-							for (var i=0;i<mhtml.length;i++) {
-								html[i] = mhtml[i];
-								msg = msg.replace(html[i],"___hhb_html_"+i+"___");
-							}
-						}
-						/* extract emoticon */
-						for(var i = 0; i < iconlist.length; i++) {
-							var code = [].concat(iconlist[i].code);
-							for(var j = 0; j < code.length; j++) {
-								var regex = code[j];
-								if(!(regex instanceof RegExp)) regex = new RegExp(toRegExp(regex), 'g');
-								msg = msg.replace(regex, "___hhb_emote_"+i+"___");
-							}
-						}
-						
-						/* restore html tag */
-						if (mhtml) {
-							for (var i=0;i<html.length;i++) {
-								msg = msg.replace(new RegExp("___hhb_html_"+i+"___","g"), html[i]);
-							}
-						}
-						return msg;
-					}
-					function emotify_post(msg)
-					{
-						var classMsgIcon = cssClass.msgIcon,
-							classResized = cssClass.resized
-							limitHeight = limit.msgIconHeight;
-						/* restore emoticon */
-						for(var i = 0; i < iconlist.length; i++) {
-							var emo = iconlist[i];
-							var tsrc = emo.src;
-							var ttitle = emo.code.join(", ").replace(/(<([^>]+)>)/ig,'').replace(/, $/,'');
-							var tw = (emo.width > 0) ? emo.width : 0;
-							var th = (emo.height > 0) ? emo.height : 0;
-							msg = msg.replace(new RegExp("___hhb_emote_"+i+"___","g"), emo.img);
-						}
-						return msg;
-					}
-					function emotify_main(old,args) {
-						var str = args[0];
-						var msg = emotify_pre(str);
-						args[0] = msg;
-						msg = old.apply(this,args);
-						msg = emotify_post(msg);
-						return msg;
-					}
-					/* Injecting emoticonize */					
-					var method = 'emoticonize',
-						objChat = (CurrentChat) ? CurrentChat : Chat.prototype;
-					if (method in objChat && !('__hhb_'+method in objChat)) {
-						var orgMethod = objChat[method];
-						objChat['__hhb_'+method] = true;
-						objChat[method] = function() {
-							try {
-								var args = [	orgMethod.bind(this),
-												Array.prototype.slice.apply(arguments)
-											];
-								return emotify_main.apply(this,args);
-							} catch(e) {
-								return orgMethod.apply(this,arguments);
-							}
-						};
-					}
-					return count;
-				},
+				_platform.injectIcon = function(iconlist) {	return 0; },
 				_platform.getNewMsg = function() {	return $(selector.newMsg);	};
 				_platform.bindResizer = function() {
 					var msgs = _platform.getNewMsg(),
@@ -1957,16 +1895,16 @@ var HHBJSONDATA,hhb;
 				if (!env.builtinIconLoaded) return;
 				var getGJTVIcon = function() {
 					var list = [], dgenre = [].concat('GJTV');
-					if (	typeof(gjtv_icon_base) !== 'undefined' && 
-							typeof(gjtv_icon_list) !== 'undefined'
+					if (	typeof(GoldenJTV.iconroot) !== 'undefined' && 
+							typeof(GoldenJTV.iconlist) !== 'undefined'
 						) {
-						$.each(gjtv_icon_list,function(idx,obj) {
-							if (obj && obj.length>=2) {
-								var tcode = [].concat(obj[0]),
-									tsrc = obj[1].match(/^([^']+)\'/)[1],
-									twidth = obj[1].match(/width=\'(\d+)\'/)[1],
-									theight = obj[1].match(/height=\'(\d+)\'/)[1];
-								if (tsrc.indexOf("http") == -1) tsrc = gjtv_icon_base + tsrc;
+						$.each(GoldenJTV.iconlist,function(idx,obj) {
+							if (obj && obj.code && obj.src && obj.width && obj.height) {
+								var tcode = [].concat(obj.code),
+									tsrc = obj.src,
+									twidth = obj.width,
+									theight = obj.height;
+								if (tsrc.indexOf("http") == -1) tsrc = GoldenJTV.iconroot + tsrc;
 								
 								if (tcode && tsrc && twidth && theight && twidth>0 && theight>0) {
 									list.push({
@@ -3121,7 +3059,7 @@ var HHBJSONDATA,hhb;
 		}
 		detectExtension('eoiappopphdcceickjphgaaidacdkidi', '/css/images/animated-overlay.gif',
 			function(installed) {
-				console.log('detectExtension',installed);
+				//console.log('detectExtension',installed);
 				if (!installed) {
 					$(	'<div id="hhb-update-reminder">'+
 							'<style>'+
@@ -3179,16 +3117,16 @@ var HHBJSONDATA,hhb;
 			hhb = hhb || new HihiBox();
 			if (hhb.isInitialize()) {
 				ga('send', 'pageview');
-				console.log('[HihiBox]','Created',hhb);
+				console.log('[HihiBox]','Created',hhb);		/* debug */
 				
 				var features = hhb.getFeatures();
 				var tryImport = function() {
 					if (!hhb.isReadyForImport()) {
 						setTimeout(tryImport,10);
-						console.log('[HihiBox]','Import Data List Retry');
+						console.log('[HihiBox]','Import Data List Retry');		/* debug */
 						return;
 					}
-					console.log('[HihiBox]','Import Data List Start');
+					console.log('[HihiBox]','Import Data List Start');		/* debug */
 					/* load icon list */
 					if ($.inArray('emoticon',features) >= 0) {
 						$.getScript([host,"/js/iconlist.json"].join(''))
