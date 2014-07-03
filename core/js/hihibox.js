@@ -105,7 +105,7 @@ var HHBJSONDATA,hhb;
 			developer: ["VannZic", "Lemon"],
 			specialThanks: ["希治閣", "小維"]
 		},
-		coreVersion: 'v1.7.2',
+		coreVersion: 'v1.7.2.17',
 		lastUpdate: '2014-07-03'
 	};
 	var htmlEncode = function(value){
@@ -1895,7 +1895,8 @@ var HHBJSONDATA,hhb;
 				if (!env.builtinIconLoaded) return;
 				var getGJTVIcon = function() {
 					var list = [], dgenre = [].concat('GJTV');
-					if (	typeof(GoldenJTV.iconroot) !== 'undefined' && 
+					if (	typeof(GoldenJTV) !== 'undefined' &&
+							typeof(GoldenJTV.iconroot) !== 'undefined' && 
 							typeof(GoldenJTV.iconlist) !== 'undefined'
 						) {
 						$.each(GoldenJTV.iconlist,function(idx,obj) {
