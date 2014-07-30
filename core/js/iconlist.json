@@ -3824,5 +3824,13 @@ HHBJSONDATA.listIcon = [
 	{	"code": ["[summonlemon]"],
 		"src": "[summonlemon].jpg",
 		"width": 200,	"height": 200
+	},
+	{	"code": ["[yellow]"],
+		"src": "yellowcard.gif",
+		"width": 50,	"height": 50
+	},
+	{	"code": ["[red]"],
+		"src": "redcard.gif",
+		"width": 50,	"height": 50
 	}
 ];
