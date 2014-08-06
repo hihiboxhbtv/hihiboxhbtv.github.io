@@ -433,20 +433,16 @@ var HHBJSONDATA,hhb;
 							replace: "<a href=\"$2\" target=\"_blank\"><img src=\"$2\" class=\"hhb-bbcode-img\" alt=\"$1$2$3\"><\/a>"
 						}
 					];
-					console.log('debug parse',$msgs,bbcode);
 					$msgs.each(function() {
 						var html = $(this).html();
 						var ohtml = html;
-						console.log('debug html 1',ohtml);
 						$.each(bbcode,function(idx,obj) {
 							var thtml = ohtml.replace(obj.match,obj.replace);
-							console.log('debug bbcode',obj,thtml,ohtml);
 							if (ohtml!=thtml) {
 								pcount++;
 								ohtml = thtml;
 							}
 						});
-						console.log('debug html 2',ohtml);
 						$(this).html(ohtml);
 					});
 					return {
