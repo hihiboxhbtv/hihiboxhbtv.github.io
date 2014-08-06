@@ -11,9 +11,19 @@
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v1.8.0",
+	"coreVersion": "v1.8.1",
 	"lastUpdate": "2014-08-07",
 	"history": [
+		{
+			"version": "v1.8.1",
+			"lastUpdate": "2014-08-07",
+			"summary": [
+				"[概要] HihiBox v1.8 相關錯誤修正"
+			],
+			"detail": [
+				"[修正] HihiBox v1.8 相關錯誤修正"
+			]
+		},
 		{
 			"version": "v1.8.0",
 			"lastUpdate": "2014-08-07",

@@ -105,7 +105,7 @@ var HHBJSONDATA,hhb;
 			developer: ["VannZic", "Lemon"],
 			specialThanks: ["希治閣", "小維"]
 		},
-		coreVersion: 'v1.8.0',
+		coreVersion: 'v1.8.1',
 		lastUpdate: '2014-08-07'
 	};
 	var htmlEncode = function(value){
