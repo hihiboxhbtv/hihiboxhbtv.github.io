@@ -25,7 +25,7 @@ var HHBJSONDATA,hhb;
 			DEBUG_REFRESH			= 1 << 21,
 			DEBUG_GA				= 1 << 22,
 			DEBUG_ALL				= (1 << 23) - 1,
-			DEBUG					= 
+			DEBUG					= 		/* debug */
 				DEBUG_ENV | 
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
 				DEBUG_SUB_SUCCESS | 
@@ -95,7 +95,7 @@ var HHBJSONDATA,hhb;
 	/* restore original jQuery */
 	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
 
-	var editorExtensionId = "eoiappopphdcceickjphgaaidacdkidi";		/* debug */
+	var editorExtensionId = "eoiappopphdcceickjphgaaidacdkidi";			/* debug */
 	var host = 'http://hihiboxhbtv.github.io/core';					/* debug */
 	var imgHost = 'http://hihiboxhbtv.github.io/images/icons/';		/* debug */
 	var enableGA = true;		/* debug */
@@ -105,8 +105,8 @@ var HHBJSONDATA,hhb;
 			developer: ["VannZic", "Lemon"],
 			specialThanks: ["希治閣", "小維"]
 		},
-		coreVersion: 'v1.7.2.17',
-		lastUpdate: '2014-07-03'
+		coreVersion: 'v1.8.0',
+		lastUpdate: '2014-08-07'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -140,6 +140,7 @@ var HHBJSONDATA,hhb;
 				iconMissing: 'hhb-missing',
 				checkedMsg: 'hhb-msg',
 				checkedName: 'hhb-name',
+				checkedBBCodeMsg: 'hhb-bbc-msg',
 				msgIcon: 'hhb-msgicon',
 				msgIconResized: 'hhb-resized',
 				resized: 'hhb-resized',
@@ -419,6 +420,39 @@ var HHBJSONDATA,hhb;
 						name: names.length,
 						binded: bicount
 					};
+				},
+				parseBBCode: function(msgs) {
+					if (msgs.length==0) return { msg: 0, parsed: 0 };
+					var $msgs = msgs.addClass(cssClass.checkedBBCodeMsg);
+					var pcount = 0;
+					var bbcode = [
+						{	match: /(\[url\])(?:<a[^>]+>)?(http[^\s\[]+?)(?:<\/a>)?(\[\/url\])/ig,
+							replace: "<a href=\"$2\" target=\"_blank\" class=\"hhb-bbcode-url\">$2<\/a>"
+						},
+						{	match: /(\[img\])(?:<a[^>]+>)?(http[^\s\[]+?)(?:<\/a>)?(\[\/img\])/ig,
+							replace: "<a href=\"$2\" target=\"_blank\"><img src=\"$2\" class=\"hhb-bbcode-img\" alt=\"$1$2$3\"><\/a>"
+						}
+					];
+					console.log('debug parse',$msgs,bbcode);
+					$msgs.each(function() {
+						var html = $(this).html();
+						var ohtml = html;
+						console.log('debug html 1',ohtml);
+						$.each(bbcode,function(idx,obj) {
+							var thtml = ohtml.replace(obj.match,obj.replace);
+							console.log('debug bbcode',obj,thtml,ohtml);
+							if (ohtml!=thtml) {
+								pcount++;
+								ohtml = thtml;
+							}
+						});
+						console.log('debug html 2',ohtml);
+						$(this).html(ohtml);
+					});
+					return {
+						msg: $msgs.length,
+						parsed: pcount
+					};
 				}
 			},
 			hitbox: function() {
@@ -437,6 +471,7 @@ var HHBJSONDATA,hhb;
 						msgBox: '#chat-input',
 						newMsg: '.chat-messages .message:not(.hhb-msg)',
 						newName: '.chat-messages .name:not(.hhb-name)',
+						newBBCodeMsg: '.chat-messages .message:not(.hhb-bbc-msg)',
 						timestampsBox: '#timestampsBox',
 						userName: '.navItemsUser .item.user:first-child span',
 						player: '#mediaplayer',
@@ -619,6 +654,7 @@ var HHBJSONDATA,hhb;
 				_platform.bindNameBanner = function() {
 					var names = _platform.getNewNames();
 					return _platformObj.default.bindNameBanner(names,function() {
+								/* workaround - auto scroll of hitbox chatroom */
 								var $cbody = $(selector.chatBody),
 									$msg = $(selector.msgList).last(),
 									scrollTop = $cbody.scrollTop(),
@@ -654,6 +690,13 @@ var HHBJSONDATA,hhb;
 					}
 					return style;
 				};
+				
+				/* BBCode */
+				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
+				_platform.parseBBCode = function() {
+					var msgs = _platform.getNewBBCodeMsg();
+					return _platformObj.default.parseBBCode(msgs);
+				};
 			},
 			twitch: function() {
 				/* Private variables */
@@ -672,6 +715,7 @@ var HHBJSONDATA,hhb;
 						msgBox: 'textarea[placeholder="Send a message"]',
 						newMsg: 'span.message:not(.hhb-msg)',
 						newName: '.chat-line .from:not(.hhb-name)',
+						newBBCodeMsg: 'span.message:not(.hhb-bbc-msg)',
 						emoticon: 'span.emoticon',
 						timestampsBox: '.chat-menu-content .ember-checkbox:contains("Time Stamps")',
 						userName: '#nav_personal .username',
@@ -954,6 +998,13 @@ var HHBJSONDATA,hhb;
 					}
 					return style;
 				};
+				
+				/* BBCode */
+				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
+				_platform.parseBBCode = function() {
+					var msgs = _platform.getNewBBCodeMsg();
+					return _platformObj.default.parseBBCode(msgs);
+				};
 			},
 			justin: function() {
 				/* Private variables */
@@ -971,6 +1022,7 @@ var HHBJSONDATA,hhb;
 						msgBox: '#chat_text_input',
 						newMsg: '.chat_line span.message:not(.hhb-msg)',
 						newName: '.chat_line .nick:not(.hhb-name)',
+						newBBCodeMsg: '.chat_line span.message:not(.hhb-bbc-msg)',
 						emoticon: 'span.emoticon',
 						timestampsBox: '#toggle-timestamp',
 						userName: '.global-header-user-info .global-header-username',
@@ -1284,6 +1336,13 @@ var HHBJSONDATA,hhb;
 							'}'].join('');
 					}
 					return style;
+				};
+				
+				/* BBCode */
+				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
+				_platform.parseBBCode = function() {
+					var msgs = _platform.getNewBBCodeMsg();
+					return _platformObj.default.parseBBCode(msgs);
 				};
 			},
 			ustream: function() {
@@ -1954,6 +2013,14 @@ var HHBJSONDATA,hhb;
 					return false;
 				};
 				var dcodelist = [];
+				var rcount = 0,ocount = 0;
+				if (listGenre[0] == genreRecent) {
+					rcount++;
+				}
+				if (listGenre[listGenre.length-1] == genreOther) {
+					ocount++;
+					listGenre.pop();
+				}
 				$.each(iconlist,function(idx,obj) {
 					/* analyze Icon */
 					if (obj._comment) return true;
@@ -1986,13 +2053,14 @@ var HHBJSONDATA,hhb;
 					obj.usage = usage;
 					obj.isParsed = true;
 					
-					if (listGenre[listGenre.length-1] == genreOther) {
-						listGenre.pop();
-					}
 					/* add to genre list */
 					$.each(genre,function(idx3,iconGenre) {
 						var cg = 0;
-						if (iconGenre != genreOther) {
+						if (iconGenre == genreOther) {
+							ocount++;
+						} else if (iconGenre == genreRecent) {
+							rcount++;
+						} else {
 							$.each(listGenre,function(idx4,genrei) {
 								if (genrei == iconGenre) cg++;
 							});
@@ -2007,7 +2075,10 @@ var HHBJSONDATA,hhb;
 					count++;
 				});
 				
-				if ($.inArray(genreOther,listGenre) < 0) {
+				if ($.inArray(genreRecent,listGenre) < 0 && rcount>0) {
+					listGenre.unshift(genreRecent);
+				}
+				if ($.inArray(genreOther,listGenre) < 0 && ocount>0) {
 					listGenre.push(genreOther);
 				}
 				listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
@@ -2958,7 +3029,7 @@ var HHBJSONDATA,hhb;
 		};
 		var initIncomingParser = function() {
 			var parseIncoming = function() {
-				var results = { msgParsed: 0, iconEmotified: 0, iconResized: 0, nameBannerShown: 0};
+				var results = { msgParsed: 0, iconEmotified: 0, iconResized: 0, nameBannerShown: 0, bbcodeParsed: 0 };
 				
 				/* bind name banner */
 				if (env.nameBannerEnabled) {
@@ -2970,7 +3041,12 @@ var HHBJSONDATA,hhb;
 					var result = platformObj.bindResizer();
 					if (result.msg>0) $.extend(results,{ msgParsed: result.msg, iconEmotified: result.emotified, iconResized: result.resized });
 				}
-				if (results.msgParsed>0) debugMsg(DEBUG_RUNTIME,'Messages Parsed [M:',results.msgParsed,',E:',results.iconEmotified,',R:',results.iconResized,',NB:',results.nameBannerShown,']');
+				/* parse bbcode */
+				if (settings.enable_bbcode) {
+					var result = platformObj.parseBBCode();
+					if (result.msg>0) $.extend(results,{ msgParsed: result.msg, bbcodeParsed: result.parsed });
+				}
+				if (results.msgParsed>0) debugMsg(DEBUG_RUNTIME,'Messages Parsed [M:',results.msgParsed,',E:',results.iconEmotified,',R:',results.iconResized,',NB:',results.nameBannerShown,',BBC:',results.bbcodeParsed,']');
 				setTimeout(function() { parseIncoming(); },delay.parseIncoming);
 			};
 
@@ -3019,8 +3095,10 @@ var HHBJSONDATA,hhb;
 		this.importIconList = function(igenre,ilist) {
 			if (!env.listeningIconListData) return false;
 			if (igenre && ilist) {
-				listGenre = igenre;
-				listIcon = ilist;
+				if (settings.enable_emotify) {
+					listGenre = igenre;
+					listIcon = ilist;
+				}
 				initIconListData();
 				initIncomingParser();
 				initEmoticon();
@@ -3060,7 +3138,6 @@ var HHBJSONDATA,hhb;
 		}
 		detectExtension('eoiappopphdcceickjphgaaidacdkidi', '/css/images/animated-overlay.gif',
 			function(installed) {
-				//console.log('detectExtension',installed);
 				if (!installed) {
 					$(	'<div id="hhb-update-reminder">'+
 							'<style>'+

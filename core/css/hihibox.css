@@ -129,7 +129,7 @@
 }
 
 /* Darkmode - Light */
-#hhb-header #hhb-darkmode.funcIcon:before { content: '\e803'; }
+#hhb-header #hhb-darkmode.funcIcon:before { content: '\800'; }
 /* Darkmode - Dark */
 .hhb-darkmode #hhb-header #hhb-darkmode.funcIcon:before { content: '\e801'; }
 
@@ -140,12 +140,12 @@
 #hhb-header #hhb-reset.funcIcon { background-image: url('http://hihiboxhbtv.github.io/images/reset.png'); }
 #hhb-header #hhb-reset.funcIcon:hover { background-image: url('http://hihiboxhbtv.github.io/images/reset.png'); }
 
-#hhb-header #hhb-bookmark.funcIcon:before { content: '\e802'; }
-#hhb-header #hhb-bookmark.funcIcon.isBookmarked:before { content: '\e800'; } 
+#hhb-header #hhb-bookmark.funcIcon:before { content: '\e804'; }
+#hhb-header #hhb-bookmark.funcIcon.isBookmarked:before { content: '\e803'; } 
 
 /* Popup toggle */
-#hhb-header #hhb-popup.funcIcon:before { content: '\e813'; }
-#hhb-holder.hhb-draggable #hhb-popup.funcIcon:before { content: '\e814'; }
+#hhb-header #hhb-popup.funcIcon:before { content: '\e802'; }
+#hhb-holder.hhb-draggable #hhb-popup.funcIcon:before { content: '\e805'; }
 
 #hhb-header .icon.fb {
 	background: url('http://hihiboxhbtv.github.io/images/fb.png') no-repeat center;
@@ -355,8 +355,8 @@ a:hover > .hhb-name-name {
 	background-color: rgba(64,64,64,1);
 	opacity: initial;
 }
-#hhb-player-bookmark.funcIcon:before { content: '\e802'; }
-#hhb-player-bookmark.funcIcon.isBookmarked:before { content: '\e800'; } 
+#hhb-player-bookmark.funcIcon:before { content: '\e804'; }
+#hhb-player-bookmark.funcIcon.isBookmarked:before { content: '\e803'; } 
 
 
 .hhb-pf-twitch span .hhb-name-name { margin-bottom: -6px; }
@@ -401,4 +401,18 @@ a:hover > .hhb-name-name {
 .hhb-pf-hitbox .chatBody .message,
 .hhb-pf-hitbox .chatBody li span {
 	vertical-align: text-bottom !important;
+}
+/* [S:2014-07-30] */
+.hhb-pf-hitbox .chatBody .title {
+	margin-bottom: 0.25em;
+}
+
+/* [S:2014-08-01] */
+.hhb-bbcode-url {
+	
+}
+.hhb-bbcode-img {
+	max-width: 100%;
+	max-height: 155px;
+	margin-bottom: 5px;
 }

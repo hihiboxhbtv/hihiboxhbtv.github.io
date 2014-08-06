@@ -5,15 +5,28 @@
 		"developer": ["VannZic", "Lemon"],
 		"specialThanks": ["希治閣", "小維"]
 	},
-	"lastExtensionVersion": "v1.7.2",
-	"lastRelease": "2014-06-06",
-	"lastSummary": "[概要] 新增匯入/匯出書籤頁面 及HihiBox v1.7.1 相關錯誤修正",
+	"lastExtensionVersion": "v1.8",
+	"lastRelease": "2014-08-07",
+	"lastSummary": "[概要] 新增表情轉換開關, BBCode 功能 及HihiBox v1.7.2 相關錯誤修正",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v1.7.2.17",
-	"lastUpdate": "2014-07-03",
+	"coreVersion": "v1.8.0",
+	"lastUpdate": "2014-08-07",
 	"history": [
+		{
+			"version": "v1.8.0",
+			"lastUpdate": "2014-08-07",
+			"summary": [
+				"[概要] 新增表情轉換開關, BBCode 功能 及HihiBox v1.7.2 相關錯誤修正"
+			],
+			"detail": [
+				"[新增] 表情轉換開關功能",
+				"[新增] [IMG],[URL] 等BBCode 之解析功能",
+				"[優化] 無法檢測狀態之頻道現以暗紅底色標示",
+				"[修正] HihiBox v1.7.2 相關錯誤修正"
+			]
+		},
 		{
 			"version": "v1.7.2.17",
 			"lastUpdate": "2014-07-03",
