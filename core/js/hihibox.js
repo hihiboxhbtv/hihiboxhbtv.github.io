@@ -969,9 +969,7 @@ var HHBJSONDATA,hhb;
 				_platform.getNewNames = function() {	return $(selector.newName);	};
 				_platform.bindNameBanner = function() {
 					var names = _platform.getNewNames();
-					return _platformObj.default.bindNameBanner(names,function() {
-							.click(function() { $(this).parent().click(); });
-						});
+					return _platformObj.default.bindNameBanner(names);
 				};
 				_platform.genBadgeCss = function(badges) {
 					var style = '';
