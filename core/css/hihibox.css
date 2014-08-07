@@ -129,7 +129,7 @@
 }
 
 /* Darkmode - Light */
-#hhb-header #hhb-darkmode.funcIcon:before { content: '\800'; }
+#hhb-header #hhb-darkmode.funcIcon:before { content: '\e800'; }
 /* Darkmode - Dark */
 .hhb-darkmode #hhb-header #hhb-darkmode.funcIcon:before { content: '\e801'; }
 
