@@ -388,12 +388,14 @@ var HHBJSONDATA,hhb;
 								$(this).text('');
 								var _pspan = $(this);
 								$(bspan)
+									.click(function() { $(this).parent().click(); })
 									.animate(
 										{ 'width': [nb.width,'px'].join('') },
 										{ easing: "easeOutExpo", duration: dur }
 									).prependTo($(this));
 								var $nspan = $(nspan).appendTo($(this))
 								$nspan.width($nspan.width())
+									.click(function() { $(this).parent().click(); })
 									.animate(
 										{  'width': '1px' },
 										{ easing: "easeOutExpo", duration: dur,
@@ -967,7 +969,9 @@ var HHBJSONDATA,hhb;
 				_platform.getNewNames = function() {	return $(selector.newName);	};
 				_platform.bindNameBanner = function() {
 					var names = _platform.getNewNames();
-					return _platformObj.default.bindNameBanner(names);
+					return _platformObj.default.bindNameBanner(names,function() {
+							.click(function() { $(this).parent().click(); });
+						});
 				};
 				_platform.genBadgeCss = function(badges) {
 					var style = '';

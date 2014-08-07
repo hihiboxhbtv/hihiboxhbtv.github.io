@@ -201,3 +201,6 @@ body.hhb-pf-hitbox.hhb-darkmode {
 .hhb-pf-hitbox.hhb-darkmode .settings-slider { background: hsla(0,0%,100%,.07); }
 .hhb-pf-hitbox.hhb-darkmode .chat-settings .ui-slider-handle { background: #0d0d0d; border: 1px solid #909090; }
 .hhb-pf-hitbox.hhb-darkmode .chat-settings .ui-slider-range { background: hsla(0,0%,100%,.5); }
+
+/* [s:2014-08-07] */
+.hhb-pf-hitbox.hhb-darkmode .detailInner { background-color: #000; }
