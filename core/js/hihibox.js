@@ -102,8 +102,8 @@ var HHBJSONDATA,hhb;
 	var versionInfo = {
 		name: 'HihiBox',		/* debug */
 		credits: {
-			developer: ["VannZic", "Lemon"],
-			specialThanks: ["希治閣", "小維"]
+			developer: ["Lemon", "希治閣"],
+			specialThanks: ["VannZic"]
 		},
 		coreVersion: 'v1.8.1',
 		lastUpdate: '2014-08-07'
