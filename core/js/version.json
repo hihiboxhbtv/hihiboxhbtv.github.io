@@ -1,9 +1,9 @@
 ﻿{
 	"name": "HihiBox",
-	"credit": "Designed by VannZic, Lemon\nResearched by 希治閣, 小維",
+	"credit": "-",
 	"credits": {
-		"developer": ["VannZic", "Lemon", "希治閣"],
-		"specialThanks": ["小維"]
+		"developer": ["Lemon", "希治閣"],
+		"specialThanks": ["VannZic"]
 	},
 	"lastExtensionVersion": "v1.8",
 	"lastRelease": "2014-08-07",
