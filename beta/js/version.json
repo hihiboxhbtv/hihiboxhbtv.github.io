@@ -1,22 +1,68 @@
 ﻿{
-	"name": "HihiBox β",
-	"credit": "Designed by VannZic, Lemon\nResearched by 希治閣, 小維",
+	"name": "HihiBox",
+	"credit": "-",
 	"credits": {
-		"developer": ["VannZic", "Lemon"],
-		"specialThanks": ["希治閣", "小維"]
+		"developer": ["Lemon", "希治閣"],
+		"specialThanks": ["VannZic"]
 	},
-	"lastExtensionVersion": "v1.7.2",
-	"lastRelease": "2014-06-05",
-	"lastSummary": "[概要] 新增匯入/匯出書籤頁面 及HihiBox v1.7.1 相關錯誤修正",
+	"lastExtensionVersion": "v2.0",
+	"lastRelease": "2014-08-22",
+	"lastSummary": "[概要] 新增自動插入BBCode 功能, 同步化選項 及HihiBox v1.8.1 相關錯誤修正",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
-	"siteURI": "http://hkghihibox.wix.com/index",
-	"pageURI": "https://www.facebook.com/hihiboxhbtv",
-	"coreVersion": "v1.7.2",
-	"lastUpdate": "2014-06-05",
+	"siteURI": "http://bit.ly/hihibox_site",
+	"pageURI": "http://bit.ly/hihibox_fb",
+	"coreVersion": "v2.0.0",
+	"lastUpdate": "2014-08-07",
 	"history": [
 		{
+			"version": "v2.0.0",
+			"lastUpdate": "2014-08-22",
+			"summary": [
+				"[概要] 新增自動插入BBCode 功能, 同步化選項 及HihiBox v1.8.1 相關錯誤修正"
+			],
+			"detail": [
+				"[新增] 自動插入BBCode 功能",
+				"[新增] 個人設定 及 書籤 同步化選項",
+				"[修正] HihiBox v1.8.1 相關錯誤修正"
+			]
+		},
+		{
+			"version": "v1.8.1",
+			"lastUpdate": "2014-08-07",
+			"summary": [
+				"[概要] HihiBox v1.8 相關錯誤修正"
+			],
+			"detail": [
+				"[修正] HihiBox v1.8 相關錯誤修正"
+			]
+		},
+		{
+			"version": "v1.8.0",
+			"lastUpdate": "2014-08-07",
+			"summary": [
+				"[概要] 新增表情轉換開關, BBCode 功能 及HihiBox v1.7.2 相關錯誤修正"
+			],
+			"detail": [
+				"[新增] 表情轉換開關功能",
+				"[新增] [IMG],[URL] 等BBCode 之解析功能",
+				"[優化] 無法檢測狀態之頻道現以暗紅底色標示",
+				"[修正] HihiBox v1.7.2 相關錯誤修正"
+			]
+		},
+		{
+			"version": "v1.7.2.17",
+			"lastUpdate": "2014-07-03",
+			"summary": [
+				"[概要] Hitbox.tv 及Twitch.tv 界面更新之相關修正"
+			],
+			"detail": [
+				"[修正] Hitbox.tv 界面更新之相關修正",
+				"[修正] Twitch.tv 界面更新之相關修正"
+			]
+		},
+		{
 			"version": "v1.7.2",
-			"lastUpdate": "2014-06-05",
+			"lastUpdate": "2014-06-06",
 			"summary": [
 				"[概要] 新增匯入/匯出書籤頁面 及HihiBox v1.7.1 相關錯誤修正"
 			],
@@ -192,7 +238,7 @@
 				"<p>閣下可以跟據指定的格式bookmark：[channelid]@justin] 以bookmark jtv頻道，[channelid@twitch]以bookmark ttv頻道，[channel@hitbox]以bookmark hitbox頻道</p>",
 				"<div class=\"title\">例子:</div>",
 				"<ul class=\"list\">",
-					"<li><span class=\"highlight\">輸入 \"purpleb@justin\" bookmark Purple J聲電台</span></li>",
+					"<li><span class=\"highlight\">輸入 \"sonyjtv7@justin\" bookmark Sony JTV</span></li>",
 					"<li><span class=\"highlight\">輸入 \"cslalan1985@twitch\" bookmark 高清打機台</span></li>",
 					"<li><span class=\"highlight\">輸入 \"scaryplayttv@hitbox\" bookmark 壯膽同學會 等等</span></li>",
 				"</ul>",

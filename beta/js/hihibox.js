@@ -25,7 +25,7 @@ var HHBJSONDATA,hhb;
 			DEBUG_REFRESH			= 1 << 21,
 			DEBUG_GA				= 1 << 22,
 			DEBUG_ALL				= (1 << 23) - 1,
-			DEBUG					= 
+			DEBUG					= DEBUG_ALL | 		/* debug */
 				DEBUG_ENV | 
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
 				DEBUG_SUB_SUCCESS | 
@@ -36,6 +36,7 @@ var HHBJSONDATA,hhb;
 	Date.prototype.toLocalISOString=function(){var e=this,t=function(e){return e<10?"0"+e:e},n=e.getTimezoneOffset(),r=(n>0?"-":"+")+t(parseInt(Math.abs(n/60)));if(n%60!=0)r+=t(Math.abs(n%60));if(n===0)r="Z";return e.getFullYear()+"-"+t(e.getMonth()+1)+"-"+t(e.getDate())+"T"+t(e.getHours())+":"+t(e.getMinutes())+":"+t(e.getSeconds())+r}
 
 	var orgjQuery = (typeof jQuery !== 'undefined') ? jQuery : null;	/* backup original jQuery */
+	var pf$ = orgjQuery;
 	
 	/* HihiBox jQuery */
 	/*! jQuery v2.1.0 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
@@ -95,17 +96,17 @@ var HHBJSONDATA,hhb;
 	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
 
 	var editorExtensionId = "nkejdiomijpipakhccdmdhhkpofemimi";			/* debug */
-	var host = 'http://hihiboxhbtv.github.io/beta';
+	var host = 'http://hihiboxhbtv.github.io/beta',					/* debug */
 	var imgHost = 'http://hihiboxhbtv.github.io/images/icons/';		/* debug */
 	var enableGA = true;		/* debug */
 	var versionInfo = {
 		name: 'HihiBox β',		/* debug */
 		credits: {
-			developer: ["VannZic", "Lemon"],
-			specialThanks: ["希治閣", "小維"]
+			developer: ["Lemon", "希治閣"],
+			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v1.7.2',
-		lastUpdate: '2014-06-05'
+		coreVersion: 'v2.0',
+		lastUpdate: '2014-08-22'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -128,7 +129,8 @@ var HHBJSONDATA,hhb;
 				sortModeBtn: 'hhb-sortmode',
 				resetBtn: 'hhb-reset',
 				bookmarkBtn: 'hhb-bookmark',
-				popupBtn: 'hhb-popup'
+				popupBtn: 'hhb-popup',
+				bbCodeBtn: 'hhb-bbcode'
 			},
 			cssClass: {
 				inited: 'hhb-inited',
@@ -139,6 +141,7 @@ var HHBJSONDATA,hhb;
 				iconMissing: 'hhb-missing',
 				checkedMsg: 'hhb-msg',
 				checkedName: 'hhb-name',
+				checkedBBCodeMsg: 'hhb-bbc-msg',
 				msgIcon: 'hhb-msgicon',
 				msgIconResized: 'hhb-resized',
 				resized: 'hhb-resized',
@@ -173,7 +176,8 @@ var HHBJSONDATA,hhb;
 				sortModeBtn: '#hhb-sortmode',
 				resetBtn: '#hhb-reset',
 				bookmarkBtn: '#hhb-bookmark',
-				popupBtn: '#hhb-popup'
+				popupBtn: '#hhb-popup',
+				bbCodeBtn: '#hhb-bbcode'
 			},
 			delay: {
 				analyzeBuiltinIcon: 200,
@@ -191,6 +195,7 @@ var HHBJSONDATA,hhb;
 				bindDarkModeBtn: 1000,
 				bindBookmarkBtn: 1000,
 				bindPlayerBookmarkBtn: 1000,
+				bindBBCodeBtn: 1000,
 				sortIconList: 1000,
 				icon_filter: 300,
 				parseIncoming: 50,
@@ -279,7 +284,7 @@ var HHBJSONDATA,hhb;
 						playerBookmarkBtnActivated: false,
 						bookmarkBtnActivated: false,
 					isIncomingParserInited: false,
-				
+					
 				settingsLoaded: false,
 				usageLoaded: false
 			},
@@ -358,9 +363,10 @@ var HHBJSONDATA,hhb;
 								'<div id="'+idObj.bookmarkBtn+'" hhb-locale-title="{{iconlist.bookmark}}" title="Bookmark" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.darkModeBtn+'" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.sortModeBtn+'" class="funcIcon">&nbsp;</div>'+
+								'<div id="'+idObj.bbCodeBtn+'" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.popupBtn+'" hhb-locale-title="{{iconlist.popup_fixed}}" title="Popup" class="funcIcon">&nbsp;</div>'+
 								'<span class="version" title="">'+infoObj.coreVersion+'</span>'+
-								'<span class="name" title="">'+infoObj.name+'</span>'+
+								'<a href="http://bit.ly/hihiboxhbtv" target="_new"><span class="name" title="">'+infoObj.name+'</span></a>'+
 								'<a href="http://bit.ly/hihiboxhbtv" target="_new" class="hhb"><div class="icon hhb" hhb-locale-title="{{iconlist.site}}" title="Website"></div></a>'+
 								'<a href="https://www.facebook.com/hihiboxhbtv" target="_new" class="fb"><div class="icon fb" hhb-locale-title="{{iconlist.fbpage}}" title="Facebook Page"></div></a></div>'+
 								'<div id="'+idObj.genreContainer+'"></div>'+
@@ -370,7 +376,47 @@ var HHBJSONDATA,hhb;
 				genPlayerBookmarkBtn: function(idBtn) {
 					return $('<div id="'+idBtn+'" class="funcIcon" hhb-locale-title="{{info.name}} - {{iconlist.bookmark}}">&nbsp;</div>');
 				},
-				bindNameBanner: function(names) {
+				replaceText: function(txtarea,text,reReplace) {
+					if (txtarea) {
+						text = text.trim()+' ';
+						var scrollPos = txtarea.scrollTop;
+						var strPos = 0;
+						if (reReplace instanceof RegExp) {
+							txtarea.value = txtarea.value.replace(reReplace,'');
+						}
+						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+							"ff" : (document.selection ? "ie" : false ) );
+						if (br == "ie") { 
+							txtarea.focus();
+							var range = document.selection.createRange();
+							range.moveStart ('character', -txtarea.value.length);
+							strPos = range.text.length;
+						}
+						else if (br == "ff") strPos = txtarea.selectionStart;
+
+						var front = (txtarea.value).substring(0,strPos);  
+						var back = (txtarea.value).substring(strPos,txtarea.value.length);
+						text = ((front.length>0)?' ':'')+text;
+						txtarea.value=front+text+back;
+						strPos = strPos + text.length;
+						if (br == "ie") { 
+							txtarea.focus();
+							var range = document.selection.createRange();
+							range.moveStart ('character', -txtarea.value.length);
+							range.moveStart ('character', strPos);
+							range.moveEnd ('character', 0);
+							range.select();
+						}
+						else if (br == "ff") {
+							txtarea.selectionStart = strPos;
+							txtarea.selectionEnd = strPos;
+							txtarea.focus();
+						}
+						txtarea.scrollTop = scrollPos;
+					}
+				},
+				bindNameBanner: function(names,callback) {
+					var callback = callback || function() {};
 					var bicount = 0;
 					if (names.length > 0) {
 						var galist = {}, dur = 400;
@@ -384,15 +430,20 @@ var HHBJSONDATA,hhb;
 								var nspan = "<span class='"+cssClass.nameName+"'>"+namestr+"</span>";
 								$(this).text('');
 								var _pspan = $(this);
-								$(bspan).animate(
+								$(bspan)
+									.click(function() { $(this).parent().click(); })
+									.animate(
 										{ 'width': [nb.width,'px'].join('') },
 										{ easing: "easeOutExpo", duration: dur }
 									).prependTo($(this));
 								var $nspan = $(nspan).appendTo($(this))
 								$nspan.width($nspan.width())
+									.click(function() { $(this).parent().click(); })
 									.animate(
-										{  'width': '0px' },
-										{ easing: "easeOutExpo", duration: dur }
+										{  'width': '1px' },
+										{ easing: "easeOutExpo", duration: dur,
+											complete: callback
+										}
 									);
 								if (env.gjtvIconLoaded) {
 									var gjtvnb = $(this).find('.custom_Nickname');
@@ -414,6 +465,83 @@ var HHBJSONDATA,hhb;
 						name: names.length,
 						binded: bicount
 					};
+				},
+				parseBBCode: function(msgs) {
+					if (msgs.length==0) return { msg: 0, parsed: 0 };
+					var $msgs = msgs.addClass(cssClass.checkedBBCodeMsg);
+					var pcount = 0;
+					var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
+					var rehtmltag = /<[^>]*>/ig;
+					var bbcode = [
+						{	match: /(\[url\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/url\])/ig,
+							replace: "<a href=\"$2\" target=\"_blank\" class=\"hhb-bbcode-url\" alt=\"$1$2$3\">$2<\/a>"
+						},
+						{	match: /(\[img\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/img\])/ig,
+							replace: "<a href=\"$2\" target=\"_blank\"><img src=\"$2\" class=\"hhb-bbcode-img\" alt=\"$1$2$3\"><\/a>"
+						}
+					];
+					$msgs.each(function() {
+						var html = $(this).html();
+						var ohtml = html;
+						var bbcodem = ohtml.match(rebbcode);
+						if (bbcodem) {
+							$.each(bbcodem,function(idx,obj) { ohtml = ohtml.replace(obj,'___hhb_bbc_bbcode_'+idx+'___'); });
+							$.each(bbcodem,function(idx,tohtml) {
+								tohtml = tohtml.replace(rehtmltag,'');
+								$.each(bbcode,function(idx2,obj) {
+									var thtml = tohtml.replace(obj.match,obj.replace);
+									if (tohtml!=thtml) {
+										pcount++;
+										bbcodem[idx] = thtml;
+									}
+								});
+							});
+							$.each(bbcodem,function(idx,obj) { ohtml = ohtml.replace('___hhb_bbc_bbcode_'+idx+'___',obj); });
+						}
+						$(this).html(ohtml);
+					});
+					$msgs.find('.hhb-bbcode-img').error(function() {
+						$(this).replaceWith($('<span>',{ text: $(this)[0].src, alt: $(this)[0].alt }));
+					});
+					return {
+						msg: $msgs.length,
+						parsed: pcount
+					};
+				},
+				autoCompleteBBCode: function(txtarea) {
+					if (txtarea) {
+						var omsg = txtarea.value;
+						var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
+						var reimg = /((?:https?|ftp)[^#?\s]+(?:\.(?:gif|png|jpe?g))(?:[^\s]*))/ig;
+						var reurl = /((?:https?|ftp)(?:[^\s]*))/ig;
+						var bbcodem = omsg.match(rebbcode);
+						var imgm = omsg.match(reimg);
+						var urlm = omsg.match(reurl);
+						if (bbcodem) $.each(bbcodem,function(idx,obj) { omsg = omsg.replace(obj,'___hhb_bbc_bbcode_'+idx+'___'); });
+						if (imgm) $.each(imgm,function(idx,obj) { omsg = omsg.replace(obj,'___hhb_bbc_img_'+idx+'___'); });
+						if (urlm) $.each(urlm,function(idx,obj) { omsg = omsg.replace(obj,'___hhb_bbc_url_'+idx+'___'); });
+						if (urlm) $.each(urlm,function(idx,obj) { omsg = omsg.replace('___hhb_bbc_url_'+idx+'___','[url]'+obj+'[/url]'); });
+						if (imgm) $.each(imgm,function(idx,obj) { omsg = omsg.replace('___hhb_bbc_img_'+idx+'___','[img]'+obj+'[/img]'); });
+						if (bbcodem) $.each(bbcodem,function(idx,obj) { omsg = omsg.replace('___hhb_bbc_bbcode_'+idx+'___',obj); });
+						
+						txtarea.value = omsg;
+						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+							"ff" : (document.selection ? "ie" : false ) );
+						var strPos = omsg.length;
+						if (br == "ie") { 
+							txtarea.focus();
+							var range = document.selection.createRange();
+							range.moveStart ('character', -txtarea.value.length);
+							range.moveStart ('character', strPos);
+							range.moveEnd ('character', 0);
+							range.select();
+						}
+						else if (br == "ff") {
+							txtarea.selectionStart = strPos;
+							txtarea.selectionEnd = strPos;
+							txtarea.focus();
+						}
+					}
 				}
 			},
 			hitbox: function() {
@@ -427,19 +555,22 @@ var HHBJSONDATA,hhb;
 					selector = $.extend(_hhb.selector,{
 						darkModeAcceptor: 'body',
 						showChatBtn: '.showChat',
-						holderContainer: '.chatContent',
-						buttonContainer: '.chatInput',
-						msgBox: '#chatInput',
-						newMsg: '.chatBody .message:not(.hhb-msg)',
-						newName: '.chatBody .name:not(.hhb-name)',
+						holderContainer: '.chat-messages',
+						buttonContainer: '.chat-input-wrap',
+						msgBox: '#chat-input',
+						newMsg: '.chat-messages .message:not(.hhb-msg)',
+						newName: '.chat-messages .name:not(.hhb-name)',
+						newBBCodeMsg: '.chat-messages .message:not(.hhb-bbc-msg)',
 						timestampsBox: '#timestampsBox',
 						userName: '.navItemsUser .item.user:first-child span',
-						player: 'mediaplayer'
+						player: '#mediaplayer',
+						chatBody: '.chatBody',
+						msgList: '.chatBody li'
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
 				/* Initialize */
-				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:dashboard|settings)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
+				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:dashboard|settings|404|signup|video)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
 				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:embed\/|embedchat\/)?(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
@@ -454,7 +585,8 @@ var HHBJSONDATA,hhb;
 				};
 				_platform.onBindedToggleButton = function() {};
 				_platform.getShowChatBtn = function() {	return $(selector.showChatBtn);	};
-				_platform.toggleTimestamps = function(act) {
+				_platform.toggleTimestamps = function(act) {	/* Not Applicable */
+					/*
 					var scope = angular.element($(selector.timestampsBox)).scope();
 					if (!scope) return false;
 					if (act == 'toggle') {
@@ -464,6 +596,7 @@ var HHBJSONDATA,hhb;
 					} else {
 						scope.$apply(function(){	scope.timestamps = false;	});
 					}
+					*/
 					return true;
 				};
 				_platform.getPlatformIcon = function() {
@@ -524,8 +657,8 @@ var HHBJSONDATA,hhb;
 							classResized = cssClass.resized
 							limitHeight = limit.msgIconHeight;
 						/* Re-define window.emotify */
-						window.emotify=function(e){var t,n,r={},i=[];t=function(e,t){t=t||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};var s=[],o=[].concat(e.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi)),u=[],a=[].concat(e.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi));for(var f=0;f<o.length;f++){s[f]=o[f];e=e.replace(s[f],"___hhb_html_"+f+"___")}for(var f=0;f<a.length;f++){u[f]=a[f];e=e.replace(u[f],"___hhb_url_"+f+"___")}e=e.replace(n,function(e,n,s){var o=0,u=s,a=r[s];if(!a){while(o<i.length&&!i[o].regexp.test(s)){o++}u=i[o].name;a=r[u]}return a?n+t(a[0],a[1],a.width,a.height,u,s):e});for(var f=0;f<s.length;f++){e=e.replace(new RegExp("___hhb_html_"+f+"___","g"),s[f])}for(var f=0;f<u.length;f++){e=e.replace(new RegExp("___hhb_url_"+f+"___","g"),u[f])}return e};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|)("+a.join("|")+")(?=(?:$|))","g")}return r};return t}(_hhb);
-						
+						//window.emotify=function(e){var t,n,r={},i=[];t=function(e,t){t=t||function(e,t,n,r,i,s){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" alt="'++'" class="'+classMsgIcon+(r>limitHeight?" "+classResized:"")+'"/>'};var s=[],o=[].concat(e.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi)),u=[],a=[].concat(e.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)/gi));if(o){for(var f=0;f<o.length;f++){s[f]=o[f];e=e.replace(s[f],"___hhb_html_"+f+"___")}}if(a){for(var f=0;f<a.length;f++){u[f]=a[f];e=e.replace(u[f],"___hhb_url_"+f+"___")}}e=e.replace(n,function(e,n,s){var o=0,u=s,a=r[s];if(!a){while(o<i.length&&!i[o].regexp.test(s)){o++}u=i[o].name;a=r[u]}return a?n+t(a[0],a[1],a.width,a.height,u,s):e});if(o){for(var f=0;f<s.length;f++){e=e.replace(new RegExp("___hhb_html_"+f+"___","g"),s[f])}}if(a){for(var f=0;f<u.length;f++){e=e.replace(new RegExp("___hhb_url_"+f+"___","g"),u[f])}}return e};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|)("+a.join("|")+")(?=(?:$|))","g")}return r};return t}(_hhb);
+						window.emotify=function(e){var t,n,r={},i=[];t=function(e,t){t=t||function(e,t,n,r,i,s,o){t=t.replace(/"/g,"&quot;").replace(/</g,"&lt;");return'<img src="'+e+'" title="'+t+'" alt="'+n+'" class="'+classMsgIcon+(i>limitHeight?" "+classResized:"")+'"/>'};var s=[],o=[].concat(e.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi)),u=[],a=[].concat(e.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)/gi));if(o){for(var f=0;f<o.length;f++){s[f]=o[f];e=e.replace(s[f],"___hhb_html_"+f+"___")}}if(a){for(var f=0;f<a.length;f++){u[f]=a[f];e=e.replace(u[f],"___hhb_url_"+f+"___")}}e=e.replace(n,function(e,n,s){var o=0,u=s,a=r[s];if(!a){while(o<i.length&&!i[o].regexp.test(s)){o++}u=i[o].name;a=r[u]}return a?n+t(a[0],a[1],a[2],a.width,a.height,u,s):e});if(o){for(var f=0;f<s.length;f++){e=e.replace(new RegExp("___hhb_html_"+f+"___","g"),s[f])}}if(a){for(var f=0;f<u.length;f++){e=e.replace(new RegExp("___hhb_url_"+f+"___","g"),u[f])}}return e};t.emoticons=function(){var e=Array.prototype.slice.call(arguments),t=typeof e[0]==="string"?e.shift():"",s=typeof e[0]==="boolean"?e.shift():false,o=e[0],u,a=[],f,l,c;if(o){if(s){r={};i=[]}for(u in o){r[u]=o[u];r[u][0]=t+r[u][0]}for(u in r){if(r[u].length>2){f=r[u].slice(2).concat(u);l=f.length;while(l--){f[l]=f[l].replace(/(\W)/g,"\\$1")}c=f.join("|");i.push({name:u,width:r[u].width,height:r[u].height,regexp:new RegExp("^"+c+"$")})}else{c=u.replace(/(\W)/g,"\\$1")}a.push(c)}n=new RegExp("(^|)("+a.join("|")+")(?=(?:$|))","g")}return r};return t}(_hhb);
 						var ijlist = emotify.emoticons(true,list);
 					}
 					return count;
@@ -541,6 +674,12 @@ var HHBJSONDATA,hhb;
 											$(this).toggleClass(cssClass.orgSize);
 										}).length;
 						bicount = $msgIcon.length;
+						var $cbody = $(selector.chatBody),
+							$msg = $(selector.msgList).last(),
+							scrollTop = $cbody.scrollTop(),
+							height = $cbody.height(),
+							bottom = $msg.offset().top+$msg.outerHeight();
+						if (height<bottom) $cbody.scrollTop(scrollTop+bottom-height);
 					}
 					return {
 						msg: msgs.length, 
@@ -552,62 +691,38 @@ var HHBJSONDATA,hhb;
 				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
-					text = text+' ';
 					var $msgBox = $(selector.msgBox);
 					if ($msgBox.length > 0) {
 						var txtarea = $msgBox[0];
-						var scrollPos = txtarea.scrollTop;
-						var strPos = 0;
-						var strPosE = 0;
-						if (reReplace instanceof RegExp) {
-							txtarea.value = txtarea.value.replace(reReplace,'');
-						}
-						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
-							"ff" : (document.selection ? "ie" : false ) );
-						if (br == "ie") { 
-							txtarea.focus();
-							var range = document.selection.createRange();
-							var tlength = range.text.length;
-							range.moveStart ('character', -txtarea.value.length);
-							strPos = range.text.length-tlength;
-							strPosE = range.text.length;
-						} else if (br == "ff") {
-							strPos = txtarea.selectionStart;
-							strPosE = txtarea.selectionEnd;
-						}
-
-						var front = (txtarea.value).substring(0,strPos).trim();  
-						var back = (txtarea.value).substring(strPosE,txtarea.value.length);
-						text = ((front.length>0)?' ':'')+text;
-						txtarea.value=front+text+back;
-						strPos = strPos + text.length;
-						if (br == "ie") { 
-							txtarea.focus();
-							var range = document.selection.createRange();
-							range.moveStart ('character', -txtarea.value.length);
-							range.moveStart ('character', strPos);
-							range.moveEnd ('character', 0);
-							range.select();
-						} else if (br == "ff") {
-							txtarea.selectionStart = strPos;
-							txtarea.selectionEnd = strPos;
-							txtarea.focus();
-						}
-						txtarea.scrollTop = scrollPos;
-						
-						/* update angular */
-						var scope = angular.element($msgBox).scope();
-						scope.$apply(function(){
-							scope.$parent.msgTxt = txtarea.value;
-						});
+						_platformObj.default.replaceText(txtarea,text,reReplace);
+						_platform.updateMsg();
 					}
+				}
+				_platform.autoCompleteBBCode = function() {
+					var $msgBox = $(selector.msgBox);
+					if ($msgBox.length > 0) {
+						var txtarea = $msgBox[0];
+						_platformObj.default.autoCompleteBBCode(txtarea);
+						_platform.updateMsg();
+					}
+				}
+				_platform.updateMsg = function() {
+					pf$(selector.msgBox).change();
 				}
 			
 				/* Name banner + Badge */
 				_platform.getNewNames = function() {	return $(selector.newName);	};
 				_platform.bindNameBanner = function() {
 					var names = _platform.getNewNames();
-					return _platformObj.default.bindNameBanner(names);
+					return _platformObj.default.bindNameBanner(names,function() {
+								/* workaround - auto scroll of hitbox chatroom */
+								var $cbody = $(selector.chatBody),
+									$msg = $(selector.msgList).last(),
+									scrollTop = $cbody.scrollTop(),
+									height = $cbody.height(),
+									bottom = $msg.offset().top+$msg.outerHeight();
+								if (height<bottom) $cbody.scrollTop(scrollTop+bottom-height);
+							});
 				};
 				_platform.genBadgeCss = function(badges) {
 					var style = '';
@@ -616,7 +731,7 @@ var HHBJSONDATA,hhb;
 					
 					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
 						style += [	
-							'.hhb-pf-hitbox .chatBody .ownerBadge {',
+							'.hhb-pf-hitbox .chat-messages .chat-badge-owner {',
 								'margin-right: 3px;',
 								'vertical-align:bottom;',
 								'width:',broadcaster.width,'px;',
@@ -626,7 +741,7 @@ var HHBJSONDATA,hhb;
 					}
 					if (moderator.img && moderator.width>0 && moderator.height>0) {
 						style += [	
-							'.hhb-pf-hitbox .chatBody .modBadge {',
+							'.hhb-pf-hitbox .chat-messages .chat-badge-mod {',
 								'color: transparent;',
 								'margin-right: 3px;',
 								'width:',moderator.width,'px;',
@@ -635,6 +750,13 @@ var HHBJSONDATA,hhb;
 							'}'].join('');
 					}
 					return style;
+				};
+				
+				/* BBCode */
+				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
+				_platform.parseBBCode = function() {
+					var msgs = _platform.getNewBBCodeMsg();
+					return _platformObj.default.parseBBCode(msgs);
 				};
 			},
 			twitch: function() {
@@ -654,6 +776,7 @@ var HHBJSONDATA,hhb;
 						msgBox: 'textarea[placeholder="Send a message"]',
 						newMsg: 'span.message:not(.hhb-msg)',
 						newName: '.chat-line .from:not(.hhb-name)',
+						newBBCodeMsg: 'span.message:not(.hhb-bbc-msg)',
 						emoticon: 'span.emoticon',
 						timestampsBox: '.chat-menu-content .ember-checkbox:contains("Time Stamps")',
 						userName: '#nav_personal .username',
@@ -673,13 +796,11 @@ var HHBJSONDATA,hhb;
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
 				_platform.genToggleButton = function(id) {
-					return $('<button id="'+id+'" class="button normal_button tooltip" original-title="HihiBox" title="HihiBox"></div>');
+					return $('<a id="'+id+'" class="button glyph-only" title="HihiBox"></a>');
 				};
 				_platform.onBindedToggleButton = function() {
-					var btnc = $('.chat-option-buttons button').length;
-					var btnw = 40;
-					
-					$(".send-chat-button").css("left", (btnw*btnc)+"px");
+					var btnc = $('.chat-option-buttons').outerWidth();
+					$(".send-chat-button").css("left", (btnc)+"px");
 				};
 				_platform.getShowChatBtn = function() {	return $(selector.showChatBtn);	};
 				_platform.toggleTimestamps = function(act) {	/* Not Applicable */
@@ -866,45 +987,24 @@ var HHBJSONDATA,hhb;
 				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
-					text = text+' ';
 					var $msgBox = $(selector.msgBox);
 					if ($msgBox.length > 0) {
 						var txtarea = $msgBox[0];
-						var scrollPos = txtarea.scrollTop;
-						var strPos = 0;
-						if (reReplace instanceof RegExp) {
-							txtarea.value = txtarea.value.replace(reReplace,'');
-						}
-						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
-							"ff" : (document.selection ? "ie" : false ) );
-						if (br == "ie") { 
-							txtarea.focus();
-							var range = document.selection.createRange();
-							range.moveStart ('character', -txtarea.value.length);
-							strPos = range.text.length;
-						}
-						else if (br == "ff") strPos = txtarea.selectionStart;
-
-						var front = (txtarea.value).substring(0,strPos);  
-						var back = (txtarea.value).substring(strPos,txtarea.value.length);
-						text = ((front.length>0)?' ':'')+text;
-						txtarea.value=front+text+back;
-						strPos = strPos + text.length;
-						if (br == "ie") { 
-							txtarea.focus();
-							var range = document.selection.createRange();
-							range.moveStart ('character', -txtarea.value.length);
-							range.moveStart ('character', strPos);
-							range.moveEnd ('character', 0);
-							range.select();
-						}
-						else if (br == "ff") {
-							txtarea.selectionStart = strPos;
-							txtarea.selectionEnd = strPos;
-							txtarea.focus();
-						}
-						txtarea.scrollTop = scrollPos;
+						_platformObj.default.replaceText(txtarea,text,reReplace);
+						_platform.updateMsg(txtarea.value);
 					}
+				}
+				_platform.autoCompleteBBCode = function() {
+					var $msgBox = $(selector.msgBox);
+					if ($msgBox.length > 0) {
+						var txtarea = $msgBox[0];
+						_platformObj.default.autoCompleteBBCode(txtarea);
+						_platform.updateMsg(txtarea.value);
+					}
+				}
+				_platform.updateMsg = function(msg) {
+					var currentRoom = window.App.__container__.lookup('controller:chat').currentRoom;
+					currentRoom.set("messageToSend", msg);
 				}
 				
 				/* Name Banner + Badge */
@@ -938,6 +1038,13 @@ var HHBJSONDATA,hhb;
 					}
 					return style;
 				};
+				
+				/* BBCode */
+				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
+				_platform.parseBBCode = function() {
+					var msgs = _platform.getNewBBCodeMsg();
+					return _platformObj.default.parseBBCode(msgs);
+				};
 			},
 			justin: function() {
 				/* Private variables */
@@ -955,6 +1062,7 @@ var HHBJSONDATA,hhb;
 						msgBox: '#chat_text_input',
 						newMsg: '.chat_line span.message:not(.hhb-msg)',
 						newName: '.chat_line .nick:not(.hhb-name)',
+						newBBCodeMsg: '.chat_line span.message:not(.hhb-bbc-msg)',
 						emoticon: 'span.emoticon',
 						timestampsBox: '#toggle-timestamp',
 						userName: '.global-header-user-info .global-header-username',
@@ -1074,13 +1182,22 @@ var HHBJSONDATA,hhb;
 					
 					function toRegExp(str) { return (str+'').replace(/([.?*+^$[\]\\(){}|\-\:])/g, "\\$1"); }
 					function emotify_pre(msg) {
-						var map = {},html=[];
 						/* extract html tag */
-						var mhtml = msg.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi);
+						var html = [],
+							mhtml = [].concat(msg.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi)),
+							url = [],
+							murl = [].concat(msg.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)/gi));
 						if (mhtml) {
 							for (var i=0;i<mhtml.length;i++) {
 								html[i] = mhtml[i];
 								msg = msg.replace(html[i],"___hhb_html_"+i+"___");
+							}
+						}
+						/* extract url */
+						if (murl) {
+							for (var i=0;i<murl.length;i++) {
+								url[i] = murl[i];
+								msg = msg.replace(url[i],"___hhb_url_"+i+"___");
 							}
 						}
 						/* extract emoticon */
@@ -1092,11 +1209,16 @@ var HHBJSONDATA,hhb;
 								msg = msg.replace(regex, "___hhb_emote_"+i+"___");
 							}
 						}
-						
 						/* restore html tag */
 						if (mhtml) {
 							for (var i=0;i<html.length;i++) {
 								msg = msg.replace(new RegExp("___hhb_html_"+i+"___","g"), html[i]);
+							}
+						}
+						/* restore url */
+						if (murl) {
+							for (var i=0;i<url.length;i++) {
+								msg = msg.replace(new RegExp("___hhb_url_"+i+"___","g"), url[i]);
 							}
 						}
 						return msg;
@@ -1177,44 +1299,10 @@ var HHBJSONDATA,hhb;
 				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
-					text = text+' ';
 					var $msgBox = $(selector.msgBox);
 					if ($msgBox.length > 0) {
 						var txtarea = $msgBox[0];
-						var scrollPos = txtarea.scrollTop;
-						var strPos = 0;
-						if (reReplace instanceof RegExp) {
-							txtarea.value = txtarea.value.replace(reReplace,'');
-						}
-						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
-							"ff" : (document.selection ? "ie" : false ) );
-						if (br == "ie") { 
-							txtarea.focus();
-							var range = document.selection.createRange();
-							range.moveStart ('character', -txtarea.value.length);
-							strPos = range.text.length;
-						}
-						else if (br == "ff") strPos = txtarea.selectionStart;
-
-						var front = (txtarea.value).substring(0,strPos);  
-						var back = (txtarea.value).substring(strPos,txtarea.value.length);
-						text = ((front.length>0)?' ':'')+text;
-						txtarea.value=front+text+back;
-						strPos = strPos + text.length;
-						if (br == "ie") { 
-							txtarea.focus();
-							var range = document.selection.createRange();
-							range.moveStart ('character', -txtarea.value.length);
-							range.moveStart ('character', strPos);
-							range.moveEnd ('character', 0);
-							range.select();
-						}
-						else if (br == "ff") {
-							txtarea.selectionStart = strPos;
-							txtarea.selectionEnd = strPos;
-							txtarea.focus();
-						}
-						txtarea.scrollTop = scrollPos;
+						_platformObj.default.replaceText(txtarea,text,reReplace);
 					}
 				};
 				
@@ -1254,6 +1342,13 @@ var HHBJSONDATA,hhb;
 							'}'].join('');
 					}
 					return style;
+				};
+				
+				/* BBCode */
+				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
+				_platform.parseBBCode = function() {
+					var msgs = _platform.getNewBBCodeMsg();
+					return _platformObj.default.parseBBCode(msgs);
 				};
 			},
 			ustream: function() {
@@ -1386,82 +1481,7 @@ var HHBJSONDATA,hhb;
 				}
 			
 				/* Icon emotify */
-				_platform.injectIcon = function(iconlist) {
-					var iconlist = iconlist;
-					var count = iconlist.length;
-					
-					function toRegExp(str) { return (str+'').replace(/([.?*+^$[\]\\(){}|\-\:])/g, "\\$1"); }
-					function emotify_pre(msg) {
-						var map = {},html=[];
-						/* extract html tag */
-						var mhtml = msg.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi);
-						if (mhtml) {
-							for (var i=0;i<mhtml.length;i++) {
-								html[i] = mhtml[i];
-								msg = msg.replace(html[i],"___hhb_html_"+i+"___");
-							}
-						}
-						/* extract emoticon */
-						for(var i = 0; i < iconlist.length; i++) {
-							var code = [].concat(iconlist[i].code);
-							for(var j = 0; j < code.length; j++) {
-								var regex = code[j];
-								if(!(regex instanceof RegExp)) regex = new RegExp(toRegExp(regex), 'g');
-								msg = msg.replace(regex, "___hhb_emote_"+i+"___");
-							}
-						}
-						
-						/* restore html tag */
-						if (mhtml) {
-							for (var i=0;i<html.length;i++) {
-								msg = msg.replace(new RegExp("___hhb_html_"+i+"___","g"), html[i]);
-							}
-						}
-						return msg;
-					}
-					function emotify_post(msg)
-					{
-						var classMsgIcon = cssClass.msgIcon,
-							classResized = cssClass.resized
-							limitHeight = limit.msgIconHeight;
-						/* restore emoticon */
-						for(var i = 0; i < iconlist.length; i++) {
-							var emo = iconlist[i];
-							var tsrc = emo.src;
-							var ttitle = emo.code.join(", ").replace(/(<([^>]+)>)/ig,'').replace(/, $/,'');
-							var tw = (emo.width > 0) ? emo.width : 0;
-							var th = (emo.height > 0) ? emo.height : 0;
-							msg = msg.replace(new RegExp("___hhb_emote_"+i+"___","g"), emo.img);
-						}
-						return msg;
-					}
-					function emotify_main(old,args) {
-						var str = args[0];
-						var msg = emotify_pre(str);
-						args[0] = msg;
-						msg = old.apply(this,args);
-						msg = emotify_post(msg);
-						return msg;
-					}
-					/* Injecting emoticonize */					
-					var method = 'emoticonize',
-						objChat = (CurrentChat) ? CurrentChat : Chat.prototype;
-					if (method in objChat && !('__hhb_'+method in objChat)) {
-						var orgMethod = objChat[method];
-						objChat['__hhb_'+method] = true;
-						objChat[method] = function() {
-							try {
-								var args = [	orgMethod.bind(this),
-												Array.prototype.slice.apply(arguments)
-											];
-								return emotify_main.apply(this,args);
-							} catch(e) {
-								return orgMethod.apply(this,arguments);
-							}
-						};
-					}
-					return count;
-				},
+				_platform.injectIcon = function(iconlist) {	return 0; },
 				_platform.getNewMsg = function() {	return $(selector.newMsg);	};
 				_platform.bindResizer = function() {
 					var msgs = _platform.getNewMsg(),
@@ -1495,44 +1515,10 @@ var HHBJSONDATA,hhb;
 				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
-					text = text+' ';
 					var $msgBox = $(selector.msgBox);
 					if ($msgBox.length > 0) {
 						var txtarea = $msgBox[0];
-						var scrollPos = txtarea.scrollTop;
-						var strPos = 0;
-						if (reReplace instanceof RegExp) {
-							txtarea.value = txtarea.value.replace(reReplace,'');
-						}
-						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
-							"ff" : (document.selection ? "ie" : false ) );
-						if (br == "ie") { 
-							txtarea.focus();
-							var range = document.selection.createRange();
-							range.moveStart ('character', -txtarea.value.length);
-							strPos = range.text.length;
-						}
-						else if (br == "ff") strPos = txtarea.selectionStart;
-
-						var front = (txtarea.value).substring(0,strPos);  
-						var back = (txtarea.value).substring(strPos,txtarea.value.length);
-						text = ((front.length>0)?' ':'')+text;
-						txtarea.value=front+text+back;
-						strPos = strPos + text.length;
-						if (br == "ie") { 
-							txtarea.focus();
-							var range = document.selection.createRange();
-							range.moveStart ('character', -txtarea.value.length);
-							range.moveStart ('character', strPos);
-							range.moveEnd ('character', 0);
-							range.select();
-						}
-						else if (br == "ff") {
-							txtarea.selectionStart = strPos;
-							txtarea.selectionEnd = strPos;
-							txtarea.focus();
-						}
-						txtarea.scrollTop = scrollPos;
+						_platformObj.default.replaceText(txtarea,text,reReplace);
 					}
 				};
 				
@@ -1940,16 +1926,17 @@ var HHBJSONDATA,hhb;
 				if (!env.builtinIconLoaded) return;
 				var getGJTVIcon = function() {
 					var list = [], dgenre = [].concat('GJTV');
-					if (	typeof(gjtv_icon_base) !== 'undefined' && 
-							typeof(gjtv_icon_list) !== 'undefined'
+					if (	typeof(GoldenJTV) !== 'undefined' &&
+							typeof(GoldenJTV.iconroot) !== 'undefined' && 
+							typeof(GoldenJTV.iconlist) !== 'undefined'
 						) {
-						$.each(gjtv_icon_list,function(idx,obj) {
-							if (obj && obj.length>=2) {
-								var tcode = [].concat(obj[0]),
-									tsrc = obj[1].match(/^([^']+)\'/)[1],
-									twidth = obj[1].match(/width=\'(\d+)\'/)[1],
-									theight = obj[1].match(/height=\'(\d+)\'/)[1];
-								if (tsrc.indexOf("http") == -1) tsrc = gjtv_icon_base + tsrc;
+						$.each(GoldenJTV.iconlist,function(idx,obj) {
+							if (obj && obj.code && obj.src && obj.width && obj.height) {
+								var tcode = [].concat(obj.code),
+									tsrc = obj.src,
+									twidth = obj.width,
+									theight = obj.height;
+								if (tsrc.indexOf("http") == -1) tsrc = GoldenJTV.iconroot + tsrc;
 								
 								if (tcode && tsrc && twidth && theight && twidth>0 && theight>0) {
 									list.push({
@@ -1998,6 +1985,14 @@ var HHBJSONDATA,hhb;
 					return false;
 				};
 				var dcodelist = [];
+				var rcount = 0,ocount = 0;
+				if (listGenre[0] == genreRecent) {
+					rcount++;
+				}
+				if (listGenre[listGenre.length-1] == genreOther) {
+					ocount++;
+					listGenre.pop();
+				}
 				$.each(iconlist,function(idx,obj) {
 					/* analyze Icon */
 					if (obj._comment) return true;
@@ -2030,13 +2025,14 @@ var HHBJSONDATA,hhb;
 					obj.usage = usage;
 					obj.isParsed = true;
 					
-					if (listGenre[listGenre.length-1] == genreOther) {
-						listGenre.pop();
-					}
 					/* add to genre list */
 					$.each(genre,function(idx3,iconGenre) {
 						var cg = 0;
-						if (iconGenre != genreOther) {
+						if (iconGenre == genreOther) {
+							ocount++;
+						} else if (iconGenre == genreRecent) {
+							rcount++;
+						} else {
 							$.each(listGenre,function(idx4,genrei) {
 								if (genrei == iconGenre) cg++;
 							});
@@ -2051,7 +2047,10 @@ var HHBJSONDATA,hhb;
 					count++;
 				});
 				
-				if ($.inArray(genreOther,listGenre) < 0) {
+				if ($.inArray(genreRecent,listGenre) < 0 && rcount>0) {
+					listGenre.unshift(genreRecent);
+				}
+				if ($.inArray(genreOther,listGenre) < 0 && ocount>0) {
 					listGenre.push(genreOther);
 				}
 				listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
@@ -2154,6 +2153,7 @@ var HHBJSONDATA,hhb;
 					else $buttonCon.append($palButton);
 					platformObj.onBindedToggleButton();
 					activatePopupToggle();
+					activateAutoCompleteBBCodeBtn();
 					retryCount.bindButtonUI = 0;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Toggle Button UI');
 					setLoadingStatus('bindButtonUI','complete');
@@ -2188,6 +2188,14 @@ var HHBJSONDATA,hhb;
 						bindIconListLocale();
 					});
 			};
+			var activateAutoCompleteBBCodeBtn = function() {
+				var $button = $(selector.bbCodeBtn)
+					.click(function() {
+						platformObj.autoCompleteBBCode();
+					})
+					.attr('hhb-locale-title','{{iconlist.insert_bbcode}}');
+				bindIconListLocale();
+			}
 			var checkVersion = function() {
 				sendMessage({getVersionInfo: true},function(response) {
 					$.extend(versionInfo,response.versionInfo,{
@@ -2327,6 +2335,7 @@ var HHBJSONDATA,hhb;
 							.data('hhb-object',obj)
 							.click(function() {	insertIcon($(this)); })
 							.append($(obj.img)
+								//.load(function() { console.log(this.src,this.width,this.height); }) /* debug */
 								.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
 							);
 					obj.domObject = $icon;
@@ -2596,10 +2605,12 @@ var HHBJSONDATA,hhb;
 					$target = ($target.length > 0 ? $target : $(document));
 				$target.keydown(function(e) {
 					if ($(selector.holder).is(':visible')) {
-						if (e.which == 9 || e.which == 13) {	/* Press [Tab], [Enter] */
+						if (e.which == 13 && env.platform!='twitch') {	/* Press [Enter] */
 							filterIcon();
 							insertSelectedIcon(true);
-							if (env.platform=='justin') commitUsage();
+						} else if (e.which == 9) {	/* Press [Tab] */
+							filterIcon();
+							insertSelectedIcon(true);
 							return false;
 						} else if (e.which == 45) {	/* Press [Insert] */
 							insertSelectedIcon();
@@ -3004,7 +3015,7 @@ var HHBJSONDATA,hhb;
 		};
 		var initIncomingParser = function() {
 			var parseIncoming = function() {
-				var results = { msgParsed: 0, iconEmotified: 0, iconResized: 0, nameBannerShown: 0};
+				var results = { msgParsed: 0, iconEmotified: 0, iconResized: 0, nameBannerShown: 0, bbcodeParsed: 0 };
 				
 				/* bind name banner */
 				if (env.nameBannerEnabled) {
@@ -3016,7 +3027,12 @@ var HHBJSONDATA,hhb;
 					var result = platformObj.bindResizer();
 					if (result.msg>0) $.extend(results,{ msgParsed: result.msg, iconEmotified: result.emotified, iconResized: result.resized });
 				}
-				if (results.msgParsed>0) debugMsg(DEBUG_RUNTIME,'Messages Parsed [M:',results.msgParsed,',E:',results.iconEmotified,',R:',results.iconResized,',NB:',results.nameBannerShown,']');
+				/* parse bbcode */
+				if (settings.enable_bbcode) {
+					var result = platformObj.parseBBCode();
+					if (result.msg>0) $.extend(results,{ msgParsed: result.msg, bbcodeParsed: result.parsed });
+				}
+				if (results.msgParsed>0) debugMsg(DEBUG_RUNTIME,'Messages Parsed [M:',results.msgParsed,',E:',results.iconEmotified,',R:',results.iconResized,',NB:',results.nameBannerShown,',BBC:',results.bbcodeParsed,']');
 				setTimeout(function() { parseIncoming(); },delay.parseIncoming);
 			};
 
@@ -3065,8 +3081,10 @@ var HHBJSONDATA,hhb;
 		this.importIconList = function(igenre,ilist) {
 			if (!env.listeningIconListData) return false;
 			if (igenre && ilist) {
-				listGenre = igenre;
-				listIcon = ilist;
+				if (settings.enable_emotify) {
+					listGenre = igenre;
+					listIcon = ilist;
+				}
 				initIconListData();
 				initIncomingParser();
 				initEmoticon();
@@ -3097,6 +3115,61 @@ var HHBJSONDATA,hhb;
 	};
 	
 	$(document).ready(function() {
+		function detectExtension(extensionId, path, callback) { 
+			var img; 
+			img = new Image(); 
+			img.src = "chrome-extension://" + extensionId + path; 
+			img.onload = function() { callback(true); }; 
+			img.onerror = function() { callback(false); }; 
+		}
+		detectExtension('eoiappopphdcceickjphgaaidacdkidi', '/css/images/animated-overlay.gif',
+			function(installed) {
+				console.log('detectExtension',installed);
+				//return true; /* debug */
+				if (!installed) {
+					$(	'<div id="hhb-update-reminder">'+
+							'<style>'+
+								'#hhb-update-reminder {'+
+									'position:absolute;top:0px;right:0px;z-index: 9999;'+
+									'padding: 0px;font-size: 12px;'+
+									'background-color: rgba(8,112,45,0.8);'+
+								'}'+
+								'#hhb-update-reminder,'+
+								'#hhb-update-reminder * {'+
+									'-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;'+
+								'}'+
+								'#hhb-update-reminder div.close {'+
+									'display: inline-block;cursor:pointer;'+
+									'padding: 10px 15px;margin: 2px 10px 0px 0px;'+
+									'border-right: 1px solid #cccccc;'+
+								'}'+
+								'body.hhb-pf-twitch #hhb-update-reminder div.close {'+
+									'padding: 8px 15px;'+
+								'}'+
+								'#hhb-update-reminder div.close:before { content: "x"; }'+
+								'#hhb-update-reminder a,'+
+								'#hhb-update-reminder div.close {'+
+									'color: #FFFFFF;'+
+								'}'+
+								'#hhb-update-reminder a:hover .text,'+
+								'#hhb-update-reminder div.close:hover { color:#8FBF00; }'+
+								'#hhb-update-reminder a .text {'+
+									'display:inline-block;padding: 10px 10px 0px 20px;font-size: 12px;'+
+								'}'+
+								'#hhb-update-reminder a .logo {'+
+									'width:36px;height:36px;float:right'+
+								'}'+
+							'</style>'+
+							'<a href="https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi" target="_hihibox">'+
+								'<div class="text">請按此下載HihiBox 完全版</div>'+
+								'<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/t1.0-1/p50x50/10342775_552261241551569_504391291480808308_t.png" class="logo">'+
+							'</a>'+
+						'</div>'
+					).prepend($('<div class="close">').click(function() { $('#hhb-update-reminder').detach(); }))
+					.appendTo('body');
+				}
+			});
+			
 		/* Google Analytics */
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -3110,16 +3183,16 @@ var HHBJSONDATA,hhb;
 			hhb = hhb || new HihiBox();
 			if (hhb.isInitialize()) {
 				ga('send', 'pageview');
-				console.log('[HihiBox Beta]','Created',hhb);
+				console.log('[HihiBox Beta]','Created',hhb);		/* debug */
 				
 				var features = hhb.getFeatures();
 				var tryImport = function() {
 					if (!hhb.isReadyForImport()) {
 						setTimeout(tryImport,10);
-						console.log('[HihiBox Beta]','Import Data List Retry');
+						console.log('[HihiBox Beta]','Import Data List Retry');		/* debug */
 						return;
 					}
-					console.log('[HihiBox Beta]','Import Data List Start');
+					console.log('[HihiBox Beta]','Import Data List Start');		/* debug */
 					/* load icon list */
 					if ($.inArray('emoticon',features) >= 0) {
 						$.getScript([host,"/js/iconlist.json"].join(''))

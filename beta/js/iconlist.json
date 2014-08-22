@@ -837,7 +837,7 @@ HHBJSONDATA.listIcon = [
 		"width": 142,	"height": 144,
 		"genre": ["meme"]
 	},
-	{	"code": [":sad:","[yesucan]"],
+	{	"code": [":sad:","[sad]","[yesucan]"],
 		"src": "meme/yesucan.png",
 		"width": 210,	"height": 220,
 		"genre": ["meme"]
@@ -1275,6 +1275,11 @@ HHBJSONDATA.listIcon = [
 	{	"code": ["[sosad]pkm"],
 		"src": "pkmon/sosad.gif",
 		"width": 22,	"height": 22,
+		"genre": ["pkmon"]
+	},
+	{	"code": ["[sosad]pkm2"],
+		"src": "pkmon/sosadhhb.gif",
+		"width": 49,	"height": 30,
 		"genre": ["pkmon"]
 	},
 	{	"code": ["#good#pkm"],
@@ -2627,7 +2632,7 @@ HHBJSONDATA.listIcon = [
 		"width": 250,	"height": 141,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[talkthis]","[saythese]"],
+	{	"code": ["[talkthis]","[talkthese]","[saythese]"],
 		"src": "capture/diusaythese.png",
 		"width": 200,	"height": 113,
 		"genre": ["Cap圖"]
@@ -2687,7 +2692,7 @@ HHBJSONDATA.listIcon = [
 		"width": 210,	"height": 134,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[never]","[succeed]"],
+	{	"code": ["[never]","[succeed]","[neversucceed]"],
 		"src": "capture/uwillneversucceed.jpg",
 		"width": 250,	"height": 203,
 		"genre": ["Cap圖"]
@@ -2707,7 +2712,7 @@ HHBJSONDATA.listIcon = [
 		"width": 73,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[chances]"],
+	{	"code": ["[chances]","[nochances]"],
 		"src": "capture/theseopportunities.png",
 		"width": 67,	"height": 50,
 		"genre": ["Cap圖"]
@@ -2767,7 +2772,7 @@ HHBJSONDATA.listIcon = [
 		"width": 69,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[scareme]"],
+	{	"code": ["[scareme]","[scareme?]"],
 		"src": "capture/tryingtoscareme.png",
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
@@ -2802,7 +2807,7 @@ HHBJSONDATA.listIcon = [
 		"width": 67,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[uwants]"],
+	{	"code": ["[uwants]","[uwant?]"],
 		"src": "capture/wantit.png",
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
@@ -3819,5 +3824,13 @@ HHBJSONDATA.listIcon = [
 	{	"code": ["[summonlemon]"],
 		"src": "[summonlemon].jpg",
 		"width": 200,	"height": 200
+	},
+	{	"code": ["[yellow]"],
+		"src": "yellowcard.gif",
+		"width": 50,	"height": 50
+	},
+	{	"code": ["[red]"],
+		"src": "redcard.gif",
+		"width": 50,	"height": 50
 	}
 ];

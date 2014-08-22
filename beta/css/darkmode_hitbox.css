@@ -89,10 +89,14 @@ body.hhb-pf-hitbox.hhb-darkmode {
 .hhb-pf-hitbox.hhb-darkmode .detail .meta {
 	color: #D9D9D9;
 	border-bottom-color: #333333;
-	background: none;
+	background: #0d0d0d;
 }
 .hhb-pf-hitbox.hhb-darkmode .detail .meta .title {
 	color: #D9D9D9;
+}
+.hhb-pf-hitbox.hhb-darkmode .detail .meta .title-title {
+	color: #dadada;
+	background-color: #0d0d0d;
 }
 .hhb-pf-hitbox.hhb-darkmode button.following {
 	background-color: black;
@@ -185,3 +189,20 @@ body.hhb-pf-hitbox.hhb-darkmode {
 {
 	color: #777;
 }
+
+/* [S:2014-07-02] */
+.hhb-pf-hitbox.hhb-darkmode .chat-table, .hhb-pf-hitbox.hhb-darkmode .chat-table td, .hhb-pf-hitbox.hhb-darkmode .chat-table tr { background-color: #0d0d0d; }
+.hhb-pf-hitbox.hhb-darkmode .chat { background-color: #0d0d0d; }
+.hhb-pf-hitbox.hhb-darkmode .chatBody li>div { color: #dadada; }
+.hhb-pf-hitbox.hhb-darkmode .chat-input { background-color: #000; }
+.hhb-pf-hitbox.hhb-darkmode .chat-settings { background-color: #000; color: #b3b3b3; }
+.hhb-pf-hitbox.hhb-darkmode .switches input[type=checkbox]+div { border: 1px solid hsla(0,0%,100%,.5); }
+.hhb-pf-hitbox.hhb-darkmode .switches label { border-top: 1px solid hsla(0,0%,100%,.2); }
+.hhb-pf-hitbox.hhb-darkmode .settings-slider { background: hsla(0,0%,100%,.07); }
+.hhb-pf-hitbox.hhb-darkmode .chat-settings .ui-slider-handle { background: #0d0d0d; border: 1px solid #909090; }
+.hhb-pf-hitbox.hhb-darkmode .chat-settings .ui-slider-range { background: hsla(0,0%,100%,.5); }
+
+/* [s:2014-08-07] */
+.hhb-pf-hitbox.hhb-darkmode .detailInner { background-color: #000; }
+.hhb-pf-hitbox.hhb-darkmode .chat-usercard { background-color: #000; box-shadow: .1em .1em .5em hsla(0,0%,100%,.5); color: #ccc; }
+.hhb-pf-hitbox.hhb-darkmode .chat-usercard .cover { background-color: #fff; }
