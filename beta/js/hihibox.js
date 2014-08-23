@@ -199,6 +199,7 @@ var HHBJSONDATA,hhb;
 				sortIconList: 1000,
 				icon_filter: 300,
 				parseIncoming: 50,
+				check_url: 300
 			},
 			icon_filter: {
 				finder: /(^|)[^\s]+(?!\s)$/,
@@ -345,7 +346,9 @@ var HHBJSONDATA,hhb;
 			listNameBanner = {},
 			nextIconID = 1,
 			isFiltering = false,
+			isContainUrl = false,
 			timerFilter = null,
+			timerCheckMsgInputUrl = null,
 			currFilterCodeHead = '';
 			
 		/* Public Variables */
@@ -773,7 +776,7 @@ var HHBJSONDATA,hhb;
 						holderContainer: '.chat-messages',
 						buttonContainer: '.chat-option-buttons',
 						buttonFront: '.viewers.button.normal_button',
-						msgBox: 'textarea[placeholder="Send a message"]',
+						msgBox: '.ember-text-area[placeholder!=""]',
 						newMsg: 'span.message:not(.hhb-msg)',
 						newName: '.chat-line .from:not(.hhb-name)',
 						newBBCodeMsg: 'span.message:not(.hhb-bbc-msg)',
@@ -2192,6 +2195,7 @@ var HHBJSONDATA,hhb;
 				var $button = $(selector.bbCodeBtn)
 					.click(function() {
 						platformObj.autoCompleteBBCode();
+						$(selector.bbCodeBtn).removeClass('highlight');
 					})
 					.attr('hhb-locale-title','{{iconlist.insert_bbcode}}');
 				bindIconListLocale();
@@ -2335,7 +2339,6 @@ var HHBJSONDATA,hhb;
 							.data('hhb-object',obj)
 							.click(function() {	insertIcon($(this)); })
 							.append($(obj.img)
-								//.load(function() { console.log(this.src,this.width,this.height); }) /* debug */
 								.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
 							);
 					obj.domObject = $icon;
@@ -2600,14 +2603,33 @@ var HHBJSONDATA,hhb;
 					toggleHolder('hide');
 				}
 			};
+			var checkMsgInputUrl = function() {
+				var msg = platformObj.getMsgInput();
+				var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
+				var reurl = /((?:https?|ftp)(?:[^\s]*))/ig;
+				var nmsg = msg.replace(rebbcode,'');
+				var urlm = nmsg.match(reurl);
+				if (urlm) {
+					$(selector.bbCodeBtn).addClass('highlight');
+					toggleHolder('show');
+					isContainUrl = true;
+				} else {
+					$(selector.bbCodeBtn).removeClass('highlight');
+					isContainUrl = false;
+				}
+			};
 			var initializeHotkey = function() {
 				var $target = platformObj.getMsgBox(),
 					$target = ($target.length > 0 ? $target : $(document));
 				$target.keydown(function(e) {
-					if ($(selector.holder).is(':visible')) {
-						if (e.which == 13 && env.platform!='twitch') {	/* Press [Enter] */
-							filterIcon();
-							insertSelectedIcon(true);
+					if ($(selector.holder).is(':visible') && !isContainUrl) {
+						if (e.which == 13) {	/* Press [Enter] */
+							if (env.platform=='twitch') {
+								commitUsage();
+							} else {
+								filterIcon();
+								insertSelectedIcon(true);
+							}
 						} else if (e.which == 9) {	/* Press [Tab] */
 							filterIcon();
 							insertSelectedIcon(true);
@@ -2654,6 +2676,10 @@ var HHBJSONDATA,hhb;
 								filterIcon();
 							},delay.icon_filter);
 						}
+						if (timerCheckMsgInputUrl) clearTimeout(timerCheckMsgInputUrl);
+						timerCheckMsgInputUrl = setTimeout(function() {
+							checkMsgInputUrl();
+						},delay.check_url);
 					}
 					if ($(selector.holder).is(':visible')) {
 						if (e.which == 13) {	/* Press [Enter] */
@@ -3125,7 +3151,6 @@ var HHBJSONDATA,hhb;
 		detectExtension('eoiappopphdcceickjphgaaidacdkidi', '/css/images/animated-overlay.gif',
 			function(installed) {
 				console.log('detectExtension',installed);
-				//return true; /* debug */
 				if (!installed) {
 					$(	'<div id="hhb-update-reminder">'+
 							'<style>'+

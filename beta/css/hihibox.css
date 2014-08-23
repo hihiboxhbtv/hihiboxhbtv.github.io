@@ -123,7 +123,8 @@
 	font-weight: normal;
 	color: #dddddd !important;
 }
-.funcIcon:hover {
+.funcIcon:hover,
+#hhb-header #hhb-bbcode.funcIcon.highlight {
 	background-color: #888888;
 	color: #333333;
 }
