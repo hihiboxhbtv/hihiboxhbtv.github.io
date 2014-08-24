@@ -422,7 +422,7 @@ var HHBJSONDATA,hhb;
 					var callback = callback || function() {};
 					var bicount = 0;
 					if (names.length > 0) {
-						var galist = {}, dur = 400;
+						var galist = { show: {}, platform: {}, channel: {}, user: {} }, dur = 400;
 						names.each(function() {
 							$(this).addClass(cssClass.checkedName);
 							var namestr = $(this).text();
@@ -455,13 +455,21 @@ var HHBJSONDATA,hhb;
 								bicount++;
 								
 								/* Google Analytics - name banner */
-								var id = [nameid,env.channel,env.platform].join('@');
-								galist[id] = (galist[id]) ? galist[id]+1 : 1;
+								var pf = env.platform;
+								var ucid = [nameid,env.channel,env.platform].join('@');
+								var cid = [env.channel,env.platform].join('@');
+								var uid = [nameid,env.platform].join('@');
+								galist.show[ucid] = 	(galist.show[ucid]) ? galist.show[ucid]+1 : 1;
+								galist.platform[pf] = 	(galist.platform[pf]) ? galist.platform[pf]+1 : 1;
+								galist.channel[cid] = 	(galist.channel[cid]) ? galist.channel[cid]+1 : 1;
+								galist.user[uid] = 		(galist.user[uid]) ? galist.user[uid]+1 : 1;
 							}
 						});
 						/* Google Analytics - name banner */
-						$.each(galist,function(key,obj) {
-							_gaTracker('nameBanner','show',key,obj);
+						$.each(galist,function(gaaction,cgalist) {
+							$.each(cgalist,function(cid,count) {
+								_gaTracker('nameBanner',gaaction,cid,count);
+							});
 						});
 					}
 					return {
@@ -476,10 +484,12 @@ var HHBJSONDATA,hhb;
 					var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
 					var rehtmltag = /<[^>]*>/ig;
 					var bbcode = [
-						{	match: /(\[url\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/url\])/ig,
+						{	tag: 'url',
+							match: /(\[url\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/url\])/ig,
 							replace: "<a href=\"$2\" target=\"_blank\" class=\"hhb-bbcode-url\" alt=\"$1$2$3\">$2<\/a>"
 						},
-						{	match: /(\[img\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/img\])/ig,
+						{	tag: 'img',
+							match: /(\[img\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/img\])/ig,
 							replace: "<a href=\"$2\" target=\"_blank\"><img src=\"$2\" class=\"hhb-bbcode-img\" alt=\"$1$2$3\"><\/a>"
 						}
 					];
@@ -492,10 +502,11 @@ var HHBJSONDATA,hhb;
 							$.each(bbcodem,function(idx,tohtml) {
 								tohtml = tohtml.replace(rehtmltag,'');
 								$.each(bbcode,function(idx2,obj) {
-									var thtml = tohtml.replace(obj.match,obj.replace);
-									if (tohtml!=thtml) {
+									var tcurl = obj.match.exec(tohtml);
+									if (tcurl) {
+										bbcodem[idx] = tohtml.replace(obj.match,obj.replace);
 										pcount++;
-										bbcodem[idx] = thtml;
+										_gaTracker('BBCode',obj.tag,tcurl[2],1);
 									}
 								});
 							});
