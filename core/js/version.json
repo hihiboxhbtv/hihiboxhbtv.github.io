@@ -5,15 +5,25 @@
 		"developer": ["Lemon", "希治閣"],
 		"specialThanks": ["VannZic"]
 	},
-	"lastExtensionVersion": "v2.0",
-	"lastRelease": "2014-08-25",
-	"lastSummary": "[概要] 新增自動插入BBCode 功能, 同步化選項 及HihiBox v1.8.1 相關錯誤修正",
+	"lastExtensionVersion": "v2.1",
+	"lastRelease": "2014-08-26",
+	"lastSummary": "[概要] 新增自動插入BBCode 功能, 同步化選項 及HihiBox v2.0 相關錯誤修正",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v2.0.0",
-	"lastUpdate": "2014-08-25",
+	"coreVersion": "v2.1.0",
+	"lastUpdate": "2014-08-26",
 	"history": [
+		{
+			"version": "v2.1.0",
+			"lastUpdate": "2014-08-26",
+			"summary": [
+				"[概要] HihiBox v2.0 相關錯誤修正"
+			],
+			"detail": [
+				"[修正] HihiBox v2.0 相關錯誤修正"
+			]
+		},
 		{
 			"version": "v2.0.0",
 			"lastUpdate": "2014-08-25",
