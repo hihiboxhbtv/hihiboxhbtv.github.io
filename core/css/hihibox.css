@@ -123,7 +123,8 @@
 	font-weight: normal;
 	color: #dddddd !important;
 }
-.funcIcon:hover {
+.funcIcon:hover,
+#hhb-header #hhb-bbcode.funcIcon.highlight {
 	background-color: #888888;
 	color: #333333;
 }
@@ -143,6 +144,8 @@
 #hhb-header #hhb-bookmark.funcIcon:before { content: '\e804'; }
 #hhb-header #hhb-bookmark.funcIcon.isBookmarked:before { content: '\e803'; } 
 
+#hhb-header #hhb-bbcode.funcIcon:before { content: '\e80f'; }
+
 /* Popup toggle */
 #hhb-header #hhb-popup.funcIcon:before { content: '\e802'; }
 #hhb-holder.hhb-draggable #hhb-popup.funcIcon:before { content: '\e805'; }
@@ -158,6 +161,8 @@
 	text-transform: none;
 	cursor: pointer;
 	line-height: 26px;
+	font-size: 18px !important;
+	color: #FFFFFF;
 }
 #hhb-header span.version {
 	margin-left: 5px;
@@ -414,5 +419,5 @@ a:hover > .hhb-name-name {
 .hhb-bbcode-img {
 	max-width: 100%;
 	max-height: 155px;
-	margin-bottom: 5px;
+	margin-top: 5px;
 }

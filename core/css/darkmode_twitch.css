@@ -239,7 +239,7 @@ body.hhb-pf-twitch.hhb-darkmode {color:#bbb;}
 .hhb-pf-twitch.hhb-darkmode #small_nav .game_filter.selected a:hover {background-color:#e9e9e9;}
 .hhb-pf-twitch.hhb-darkmode #small_nav .game_filter.selected:active a {box-shadow:inset 0 1px 0 rgba(0,0,0,0.04);-moz-box-shadow:inset 0 1px 0 rgba(0,0,0,0.04);-webkit-box-shadow:inset 0 1px 0 rgba(0,0,0,0.04);}
 .hhb-pf-twitch.hhb-darkmode .js-active-game a .filter_icon img {border:1px solid #fff;box-shadow:0 1px 0 rgba(255,255,255,0.15);-moz-box-shadow:0 1px 0 rgba(255,255,255,0.15);-webkit-box-shadow:0 1px 0 rgba(255,255,255,0.15);}
-.hhb-pf-twitch.hhb-darkmode #large_nav .game_filter.selected a {background-color:#e9e9e9!important;color:#000!important;border-left:4px solid #9bbe5a;}
+.hhb-pf-twitch.hhb-darkmode #large_nav .game_filter.selected a {border-left:4px solid #9bbe5a;} 
 .hhb-pf-twitch.hhb-darkmode #large_nav .game_filter.selected a .total_count {color:#000!important;background:rgba(0,0,0,0.3)!important;}
 .hhb-pf-twitch.hhb-darkmode #large_nav .game_filter.selected:active a {box-shadow:inset 0 1px 0 rgba(0,0,0,0.04);-moz-box-shadow:inset 0 1px 0 rgba(0,0,0,0.04);-webkit-box-shadow:inset 0 1px 0 rgba(0,0,0,0.04);}
 .hhb-pf-twitch.hhb-darkmode #right_col:before {background:rgba(255,255,255,0.25);}

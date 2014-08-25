@@ -2632,7 +2632,7 @@ HHBJSONDATA.listIcon = [
 		"width": 250,	"height": 141,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[talkthis]","[saythese]"],
+	{	"code": ["[talkthis]","[talkthese]","[saythese]"],
 		"src": "capture/diusaythese.png",
 		"width": 200,	"height": 113,
 		"genre": ["Cap圖"]
@@ -2772,7 +2772,7 @@ HHBJSONDATA.listIcon = [
 		"width": 69,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[scareme]"],
+	{	"code": ["[scareme]","[scareme?]"],
 		"src": "capture/tryingtoscareme.png",
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]

@@ -5,15 +5,28 @@
 		"developer": ["Lemon", "希治閣"],
 		"specialThanks": ["VannZic"]
 	},
-	"lastExtensionVersion": "v1.8",
-	"lastRelease": "2014-08-07",
-	"lastSummary": "[概要] 新增表情轉換開關, BBCode 功能 及HihiBox v1.7.2 相關錯誤修正",
+	"lastExtensionVersion": "v2.0",
+	"lastRelease": "2014-08-25",
+	"lastSummary": "[概要] 新增自動插入BBCode 功能, 同步化選項 及HihiBox v1.8.1 相關錯誤修正",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v1.8.1",
-	"lastUpdate": "2014-08-07",
+	"coreVersion": "v2.0.0",
+	"lastUpdate": "2014-08-25",
 	"history": [
+		{
+			"version": "v2.0.0",
+			"lastUpdate": "2014-08-25",
+			"summary": [
+				"[概要] 新增自動插入BBCode 功能, 同步化選項 及HihiBox v1.8.1 相關錯誤修正"
+			],
+			"detail": [
+				"[新增] 自動插入BBCode 功能",
+				"[新增] 個人設定 及 書籤 同步化選項",
+				"[修化] Popup 頁面刷新",
+				"[修正] HihiBox v1.8.1 相關錯誤修正"
+			]
+		},
 		{
 			"version": "v1.8.1",
 			"lastUpdate": "2014-08-07",
