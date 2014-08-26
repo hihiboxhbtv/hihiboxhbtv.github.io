@@ -24,7 +24,7 @@ var HHBJSONDATA,hhb;
 			DEBUG_RUNTIME			= 1 << 20,
 			DEBUG_REFRESH			= 1 << 21,
 			DEBUG_GA				= 1 << 22,
-			DEBUG_ALL				= (1 << 23) - 1,
+			DEBUG_ALL				= (1 << 22) - 1,
 			DEBUG					= /* debug */
 				DEBUG_ENV | DEBUG_ALL
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
