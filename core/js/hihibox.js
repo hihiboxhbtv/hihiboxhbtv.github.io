@@ -28,7 +28,7 @@ var HHBJSONDATA,hhb;
 			DEBUG					= /* debug */
 				DEBUG_ENV | 
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
-				DEBUG_SUB_SUCCESS | 
+				DEBUG_SUB_SUCCESS | DEBUG_SUB_FAIL | 
 				DEBUG_RUNTIME | DEBUG_REFRESH
 			;
 			
@@ -1904,6 +1904,7 @@ var HHBJSONDATA,hhb;
 					}
 					return;
 				}
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Built-in Icon Success [I:',analyzediconlist.length,']');
 				setLoadingStatus('analyzeBuiltinIcon','complete');
 				retryCount.analyzeBuiltinIcon = 0;
 				refreshList();
@@ -1928,6 +1929,7 @@ var HHBJSONDATA,hhb;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Platform Icon Failed!');
 					setLoadingStatus('analyzePlatformIcon','fail');
 				}
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Platform Icon Success [I:',analyzediconlist.length,']');
 				listIcon = listIcon.concat(analyzediconlist);
 				setLoadingStatus('analyzePlatformIcon','complete');
 				retryCount.analyzePlatformIcon = 0;
@@ -1982,6 +1984,7 @@ var HHBJSONDATA,hhb;
 					return;
 				}
 				listIcon = listIcon.concat(analyzediconlist);
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing GJTV Icon Success [I:',analyzediconlist.length,']');
 				setLoadingStatus('analyzeGJTVIcon','complete');
 				retryCount.analyzeGJTVIcon = 0;
 				refreshList();
