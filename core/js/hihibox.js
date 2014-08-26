@@ -2618,7 +2618,7 @@ var HHBJSONDATA,hhb;
 			var checkMsgInputUrl = function() {
 				var msg = platformObj.getMsgInput();
 				var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
-				var reurl = /((?:https?|ftp)(?:[^\s]*))/ig;
+				var reurl = /((?:https?|ftp)\:\/\/(?:[^\s]*))/ig;
 				var nmsg = msg.replace(rebbcode,'');
 				var urlm = nmsg.match(reurl);
 				if (urlm) {
