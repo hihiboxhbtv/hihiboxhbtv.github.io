@@ -215,7 +215,7 @@ var HHBJSONDATA,hhb;
 				bindBookmarkBtn: 30,
 				bindPlayerBookmarkBtn: 30
 			},
-			supportedPlatform: ['hitbox','twitch','justin','ustream'],
+			supportedPlatform: ['hitbox','twitch','ustream'],
 			listGenre: [],
 			listIcon: [],
 			defaultConfig: {
@@ -911,9 +911,9 @@ var HHBJSONDATA,hhb;
 						var emoticonsController = window.App.__container__.lookup('controller:emoticons');
 						var emoteSets = emoticonsController.emoticonSets;
 						var defaultSet = emoteSets['default'].sort();
-						if(!defaultSet) return;
+						if(!defaultSet) return -1;
 					} catch(e) {
-						return;
+						return -2;
 					}
 					/* cleaning */
 					for (var idx=0;idx<defaultSet.length;idx++) {
@@ -1885,7 +1885,7 @@ var HHBJSONDATA,hhb;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Injected Icon [I:',count,']');
 					setLoadingStatus('injectIcon','complete');
 				} else {
-					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Injected Icon Failed!');
+					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Injected Icon Failed! [C:',count,']');
 					setLoadingStatus('injectIcon','fail');
 				}
 			};
