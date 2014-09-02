@@ -1,28 +1,52 @@
 ﻿{
-	"name": "HihiBox",
+	"name": "HihiBox β",
 	"credit": "-",
 	"credits": {
 		"developer": ["Lemon", "希治閣"],
 		"specialThanks": ["VannZic"]
 	},
-	"lastExtensionVersion": "v2.0",
-	"lastRelease": "2014-08-22",
-	"lastSummary": "[概要] 新增自動插入BBCode 功能, 同步化選項 及HihiBox v1.8.1 相關錯誤修正",
+	"lastExtensionVersion": "v2.2",
+	"lastRelease": "2014-09-02",
+	"lastSummary": "[概要] 新增自動插入BBCode 功能, 同步化選項 及HihiBox v2.0 相關錯誤修正",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v2.0.0",
-	"lastUpdate": "2014-08-05",
+	"coreVersion": "v2.2.0",
+	"lastUpdate": "2014-09-02",
 	"history": [
 		{
+			"version": "v2.2.0",
+			"lastUpdate": "2014-09-02",
+			"summary": [
+				"[概要] 新增頻道專屬icon, 自訂聊天室連結, 優化匯出備份檔格式 及HihiBox v2.1 相關錯誤修正"
+			],
+			"detail": [
+				"[新增] 頻道專屬icon",
+				"[新增] 自訂聊天室連結",
+				"[優化] 匯出備份檔格式, 追加自訂聊天室連結及相關頻道資料",
+				"[修正] HihiBox v2.1 相關錯誤修正"
+			]
+		},
+		{
+			"version": "v2.1.0",
+			"lastUpdate": "2014-08-26",
+			"summary": [
+				"[概要] HihiBox v2.0 相關錯誤修正"
+			],
+			"detail": [
+				"[修正] HihiBox v2.0 相關錯誤修正"
+			]
+		},
+		{
 			"version": "v2.0.0",
-			"lastUpdate": "2014-08-22",
+			"lastUpdate": "2014-08-25",
 			"summary": [
 				"[概要] 新增自動插入BBCode 功能, 同步化選項 及HihiBox v1.8.1 相關錯誤修正"
 			],
 			"detail": [
 				"[新增] 自動插入BBCode 功能",
 				"[新增] 個人設定 及 書籤 同步化選項",
+				"[修化] Popup 頁面刷新",
 				"[修正] HihiBox v1.8.1 相關錯誤修正"
 			]
 		},
