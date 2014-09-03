@@ -3165,6 +3165,7 @@ var HHBJSONDATA,hhb;
 				setLoadingStatus('importNameBanner','fail');
 			}
 		};
+		this.scrollToBottom = function() { platformObj.scrollToBottom(); };
 
 		envCheck();
 		
