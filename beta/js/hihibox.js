@@ -543,6 +543,7 @@ var HHBJSONDATA,hhb;
 						var ohtml = html;
 						var htmlm = ohtml.match(rehtmltag);
 						if (htmlm) $.each(htmlm,function(idx,obj) { ohtml = ohtml.replace(obj,'___hhb_bbc_html_'+idx+'___'); });
+						var ohtml = ohtml.replace(/(\[\/?img)(?:___hhb_bbc_html_\d+___)?(\])(?:___hhb_bbc_html_\d+___)?/ig,"$1$2");
 						var bbcodem = ohtml.match(rebbcode);
 						if (bbcodem) {
 							$.each(bbcodem,function(idx,obj) { ohtml = ohtml.replace(obj,'___hhb_bbc_bbcode_'+idx+'___'); });
@@ -613,7 +614,7 @@ var HHBJSONDATA,hhb;
 							$lmsg = $(selector.msgList).last(),
 							offsetlm = $lmsg.offset();
 						$.extend(offsetlm,{ bottom: offsetlm.top+($lmsg.height()+parseInt($lmsg.css('margin-bottom'))), right: offsetlm.left+$lmsg.width() });
-						var bodyHeight = offsetlm.bottom-($fmsg.offset().top-parseInt($fmsg.css('margin-top')));
+						var bodyHeight = offsetlm.bottom-($fmsg.offset().top-Math.ceil(parseFloat($fmsg.css('margin-top'))));
 						var bottomLine = $cview.offset().top+$cview.height();
 						if (offsetlm.top<bottomLine && offsetlm.bottom> bottomLine) {
 							$sbody.scrollTop(bodyHeight-$cview.height());
@@ -643,8 +644,7 @@ var HHBJSONDATA,hhb;
 						player: '#mediaplayer',
 						chatView: '.chat-messages',
 						chatContainer: '.chatBody',
-						chatBody: '.chat-messages',
-						msgList: '.chatBody li',
+						msgList: '.chatBody > li > div',
 						badgeBroadcaster: '.hhb-pf-hitbox .chat-messages .chat-badge-owner',
 						badgeModerator: '.hhb-pf-hitbox .chat-messages .chat-badge-mod'
 					}),
@@ -831,7 +831,6 @@ var HHBJSONDATA,hhb;
 						player: 'object[data*="TwitchPlayer.swf"]',
 						chatView: '.chat-messages',
 						chatContainer: '.chat-messages .tse-scroll-content',
-						chatBody: '.chat-messages .tse-content',
 						msgList: '.chat-messages .chat-line',
 						badgeBroadcaster: '.hhb-pf-twitch .ember-chat .badges .broadcaster',
 						badgeModerator: '.hhb-pf-twitch .ember-chat .badges .moderator'
