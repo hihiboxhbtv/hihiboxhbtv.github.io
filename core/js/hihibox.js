@@ -562,18 +562,17 @@ var HHBJSONDATA,hhb;
 				},
 				scrollToBottom: function(selector) {
 					try {
-						var $cview = $(selector.chatView).first();
-						var $fmsg = $(selector.msgList).first();
-						var $sbody = $(selector.chatContainer).first();
-						var $lmsg = $(selector.msgList).last();
-						var offsetlm = $lmsg.offset();
+						var $cview = $(selector.chatView).first(),
+							$sbody = $(selector.chatContainer).first(),
+							$fmsg = $(selector.msgList).first(),
+							$lmsg = $(selector.msgList).last(),
+							offsetlm = $lmsg.offset();
 						$.extend(offsetlm,{ bottom: offsetlm.top+($lmsg.height()+parseInt($lmsg.css('margin-bottom'))), right: offsetlm.left+$lmsg.width() });
 						var bodyHeight = offsetlm.bottom-($fmsg.offset().top-parseInt($fmsg.css('margin-top')));
 						var bottomLine = $cview.offset().top+$cview.height();
 						if (offsetlm.top<bottomLine && offsetlm.bottom> bottomLine) {
 							$sbody.scrollTop(bodyHeight-$cview.height());
 						}
-						console.log('scrollToBottom',bodyHeight,bottomLine,offsetlm);
 					} catch(e) {};
 				}
 			},
