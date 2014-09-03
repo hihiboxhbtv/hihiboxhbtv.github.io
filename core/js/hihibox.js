@@ -569,7 +569,7 @@ var HHBJSONDATA,hhb;
 							$lmsg = $(selector.msgList).last(),
 							offsetlm = $lmsg.offset();
 						$.extend(offsetlm,{ bottom: offsetlm.top+($lmsg.height()+parseInt($lmsg.css('margin-bottom'))), right: offsetlm.left+$lmsg.width() });
-						var bodyHeight = offsetlm.bottom-($fmsg.offset().top-parseInt($fmsg.css('margin-top')));
+						var bodyHeight = offsetlm.bottom-($fmsg.offset().top-Math.ceil(parseFloat($fmsg.css('margin-top'))));
 						var bottomLine = $cview.offset().top+$cview.height();
 						if (offsetlm.top<bottomLine && offsetlm.bottom> bottomLine) {
 							$sbody.scrollTop(bodyHeight-$cview.height());
@@ -599,8 +599,7 @@ var HHBJSONDATA,hhb;
 						player: '#mediaplayer',
 						chatView: '.chat-messages',
 						chatContainer: '.chatBody',
-						chatBody: '.chat-messages',
-						msgList: '.chatBody li'
+						msgList: '.chatBody > li > div',
 					}),
 					limit = $.extend(_hhb.limit,{});
 				/* Public methods */
@@ -640,20 +639,20 @@ var HHBJSONDATA,hhb;
 						var emoticons = emotify.emoticons();
 						for (var key in emoticons) {
 							if (!emoticons[key].isHHBEmoticon) {
-							var emo = emoticons[key].concat();
-							var tsrc = emo.shift();
-							var ttitle = emo.shift();
-							var tcode = [];
-							tcode = tcode.concat(htmlDecode(key));							
-							while (acode = emo.shift()) {
-								tcode = tcode.concat(($.inArray(acode,tcode) < 0) ? htmlDecode(acode) : []);
-							}
-							list.push({
-								code: tcode,
-								src: tsrc,
-								width: 0, height: 0,
-								genre: dgenre,
-							});
+								var emo = emoticons[key].concat();
+								var tsrc = emo.shift();
+								var ttitle = emo.shift();
+								var tcode = [];
+								tcode = tcode.concat(htmlDecode(key));							
+								while (acode = emo.shift()) {
+									tcode = tcode.concat(($.inArray(acode,tcode) < 0) ? htmlDecode(acode) : []);
+								}
+								list.push({
+									code: tcode,
+									src: tsrc,
+									width: 0, height: 0,
+									genre: dgenre,
+								});
 							}
 						}
 					}
@@ -811,7 +810,6 @@ var HHBJSONDATA,hhb;
 						player: 'object[data*="TwitchPlayer.swf"]',
 						chatView: '.chat-messages',
 						chatContainer: '.chat-messages .tse-scroll-content',
-						chatBody: '.chat-messages .tse-content',
 						msgList: '.chat-messages .chat-line'
 					}),
 					limit = $.extend(_hhb.limit,{});
