@@ -24,7 +24,7 @@ var HHBJSONDATA,hhb;
 			DEBUG_RUNTIME			= 1 << 20,
 			DEBUG_REFRESH			= 1 << 21,
 			DEBUG_GA				= 1 << 22,
-			DEBUG_ALL				= (1 << 23) - 1,
+			DEBUG_ALL				= (1 << 22) - 1,
 			DEBUG					= DEBUG_ALL | 		/* debug */
 				DEBUG_ENV | 
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
@@ -3198,7 +3198,7 @@ var HHBJSONDATA,hhb;
 			}
 		};
 		this.scrollToBottom = function() { platformObj.scrollToBottom(); };
-		
+
 		envCheck();
 		
 		return this;
