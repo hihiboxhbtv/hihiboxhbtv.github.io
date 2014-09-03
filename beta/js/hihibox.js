@@ -2146,7 +2146,7 @@ var HHBJSONDATA,hhb;
 					count++;
 				});
 				
-				if (rcount>0) analyzeGenre(genreRecent,{ category: 'recent' });
+				analyzeGenre(genreRecent,{ category: 'recent' });
 				if (ocount>0) analyzeGenre(genreOther,{ category: 'other' });
 				listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
 				
