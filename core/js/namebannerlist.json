@@ -1,4 +1,4 @@
-HHBJSONDATA = HHBJSONDATA || {};
+ï»¿HHBJSONDATA = HHBJSONDATA || {};
 
 HHBJSONDATA.listNBControl = [
 	{	"_start": "***************************************",
@@ -39,7 +39,7 @@ HHBJSONDATA.listNBControl = [
 			}
 		},
 		"iconlist": [
-			{	"code": ["[¥´¥´¥´´íb]scp"],			"src": "channel/scp/dadadajab.jpg",					"width": 460,	"height": 276,	"genre": ["SCP"]	},
+			{	"code": ["[æ‰“æ‰“æ‰“å’‹b]scp"],			"src": "channel/scp/dadadajab.jpg",					"width": 460,	"height": 276,	"genre": ["SCP"]	},
 			{	"code": ["[yellow]scp"],			"src": "channel/scp/yellowcard.gif",				"width": 50,	"height": 50,	"genre": ["SCP"]	},
 			{	"code": ["[red]scp"],				"src": "channel/scp/redcard.gif",					"width": 50,	"height": 50,	"genre": ["SCP"]	}
 		]
