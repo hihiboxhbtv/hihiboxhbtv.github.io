@@ -28,7 +28,7 @@ var HHBJSONDATA,hhb;
 			DEBUG					= DEBUG_ALL |		/* debug */
 				DEBUG_ENV | 
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
-				DEBUG_SUB_SUCCESS | 
+				DEBUG_SUB_INIT | DEBUG_SUB_SUCCESS | DEBUG_SUB_FAIL | 
 				DEBUG_RUNTIME | DEBUG_REFRESH
 			;
 			
@@ -504,7 +504,7 @@ var HHBJSONDATA,hhb;
 						},
 						{	tag: 'img',
 							match: /(\[img\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/img\])/ig,
-							replace: "<a href=\"$2\" target=\"_blank\"><img src=\"$2\" class=\"hhb-bbcode-img\" alt=\"$1$2$3\"><\/a>"
+							replace: "<span class='hhb-bbcode-img-tag'><a href=\"$2\" target=\"_blank\"><img src=\"$2\" class=\"hhb-bbcode-img\" alt=\"$1$2$3\" onload=\"hhb.scrollToBottom();\"><\/a></span>"
 						}
 					];
 					$msgs.each(function() {
@@ -516,7 +516,7 @@ var HHBJSONDATA,hhb;
 						if (bbcodem) {
 							$.each(bbcodem,function(idx,obj) { ohtml = ohtml.replace(obj,'___hhb_bbc_bbcode_'+idx+'___'); });
 							$.each(bbcodem,function(idx,tohtml) {
-								tohtml = tohtml.replace(rehtmltag,'');
+								tohtml = tohtml.replace(/___hhb_bbc_html_\d+___/ig,'');
 								$.each(bbcode,function(idx2,obj) {
 									var tcurl = obj.match.exec(tohtml);
 									if (tcurl) {
@@ -573,6 +573,22 @@ var HHBJSONDATA,hhb;
 							txtarea.focus();
 						}
 					}
+				},
+				scrollToBottom: function(selector) {
+					try {
+						var $cview = $(selector.chatView).first();
+						var $fmsg = $(selector.msgList).first();
+						var $sbody = $(selector.chatContainer).first();
+						var $lmsg = $(selector.msgList).last();
+						var offsetlm = $lmsg.offset();
+						$.extend(offsetlm,{ bottom: offsetlm.top+($lmsg.height()+parseInt($lmsg.css('margin-bottom'))), right: offsetlm.left+$lmsg.width() });
+						var bodyHeight = offsetlm.bottom-($fmsg.offset().top-parseInt($fmsg.css('margin-top')));
+						var bottomLine = $cview.offset().top+$cview.height();
+						if (offsetlm.top<bottomLine && offsetlm.bottom> bottomLine) {
+							$sbody.scrollTop(bodyHeight-$cview.height());
+						}
+						console.log('scrollToBottom',bodyHeight,bottomLine,offsetlm);
+					} catch(e) {};
 				}
 			},
 			hitbox: function() {
@@ -595,7 +611,9 @@ var HHBJSONDATA,hhb;
 						timestampsBox: '#timestampsBox',
 						userName: '.navItemsUser .item.user:first-child span',
 						player: '#mediaplayer',
-						chatBody: '.chatBody',
+						chatView: '.chat-messages',
+						chatContainer: '.chatBody',
+						chatBody: '.chat-messages',
 						msgList: '.chatBody li'
 					}),
 					limit = $.extend(_protected.limit,{});
@@ -708,12 +726,7 @@ var HHBJSONDATA,hhb;
 											$(this).toggleClass(cssClass.orgSize);
 										}).length;
 						bicount = $msgIcon.length;
-						var $cbody = $(selector.chatBody),
-							$msg = $(selector.msgList).last(),
-							scrollTop = $cbody.scrollTop(),
-							height = $cbody.height(),
-							bottom = $msg.offset().top+$msg.outerHeight();
-						if (height<bottom) $cbody.scrollTop(scrollTop+bottom-height);
+						_platform.scrollToBottom();
 					}
 					return {
 						msg: msgs.length, 
@@ -721,6 +734,7 @@ var HHBJSONDATA,hhb;
 						resized: bircount
 					};
 				};
+				_platform.scrollToBottom = function() {	return _platformObj.default.scrollToBottom(selector); };
 				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
 				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
@@ -749,13 +763,7 @@ var HHBJSONDATA,hhb;
 				_platform.bindNameBanner = function() {
 					var names = _platform.getNewNames();
 					return _platformObj.default.bindNameBanner(names,function() {
-								/* workaround - auto scroll of hitbox chatroom */
-								var $cbody = $(selector.chatBody),
-									$msg = $(selector.msgList).last(),
-									scrollTop = $cbody.scrollTop(),
-									height = $cbody.height(),
-									bottom = $msg.offset().top+$msg.outerHeight();
-								if (height<bottom) $cbody.scrollTop(scrollTop+bottom-height);
+								_platform.scrollToBottom();
 							});
 				};
 				_platform.genBadgeCss = function(badges) {
@@ -814,7 +822,11 @@ var HHBJSONDATA,hhb;
 						emoticon: 'span.emoticon',
 						timestampsBox: '.chat-menu-content .ember-checkbox:contains("Time Stamps")',
 						userName: '#nav_personal .username',
-						player: 'object[data*="TwitchPlayer.swf"]'
+						player: 'object[data*="TwitchPlayer.swf"]',
+						chatView: '.chat-messages',
+						chatContainer: '.chat-messages .tse-scroll-content',
+						chatBody: '.chat-messages .tse-content',
+						msgList: '.chat-messages .chat-line'
 					}),
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
@@ -1017,6 +1029,7 @@ var HHBJSONDATA,hhb;
 						resized: bircount
 					};
 				};
+				_platform.scrollToBottom = function() {	return _platformObj.default.scrollToBottom(selector); };
 				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
 				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
@@ -2732,6 +2745,7 @@ var HHBJSONDATA,hhb;
 			};
 			var checkMsgInputUrl = function() {
 				var msg = platformObj.getMsgInput();
+				if (!msg || msg == '') return false;
 				var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
 				var reurl = /((?:https?|ftp)\:\/\/(?:[^\s]*))/ig;
 				var nmsg = msg.replace(rebbcode,'');
