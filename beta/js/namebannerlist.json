@@ -44,7 +44,7 @@ HHBJSONDATA.listNBControl = [
 			{	"code": ["[red]scp"],				"src": "channel/scp/redcard.gif",					"width": 50,	"height": 50,	"genre": ["SCP"]	}
 		]
 	},
-	{	"channel": ["lemontycoon@twitch"],
+	{	"channel": ["lemontycoon@hitbox","lemontycoon@twitch"],
 		"whitelistonly": false,
 		"whitelist": [],
 		"blacklist": [],

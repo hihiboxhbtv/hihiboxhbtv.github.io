@@ -491,6 +491,37 @@ var HHBJSONDATA,hhb;
 						binded: bicount
 					};
 				},
+				genBadgeCss: function(badges,selector) {
+					var style = '';
+					if (!(badges && badges.broadcaster && badges.moderator && selector && selector.badgeBroadcaster && selector.badgeModerator)) 
+						return '';
+					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
+					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
+					
+					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
+						style += [	
+							selector.badgeBroadcaster,' {',
+								'color: transparent;',
+								'margin-right: 3px;',
+								'vertical-align:bottom;',
+								'width:',broadcaster.width,'px;',
+								'height:',broadcaster.height,'px;',
+								'background: url(',broadcaster.img,') no-repeat left bottom !important;',
+							'}'].join('');
+					}
+					if (moderator.img && moderator.width>0 && moderator.height>0) {
+						style += [	
+							selector.badgeModerator,' {',
+								'color: transparent;',
+								'margin-right: 3px;',
+								'vertical-align:bottom;',
+								'width:',moderator.width,'px;',
+								'height:',moderator.height,'px;',
+								'background: url(',moderator.img,') no-repeat center center !important;',
+							'}'].join('');
+					}
+					return style;
+				},
 				parseBBCode: function(msgs) {
 					if (msgs.length==0) return { msg: 0, parsed: 0 };
 					var $msgs = msgs.addClass(cssClass.checkedBBCodeMsg);
@@ -576,7 +607,7 @@ var HHBJSONDATA,hhb;
 				},
 				scrollToBottom: function(selector) {
 					try {
-						var $cview = $(selector.chatView).first();
+						var $cview = $(selector.chatView).first(),
 							$sbody = $(selector.chatContainer).first(),
 							$fmsg = $(selector.msgList).first(),
 							$lmsg = $(selector.msgList).last(),
@@ -613,7 +644,9 @@ var HHBJSONDATA,hhb;
 						chatView: '.chat-messages',
 						chatContainer: '.chatBody',
 						chatBody: '.chat-messages',
-						msgList: '.chatBody li'
+						msgList: '.chatBody li',
+						badgeBroadcaster: '.hhb-pf-hitbox .chat-messages .chat-badge-owner',
+						badgeModerator: '.hhb-pf-hitbox .chat-messages .chat-badge-mod'
 					}),
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
@@ -765,33 +798,7 @@ var HHBJSONDATA,hhb;
 								_platform.scrollToBottom();
 							});
 				};
-				_platform.genBadgeCss = function(badges) {
-					var style = '';
-					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
-					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
-					
-					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
-						style += [	
-							'.hhb-pf-hitbox .chat-messages .chat-badge-owner {',
-								'margin-right: 3px;',
-								'vertical-align:bottom;',
-								'width:',broadcaster.width,'px;',
-								'height:',broadcaster.height,'px;',
-								'content: url(',broadcaster.img,') no-repeat left bottom;',
-							'}'].join('');
-					}
-					if (moderator.img && moderator.width>0 && moderator.height>0) {
-						style += [	
-							'.hhb-pf-hitbox .chat-messages .chat-badge-mod {',
-								'color: transparent;',
-								'margin-right: 3px;',
-								'width:',moderator.width,'px;',
-								'height:',moderator.height,'px;',
-								'background: url(',moderator.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					return style;
-				};
+				_platform.genBadgeCss = function(badges) { return _platformObj.default.genBadgeCss(badges,selector); };
 				
 				/* BBCode */
 				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
@@ -825,7 +832,9 @@ var HHBJSONDATA,hhb;
 						chatView: '.chat-messages',
 						chatContainer: '.chat-messages .tse-scroll-content',
 						chatBody: '.chat-messages .tse-content',
-						msgList: '.chat-messages .chat-line'
+						msgList: '.chat-messages .chat-line',
+						badgeBroadcaster: '.hhb-pf-twitch .ember-chat .badges .broadcaster',
+						badgeModerator: '.hhb-pf-twitch .ember-chat .badges .moderator'
 					}),
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
@@ -1059,31 +1068,7 @@ var HHBJSONDATA,hhb;
 					var names = _platform.getNewNames();
 					return _platformObj.default.bindNameBanner(names);
 				};
-				_platform.genBadgeCss = function(badges) {
-					var style = '';
-					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
-					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
-				
-					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
-						style += [	
-							'.hhb-pf-twitch .ember-chat .badges .broadcaster {',
-								'margin-top:-6px;',
-								'min-width:',(broadcaster.width),'px;',
-								'height:',(broadcaster.width),'px;',
-								'background: url(',broadcaster.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					if (moderator.img && moderator.width>0 && moderator.height>0) {
-						style += [	
-							'.hhb-pf-twitch .ember-chat .badges .moderator {',
-								'margin-top:-6px;',
-								'min-width:',(moderator.width),'px;',
-								'height:',(moderator.width),'px;',
-								'background: url(',moderator.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					return style;
-				};
+				_platform.genBadgeCss = function(badges) { return _platformObj.default.genBadgeCss(badges,selector); };
 				
 				/* BBCode */
 				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
@@ -1358,37 +1343,7 @@ var HHBJSONDATA,hhb;
 					var names = _platform.getNewNames();
 					return _platformObj.default.bindNameBanner(names);
 				};
-				_platform.genBadgeCss = function(badges) {
-					var style = '';
-					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
-					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
-				
-					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
-						style += [	
-							'.hhb-pf-justin .tag.broadcaster {',
-								'display:inline-block;',
-								'padding:0px;',
-								'border-radius:0px;',
-								'text-indent: -9999px;',
-								'width:',(broadcaster.width),'px;',
-								'height:',(broadcaster.width),'px;',
-								'backgrund: url(',broadcaster.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					if (moderator.img && moderator.width>0 && moderator.height>0) {
-						style += [	
-							'.hhb-pf-justin .tag.mod {',
-								'display:inline-block;',
-								'padding:0px;',
-								'border-radius:0px;',
-								'text-indent: -9999px;',
-								'width:',(moderator.width),'px;',
-								'height:',(moderator.width),'px;',
-								'background: url(',moderator.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					return style;
-				};
+				_platform.genBadgeCss = function(badges) { return _platformObj.default.genBadgeCss(badges,selector); };
 				
 				/* BBCode */
 				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
@@ -1574,37 +1529,7 @@ var HHBJSONDATA,hhb;
 					var names = _platform.getNewNames();
 					return _platformObj.default.bindNameBanner(names);
 				};
-				_platform.genBadgeCss = function(badges) {
-					var style = '';
-					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
-					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
-				
-					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
-						style += [	
-							'.hhb-pf-justin .tag.broadcaster {',
-								'display:inline-block;',
-								'padding:0px;',
-								'border-radius:0px;',
-								'text-indent: -9999px;',
-								'width:',(broadcaster.width),'px;',
-								'height:',(broadcaster.width),'px;',
-								'background: url(',broadcaster.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					if (moderator.img && moderator.width>0 && moderator.height>0) {
-						style += [	
-							'.hhb-pf-justin .tag.mod {',
-								'display:inline-block;',
-								'padding:0px;',
-								'border-radius:0px;',
-								'text-indent: -9999px;',
-								'width:',(moderator.width),'px;',
-								'height:',(moderator.width),'px;',
-								'background: url(',moderator.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					return style;
-				};
+				_platform.genBadgeCss = function(badges) { return _platformObj.default.genBadgeCss(badges,selector); };
 			},
 		};
 		
@@ -1934,7 +1859,6 @@ var HHBJSONDATA,hhb;
 					return false;
 				};
 				var dgenrelist = [];
-				var rcount = 0,ocount = 0;
 				$.each(_genrelist,function(idx,obj) {
 					var tgenre = { name: obj };
 					if (genreIsDuplicated(tgenre.name)) {
@@ -2083,14 +2007,6 @@ var HHBJSONDATA,hhb;
 				};
 				var dcodelist = [];
 				var rcount = 0,ocount = 0;
-				/*
-				if (listGenre[0].name == genreRecent) {
-					rcount++;
-				}
-				if (listGenre[listGenre.length-1].name == genreOther) {
-					ocount++;
-					listGenre.pop();
-				}*/
 				debugMsg('analyzeIcon',_options,iconlist.length,dcodelist.length);
 				$.each(iconlist,function(idx,obj) {
 					/* analyze Icon */
@@ -2132,9 +2048,7 @@ var HHBJSONDATA,hhb;
 						} else if (iconGenre == genreRecent) {
 							rcount++;
 						} else {
-							$.each(listGenre,function(idx4,genrei) {
-								if (genrei.name == iconGenre) cg++;
-							});
+							$.each(listGenre,function(idx4,genrei) { if (genrei.name == iconGenre) cg++; });
 							if (cg == 0) analyzeGenre(iconGenre,_options);
 						}
 					});
@@ -3184,30 +3098,6 @@ var HHBJSONDATA,hhb;
 					else if (response.success) checkIsBookmarked();
 				});
 			}
-			var addBookmark = function(_options) {
-				var _cinfo = {
-					platform: 			(_options && _options.platform) ? _options.platform : env.platform,
-					channel: 			(_options && _options.channel) ? _options.channel : env.channel,
-					links_custom: 		(_options && _options.link) ? _options.link : '',
-					links_custom_chat: 	(_options && _options.chat) ? _options.chat : ''
-				};
-				var _bookmark = { platform: env.platform, channel: env.channel };
-				$.extend(_bookmark,_cinfo);
-				sendMessage({addBookmark: _bookmark},function(response) {
-					if (!response) $(selector.bookmarkBtn).hide();
-					else if (response.success) checkIsBookmarked();
-				});
-			}
-			var removeBookmark = function() {
-				var _bookmark = { platform: env.platform, channel: env.channel };
-				sendMessage({removeBookmark: _bookmark},function(response) {
-					if (!response) $(selector.bookmarkBtn).hide();
-					else if (response.success) checkIsBookmarked();
-				});
-			}
-			_hhb.toggleBookmark = toggleBookmark;
-			_hhb.addBookmark = addBookmark;
-			_hhb.removeBookmark = removeBookmark;
 			
 			if (isStatusInited('initBookmark')) return false;
 			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initBookmark');

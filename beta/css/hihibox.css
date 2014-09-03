@@ -418,11 +418,12 @@ a:hover > .hhb-name-name {
 	content: initial;
 }
 
+/* [E:2014-09-03]
 .hhb-pf-hitbox .chatBody .title, 
 .hhb-pf-hitbox .chatBody .message,
 .hhb-pf-hitbox .chatBody li span {
 	vertical-align: text-bottom !important;
-}
+} */
 /* [S:2014-07-30] */
 .hhb-pf-hitbox .chatBody .title {
 	margin-bottom: 0.25em;
@@ -430,7 +431,7 @@ a:hover > .hhb-name-name {
 
 /* [S:2014-08-01] */
 .hhb-bbcode-url {
-	
+	vertical-align: text-bottom;
 }
 .hhb-bbcode-img {
 	max-width: 100%;
