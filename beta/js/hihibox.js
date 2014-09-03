@@ -25,7 +25,7 @@ var HHBJSONDATA,hhb;
 			DEBUG_REFRESH			= 1 << 21,
 			DEBUG_GA				= 1 << 22,
 			DEBUG_ALL				= (1 << 23) - 1,
-			DEBUG					= DEBUG_ALL |		/* debug */
+			DEBUG					= DEBUG_ALL | 		/* debug */
 				DEBUG_ENV | 
 				DEBUG_FEATURES_INIT | DEBUG_FEATURES_SUCCESS | 
 				DEBUG_SUB_INIT | DEBUG_SUB_SUCCESS | DEBUG_SUB_FAIL | 
@@ -577,17 +577,16 @@ var HHBJSONDATA,hhb;
 				scrollToBottom: function(selector) {
 					try {
 						var $cview = $(selector.chatView).first();
-						var $fmsg = $(selector.msgList).first();
-						var $sbody = $(selector.chatContainer).first();
-						var $lmsg = $(selector.msgList).last();
-						var offsetlm = $lmsg.offset();
+							$sbody = $(selector.chatContainer).first(),
+							$fmsg = $(selector.msgList).first(),
+							$lmsg = $(selector.msgList).last(),
+							offsetlm = $lmsg.offset();
 						$.extend(offsetlm,{ bottom: offsetlm.top+($lmsg.height()+parseInt($lmsg.css('margin-bottom'))), right: offsetlm.left+$lmsg.width() });
 						var bodyHeight = offsetlm.bottom-($fmsg.offset().top-parseInt($fmsg.css('margin-top')));
 						var bottomLine = $cview.offset().top+$cview.height();
 						if (offsetlm.top<bottomLine && offsetlm.bottom> bottomLine) {
 							$sbody.scrollTop(bodyHeight-$cview.height());
 						}
-						console.log('scrollToBottom',bodyHeight,bottomLine,offsetlm);
 					} catch(e) {};
 				}
 			},
@@ -943,9 +942,9 @@ var HHBJSONDATA,hhb;
 						var emoticonsController = window.App.__container__.lookup('controller:emoticons');
 						var emoteSets = emoticonsController.emoticonSets;
 						var defaultSet = emoteSets['default'].sort();
-						if(!defaultSet) return;
+						if(!defaultSet) return -1;
 					} catch(e) {
-						return;
+						return -2;
 					}
 					/* cleaning */
 					for (var idx=0;idx<defaultSet.length;idx++) {
@@ -3309,6 +3308,7 @@ var HHBJSONDATA,hhb;
 				setLoadingStatus('importNameBanner','fail');
 			}
 		};
+		this.scrollToBottom = function() { platformObj.scrollToBottom(); };
 		
 		envCheck();
 		
