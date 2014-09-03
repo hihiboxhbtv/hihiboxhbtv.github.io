@@ -498,6 +498,7 @@ var HHBJSONDATA,hhb;
 						var ohtml = html;
 						var htmlm = ohtml.match(rehtmltag);
 						if (htmlm) $.each(htmlm,function(idx,obj) { ohtml = ohtml.replace(obj,'___hhb_bbc_html_'+idx+'___'); });
+						var ohtml = ohtml.replace(/(\[\/?img)(?:___hhb_bbc_html_\d+___)?(\])(?:___hhb_bbc_html_\d+___)?/ig,"$1$2");
 						var bbcodem = ohtml.match(rebbcode);
 						if (bbcodem) {
 							$.each(bbcodem,function(idx,obj) { ohtml = ohtml.replace(obj,'___hhb_bbc_bbcode_'+idx+'___'); });
