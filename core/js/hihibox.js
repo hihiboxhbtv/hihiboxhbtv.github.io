@@ -181,6 +181,7 @@ var HHBJSONDATA,hhb;
 			},
 			delay: {
 				analyzeBuiltinIcon: 200,
+				analyzeChannelIcon: 200,
 				analyzePlatformIcon: 500,
 				analyzeGJTVIcon: 1000,
 				detectUI: 60000,
@@ -197,6 +198,7 @@ var HHBJSONDATA,hhb;
 				bindPlayerBookmarkBtn: 1000,
 				bindBBCodeBtn: 1000,
 				sortIconList: 1000,
+				sortGenreList: 1000,
 				icon_filter: 300,
 				parseIncoming: 50,
 				check_url: 300
@@ -208,16 +210,18 @@ var HHBJSONDATA,hhb;
 			},
 			limit: {
 				msgIconHeight: 60,
-				analyzeBuildinIcon: 30,
+				analyzeBuiltinIcon: 30,
+				analyzeChannelIcon: 30,
 				analyzePlatformIcon: 30,
 				analyzeGJTVIcon: 30,
 				activateRebindUIBtn: 30,
 				bindBookmarkBtn: 30,
 				bindPlayerBookmarkBtn: 30
 			},
-			supportedPlatform: ['hitbox','twitch','ustream'],
+			supportedPlatform: ['hitbox','twitch','justin','ustream'],
 			listGenre: [],
 			listIcon: [],
+			genreCategory: ['other','gjtv','platform','builtin','channel','recent'],
 			defaultConfig: {
 				genre: 'HKG',
 				darkMode: 'light',
@@ -234,6 +238,7 @@ var HHBJSONDATA,hhb;
 		/* Private variables */
 		var _this = this,
 			_hhb = this,
+			_protected = {},
 			locale = new Locale();
 			debug = _settings.debug,
 			id = _settings.id,
@@ -244,6 +249,7 @@ var HHBJSONDATA,hhb;
 			limit = _settings.limit,
 			supportedPlatform = _settings.supportedPlatform,
 			listGenre = _settings.listGenre,
+			genreCategory = _settings.genreCategory;
 			listIcon = _settings.listIcon,
 			defaultConfig = _settings.defaultConfig,
 			config = _settings.config,
@@ -270,6 +276,7 @@ var HHBJSONDATA,hhb;
 					isIconListDataInited: false,
 						iconInjected: false,
 						builtinIconLoaded: false,
+						channelIconLoaded: false,
 						platformIconLoaded: false,
 						gjtvIconLoaded: false,
 					isUserInterfaceInited: false,
@@ -292,6 +299,7 @@ var HHBJSONDATA,hhb;
 			loadingStatus = {},
 			retryCount = {
 				analyzeBuiltinIcon: 0,
+				analyzeChannelIcon: 0,
 				analyzePlatformIcon: 0,
 				analyzeGJTVIcon: 0,
 				activateRebindUIBtn: 0,
@@ -305,12 +313,14 @@ var HHBJSONDATA,hhb;
 				detectUI: 0
 			},
 			timestamps = {
-				sortIconList: 0
+				sortIconList: 0,
+				sortGenreList: 0
 			},
 			version = {
 				genreList: { pending: 0, current: 0 },
 				iconList: { pending: 0, current: 0 },
 				sort: { pending: 0, current: 0 },
+				sortGenre: { pending: 0, current: 0 },
 				usage: { pending: 0, current: 0 }
 			},
 			timer = {
@@ -318,6 +328,7 @@ var HHBJSONDATA,hhb;
 				initIconListData: 			{ start: 0, end: 0, duration: 0 },
 					injectIcon: 			{ start: 0, end: 0, duration: 0 },
 					analyzeBuiltinIcon: 	{ start: 0, end: 0, duration: 0 },
+					analyzeChannelIcon:		{ start: 0, end: 0, duration: 0 },
 					analyzePlatformIcon: 	{ start: 0, end: 0, duration: 0 },
 					analyzeGJTVIcon: 		{ start: 0, end: 0, duration: 0 },
 				initUserInterface: 			{ start: 0, end: 0, duration: 0 },
@@ -336,14 +347,17 @@ var HHBJSONDATA,hhb;
 					bindBookmarkBtn: 		{ start: 0, end: 0, duration: 0 },
 				initIncomingParser:			{ start: 0, end: 0, duration: 0 },
 				
-				sort: { start: 0, end: 0, duration: 0 }
+				sort: { start: 0, end: 0, duration: 0 },
+				sortGenre: { start: 0, end: 0, duration: 0 }
 			},
 			platformObj = null,
 			listPendingUsage = {},
 			listUsage = {},
 			listParse = [],
-			listLookup = {},
+			listIconLookup = {},
+			listGenreLookup = {},
 			listNameBanner = {},
+			nextGenreID = 1,
 			nextIconID = 1,
 			isFiltering = false,
 			isContainUrl = false,
@@ -352,9 +366,9 @@ var HHBJSONDATA,hhb;
 			currFilterCodeHead = '';
 			
 		/* Public Variables */
-		_hhb.cssClass = cssClass;
-		_hhb.selector = selector;
-		_hhb.limit = limit;
+		_protected.cssClass = cssClass;
+		_protected.selector = selector;
+		_protected.limit = limit;
 		
 		/* Private platform object */
 		var _platformObj = {
@@ -477,6 +491,37 @@ var HHBJSONDATA,hhb;
 						binded: bicount
 					};
 				},
+				genBadgeCss: function(badges,selector) {
+					var style = '';
+					if (!(badges && badges.broadcaster && badges.moderator && selector && selector.badgeBroadcaster && selector.badgeModerator)) 
+						return '';
+					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
+					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
+					
+					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
+						style += [	
+							selector.badgeBroadcaster,' {',
+								'color: transparent;',
+								'margin-right: 3px;',
+								'vertical-align:bottom;',
+								'width:',broadcaster.width,'px;',
+								'height:',broadcaster.height,'px;',
+								'background: url(',broadcaster.img,') no-repeat left bottom !important;',
+							'}'].join('');
+					}
+					if (moderator.img && moderator.width>0 && moderator.height>0) {
+						style += [	
+							selector.badgeModerator,' {',
+								'color: transparent;',
+								'margin-right: 3px;',
+								'vertical-align:bottom;',
+								'width:',moderator.width,'px;',
+								'height:',moderator.height,'px;',
+								'background: url(',moderator.img,') no-repeat center center !important;',
+							'}'].join('');
+					}
+					return style;
+				},
 				parseBBCode: function(msgs) {
 					if (msgs.length==0) return { msg: 0, parsed: 0 };
 					var $msgs = msgs.addClass(cssClass.checkedBBCodeMsg);
@@ -582,10 +627,10 @@ var HHBJSONDATA,hhb;
 				var _platform = this,
 					id = 'hitbox',
 					supportedFeatures = ['ui','emoticon','name_banner','darkmode','bookmark'],
-					cssClass = $.extend(_hhb.cssClass,{
+					cssClass = $.extend(_protected.cssClass,{
 						darkMode: 'hhb-darkmode'
 					}),
-					selector = $.extend(_hhb.selector,{
+					selector = $.extend(_protected.selector,{
 						darkModeAcceptor: 'body',
 						showChatBtn: '.showChat',
 						holderContainer: '.chat-messages',
@@ -600,8 +645,10 @@ var HHBJSONDATA,hhb;
 						chatView: '.chat-messages',
 						chatContainer: '.chatBody',
 						msgList: '.chatBody > li > div',
+						badgeBroadcaster: '.hhb-pf-hitbox .chat-messages .chat-badge-owner',
+						badgeModerator: '.hhb-pf-hitbox .chat-messages .chat-badge-mod'
 					}),
-					limit = $.extend(_hhb.limit,{});
+					limit = $.extend(_protected.limit,{});
 				/* Public methods */
 				/* Initialize */
 				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:dashboard|settings|404|signup|video)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
@@ -751,33 +798,7 @@ var HHBJSONDATA,hhb;
 								_platform.scrollToBottom();
 							});
 				};
-				_platform.genBadgeCss = function(badges) {
-					var style = '';
-					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
-					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
-					
-					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
-						style += [	
-							'.hhb-pf-hitbox .chat-messages .chat-badge-owner {',
-								'margin-right: 3px;',
-								'vertical-align:bottom;',
-								'width:',broadcaster.width,'px;',
-								'height:',broadcaster.height,'px;',
-								'content: url(',broadcaster.img,') no-repeat left bottom;',
-							'}'].join('');
-					}
-					if (moderator.img && moderator.width>0 && moderator.height>0) {
-						style += [	
-							'.hhb-pf-hitbox .chat-messages .chat-badge-mod {',
-								'color: transparent;',
-								'margin-right: 3px;',
-								'width:',moderator.width,'px;',
-								'height:',moderator.height,'px;',
-								'background: url(',moderator.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					return style;
-				};
+				_platform.genBadgeCss = function(badges) { return _platformObj.default.genBadgeCss(badges,selector); };
 				
 				/* BBCode */
 				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
@@ -791,10 +812,10 @@ var HHBJSONDATA,hhb;
 				var _platform = this,
 					id = 'twitch',
 					supportedFeatures = ['ui','emoticon','name_banner','darkmode','bookmark'],
-					cssClass = $.extend(_hhb.cssClass,{
+					cssClass = $.extend(_protected.cssClass,{
 						darkMode: 'hhb-darkmode'
 					}),
-					selector = $.extend(_hhb.selector,{
+					selector = $.extend(_protected.selector,{
 						darkModeAcceptor: 'body',
 						showChatBtn: 'a.button-simple.primary:contains("Show Chat")',
 						holderContainer: '.chat-messages',
@@ -810,13 +831,15 @@ var HHBJSONDATA,hhb;
 						player: 'object[data*="TwitchPlayer.swf"]',
 						chatView: '.chat-messages',
 						chatContainer: '.chat-messages .tse-scroll-content',
-						msgList: '.chat-messages .chat-line'
+						msgList: '.chat-messages .chat-line',
+						badgeBroadcaster: '.hhb-pf-twitch .ember-chat .badges .broadcaster',
+						badgeModerator: '.hhb-pf-twitch .ember-chat .badges .moderator'
 					}),
-					limit = $.extend(_hhb.limit,{});
+					limit = $.extend(_protected.limit,{});
 				/* Public methods */
 				/* Initialize */
 				_platform.isExcluded = function() {  var m=document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:assets|crossdomain|settings|subscriptions|inbox|directory|message)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
-				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(\w+)/i); return (m && m[1]) ? m[1] : ''; }
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:chat\/embed\?channel=)?(\w+)/i); return (m && m[1]) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
 				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-twitch'); };
@@ -1044,31 +1067,7 @@ var HHBJSONDATA,hhb;
 					var names = _platform.getNewNames();
 					return _platformObj.default.bindNameBanner(names);
 				};
-				_platform.genBadgeCss = function(badges) {
-					var style = '';
-					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
-					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
-				
-					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
-						style += [	
-							'.hhb-pf-twitch .ember-chat .badges .broadcaster {',
-								'margin-top:-6px;',
-								'min-width:',(broadcaster.width),'px;',
-								'height:',(broadcaster.width),'px;',
-								'background: url(',broadcaster.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					if (moderator.img && moderator.width>0 && moderator.height>0) {
-						style += [	
-							'.hhb-pf-twitch .ember-chat .badges .moderator {',
-								'margin-top:-6px;',
-								'min-width:',(moderator.width),'px;',
-								'height:',(moderator.width),'px;',
-								'background: url(',moderator.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					return style;
-				};
+				_platform.genBadgeCss = function(badges) { return _platformObj.default.genBadgeCss(badges,selector); };
 				
 				/* BBCode */
 				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
@@ -1082,10 +1081,10 @@ var HHBJSONDATA,hhb;
 				var _platform = this,
 					id = 'justin',
 					supportedFeatures = ['ui','emoticon','name_banner','darkmode','bookmark'],
-					cssClass = $.extend(_hhb.cssClass,{
+					cssClass = $.extend(_protected.cssClass,{
 						darkMode: 'hhb-darkmode'
 					}),
-					selector = $.extend(_hhb.selector,{
+					selector = $.extend(_protected.selector,{
 						darkModeAcceptor: 'body',
 						showChatBtn: '#show-chat:contains("Click to show chat")',
 						holderContainer: '#jtv_chat',
@@ -1099,7 +1098,7 @@ var HHBJSONDATA,hhb;
 						userName: '.global-header-user-info .global-header-username',
 						player: ['#JustinPlayer','object[data*="JustinPlayer.swf"]']
 					}),
-					limit = $.extend(_hhb.limit,{});
+					limit = $.extend(_protected.limit,{});
 				/* Public methods */
 				/* Initialize */
 				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.justin\.tv\/(?:directory|broadcast|dashboard|message|settings|user|p|(?:\w+)\/about)(?:$|\/)/i); return ((m) ? m.length>0 : false); }
@@ -1343,37 +1342,7 @@ var HHBJSONDATA,hhb;
 					var names = _platform.getNewNames();
 					return _platformObj.default.bindNameBanner(names);
 				};
-				_platform.genBadgeCss = function(badges) {
-					var style = '';
-					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
-					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
-				
-					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
-						style += [	
-							'.hhb-pf-justin .tag.broadcaster {',
-								'display:inline-block;',
-								'padding:0px;',
-								'border-radius:0px;',
-								'text-indent: -9999px;',
-								'width:',(broadcaster.width),'px;',
-								'height:',(broadcaster.width),'px;',
-								'backgrund: url(',broadcaster.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					if (moderator.img && moderator.width>0 && moderator.height>0) {
-						style += [	
-							'.hhb-pf-justin .tag.mod {',
-								'display:inline-block;',
-								'padding:0px;',
-								'border-radius:0px;',
-								'text-indent: -9999px;',
-								'width:',(moderator.width),'px;',
-								'height:',(moderator.width),'px;',
-								'background: url(',moderator.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					return style;
-				};
+				_platform.genBadgeCss = function(badges) { return _platformObj.default.genBadgeCss(badges,selector); };
 				
 				/* BBCode */
 				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
@@ -1387,10 +1356,10 @@ var HHBJSONDATA,hhb;
 				var _platform = this,
 					id = 'ustream',
 					supportedFeatures = ['bookmark'],
-					cssClass = $.extend(_hhb.cssClass,{
+					cssClass = $.extend(_protected.cssClass,{
 						darkMode: 'hhb-darkmode'
 					}),
-					selector = $.extend(_hhb.selector,{
+					selector = $.extend(_protected.selector,{
 					/*	darkModeAcceptor: 'body',
 						showChatBtn: '#show-chat:contains("Click to show chat")',
 						holderContainer: '#jtv_chat',
@@ -1404,7 +1373,7 @@ var HHBJSONDATA,hhb;
 						userName: '.userName span',
 						player: ['#UstreamViewer','object[id^="utv"]']
 					}),
-					limit = $.extend(_hhb.limit,{});
+					limit = $.extend(_protected.limit,{});
 				/* Public methods */
 				/* Initialize */
 				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.ustream\.tv\/(?:broadcasterpage|dashboard|socialstream|platform|premium-membership-management|ustream-pro|manage-show|account|metrics|information|home|search|explore|upcoming)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
@@ -1559,37 +1528,7 @@ var HHBJSONDATA,hhb;
 					var names = _platform.getNewNames();
 					return _platformObj.default.bindNameBanner(names);
 				};
-				_platform.genBadgeCss = function(badges) {
-					var style = '';
-					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
-					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
-				
-					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
-						style += [	
-							'.hhb-pf-justin .tag.broadcaster {',
-								'display:inline-block;',
-								'padding:0px;',
-								'border-radius:0px;',
-								'text-indent: -9999px;',
-								'width:',(broadcaster.width),'px;',
-								'height:',(broadcaster.width),'px;',
-								'background: url(',broadcaster.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					if (moderator.img && moderator.width>0 && moderator.height>0) {
-						style += [	
-							'.hhb-pf-justin .tag.mod {',
-								'display:inline-block;',
-								'padding:0px;',
-								'border-radius:0px;',
-								'text-indent: -9999px;',
-								'width:',(moderator.width),'px;',
-								'height:',(moderator.width),'px;',
-								'background: url(',moderator.img,') no-repeat center center;',
-							'}'].join('');
-					}
-					return style;
-				};
+				_platform.genBadgeCss = function(badges) { return _platformObj.default.genBadgeCss(badges,selector); };
 			},
 		};
 		
@@ -1669,6 +1608,7 @@ var HHBJSONDATA,hhb;
 				/* initIconListData */
 				case 'injectIcon':				env.iconInjected = true;	break;
 				case 'analyzeBuiltinIcon':		env.builtinIconLoaded = true;	break;
+				case 'analyzeChannelIcon':		env.channelIconLoaded = true;	break;
 				case 'analyzePlatformIcon':		env.platformIconLoaded = true;	break;
 				case 'analyzeGJTVIcon':			env.gjtvIconLoaded = true;	break;
 				/* initUserInterface */
@@ -1711,6 +1651,7 @@ var HHBJSONDATA,hhb;
 				/* initIconListData */
 				case 'injectIcon':
 				case 'analyzeBuiltinIcon':
+				case 'analyzeChannelIcon':
 				case 'analyzePlatformIcon':
 				case 'analyzeGJTVIcon':
 					if (isStatusSuccess('analyzeBuiltinIcon') && isStatusFinished('analyzePlatformIcon')) setLoadingStatus('initIconListData','complete');
@@ -1902,18 +1843,47 @@ var HHBJSONDATA,hhb;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Injected Icon [I:',count,']');
 					setLoadingStatus('injectIcon','complete');
 				} else {
-					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Injected Icon Failed! [C:',count,']');
+					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Injected Icon Failed!');
 					setLoadingStatus('injectIcon','fail');
 				}
 			};
-			var analyzeBuiltinIcon = function() {
+			var analyzeGenre = function(_genrelist,_options) {
+				if (!_genrelist) return;
+				_options = $.extend({ category: 'builtin' },_options);
+				_genrelist = [].concat(_genrelist);
+				var count = 0;
+				var _category = $.inArray(_options.category,genreCategory);
+				var genreIsDuplicated = function(genre) {
+					if (listGenreLookup[genre]) return true;
+					return false;
+				};
+				var dgenrelist = [];
+				$.each(_genrelist,function(idx,obj) {
+					var tgenre = { name: obj };
+					if (genreIsDuplicated(tgenre.name)) {
+						dgenrelist = dgenrelist.concat(tgenre.name);
+						return true;
+					}
+					listGenreLookup[tgenre.name] = tgenre;
+					tgenre.id = nextGenreID;	nextGenreID++;
+					tgenre.category = _category;
+					tgenre.icons = [];
+					tgenre.isParsed = true;
+					
+					listGenre.push(tgenre);
+					count++;
+				});
+				if (count>0) debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Genre List [ C:',count,', G:',listGenre.length,']');
+				return listGenre;
+			}
+			var analyzeBuiltinIcon = function(_iconlist) {
 				if (retryCount.analyzeBuiltinIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Built-in Icon...'),setLoadingStatus('analyzeBuiltinIcon','init');
 				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Built-in Icon Retry...'),setLoadingStatus('analyzeBuiltinIcon','retry');
-				var iconlist = listIcon, analyzediconlist;
-				analyzediconlist = analyzeIcon(iconlist);
+				var iconlist = (_iconlist) ? _iconlist : listIcon, analyzediconlist;
+				analyzediconlist = analyzeIcon(iconlist,{ category: 'builtin' });
 				if (!analyzediconlist || analyzediconlist.length==0) {
 					if (retryCount.analyzeBuiltinIcon < limit.analyzeBuiltinIcon) {
-						setTimeout(function() { analyzeBuiltinIcon(); },delay.analyzeBuiltinIcon);
+						setTimeout(function() { analyzeBuiltinIcon(_iconlist); },delay.analyzeBuiltinIcon);
 						retryCount.analyzeBuiltinIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Built-in Icon Failed!');
@@ -1921,20 +1891,36 @@ var HHBJSONDATA,hhb;
 					}
 					return;
 				}
-				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Built-in Icon Success [I:',analyzediconlist.length,']');
+				listIcon = listIcon.concat(analyzediconlist);
 				setLoadingStatus('analyzeBuiltinIcon','complete');
 				retryCount.analyzeBuiltinIcon = 0;
+				refreshList();
+			};
+			var analyzeChannelIcon = function(_iconlist) {
+				if (retryCount.analyzeChannelIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Channel Icon...'),setLoadingStatus('analyzeChannelIcon','init');
+				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Channel Icon Retry...'),setLoadingStatus('analyzeChannelIcon','retry');
+				var iconlist = _iconlist, analyzediconlist;
+				analyzediconlist = analyzeIcon(iconlist,{ category: 'channel' });
+				if (!analyzediconlist || analyzediconlist.length==0) {
+					if (retryCount.analyzeChannelIcon < limit.analyzeChannelIcon) {
+						setTimeout(function() { analyzeChannelIcon(_iconlist); },delay.analyzeChannelIcon);
+						retryCount.analyzeChannelIcon++;
+					} else {
+						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Channel Icon Failed!');
+						setLoadingStatus('analyzeChannelIcon','fail')
+					}
+					return;
+				}
+				listIcon = listIcon.concat(analyzediconlist);
+				setLoadingStatus('analyzeChannelIcon','complete');
+				retryCount.analyzeChannelIcon = 0;
 				refreshList();
 			};
 			var analyzePlatformIcon = function() {
 				if (retryCount.analyzePlatformIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Platform Icon...'),setLoadingStatus('analyzePlatformIcon','init');
 				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Platform Icon Retry...'),setLoadingStatus('analyzePlatformIcon','retry');
-				var iconlist, analyzediconlist;
-				if (!env.builtinIconLoaded) return false;
-				iconlist = platformObj.getPlatformIcon();
-				analyzediconlist = analyzeIcon(iconlist);
-				if (!iconlist || iconlist.length==0) {
-					if (retryCount.analyzePlatformIcon < limit.analyzePlatformIcon) {
+				var retry = function(isFail) {
+					if (!isFail && retryCount.analyzePlatformIcon < limit.analyzePlatformIcon) {
 						setTimeout(function() { analyzePlatformIcon(); },delay.analyzePlatformIcon);
 						retryCount.analyzePlatformIcon++;
 					} else {
@@ -1942,11 +1928,15 @@ var HHBJSONDATA,hhb;
 						setLoadingStatus('analyzePlatformIcon','fail');
 					}
 					return false;
-				} else if (!analyzediconlist || analyzediconlist.length==0) {
-					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Platform Icon Failed!');
-					setLoadingStatus('analyzePlatformIcon','fail');
 				}
-				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Platform Icon Success [I:',analyzediconlist.length,']');
+				var iconlist, analyzediconlist;
+				if (!env.builtinIconLoaded) return retry();
+				
+				iconlist = platformObj.getPlatformIcon();
+				analyzediconlist = analyzeIcon(iconlist,{ category: 'platform' });
+				if (!iconlist || iconlist.length==0) return retry();
+				else if (!analyzediconlist || analyzediconlist.length==0) return retry(true);
+				
 				listIcon = listIcon.concat(analyzediconlist);
 				setLoadingStatus('analyzePlatformIcon','complete');
 				retryCount.analyzePlatformIcon = 0;
@@ -1955,38 +1945,7 @@ var HHBJSONDATA,hhb;
 			var analyzeGJTVIcon = function() {
 				if (retryCount.analyzeGJTVIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing GJTV Icon...'),setLoadingStatus('analyzeGJTVIcon','init');
 				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing GJTV Icon Retry...'),setLoadingStatus('analyzeGJTVIcon','retry');
-				var iconlist, analyzediconlist;
-				if (!env.builtinIconLoaded) return;
-				var getGJTVIcon = function() {
-					var list = [], dgenre = [].concat('GJTV');
-					if (	typeof(GoldenJTV) !== 'undefined' &&
-							typeof(GoldenJTV.iconroot) !== 'undefined' && 
-							typeof(GoldenJTV.iconlist) !== 'undefined'
-						) {
-						$.each(GoldenJTV.iconlist,function(idx,obj) {
-							if (obj && obj.code && obj.src && obj.width && obj.height) {
-								var tcode = [].concat(obj.code),
-									tsrc = obj.src,
-									twidth = obj.width,
-									theight = obj.height;
-								if (tsrc.indexOf("http") == -1) tsrc = GoldenJTV.iconroot + tsrc;
-								
-								if (tcode && tsrc && twidth && theight && twidth>0 && theight>0) {
-									list.push({
-										code: tcode,
-										src: tsrc,
-										width: parseInt(twidth), height: parseInt(theight),
-										genre: dgenre
-									});
-								}
-							}
-						});
-					}
-					return list;
-				};
-				iconlist = getGJTVIcon();
-				analyzediconlist = analyzeIcon(iconlist);
-				if (!iconlist || iconlist.length==0) {
+				var retry = function(isFail) {
 					if (retryCount.analyzeGJTVIcon < limit.analyzeGJTVIcon) {
 						setTimeout(function() { analyzeGJTVIcon(); },delay.analyzeGJTVIcon);
 						retryCount.analyzeGJTVIcon++;
@@ -1994,19 +1953,46 @@ var HHBJSONDATA,hhb;
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing GJTV Icon Failed!');
 						setLoadingStatus('analyzeGJTVIcon','fail');
 					}
-					return;
-				} else if (!analyzediconlist || analyzediconlist.length==0) {
-					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing GJTV Icon Failed!');
-					setLoadingStatus('analyzeGJTVIcon','fail');
-					return;
+					return false;
 				}
+				var iconlist, analyzediconlist;
+				if (!env.builtinIconLoaded) return retry();
+				var getGJTVIcon = function() {
+					var list = [], dgenre = [].concat('GJTV');
+					if (GoldenJTV && GoldenJTV.iconRoot && GoldenJTV.iconList) {
+						$.each(GoldenJTV.iconList,function(tgenre,emolist) {
+							$.each(emolist,function(idx,obj) {
+								if (obj && obj.code && obj.src && obj.width && obj.height) {
+									var tcode = [].concat(obj.code),
+										tsrc = obj.src,
+										twidth = obj.width,
+										theight = obj.height;
+									if (tsrc.indexOf("http") == -1) tsrc = GoldenJTV.iconRoot + tsrc;
+									
+									if (tcode && tsrc && twidth && theight && twidth>0 && theight>0) {
+										list.push({
+											code: tcode,
+											src: tsrc,
+											width: parseInt(twidth), height: parseInt(theight),
+											genre: dgenre
+										});
+									}
+								}
+							});
+						});
+					}
+					return list;
+				};
+				iconlist = getGJTVIcon();
+				analyzediconlist = analyzeIcon(iconlist,{ category: 'gjtv' });
+				if (!iconlist || iconlist.length==0)  return retry();
+				else if (!analyzediconlist || analyzediconlist.length==0)  return retry(true);
 				listIcon = listIcon.concat(analyzediconlist);
-				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing GJTV Icon Success [I:',analyzediconlist.length,']');
 				setLoadingStatus('analyzeGJTVIcon','complete');
 				retryCount.analyzeGJTVIcon = 0;
 				refreshList();
 			};
-			var analyzeIcon = function(iconlist) {
+			var analyzeIcon = function(iconlist,_options) {
 				var count = 0;
 				var genreOther = 'Other',
 					genreRecent = 'Recent';
@@ -2015,18 +2001,12 @@ var HHBJSONDATA,hhb;
 				/* Check if code is duplicated */
 				var codeIsDuplicated = function(code) {
 					var ncode = [].concat(code);
-					for (var i=0;i<ncode.length;i++) if (listLookup[ncode[i]]) return true;
+					for (var i=0;i<ncode.length;i++) if (listIconLookup[ncode[i]]) return true;
 					return false;
 				};
 				var dcodelist = [];
 				var rcount = 0,ocount = 0;
-				if (listGenre[0] == genreRecent) {
-					rcount++;
-				}
-				if (listGenre[listGenre.length-1] == genreOther) {
-					ocount++;
-					listGenre.pop();
-				}
+				debugMsg('analyzeIcon',_options,iconlist.length,dcodelist.length);
 				$.each(iconlist,function(idx,obj) {
 					/* analyze Icon */
 					if (obj._comment) return true;
@@ -2036,7 +2016,7 @@ var HHBJSONDATA,hhb;
 						dcodelist = dcodelist.concat(code);
 						return true;
 					}
-					for (var i=0;i<code.length;i++) listLookup[code[i]] = obj;
+					for (var i=0;i<code.length;i++) listIconLookup[code[i]] = obj;
 					var src = (obj.src.match(/^https?/) ? '' : imgHost)+obj.src,
 						genre = (function(genre,code) { var tgenre=[]; if (genre) $.each(genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,code[0]),
 						usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {}),
@@ -2067,10 +2047,8 @@ var HHBJSONDATA,hhb;
 						} else if (iconGenre == genreRecent) {
 							rcount++;
 						} else {
-							$.each(listGenre,function(idx4,genrei) {
-								if (genrei == iconGenre) cg++;
-							});
-							if (cg == 0) listGenre.push(iconGenre);
+							$.each(listGenre,function(idx4,genrei) { if (genrei.name == iconGenre) cg++; });
+							if (cg == 0) analyzeGenre(iconGenre,_options);
 						}
 					});
 					
@@ -2081,12 +2059,8 @@ var HHBJSONDATA,hhb;
 					count++;
 				});
 				
-				if ($.inArray(genreRecent,listGenre) < 0 && rcount>0) {
-					listGenre.unshift(genreRecent);
-				}
-				if ($.inArray(genreOther,listGenre) < 0 && ocount>0) {
-					listGenre.push(genreOther);
-				}
+				analyzeGenre(genreRecent,{ category: 'recent' });
+				if (ocount>0) analyzeGenre(genreOther,{ category: 'other' });
 				listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
 				
 				retryCount.analyzeIcon = 0;
@@ -2097,15 +2071,17 @@ var HHBJSONDATA,hhb;
 			};
 			var refreshList = function() {
 				injectIcon();
-				version.genreList.pending++;
-				version.iconList.pending++;
+				_protected.refreshIconList();
 			}
 			
 			if (isStatusInited('initIconListData')) return false;
 			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initIconListData');
 			setLoadingStatus('initIconListData','init');
-			analyzeBuiltinIcon();
+			//analyzeBuiltinIcon();
 			analyzePlatformIcon();
+			_protected.importGenre = function(_genrelist) { 		if (settings.enable_emotify) analyzeGenre(_genrelist); }
+			_protected.importBuiltinIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeBuiltinIcon(_iconlist); }
+			_protected.importChannelIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeChannelIcon(_iconlist); }
 			/* analyze GJTV Icon in twitch / justin */
 			if ($.inArray(env.platform,['twitch','justin']) >= 0) analyzeGJTVIcon();
 		}
@@ -2267,7 +2243,9 @@ var HHBJSONDATA,hhb;
 				bindHolderToggleBtn();		/* Activate holder toggle button */
 				toggleTimestamps('show');	/* Show timestamps */
 				activateSortMode()			/* Activate sort mode */
-				
+				refreshIconList();
+			};
+			var refreshIconList = function() {
 				version.genreList.pending++;
 				version.iconList.pending++;
 				bindGenreList();	/* list all HihiBox Genre */
@@ -2314,7 +2292,8 @@ var HHBJSONDATA,hhb;
 			}
 			var selectGenre = function(genre) {
 				var act = 'select';
-				var aGenre = ($.inArray(genre,listGenre) >= 0 ? genre : settings.last_genre);
+				var hasGenre = function(genre) { var has=false; $.each(listGenreLookup,function(key,obj) { if (key==genre) { has=true; return false; }}); return has; };
+				var aGenre = (hasGenre(genre) ? genre : settings.last_genre);
 				if (genre=='init'||genre=='refresh') { act = genre; aGenre = settings.last_genre; version.sort.pending++;
 				} else if (aGenre==settings.last_genre) return false;
 				
@@ -2342,16 +2321,20 @@ var HHBJSONDATA,hhb;
 				var palGenre = $(selector.genreContainer).empty();
 				if (!palGenre.length > 0) return;
 				$.each(listGenre,function(idx,obj) {
+					if (!obj.isParsed) return true;
 					palGenre.append(
-						$('<div class="'+cssClass.genre+'" hhb-genre="'+obj+'">'+obj+'</div>')
-							.data('hhb-genre',obj)
+						$('<div class="'+cssClass.genre+'" hhb-genre="'+obj.name+'">'+obj.name+'</div>')
+							.addClass(genreCategory[obj.category])
+							.data('hhb-object',obj)
 							.click(function() {
-								var genre = $(this).data('hhb-genre');
-								selectGenre(genre);
+								var genre = $(this).data('hhb-object');
+								selectGenre(genre.name);
 							})
 					);
 				});
 				version.genreList.current = version.genreList.pending;
+				version.sortGenre.pending++;
+				sortGenreList(true);
 				debugMsg(DEBUG_RUNTIME|DEBUG_REFRESH,'Binded Genre List [G:',listGenre.length,']');
 			};
 			var bindIconList = function() {
@@ -2365,12 +2348,11 @@ var HHBJSONDATA,hhb;
 					var $icon = 
 						$('<div class="'+cssClass.icon+'" hhb-id="'+obj.id+'" hhb-code="'+obj.code[0]+'" hhb-genre="'+obj.genre.join(' ')+'"></div>')
 							.data('hhb-code',obj.code.join(' '))
-							.data('hhb-object',obj)
 							.click(function() {	insertIcon($(this)); })
 							.append($(obj.img)
 								.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
 							);
-					obj.domObject = $icon;
+					obj.domObject = $icon.data('hhb-object',obj);
 					palIconset.append($icon);
 				});
 				selectGenre('init');	/* select default genre */
@@ -2397,6 +2379,7 @@ var HHBJSONDATA,hhb;
 					$iconMsgBox = $(selector.iconMsgBox)
 				resizeIconset();
 				
+				sortGenreList(true);
 				sortIconList(true);
 				showIconMsg();
 			};
@@ -2429,6 +2412,44 @@ var HHBJSONDATA,hhb;
 				_gaTracker('sortMode',act,sortModeClass[aSortMode]);
 				bindIconListLocale();
 				return true;
+			};
+			var sortGenreList = function(forced) {
+				if (version.sortGenre.current==version.sortGenre.pending) return;
+				
+				var tsNow = new Date().getTime();
+				if (!forced && tsNow<timestamps.sortGenreList+delay.sortGenreList) {
+					debugMsg(DEBUG_RUNTIME|DEBUG_FAIL,'Sort Genre List Skipped');
+					return;
+				}
+				setLoadingStatus('sortGenre','init');
+				timestamps.sortGenreList = tsNow;
+				var f_genre_sort_id = function(a, b) {
+					var $a = $.data(a,'hhb-object'), $b = $.data(b,'hhb-object');
+					return 	(!$a.isParsed) ? 1 : 
+							(!$b.isParsed) ? -1 : 
+								($a.id<$b.id) ? -1 :
+								($a.id>$b.id) ? 1 : 0;
+				}
+				var f_genre_sort_category = function(a, b) {
+					var $a = $.data(a,'hhb-object'), $b = $.data(b,'hhb-object');
+					return 	(!$a.isParsed) ? 1 : 
+							(!$b.isParsed) ? -1 : 
+								($a.category>$b.category) ? -1 :
+								($a.category<$b.category) ? 1 :
+									($a.id<$b.id) ? -1 :
+									($a.id>$b.id) ? 1 : 0;
+				}
+				var f_current_sort = function() {
+					return f_genre_sort_category;
+				}
+				var f_sort = f_current_sort();
+				var $orgGenre = $(selector.genreContainerGenre);
+				var $newOrder = $orgGenre.sort(f_sort);
+				$(selector.genreContainer).append($newOrder);
+				
+				version.sortGenre.current = version.sortGenre.pending;
+				setLoadingStatus('sortGenre','complete');
+				debugMsg(DEBUG_RUNTIME|DEBUG_SUCCESS,'Sort Genre List [V:',version.sortGenre.current,',C:',$newOrder.length,',T:',timer.sortGenre,']');
 			};
 			var sortIconList = function(forced) {
 				if (version.sort.current==version.sort.pending) return;
@@ -2634,6 +2655,7 @@ var HHBJSONDATA,hhb;
 			};
 			var checkMsgInputUrl = function() {
 				var msg = platformObj.getMsgInput();
+				if (!msg || msg == '') return false;
 				var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
 				var reurl = /((?:https?|ftp)\:\/\/(?:[^\s]*))/ig;
 				var nmsg = msg.replace(rebbcode,'');
@@ -2733,15 +2755,18 @@ var HHBJSONDATA,hhb;
 						var tusage = $.extend({count:0,lastUsed:0},obj.usage);
 						var tcode = (obj.code ? obj.code : '');
 						var tgenre = (obj.genre ? obj.genre : []);
+						var ticon = (obj.icon ? obj.icon : {});
 						tpusage[key] = tusage;
+						var ousage = $.extend({count:0,lastUsed:0},ticon.usage);
+						ticon.usage = $.extend(ousage,{	count: ousage.count + tusage.count, lastUsed: tusage.lastUsed });
 						count++;
 						
 						if (tcode!='') _gaTracker('icon','send',obj.code,tusage.count);
 						$.each(tgenre,function(key,obj) {
 							if (obj=='') return;
-							if (obj.toLowerCase()=='recent') return ;
 							_gaTracker('genre','use',obj,tusage.count);
 						});
+						if (ticon.domObject) ticon.domObject.addClass('recent');
 					});
 					listPendingUsage = {};
 					if (count==0) return false;
@@ -2779,6 +2804,7 @@ var HHBJSONDATA,hhb;
 			setLoadingStatus('initEmoticon','init');
 			initializeHotkey();
 			bindUIControl();
+			_protected.refreshIconList = refreshIconList;
 		};
 		var initNameBanner = function(nblist,nbcontrol) {
 			if (!nblist || !nbcontrol) return false;
@@ -2873,6 +2899,10 @@ var HHBJSONDATA,hhb;
 							delete olist[clist[i]];
 						}
 					}
+				}
+				/* Channel icon list */
+				if (objChannel.iconlist && $.isArray(objChannel.iconlist)) {
+					_protected.importChannelIcon(objChannel.iconlist);
 				}
 				/* remove namespace */
 				/* generate css */
@@ -3053,9 +3083,13 @@ var HHBJSONDATA,hhb;
 				}
 				
 			}
-			var toggleBookmark = function() {
-				/* Make a simple request: */
+			var toggleBookmark = function(_options) {
+				var _cinfo = {
+					links_custom: 		(_options && _options.link) ? _options.link : '',
+					links_custom_chat: 	(_options && _options.chat) ? _options.chat : ''
+				};
 				var _bookmark = { platform: env.platform, channel: env.channel };
+				$.extend(_bookmark,_cinfo);
 				sendMessage({toggleBookmark: _bookmark},function(response) {
 					if (!response) $(selector.bookmarkBtn).hide();
 					else if (response.success) checkIsBookmarked();
@@ -3136,13 +3170,11 @@ var HHBJSONDATA,hhb;
 		this.importIconList = function(igenre,ilist) {
 			if (!env.listeningIconListData) return false;
 			if (igenre && ilist) {
-				if (settings.enable_emotify) {
-					listGenre = igenre;
-					listIcon = ilist;
-				}
 				initIconListData();
 				initIncomingParser();
 				initEmoticon();
+				_protected.importGenre(igenre);
+				_protected.importBuiltinIcon(ilist);
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Imported Icon List [G:',listGenre.length,', I:',listIcon.length,']');
 			} else {
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_FAIL,'Import Icon List Failed!');
@@ -3266,7 +3298,7 @@ var HHBJSONDATA,hhb;
 								var HHBJSONDATA = window.HHBJSONDATA;
 								hhb.importNameBanner(
 									HHBJSONDATA.listNameBanner,
-									HHBJSONDATA.listNBControlList
+									HHBJSONDATA.listNBControl
 								);
 							});
 					}
