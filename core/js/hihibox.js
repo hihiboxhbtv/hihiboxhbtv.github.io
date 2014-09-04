@@ -383,9 +383,9 @@ var HHBJSONDATA,hhb;
 								'<div id="'+idObj.bbCodeBtn+'" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.popupBtn+'" hhb-locale-title="{{iconlist.popup_fixed}}" title="Popup" class="funcIcon">&nbsp;</div>'+
 								'<span class="version" title="">'+infoObj.coreVersion+'</span>'+
-								'<a href="http://bit.ly/hihiboxhbtv" target="_new"><span class="name" title="">'+infoObj.name+'</span></a>'+
-								'<a href="http://bit.ly/hihiboxhbtv" target="_new" class="hhb"><div class="icon hhb" hhb-locale-title="{{iconlist.site}}" title="Website"></div></a>'+
-								'<a href="https://www.facebook.com/hihiboxhbtv" target="_new" class="fb"><div class="icon fb" hhb-locale-title="{{iconlist.fbpage}}" title="Facebook Page"></div></a></div>'+
+								'<a href="http://bit.ly/hihibox_site" target="_new" class="hhb"><span class="name" title="">'+infoObj.name+'</span></a>'+
+								'<a href="http://bit.ly/hihibox_site" target="_new" class="hhb"><div class="icon hhb" hhb-locale-title="{{iconlist.site}}" title="Website"></div></a>'+
+								'<a href="http://bit.ly/hihibox_fb" target="_new" class="fb"><div class="icon fb" hhb-locale-title="{{iconlist.fbpage}}" title="Facebook Page"></div></a></div>'+
 								'<div id="'+idObj.genreContainer+'"></div>'+
 								'<div id="'+idObj.iconset+'"></div>'+
 							'</div>');
