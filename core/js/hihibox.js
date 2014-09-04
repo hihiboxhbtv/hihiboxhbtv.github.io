@@ -2680,6 +2680,7 @@ var HHBJSONDATA,hhb;
 							} else {
 								filterIcon();
 								insertSelectedIcon(true);
+								return false;
 							}
 						} else if (e.which == 9) {	/* Press [Tab] */
 							filterIcon();
