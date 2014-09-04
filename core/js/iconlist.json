@@ -363,7 +363,7 @@ HHBJSONDATA.listIcon = [
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":o)lm",":o)2lm",":o)lm2"],
+	{	"code": [":o)lm",":o)2lm"],
 		"src": "lomore/clown.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
