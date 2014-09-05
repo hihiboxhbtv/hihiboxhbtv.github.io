@@ -460,7 +460,7 @@ body.hhb-pf-twitch.hhb-darkmode.error_500,body.hhb-pf-twitch.hhb-darkmode.error_
 .hhb-pf-twitch.hhb-darkmode .ember-chat .moderation-card h3.name {color:#000;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .moderation-card h3.name a {color:#000;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-messages .timestamp {color:#686868;}
-.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-messages .chat-line {color:#cdcdcd;}
+.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-messages .chat-line {color:#cdcdcd;background-color:inherit;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-messages .chat-line .indicator {border-left:4px solid #9bbe5a;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-messages .chat-line.admin .message,.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-messages .chat-line.notification .message {color:#999;}
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-interface .emoticon-selector .subscribe-message {border-top:1px solid #616161;background:#595959;}

@@ -381,6 +381,7 @@ a:hover > .hhb-name-name {
 
 .hhb-pf-twitch span .hhb-name-name { margin-bottom: -6px; }
 .hhb-pf-twitch span:hover .hhb-name-name { text-decoration: underline; }
+/*.hhb-pf-twitch .ember-chat .chat-messages .chat-line { background-color: inherit; }*/
 .hhb-pf-justin a .hhb-name-name { margin-bottom: -3px; }
 
 .hhb-darkmode .hhb-name-banner:hover {
