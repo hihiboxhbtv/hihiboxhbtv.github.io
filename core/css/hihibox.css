@@ -381,7 +381,6 @@ a:hover > .hhb-name-name {
 
 .hhb-pf-twitch span .hhb-name-name { margin-bottom: -6px; }
 .hhb-pf-twitch span:hover .hhb-name-name { text-decoration: underline; }
-/*.hhb-pf-twitch .ember-chat .chat-messages .chat-line { background-color: inherit; }*/
 .hhb-pf-justin a .hhb-name-name { margin-bottom: -3px; }
 
 .hhb-darkmode .hhb-name-banner:hover {
@@ -425,9 +424,9 @@ a:hover > .hhb-name-name {
 	vertical-align: text-bottom !important;
 } */
 /* [S:2014-07-30] */
-.hhb-pf-hitbox .chatBody .title {
-	margin-bottom: 0.25em;
-}
+.hhb-pf-hitbox .chatBody .title { margin-bottom: 0.25em; }
+/* [S:2014-09-06] */
+.hhb-pf-hitbox .chatBody li.from_ { margin-bottom: 8px; }
 
 /* [S:2014-08-01] */
 .hhb-bbcode-url {
@@ -438,4 +437,8 @@ a:hover > .hhb-name-name {
 	max-height: 155px;
 	margin-top: 10px;
 	vertical-align: text-bottom;
+}
+/* [S:2014-09-06] */
+.hhb-bbcode-img-tag {
+	display: inline-block;
 }
