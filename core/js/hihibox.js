@@ -105,8 +105,8 @@ var HHBJSONDATA,hhb;
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v2.1',
-		lastUpdate: '2014-08-26'
+		coreVersion: 'v2.2',
+		lastUpdate: '2014-09-08'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -271,7 +271,7 @@ var HHBJSONDATA,hhb;
 				loadedFeatures: [],
 				listeningIconListData: false,
 				listeningNameBannerData: false,
-				importReady: false,
+				importIconReady: false,
 				isInitialize: false,
 					isIconListDataInited: false,
 						iconInjected: false,
@@ -1740,8 +1740,8 @@ var HHBJSONDATA,hhb;
 			sendMessage({updateLastWatch: _channel},function(response) {});
 			
 			env.isInitialize = true;
-			pollUsage();
-			pollSettings();
+			pullUsage();
+			pullSettings();
 		};
 		
 		/* Chrome extension communication */
@@ -1751,7 +1751,7 @@ var HHBJSONDATA,hhb;
 					callback.apply(this,[response]);
 				});
 		}
-		var pollSettings = function() {
+		var pullSettings = function() {
 			sendMessage({getSettings: true},
 				function(response) {
 					if (!response) return;
@@ -1760,7 +1760,7 @@ var HHBJSONDATA,hhb;
 					env.settingsLoaded = true;
 					$.extend(settings,response.settings);
 					bindIconListLocale();
-					debugMsg(DEBUG_EXT,'pollSettings',settings);
+					debugMsg(DEBUG_EXT,'pullSettings',settings);
 					/* initialize core */
 					initialize();
 				});
@@ -1782,16 +1782,16 @@ var HHBJSONDATA,hhb;
 					});
 			}
 		};
-		var pollUsage = function() {
+		var pullUsage = function() {
 			sendMessage({getUsage: true},
 				function(response) {
 					if (!response) return;
 					if (!response.success) return;
 					if (!response.usage) return;
 					env.usageLoaded = true;
-					env.importReady = true;
+					env.importIconReady = true;
 					$.extend(listUsage,response.usage);
-					debugMsg(DEBUG_EXT,'pollUsage',listUsage);
+					debugMsg(DEBUG_EXT,'pullUsage',listUsage);
 				});
 		};
 		var pushUsage = function(newUsage) {
@@ -1946,7 +1946,7 @@ var HHBJSONDATA,hhb;
 				if (retryCount.analyzeGJTVIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing GJTV Icon...'),setLoadingStatus('analyzeGJTVIcon','init');
 				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing GJTV Icon Retry...'),setLoadingStatus('analyzeGJTVIcon','retry');
 				var retry = function(isFail) {
-					if (retryCount.analyzeGJTVIcon < limit.analyzeGJTVIcon) {
+					if (!isFail && retryCount.analyzeGJTVIcon < limit.analyzeGJTVIcon) {
 						setTimeout(function() { analyzeGJTVIcon(); },delay.analyzeGJTVIcon);
 						retryCount.analyzeGJTVIcon++;
 					} else {
@@ -2012,6 +2012,7 @@ var HHBJSONDATA,hhb;
 					if (obj._comment) return true;
 					if (!obj.code || obj.code.length==0) return true;
 					var code = [].concat(obj.code);
+					if (_options.genre) obj.genre = (obj.genre||[]).concat(_options.genre);
 					if (codeIsDuplicated(code)) {
 						dcodelist = dcodelist.concat(code);
 						return true;
@@ -2742,6 +2743,7 @@ var HHBJSONDATA,hhb;
 				});
 			};
 			
+			/* Icon usage */
 			var addPendingUsage = function(idxcode,objIcon,code) {
 				var usage = (listPendingUsage[idxcode]) ? listPendingUsage[idxcode].usage : { count:0, lastUsed:0 };
 				usage = {	count: usage.count+1, 
@@ -2782,22 +2784,6 @@ var HHBJSONDATA,hhb;
 							debugMsg(DEBUG_EXT,'Icon Usage Committed');
 						});
 				}
-			};
-			var resetUsage = function() {
-				$.each(listIcon,function(key,obj) {
-					var icon = obj;
-					var idx = icon.genre.indexOf('Recent');
-					if (idx > -1) icon.genre.splice(idx, 1);
-					icon.usage.count = 0;
-					icon.usage.lastUsed = 0;
-					icon.domObject.attr('hhb-genre',icon.genre.join(' '));
-				});
-				listUsage = {};
-				clearUsage();
-				version.sort.pending++;
-				sortIconList();
-				selectGenre('refresh');
-				debugMsg(DEBUG_EXT,'Usage Data Reset!');
 			};
 			
 			if (isStatusInited('initEmoticon')) return false;
@@ -3165,17 +3151,17 @@ var HHBJSONDATA,hhb;
 		
 		/* Public methods */
 		this.isInitialize = function() {	return env.isInitialize;	};
-		this.isReadyForImport = function() {	return env.importReady;	};
+		this.isReadyForIconImport = function() {	return env.importIconReady;	};
 		this.getFeatures = function() {	return env.features };
 		this.getLoadingStatus = function() {	return loadingStatus;	};
-		this.importIconList = function(igenre,ilist) {
+		this.importIconList = function(_igenre,_ilist) {
 			if (!env.listeningIconListData) return false;
-			if (igenre && ilist) {
+			if (_igenre && _ilist) {
 				initIconListData();
 				initIncomingParser();
 				initEmoticon();
-				_protected.importGenre(igenre);
-				_protected.importBuiltinIcon(ilist);
+				_protected.importGenre(_igenre);
+				_protected.importBuiltinIcon(_ilist);
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Imported Icon List [G:',listGenre.length,', I:',listIcon.length,']');
 			} else {
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_FAIL,'Import Icon List Failed!');
@@ -3197,7 +3183,7 @@ var HHBJSONDATA,hhb;
 			}
 		};
 		this.scrollToBottom = function() { platformObj.scrollToBottom(); };
-
+		
 		envCheck();
 		
 		return this;
@@ -3275,7 +3261,7 @@ var HHBJSONDATA,hhb;
 				
 				var features = hhb.getFeatures();
 				var tryImport = function() {
-					if (!hhb.isReadyForImport()) {
+					if (!hhb.isReadyForIconImport()) {
 						setTimeout(tryImport,10);
 						console.log('[HihiBox]','Import Data List Retry');		/* debug */
 						return;
