@@ -181,6 +181,7 @@ var HHBJSONDATA,hhb;
 			},
 			delay: {
 				analyzeBuiltinIcon: 200,
+				analyzeCustomIcon: 200,
 				analyzeChannelIcon: 200,
 				analyzePlatformIcon: 500,
 				analyzeGJTVIcon: 1000,
@@ -210,8 +211,9 @@ var HHBJSONDATA,hhb;
 			},
 			limit: {
 				msgIconHeight: 60,
-				analyzeBuiltinIcon: 30,
-				analyzeChannelIcon: 30,
+				analyzeBuiltinIcon: 1,
+				analyzeCustomIcon: 1,
+				analyzeChannelIcon: 1,
 				analyzePlatformIcon: 30,
 				analyzeGJTVIcon: 30,
 				activateRebindUIBtn: 30,
@@ -221,7 +223,7 @@ var HHBJSONDATA,hhb;
 			supportedPlatform: ['hitbox','twitch','justin','ustream'],
 			listGenre: [],
 			listIcon: [],
-			genreCategory: ['other','gjtv','platform','builtin','channel','recent'],
+			genreCategory: ['other','gjtv','platform','builtin','custom','channel','recent'],
 			defaultConfig: {
 				genre: 'HKG',
 				darkMode: 'light',
@@ -271,7 +273,7 @@ var HHBJSONDATA,hhb;
 				loadedFeatures: [],
 				listeningIconListData: false,
 				listeningNameBannerData: false,
-				importReady: false,
+				importIconReady: false,
 				isInitialize: false,
 					isIconListDataInited: false,
 						iconInjected: false,
@@ -299,6 +301,7 @@ var HHBJSONDATA,hhb;
 			loadingStatus = {},
 			retryCount = {
 				analyzeBuiltinIcon: 0,
+				analyzeCustomIcon: 0,
 				analyzeChannelIcon: 0,
 				analyzePlatformIcon: 0,
 				analyzeGJTVIcon: 0,
@@ -328,6 +331,7 @@ var HHBJSONDATA,hhb;
 				initIconListData: 			{ start: 0, end: 0, duration: 0 },
 					injectIcon: 			{ start: 0, end: 0, duration: 0 },
 					analyzeBuiltinIcon: 	{ start: 0, end: 0, duration: 0 },
+					analyzeCustomIcon:		{ start: 0, end: 0, duration: 0 },
 					analyzeChannelIcon:		{ start: 0, end: 0, duration: 0 },
 					analyzePlatformIcon: 	{ start: 0, end: 0, duration: 0 },
 					analyzeGJTVIcon: 		{ start: 0, end: 0, duration: 0 },
@@ -356,6 +360,7 @@ var HHBJSONDATA,hhb;
 			listParse = [],
 			listIconLookup = {},
 			listGenreLookup = {},
+			listCustomIconLookup = {},
 			listNameBanner = {},
 			nextGenreID = 1,
 			nextIconID = 1,
@@ -383,9 +388,9 @@ var HHBJSONDATA,hhb;
 								'<div id="'+idObj.bbCodeBtn+'" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.popupBtn+'" hhb-locale-title="{{iconlist.popup_fixed}}" title="Popup" class="funcIcon">&nbsp;</div>'+
 								'<span class="version" title="">'+infoObj.coreVersion+'</span>'+
-								'<a href="http://bit.ly/hihiboxhbtv" target="_new"><span class="name" title="">'+infoObj.name+'</span></a>'+
+								'<a href="http://bit.ly/hihiboxhbtv" target="_new" class="hhb"><span class="name" title="">'+infoObj.name+'</span></a>'+
 								'<a href="http://bit.ly/hihiboxhbtv" target="_new" class="hhb"><div class="icon hhb" hhb-locale-title="{{iconlist.site}}" title="Website"></div></a>'+
-								'<a href="https://www.facebook.com/hihiboxhbtv" target="_new" class="fb"><div class="icon fb" hhb-locale-title="{{iconlist.fbpage}}" title="Facebook Page"></div></a></div>'+
+								'<a href="http://bit.ly/hihibox_fb" target="_new" class="fb"><div class="icon fb" hhb-locale-title="{{iconlist.fbpage}}" title="Facebook Page"></div></a></div>'+
 								'<div id="'+idObj.genreContainer+'"></div>'+
 								'<div id="'+idObj.iconset+'"></div>'+
 							'</div>');
@@ -529,13 +534,11 @@ var HHBJSONDATA,hhb;
 					var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
 					var rehtmltag = /<[^>]*>/ig;
 					var bbcode = [
-						{	tag: 'url',
-							match: /(\[url\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/url\])/ig,
+						{	tag: 'url',	match: /(\[url\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/url\])/ig,
 							replace: "<a href=\"$2\" target=\"_blank\" class=\"hhb-bbcode-url\" alt=\"$1$2$3\">$2<\/a>"
 						},
-						{	tag: 'img',
-							match: /(\[img\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/img\])/ig,
-							replace: "<span class='hhb-bbcode-img-tag'><a href=\"$2\" target=\"_blank\"><img src=\"$2\" class=\"hhb-bbcode-img\" alt=\"$1$2$3\" onload=\"hhb.scrollToBottom();\"><\/a></span>"
+						{	tag: 'img',	match: /(\[img\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/img\])/ig,
+							replace: "<span class='hhb-bbcode-img-tag' hhb-src=\"$2\"><a href=\"$2\" target=\"_blank\"><img src=\"$2\" class=\"hhb-bbcode-img\" alt=\"$1$2$3\" onload=\"hhb.scrollToBottom();\"><\/a></span>"
 						}
 					];
 					$msgs.each(function() {
@@ -564,8 +567,22 @@ var HHBJSONDATA,hhb;
 						$(this).html(ohtml);
 					});
 					$msgs.find('.hhb-bbcode-img').error(function() {
+						$(this).parents('.hhb-bbcode-img-tag').find('.hhb-custom-icon-add').detach();
 						$(this).replaceWith($('<span>',{ text: $(this)[0].src, alt: $(this)[0].alt }));
 					});
+					/* custom icon - add */
+					var $imgTags = $msgs.find('.hhb-bbcode-img-tag:not(:has(.hhb-custom-icon-add))');
+					$imgTags.prepend(
+						$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" title="HihiBox - Add to Custom">').click(function(e) {
+							e.stopPropagation();
+							var tcode = prompt('Please enter code for this img (split with <space> or \',\'):','');
+							if (tcode == null) return false;
+							var src = $(this).parents('.hhb-bbcode-img-tag').attr('hhb-src');
+							_protected.addCustomIcon(src,tcode);
+						})
+					);
+					if ($imgTags.length>0 && _protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
+					
 					return {
 						msg: $msgs.length,
 						parsed: pcount
@@ -575,8 +592,8 @@ var HHBJSONDATA,hhb;
 					if (txtarea) {
 						var omsg = txtarea.value;
 						var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
-						var reimg = /((?:https?|ftp)[^#?\s]+(?:\.(?:gif|png|jpe?g))(?:[^\s]*))/ig;
-						var reurl = /((?:https?|ftp)(?:[^\s]*))/ig;
+						var reimg = /((?:https?|ftp)[^#?\s]+(?:\.(?:gif|png|jpe?g))(?:[^\s\[]*))/ig;
+						var reurl = /((?:https?|ftp)(?:[^\s\[]*))/ig;
 						var bbcodem = omsg.match(rebbcode);
 						var imgm = omsg.match(reimg);
 						var urlm = omsg.match(reurl);
@@ -1608,6 +1625,7 @@ var HHBJSONDATA,hhb;
 				/* initIconListData */
 				case 'injectIcon':				env.iconInjected = true;	break;
 				case 'analyzeBuiltinIcon':		env.builtinIconLoaded = true;	break;
+				case 'analyzeCustomIcon':		env.customIconLoaded = true;	break;
 				case 'analyzeChannelIcon':		env.channelIconLoaded = true;	break;
 				case 'analyzePlatformIcon':		env.platformIconLoaded = true;	break;
 				case 'analyzeGJTVIcon':			env.gjtvIconLoaded = true;	break;
@@ -1651,6 +1669,7 @@ var HHBJSONDATA,hhb;
 				/* initIconListData */
 				case 'injectIcon':
 				case 'analyzeBuiltinIcon':
+				case 'analyzeCustomIcon':
 				case 'analyzeChannelIcon':
 				case 'analyzePlatformIcon':
 				case 'analyzeGJTVIcon':
@@ -1740,8 +1759,8 @@ var HHBJSONDATA,hhb;
 			sendMessage({updateLastWatch: _channel},function(response) {});
 			
 			env.isInitialize = true;
-			pollUsage();
-			pollSettings();
+			pullUsage();
+			pullSettings();
 		};
 		
 		/* Chrome extension communication */
@@ -1751,7 +1770,7 @@ var HHBJSONDATA,hhb;
 					callback.apply(this,[response]);
 				});
 		}
-		var pollSettings = function() {
+		var pullSettings = function() {
 			sendMessage({getSettings: true},
 				function(response) {
 					if (!response) return;
@@ -1759,8 +1778,10 @@ var HHBJSONDATA,hhb;
 					if (!response.settings) return;
 					env.settingsLoaded = true;
 					$.extend(settings,response.settings);
+					if (settings.enable_bbcode) $('body').addClass('hhb-enable-bbcode');
+					if (settings.enable_emotify) $('body').addClass('hhb-enable-emotify');
 					bindIconListLocale();
-					debugMsg(DEBUG_EXT,'pollSettings',settings);
+					debugMsg(DEBUG_EXT,'pullSettings',settings);
 					/* initialize core */
 					initialize();
 				});
@@ -1782,16 +1803,16 @@ var HHBJSONDATA,hhb;
 					});
 			}
 		};
-		var pollUsage = function() {
+		var pullUsage = function() {
 			sendMessage({getUsage: true},
 				function(response) {
 					if (!response) return;
 					if (!response.success) return;
 					if (!response.usage) return;
 					env.usageLoaded = true;
-					env.importReady = true;
+					env.importIconReady = true;
 					$.extend(listUsage,response.usage);
-					debugMsg(DEBUG_EXT,'pollUsage',listUsage);
+					debugMsg(DEBUG_EXT,'pullUsage',listUsage);
 				});
 		};
 		var pushUsage = function(newUsage) {
@@ -1896,6 +1917,27 @@ var HHBJSONDATA,hhb;
 				retryCount.analyzeBuiltinIcon = 0;
 				refreshList();
 			};
+			var analyzeCustomIcon = function(_iconlist) {
+				if (retryCount.analyzeCustomIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Custom Img Icon...'),setLoadingStatus('analyzeCustomIcon','init');
+				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Custom Img Icon Retry...'),setLoadingStatus('analyzeCustomIcon','retry');
+				var iconlist = _iconlist, analyzediconlist;
+				analyzediconlist = analyzeIcon(iconlist,{ category: 'custom', genre: 'Custom' });
+				if (!analyzediconlist || analyzediconlist.length==0) {
+					if (retryCount.analyzeCustomIcon < limit.analyzeCustomIcon) {
+						setTimeout(function() { analyzeCustomIcon(_iconlist); },delay.analyzeCustomIcon);
+						retryCount.analyzeCustomIcon++;
+					} else {
+						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Custom Img Icon Failed!');
+						setLoadingStatus('analyzeCustomIcon','fail')
+					}
+					return;
+				}
+				listIcon = listIcon.concat(analyzediconlist);
+				setLoadingStatus('analyzeCustomIcon','complete');
+				retryCount.analyzeCustomIcon = 0;
+				refreshList(true);
+				if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
+			};
 			var analyzeChannelIcon = function(_iconlist) {
 				if (retryCount.analyzeChannelIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Channel Icon...'),setLoadingStatus('analyzeChannelIcon','init');
 				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Channel Icon Retry...'),setLoadingStatus('analyzeChannelIcon','retry');
@@ -1946,7 +1988,7 @@ var HHBJSONDATA,hhb;
 				if (retryCount.analyzeGJTVIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing GJTV Icon...'),setLoadingStatus('analyzeGJTVIcon','init');
 				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing GJTV Icon Retry...'),setLoadingStatus('analyzeGJTVIcon','retry');
 				var retry = function(isFail) {
-					if (retryCount.analyzeGJTVIcon < limit.analyzeGJTVIcon) {
+					if (!isFail && retryCount.analyzeGJTVIcon < limit.analyzeGJTVIcon) {
 						setTimeout(function() { analyzeGJTVIcon(); },delay.analyzeGJTVIcon);
 						retryCount.analyzeGJTVIcon++;
 					} else {
@@ -2005,13 +2047,16 @@ var HHBJSONDATA,hhb;
 					return false;
 				};
 				var dcodelist = [];
-				var rcount = 0,ocount = 0;
+				var rcount = 0,ocount = 0,pcount = 0;
 				debugMsg('analyzeIcon',_options,iconlist.length,dcodelist.length);
 				$.each(iconlist,function(idx,obj) {
 					/* analyze Icon */
 					if (obj._comment) return true;
 					if (!obj.code || obj.code.length==0) return true;
+					var tcode = [].concat(obj.code);
+					if (obj.alt&&obj.alt!='') obj.code.unshift(obj.alt);
 					var code = [].concat(obj.code);
+					if (_options.genre) obj.genre = (obj.genre||[]).concat(_options.genre);
 					if (codeIsDuplicated(code)) {
 						dcodelist = dcodelist.concat(code);
 						return true;
@@ -2020,8 +2065,8 @@ var HHBJSONDATA,hhb;
 					var src = (obj.src.match(/^https?/) ? '' : imgHost)+obj.src,
 						genre = (function(genre,code) { var tgenre=[]; if (genre) $.each(genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,code[0]),
 						usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {}),
-						codelist = code.join(", "),
-						title = codelist,
+						alt = (obj.alt?obj.alt:'');
+						title = tcode.join(", "),
 						tstyle = '';
 						tstyle += (obj.width) ? 'width:'+obj.width+'px;' : '',
 						tstyle += (obj.height) ? 'height:'+obj.height+'px;' : '';
@@ -2052,8 +2097,12 @@ var HHBJSONDATA,hhb;
 						}
 					});
 					
-					/* add to parse list */
-					listParse.push(obj);
+					/* add to custom icon lookup list */
+					if (obj.isCustom) listCustomIconLookup[obj.src] = obj;
+					else {	/* add to parse list */
+						listParse.push(obj);
+						pcount++;
+					}
 					/* add to new icon list */
 					analyzediconlist.push(obj);
 					count++;
@@ -2061,7 +2110,7 @@ var HHBJSONDATA,hhb;
 				
 				analyzeGenre(genreRecent,{ category: 'recent' });
 				if (ocount>0) analyzeGenre(genreOther,{ category: 'other' });
-				listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
+				if (pcount>0) listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
 				
 				retryCount.analyzeIcon = 0;
 				
@@ -2069,19 +2118,50 @@ var HHBJSONDATA,hhb;
 				if (count>0) debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Icon List [ T:',iconlist.length,', G:',listGenre.length,', P:',listParse.length,']');
 				return analyzediconlist;
 			};
-			var refreshList = function() {
-				injectIcon();
+			var refreshList = function(skipInject) {
+				if (!skipInject) injectIcon();
 				_protected.refreshIconList();
 			}
+			/* Custom Icon */
+			var addCustomIcon = function(url,code) {
+				var tcode = code.trim().split(/[\s,]/),tcodelist=[];
+				var st = (new Date()).getTime();
+				$.each(tcode,function(idx,_code) { if (listIconLookup[_code]) alert('Code '+_code+' is in use'); else tcodelist.push(_code); });
+				if (tcodelist.length == 0) return false;
+				$("<img/>").attr("src", url).load(function(){
+					s = {w:this.width, h:this.height};
+					var icon = {	code: [].concat(tcodelist),src: url,
+									width: s.w, height: s.h,
+									alt: ['[img]',url,'[/img]'].join(''),
+									isCustom: true
+								};
+					_hhb.importCustomIcon([icon]);
+					if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
+					debugMsg(DEBUG_RUNTIME,'addCustomIcon',tcodelist,url);
+				});
+			};
+			var removeCustomIcon = function(url) {
+				var obj = listCustomIconLookup[url];
+				if (obj.code) $.each(obj.code,function(idx,code) { delete listIconLookup[code]; });
+				obj.domObject.detach();
+				for (var i=0;i<listIcon.length;i++) { if (listIcon[i].src!=url) continue; listIcon.splice(i,1); i--; };
+				$.each(obj.code,function(idx,code) { delete listIconLookup[code]; });
+				delete listCustomIconLookup[url];
+				if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
+				if (_protected.showIconMsg) _protected.showIconMsg();
+				debugMsg(DEBUG_RUNTIME,'removeCustomIcon',obj,listCustomIconLookup);
+			};
 			
 			if (isStatusInited('initIconListData')) return false;
 			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initIconListData');
 			setLoadingStatus('initIconListData','init');
-			//analyzeBuiltinIcon();
 			analyzePlatformIcon();
 			_protected.importGenre = function(_genrelist) { 		if (settings.enable_emotify) analyzeGenre(_genrelist); }
 			_protected.importBuiltinIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeBuiltinIcon(_iconlist); }
 			_protected.importChannelIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeChannelIcon(_iconlist); }
+			_hhb.importCustomIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeCustomIcon(_iconlist); }
+			_protected.addCustomIcon = addCustomIcon;
+			_protected.removeCustomIcon = removeCustomIcon;
 			/* analyze GJTV Icon in twitch / justin */
 			if ($.inArray(env.platform,['twitch','justin']) >= 0) analyzeGJTVIcon();
 		}
@@ -2163,7 +2243,7 @@ var HHBJSONDATA,hhb;
 					else $buttonCon.append($palButton);
 					platformObj.onBindedToggleButton();
 					activatePopupToggle();
-					activateAutoCompleteBBCodeBtn();
+					if (settings.enable_bbcode) activateAutoCompleteBBCodeBtn();
 					retryCount.bindButtonUI = 0;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Toggle Button UI');
 					setLoadingStatus('bindButtonUI','complete');
@@ -2244,7 +2324,7 @@ var HHBJSONDATA,hhb;
 			var bindUIControl = function() {
 				bindHolderToggleBtn();		/* Activate holder toggle button */
 				toggleTimestamps('show');	/* Show timestamps */
-				activateSortMode()			/* Activate sort mode */
+				if (settings.enable_emotify) activateSortMode()			/* Activate sort mode */
 				refreshIconList();
 			};
 			var refreshIconList = function() {
@@ -2354,6 +2434,16 @@ var HHBJSONDATA,hhb;
 							.append($(obj.img)
 								.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
 							);
+					/* custom icon - remove */
+					if (obj.isCustom) $icon.addClass('custom').prepend(
+							$('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" title="Remove from Custom">').click(function(e) {
+								if (!confirm('Confirm remove custom icon?')) return false;
+								e.stopPropagation();
+								var src = $(this).parents('.hhb-icon').data('hhb-object').src;
+								_protected.removeCustomIcon(src);
+								console.log('Remove Custom Icon',src);
+							})
+						);
 					obj.domObject = $icon.data('hhb-object',obj);
 					palIconset.append($icon);
 				});
@@ -2522,7 +2612,6 @@ var HHBJSONDATA,hhb;
 				else $iconMsgBox.text('Icon not found').clearQueue().show().fadeTo(fidur,fiop,fease);
 				$iconMsgBox.filter(':visible').delay(delay).fadeTo(fodur,foop,fease);
 			};
-			
 			var insertIcon = function(obj) {
 				var msg = platformObj.getMsgInput();
 				var cidx = 0;
@@ -2535,7 +2624,8 @@ var HHBJSONDATA,hhb;
 						for (var idx=0;idx<clist.length;idx++) if (clist[idx].match(new RegExp('^'+recodehead))) cidx=idx;
 					}
 				}
-				var code = obj.data('hhb-code').split(' ')[cidx];
+				var objIcon = obj.data('hhb-object');
+				var code = (objIcon.alt&&objIcon.alt!=''? objIcon.alt : obj.data('hhb-code').split(' ')[cidx]);
 				insertText(code);
 				addIconToRecent(obj,code);
 				
@@ -2682,6 +2772,7 @@ var HHBJSONDATA,hhb;
 							} else {
 								filterIcon();
 								insertSelectedIcon(true);
+								return false;
 							}
 						} else if (e.which == 9) {	/* Press [Tab] */
 							filterIcon();
@@ -2729,10 +2820,12 @@ var HHBJSONDATA,hhb;
 								filterIcon();
 							},delay.icon_filter);
 						}
-						if (timerCheckMsgInputUrl) clearTimeout(timerCheckMsgInputUrl);
-						timerCheckMsgInputUrl = setTimeout(function() {
-							checkMsgInputUrl();
-						},delay.check_url);
+						if (settings.enable_bbcode) {
+							if (timerCheckMsgInputUrl) clearTimeout(timerCheckMsgInputUrl);
+							timerCheckMsgInputUrl = setTimeout(function() {
+								checkMsgInputUrl();
+							},delay.check_url);
+						}
 					}
 					if ($(selector.holder).is(':visible')) {
 						if (e.which == 13) {	/* Press [Enter] */
@@ -2743,6 +2836,7 @@ var HHBJSONDATA,hhb;
 				});
 			};
 			
+			/* Icon usage */
 			var addPendingUsage = function(idxcode,objIcon,code) {
 				var usage = (listPendingUsage[idxcode]) ? listPendingUsage[idxcode].usage : { count:0, lastUsed:0 };
 				usage = {	count: usage.count+1, 
@@ -2762,8 +2856,8 @@ var HHBJSONDATA,hhb;
 						var ousage = $.extend({count:0,lastUsed:0},ticon.usage);
 						ticon.usage = $.extend(ousage,{	count: ousage.count + tusage.count, lastUsed: tusage.lastUsed });
 						count++;
-						
-						if (tcode!='') _gaTracker('icon','send',obj.code,tusage.count);
+						if (ticon.isCustom) _gaTracker('icon','sendCustom',ticon.src,tusage.count);
+						else if (tcode!='') _gaTracker('icon','send',obj.code,tusage.count);
 						$.each(tgenre,function(key,obj) {
 							if (obj=='') return;
 							_gaTracker('genre','use',obj,tusage.count);
@@ -2784,22 +2878,16 @@ var HHBJSONDATA,hhb;
 						});
 				}
 			};
-			var resetUsage = function() {
-				$.each(listIcon,function(key,obj) {
-					var icon = obj;
-					var idx = icon.genre.indexOf('Recent');
-					if (idx > -1) icon.genre.splice(idx, 1);
-					icon.usage.count = 0;
-					icon.usage.lastUsed = 0;
-					icon.domObject.attr('hhb-genre',icon.genre.join(' '));
+			
+			/* Custom Icon */
+			var bindCustomIconImgTag = function() {
+				var $imgTag = $('.hhb-bbcode-img-tag');
+				$imgTag.each(function() {
+					var src = $(this).attr('hhb-src');
+					if (listCustomIconLookup[src]) $(this).addClass('hhb-custom-icon');
+					else $(this).removeClass('hhb-custom-icon');
 				});
-				listUsage = {};
-				clearUsage();
-				version.sort.pending++;
-				sortIconList();
-				selectGenre('refresh');
-				debugMsg(DEBUG_EXT,'Usage Data Reset!');
-			};
+			}
 			
 			if (isStatusInited('initEmoticon')) return false;
 			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initEmoticon');
@@ -2807,6 +2895,8 @@ var HHBJSONDATA,hhb;
 			initializeHotkey();
 			bindUIControl();
 			_protected.refreshIconList = refreshIconList;
+			_protected.showIconMsg = showIconMsg;
+			_protected.bindCustomIconImgTag = bindCustomIconImgTag;
 		};
 		var initNameBanner = function(nblist,nbcontrol) {
 			if (!nblist || !nbcontrol) return false;
@@ -3166,17 +3256,17 @@ var HHBJSONDATA,hhb;
 		
 		/* Public methods */
 		this.isInitialize = function() {	return env.isInitialize;	};
-		this.isReadyForImport = function() {	return env.importReady;	};
+		this.isReadyForIconImport = function() {	return env.importIconReady;	};
 		this.getFeatures = function() {	return env.features };
 		this.getLoadingStatus = function() {	return loadingStatus;	};
-		this.importIconList = function(igenre,ilist) {
+		this.importIconList = function(_igenre,_ilist) {
 			if (!env.listeningIconListData) return false;
-			if (igenre && ilist) {
+			if (_igenre && _ilist) {
 				initIconListData();
 				initIncomingParser();
 				initEmoticon();
-				_protected.importGenre(igenre);
-				_protected.importBuiltinIcon(ilist);
+				_protected.importGenre(_igenre);
+				_protected.importBuiltinIcon(_ilist);
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Imported Icon List [G:',listGenre.length,', I:',listIcon.length,']');
 			} else {
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_FAIL,'Import Icon List Failed!');
@@ -3198,7 +3288,7 @@ var HHBJSONDATA,hhb;
 			}
 		};
 		this.scrollToBottom = function() { platformObj.scrollToBottom(); };
-
+		
 		envCheck();
 		
 		return this;
@@ -3277,7 +3367,7 @@ var HHBJSONDATA,hhb;
 				
 				var features = hhb.getFeatures();
 				var tryImport = function() {
-					if (!hhb.isReadyForImport()) {
+					if (!hhb.isReadyForIconImport()) {
 						setTimeout(tryImport,10);
 						console.log('[HihiBox Beta]','Import Data List Retry');		/* debug */
 						return;
