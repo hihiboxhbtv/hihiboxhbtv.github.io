@@ -1458,7 +1458,7 @@ HHBJSONDATA.listIcon = [
 		"width": 16,	"height": 16,
 		"genre": ["Pixel"]
 	},
-	{	"code": [":-(px"],
+	{	"code": [":~(px"],
 		"src": "pixel/cry.gif",
 		"width": 32,	"height": 18,
 		"genre": ["Pixel"]
@@ -1678,7 +1678,7 @@ HHBJSONDATA.listIcon = [
 		"width": 15,	"height": 15,
 		"genre": ["食鬼"]
 	},
-	{	"code": [":-(g"],
+	{	"code": [":~(g"],
 		"src": "ghost/cry.gif",
 		"width": 30,	"height": 18,
 		"genre": ["食鬼"]
