@@ -130,7 +130,8 @@ var HHBJSONDATA,hhb;
 				resetBtn: 'hhb-reset',
 				bookmarkBtn: 'hhb-bookmark',
 				popupBtn: 'hhb-popup',
-				bbCodeBtn: 'hhb-bbcode'
+				bbCodeBtn: 'hhb-bbcode',
+				customIconForm: 'hhb-custom-icon-form'
 			},
 			cssClass: {
 				inited: 'hhb-inited',
@@ -177,7 +178,8 @@ var HHBJSONDATA,hhb;
 				resetBtn: '#hhb-reset',
 				bookmarkBtn: '#hhb-bookmark',
 				popupBtn: '#hhb-popup',
-				bbCodeBtn: '#hhb-bbcode'
+				bbCodeBtn: '#hhb-bbcode',
+				customIconForm: '#hhb-custom-icon-form'
 			},
 			delay: {
 				analyzeBuiltinIcon: 200,
@@ -393,6 +395,7 @@ var HHBJSONDATA,hhb;
 								'<a href="http://bit.ly/hihibox_fb" target="_new" class="fb"><div class="icon fb" hhb-locale-title="{{iconlist.fbpage}}" title="Facebook Page"></div></a></div>'+
 								'<div id="'+idObj.genreContainer+'"></div>'+
 								'<div id="'+idObj.iconset+'"></div>'+
+								'<div id="'+idObj.customIconForm+'"></div>'+
 							'</div>');
 				},
 				genPlayerBookmarkBtn: function(idBtn) {
@@ -575,10 +578,8 @@ var HHBJSONDATA,hhb;
 					$imgTags.prepend(
 						$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" title="HihiBox - Add to Custom">').click(function(e) {
 							e.stopPropagation();
-							var tcode = prompt('Please enter code for this img (split with <space> or \',\'):','');
-							if (tcode == null) return false;
 							var src = $(this).parents('.hhb-bbcode-img-tag').attr('hhb-src');
-							_protected.addCustomIcon(src,tcode);
+							_protected.initCustomIconForm(src);
 						})
 					);
 					if ($imgTags.length>0 && _protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
@@ -2037,7 +2038,8 @@ var HHBJSONDATA,hhb;
 			var analyzeIcon = function(iconlist,_options) {
 				var count = 0;
 				var genreOther = 'Other',
-					genreRecent = 'Recent';
+					genreRecent = 'Recent',
+					genreCustom = 'Custom';
 				if (!(iconlist && iconlist.length > 0)) return false;
 				var analyzediconlist = [];
 				/* Check if code is duplicated */
@@ -2061,7 +2063,12 @@ var HHBJSONDATA,hhb;
 						dcodelist = dcodelist.concat(code);
 						return true;
 					}
-					for (var i=0;i<code.length;i++) listIconLookup[code[i]] = obj;
+					for (var i=0;i<code.length;i++) {
+						if (code[i]=='') {
+							code.splice(i,1);
+							i--;
+						} else listIconLookup[code[i]] = obj;
+					}
 					var src = (obj.src.match(/^https?/) ? '' : imgHost)+obj.src,
 						genre = (function(genre,code) { var tgenre=[]; if (genre) $.each(genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,code[0]),
 						usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {}),
@@ -2109,6 +2116,7 @@ var HHBJSONDATA,hhb;
 				});
 				
 				analyzeGenre(genreRecent,{ category: 'recent' });
+				analyzeGenre(genreCustom,{ category: 'custom' });
 				if (ocount>0) analyzeGenre(genreOther,{ category: 'other' });
 				if (pcount>0) listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
 				
@@ -2123,22 +2131,26 @@ var HHBJSONDATA,hhb;
 				_protected.refreshIconList();
 			}
 			/* Custom Icon */
-			var addCustomIcon = function(url,code) {
-				var tcode = code.trim().split(/[\s,]/),tcodelist=[];
-				var st = (new Date()).getTime();
-				$.each(tcode,function(idx,_code) { if (listIconLookup[_code]) alert('Code '+_code+' is in use'); else tcodelist.push(_code); });
-				if (tcodelist.length == 0) return false;
-				$("<img/>").attr("src", url).load(function(){
-					s = {w:this.width, h:this.height};
-					var icon = {	code: [].concat(tcodelist),src: url,
-									width: s.w, height: s.h,
+			var addCustomIcon = function(url,code,meta) {
+				var importIcon = function(url,code,meta) {
+					var icon = {	code: [].concat(code),src: url,
+									width: meta.w, height: meta.h,
 									alt: ['[img]',url,'[/img]'].join(''),
 									isCustom: true
 								};
 					_hhb.importCustomIcon([icon]);
 					if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
-					debugMsg(DEBUG_RUNTIME,'addCustomIcon',tcodelist,url);
-				});
+					debugMsg(DEBUG_RUNTIME,'addCustomIcon',code,url);
+				}
+				var tcode = code.trim().split(/[\s,]/),tcodelist=[];
+				$.each(tcode,function(idx,_code) { if (!listIconLookup[_code]) tcodelist.push(_code); });
+				if (tcodelist.length == 0) return false;
+				if (meta) importIcon(url,tcodelist,meta)
+				else $("<img/>").attr("src", url).load(function(){
+						s = {w:this.width, h:this.height};
+						importIcon(url,tcodelist,s);
+					});
+				return true;
 			};
 			var removeCustomIcon = function(url) {
 				var obj = listCustomIconLookup[url];
@@ -2217,6 +2229,7 @@ var HHBJSONDATA,hhb;
 				if ($holderCon.length > 0) {
 					var $palHolder = platformObj.genHolder(id,versionInfo).hide();
 					$palHolder.appendTo($holderCon);
+					bindCustomIconForm();
 					bindIconListLocale();
 					
 					checkVersion();
@@ -2230,6 +2243,44 @@ var HHBJSONDATA,hhb;
 				retryCount.bindHolderUI++;
 				debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Holder UI Retry...');
 				setLoadingStatus('bindHolderUI','retry');
+			};
+			var bindCustomIconForm = function() {
+				var imgMeta = { loaded: false, width: 0, height: 0 },
+					$form = $(selector.customIconForm),
+					$removeBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" title="Remove from Custom"></div>')
+									.click(function() { $form.removeClass('hhb-enabled'); }),
+					$imgLoader = $('<img>')
+									.load(function() { $.extend(imgMeta,{ loaded: true, width: this.width, height: this.height }); $imgPreview.attr('src',this.src); })
+									.error(function() { $.extend(imgMeta,{ loaded: false, width:0, height:0 }); $imgPreview.attr('src',''); }),
+					$imgPreview = $('<img id="hhb-img">')
+					$txtUrl = $('<input type="text" id="hhb-url" placeholder="Image URL">')
+									.change(function() { $imgLoader.attr('src',$(this).val()); }),
+					$txtCode = $('<input type="text" id="hhb-code" placeholder="Custom Code">'),
+					$addBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-add" title="Manual add custom icon"></div>')
+									.click(function() {
+										console.log('Manual add custom icon',$txtUrl.val(),$txtCode.val(),imgMeta);
+										if (!imgMeta.loaded) {
+											alert('Image not loaded!');
+										} else if (!_protected.addCustomIcon($txtUrl.val(),$txtCode.val(),imgMeta)) {
+											alert('Code duplicated!');
+										} else $form.removeClass('hhb-enabled');
+									}),
+					initCustomIconForm = function(src,code) {
+						var tsrc=src||'',tcode=code||'';
+						$txtUrl.val(tsrc).change();
+						$txtCode.val(tcode);
+						$form.addClass('hhb-enabled');
+						_protected.toggleHolder('show');
+						if ($txtUrl.val()=='') $txtUrl.focus();
+						else if ($txtCode.val()=='') $txtCode.focus();
+					};
+					
+				$form.append([
+					$('<div class="hhb-img-preview"></div>').append([$removeBtn,$imgPreview]),
+					$('<div class="hhb-input"></div>').append([$txtUrl,$txtCode]),
+					$addBtn
+				]);
+				_protected.initCustomIconForm = initCustomIconForm;
 			};
 			var bindButtonUI = function() {
 				var $button = $(selector.button);
@@ -2422,9 +2473,9 @@ var HHBJSONDATA,hhb;
 			var bindIconList = function() {
 				setTimeout(function() { bindIconList() },delay.bindIconList);
 				if (version.iconList.current==version.iconList.pending) return;
-				var palIconset = $(selector.iconset).empty();
-				if (!palIconset.length > 0) return;
-				palIconset.append($('<div id="'+id.iconMsgBox+'">-</div>'));
+				var $palIconset = $(selector.iconset).empty();
+				if (!$palIconset.length > 0) return;
+				$palIconset.append($('<div id="'+id.iconMsgBox+'">-</div>'));
 				$.each(listIcon,function(idx,obj) {
 					if (!obj.isParsed) return true;
 					var $icon = 
@@ -2445,8 +2496,18 @@ var HHBJSONDATA,hhb;
 							})
 						);
 					obj.domObject = $icon.data('hhb-object',obj);
-					palIconset.append($icon);
+					$palIconset.append($icon);
 				});
+				/* Custom icon - manual add button */
+				$palIconset.append(
+					$('<div class="'+cssClass.icon+' custom hhb-icon-button" hhb-genre="Custom"></div>')
+						.append(
+							$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" title="Manual add custom icon">').click(function(e) {
+								e.stopPropagation();
+								_protected.initCustomIconForm();
+							})
+						)
+				);
 				selectGenre('init');	/* select default genre */
 				version.iconList.current = version.iconList.pending;
 				debugMsg(DEBUG_RUNTIME|DEBUG_REFRESH,'Binded Icon List [I:',listIcon.length,']');
@@ -2590,16 +2651,16 @@ var HHBJSONDATA,hhb;
 				}
 				var f_sort = f_current_sort();
 				var sortModeClass = ['','default','usage','recent'];
-				var $orgIcon = $(selector.iconsetIcon);
+				var $orgIcon = $(selector.iconsetIcon).filter(':not(.hhb-icon-button)');
 				var $newOrder = $orgIcon.sort(f_sort);
-				$(selector.iconset).append($newOrder);
+				$(selector.iconset).append($newOrder).append($('.hhb-icon.hhb-icon-button'));
 				
 				version.sort.current = version.sort.pending;
 				setLoadingStatus('sort','complete');
 				debugMsg(DEBUG_RUNTIME|DEBUG_SUCCESS,'Sort Icon List [M:',sortModeClass[settings.icon_sort_by],',V:',version.sort.current,',C:',$newOrder.length,',T:',timer.sort,']');
 			};
 			var showIconMsg = function() {
-				var $icon = $(selector.iconsetIcon);
+				var $icon = $(selector.iconsetIcon).filter(':not(.hhb-icon-button)');
 				var $sicon = $icon.filter(':visible');
 				var i=$icon.length, si=$sicon.length;
 				var delay = 3000, fidur = 0, fiop = 1, fodur = 400, foop = 0.3 ,fease = "easeOutQuad";
@@ -2714,7 +2775,7 @@ var HHBJSONDATA,hhb;
 						
 						if (recodehead.length >= icon_filter.minLength) {
 							var fselector = function() { 
-								var ism = false, clist = $(this).data('hhb-code').toLowerCase().split(' ');
+								var ism = false, clist = ($(this).data('hhb-code')||'').toLowerCase().split(' ');
 								for (var idx=0;idx<clist.length;idx++) if (clist[idx].match(new RegExp('^'+recodehead))) return true;
 								return false;
 							};
@@ -2894,6 +2955,7 @@ var HHBJSONDATA,hhb;
 			setLoadingStatus('initEmoticon','init');
 			initializeHotkey();
 			bindUIControl();
+			_protected.toggleHolder = toggleHolder;
 			_protected.refreshIconList = refreshIconList;
 			_protected.showIconMsg = showIconMsg;
 			_protected.bindCustomIconImgTag = bindCustomIconImgTag;
@@ -3226,8 +3288,13 @@ var HHBJSONDATA,hhb;
 		
 		/* Shared Methods */
 		var resizeIconset = function() {
-			var iconsetHeight = $(selector.holder).innerHeight()-$(selector.header).outerHeight()-$(selector.genreContainer).outerHeight();
+			var iconsetHeight = $(selector.holder).innerHeight()-parseInt($(selector.holder).css('padding-top'))-$(selector.header).outerHeight()-$(selector.genreContainer).outerHeight()-parseInt($(selector.genreContainer).css('border-top-width'));
 			$(selector.iconset).outerHeight(iconsetHeight);
+			var $form = $(selector.customIconForm).outerHeight(iconsetHeight);
+			var $preview = $('.hhb-img-preview');
+			$form.find('#hhb-img')
+				.css('max-height',$preview.innerHeight()-parseInt($preview.css('padding-top'))-parseInt($preview.css('padding-bottom')))
+				.css('max-width',$preview.innerWidth()-parseInt($preview.css('padding-left'))-parseInt($preview.css('padding-right')));
 		}
 		var bindIconListLocale = function() {
 			locale.bindLocale(settings.locale,null,function() {
