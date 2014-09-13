@@ -634,7 +634,7 @@ var HHBJSONDATA,hhb;
 						darkModeAcceptor: 'body',
 						showChatBtn: '.showChat',
 						holderContainer: '.chat-messages',
-						buttonContainer: '.chat-input-wrap',
+						buttonContainer: '.chat-input-wrap .flex-row',
 						msgBox: '#chat-input',
 						newMsg: '.chat-messages .message:not(.hhb-msg)',
 						newName: '.chat-messages .name:not(.hhb-name)',
