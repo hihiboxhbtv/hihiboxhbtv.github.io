@@ -3,10 +3,9 @@
 @import "darkmode_twitch.css";
 @import "darkmode_justin.css";
 
-/*
 #hhb-genrelist .hhb-genre[hhb-genre="GJTV"] {
 	display: none;
-} */
+}
 #hhb-holder {
 	position: absolute;
 	height: 32px;
@@ -504,10 +503,18 @@ a:hover > .hhb-name-name {
 	top: -10px;
 	left: -10px;
 }
+.hhb-custom-icon-modify {
+	font-size: 12px;
+	top: -10px;
+	left: initial;
+	right: -10px;
+}
 .hhb-custom-icon-add:before {	content: "\e808";	}
+.hhb-custom-icon-modify:before {	content: "\e80b";	}
 .hhb-custom-icon-remove:before {	content: "\e80e";	}
 .hhb-enable-emotify.hhb-enable-bbcode .hhb-bbcode-img-tag:not(.hhb-custom-icon):hover .hhb-custom-icon-add, 
 .hhb-enable-emotify.hhb-enable-bbcode #hhb-iconset .hhb-icon:hover .hhb-custom-icon-remove { display: inline-block; }
+.hhb-enable-emotify.hhb-enable-bbcode #hhb-iconset .hhb-icon:hover .hhb-custom-icon-modify { display: inline-block; }
 #hhb-iconset .hhb-icon.hhb-icon-button {
 	margin: 0px 0px 0px 20px;
 	padding: 0px;
@@ -578,6 +585,13 @@ a:hover > .hhb-name-name {
 #hhb-custom-icon-form .hhb-input input {
 	width: 100%;
 	margin: 10px 0px 0px 0px;
+	padding: 2px 5px;
+	color: #333333;
+	border: 1px solid #eeeeee;
+}
+#hhb-custom-icon-form .hhb-input input[readonly] {
+	color: #333333;
+	background: #666666;
 }
 #hhb-custom-icon-form  .hhb-custom-icon-btn.hhb-custom-icon-add {
 	bottom: 14px;
@@ -587,4 +601,8 @@ a:hover > .hhb-name-name {
 	width: 70px;
 	padding: 15px;
 	font-size: 25px;
+}
+#hhb-custom-icon-form .hhb-required {
+	background-color: #550000;
+	color: #CC8888 !important;
 }

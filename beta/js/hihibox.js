@@ -2054,7 +2054,7 @@ var HHBJSONDATA,hhb;
 				$.each(iconlist,function(idx,obj) {
 					/* analyze Icon */
 					if (obj._comment) return true;
-					if (!obj.code || obj.code.length==0) return true;
+					if (!obj.code || (!obj.isCustom && obj.code.length==0)) return true;
 					var tcode = [].concat(obj.code);
 					if (obj.alt&&obj.alt!='') obj.code.unshift(obj.alt);
 					var code = [].concat(obj.code);
@@ -2134,24 +2134,33 @@ var HHBJSONDATA,hhb;
 			var addCustomIcon = function(url,code,meta) {
 				var importIcon = function(url,code,meta) {
 					var icon = {	code: [].concat(code),src: url,
-									width: meta.w, height: meta.h,
+									width: meta.width, height: meta.height,
 									alt: ['[img]',url,'[/img]'].join(''),
 									isCustom: true
 								};
 					_hhb.importCustomIcon([icon]);
 					if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
-					debugMsg(DEBUG_RUNTIME,'addCustomIcon',code,url);
+					debugMsg(DEBUG_RUNTIME,'addCustomIcon',code,url,meta);
 				}
-				var tcode = code.trim().split(/[\s,]/),tcodelist=[];
-				$.each(tcode,function(idx,_code) { if (!listIconLookup[_code]) tcodelist.push(_code); });
-				if (tcodelist.length == 0) return false;
-				if (meta) importIcon(url,tcodelist,meta)
-				else $("<img/>").attr("src", url).load(function(){
-						s = {w:this.width, h:this.height};
-						importIcon(url,tcodelist,s);
-					});
+				var obj = listCustomIconLookup[url];
+				if (obj) {
+					return modifyCustomIcon(url,code,meta);
+				} else {
+					var tcode = code.trim().split(/[\s,]/),tcodelist=[];
+					$.each(tcode,function(idx,_code) { _code=_code.trim(); if (!listIconLookup[_code] && !_code=='' && !_code.match(/^\[(img|url)\]/i)) tcodelist.push(_code); });
+					if (meta) importIcon(url,tcodelist,meta)
+					else $("<img/>").attr("src", url).load(function(){
+							s = {width:this.width, height:this.height};
+							importIcon(url,tcodelist,s);
+						});
+				}
 				return true;
 			};
+			var modifyCustomIcon = function(url,code,meta) {
+				debugMsg(DEBUG_RUNTIME,'modifyCustomIcon',code,url,meta);
+				_protected.removeCustomIcon(url);
+				return _protected.addCustomIcon(url,code,meta);
+			}
 			var removeCustomIcon = function(url) {
 				var obj = listCustomIconLookup[url];
 				if (obj.code) $.each(obj.code,function(idx,code) { delete listIconLookup[code]; });
@@ -2162,6 +2171,7 @@ var HHBJSONDATA,hhb;
 				if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
 				if (_protected.showIconMsg) _protected.showIconMsg();
 				debugMsg(DEBUG_RUNTIME,'removeCustomIcon',obj,listCustomIconLookup);
+				return true;
 			};
 			
 			if (isStatusInited('initIconListData')) return false;
@@ -2246,37 +2256,48 @@ var HHBJSONDATA,hhb;
 			};
 			var bindCustomIconForm = function() {
 				var imgMeta = { loaded: false, width: 0, height: 0 },
+					f_keydown = function(e) { if ($form.is(':visible') && (e.which == 13)) $addBtn.click();	/* Press [Enter] */ },
+					f_checkRequire = function(field,codeDuplicated) {
+						var isInit = (field=='init');
+						var reqClass = 'hhb-required';
+						if (isInit || field!='img' || imgMeta.loaded) $imgPreviewHolder.removeClass(reqClass);
+						else $imgPreviewHolder.addClass(reqClass);
+						if (isInit || field!='url' || $txtUrl.val()!='') $txtUrl.removeClass(reqClass);
+						else $txtUrl.addClass(reqClass);
+						if (isInit || field!='code' || !codeDuplicated) $txtCode.removeClass(reqClass);
+						else $txtCode.addClass(reqClass);
+					},
 					$form = $(selector.customIconForm),
 					$removeBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" title="Remove from Custom"></div>')
 									.click(function() { $form.removeClass('hhb-enabled'); }),
 					$imgLoader = $('<img>')
-									.load(function() { $.extend(imgMeta,{ loaded: true, width: this.width, height: this.height }); $imgPreview.attr('src',this.src); })
-									.error(function() { $.extend(imgMeta,{ loaded: false, width:0, height:0 }); $imgPreview.attr('src',''); }),
-					$imgPreview = $('<img id="hhb-img">')
+									.load(function() { $.extend(imgMeta,{ loaded: true, width: this.width, height: this.height }); $imgPreview.attr('src',this.src); f_checkRequire('img'); })
+									.error(function() { $.extend(imgMeta,{ loaded: false, width:0, height:0 }); $imgPreview.attr('src',''); f_checkRequire('img'); }),
+					$imgPreview = $('<img id="hhb-img">'),
+					$imgPreviewHolder = $('<div class="hhb-img-preview"></div>').append([$removeBtn,$imgPreview]),
 					$txtUrl = $('<input type="text" id="hhb-url" placeholder="Image URL">')
-									.change(function() { $imgLoader.attr('src',$(this).val()); }),
-					$txtCode = $('<input type="text" id="hhb-code" placeholder="Custom Code">'),
+									.change(function() { var src=$(this).val(); if (src!='') $imgLoader.attr('src',src); f_checkRequire('url'); }).keydown(f_keydown),
+					$txtCode = $('<input type="text" id="hhb-code" placeholder="Custom Code">').keydown(f_keydown),
 					$addBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-add" title="Manual add custom icon"></div>')
 									.click(function() {
 										console.log('Manual add custom icon',$txtUrl.val(),$txtCode.val(),imgMeta);
-										if (!imgMeta.loaded) {
-											alert('Image not loaded!');
-										} else if (!_protected.addCustomIcon($txtUrl.val(),$txtCode.val(),imgMeta)) {
-											alert('Code duplicated!');
-										} else $form.removeClass('hhb-enabled');
+										if (!imgMeta.loaded) f_checkRequire('submit');
+										else if (!_protected.addCustomIcon($txtUrl.val(),$txtCode.val(),imgMeta)) f_checkRequire('submit',true);
+										else $form.removeClass('hhb-enabled');
 									}),
 					initCustomIconForm = function(src,code) {
 						var tsrc=src||'',tcode=code||'';
-						$txtUrl.val(tsrc).change();
+						$txtUrl.val(tsrc).change().prop('readonly',(tsrc!=''));
 						$txtCode.val(tcode);
 						$form.addClass('hhb-enabled');
 						_protected.toggleHolder('show');
 						if ($txtUrl.val()=='') $txtUrl.focus();
 						else if ($txtCode.val()=='') $txtCode.focus();
+						f_checkRequire('init');
 					};
 					
 				$form.append([
-					$('<div class="hhb-img-preview"></div>').append([$removeBtn,$imgPreview]),
+					$imgPreviewHolder,
 					$('<div class="hhb-input"></div>').append([$txtUrl,$txtCode]),
 					$addBtn
 				]);
@@ -2485,16 +2506,26 @@ var HHBJSONDATA,hhb;
 							.append($(obj.img)
 								.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
 							);
-					/* custom icon - remove */
-					if (obj.isCustom) $icon.addClass('custom').prepend(
+					/* custom icon - remove / modify */
+					if (obj.isCustom) $icon.addClass('custom').prepend([
 							$('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" title="Remove from Custom">').click(function(e) {
 								if (!confirm('Confirm remove custom icon?')) return false;
 								e.stopPropagation();
+								var obj = $(this).parents('.hhb-icon').data('hhb-object'),
+									src = obj.src;
 								var src = $(this).parents('.hhb-icon').data('hhb-object').src;
 								_protected.removeCustomIcon(src);
 								console.log('Remove Custom Icon',src);
+							}),
+							$('<div class="hhb-custom-icon-btn hhb-custom-icon-modify" title="Modify custom icon">').click(function(e) {
+								e.stopPropagation();
+								var obj = $(this).parents('.hhb-icon').data('hhb-object'),
+									src = obj.src, code = obj.code, tcode = [];
+								$.each(code,function(idx,_code) { if (!_code.match(/^\[(img|url)\]/i)) tcode.push(_code); });
+								_protected.initCustomIconForm(src,tcode.join(', '));
+								console.log('Modify Custom Icon',src,tcode);
 							})
-						);
+						]);
 					obj.domObject = $icon.data('hhb-object',obj);
 					$palIconset.append($icon);
 				});
