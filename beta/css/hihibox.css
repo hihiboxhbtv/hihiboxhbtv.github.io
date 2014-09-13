@@ -606,3 +606,6 @@ a:hover > .hhb-name-name {
 	background-color: #550000;
 	color: #CC8888 !important;
 }
+#hhb-custom-icon-form .hhb-loading {
+	background-color: #555555;
+}

@@ -2256,6 +2256,7 @@ var HHBJSONDATA,hhb;
 			};
 			var bindCustomIconForm = function() {
 				var imgMeta = { loaded: false, width: 0, height: 0 },
+					loadingClass = 'hhb-loading';
 					f_keydown = function(e) { if ($form.is(':visible') && (e.which == 13)) $addBtn.click();	/* Press [Enter] */ },
 					f_checkRequire = function(field,codeDuplicated) {
 						var isInit = (field=='init');
@@ -2271,12 +2272,12 @@ var HHBJSONDATA,hhb;
 					$removeBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" title="Remove from Custom"></div>')
 									.click(function() { $form.removeClass('hhb-enabled'); }),
 					$imgLoader = $('<img>')
-									.load(function() { $.extend(imgMeta,{ loaded: true, width: this.width, height: this.height }); $imgPreview.attr('src',this.src); f_checkRequire('img'); })
-									.error(function() { $.extend(imgMeta,{ loaded: false, width:0, height:0 }); $imgPreview.attr('src',''); f_checkRequire('img'); }),
+									.load(function() { $imgPreview.removeClass(loadingClass); $.extend(imgMeta,{ loaded: true, width: this.width, height: this.height }); $imgPreview.attr('src',this.src); f_checkRequire('img'); })
+									.error(function() { $imgPreview.removeClass(loadingClass); $.extend(imgMeta,{ loaded: false, width:0, height:0 }); if($(this).attr('src')!='') f_checkRequire('img'); $imgPreview.attr('src',''); }),
 					$imgPreview = $('<img id="hhb-img">'),
 					$imgPreviewHolder = $('<div class="hhb-img-preview"></div>').append([$removeBtn,$imgPreview]),
 					$txtUrl = $('<input type="text" id="hhb-url" placeholder="Image URL">')
-									.change(function() { var src=$(this).val(); if (src!='') $imgLoader.attr('src',src); f_checkRequire('url'); }).keydown(f_keydown),
+									.change(function() { var src=$(this).val(); $imgPreview.addClass(loadingClass); $imgLoader.attr('src',src); f_checkRequire('url'); }).keydown(f_keydown),
 					$txtCode = $('<input type="text" id="hhb-code" placeholder="Custom Code">').keydown(f_keydown),
 					$addBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-add" title="Manual add custom icon"></div>')
 									.click(function() {
