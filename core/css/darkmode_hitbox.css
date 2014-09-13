@@ -206,3 +206,6 @@ body.hhb-pf-hitbox.hhb-darkmode {
 .hhb-pf-hitbox.hhb-darkmode .detailInner { background-color: #000; }
 .hhb-pf-hitbox.hhb-darkmode .chat-usercard { background-color: #000; box-shadow: .1em .1em .5em hsla(0,0%,100%,.5); color: #ccc; }
 .hhb-pf-hitbox.hhb-darkmode .chat-usercard .cover { background-color: #fff; }
+
+/* [S:2014-09-13] */
+.hhb-pf-hitbox.hhb-darkmode .chat-input-wrap .textarea-wrap { background-color: black; border: 1px solid #595959; }
