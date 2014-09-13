@@ -652,7 +652,7 @@ var HHBJSONDATA,hhb;
 						darkModeAcceptor: 'body',
 						showChatBtn: '.showChat',
 						holderContainer: '.chat-messages',
-						buttonContainer: '.chat-input-wrap',
+						buttonContainer: '.chat-input-wrap .flex-row',
 						msgBox: '#chat-input',
 						newMsg: '.chat-messages .message:not(.hhb-msg)',
 						newName: '.chat-messages .name:not(.hhb-name)',
@@ -2268,20 +2268,25 @@ var HHBJSONDATA,hhb;
 						if (isInit || field!='code' || !codeDuplicated) $txtCode.removeClass(reqClass);
 						else $txtCode.addClass(reqClass);
 					},
+					f_resizePreview = function() {
+						var $preview = $('.hhb-img-preview');
+						$form.find('#hhb-img')
+							.css('max-height',$preview.innerHeight()-parseInt($preview.css('padding-top'))-parseInt($preview.css('padding-bottom')))
+							.css('max-width',$preview.innerWidth()-parseInt($preview.css('padding-left'))-parseInt($preview.css('padding-right')));
+					}
 					$form = $(selector.customIconForm),
 					$removeBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" title="Remove from Custom"></div>')
 									.click(function() { $form.removeClass('hhb-enabled'); }),
 					$imgLoader = $('<img>')
-									.load(function() { $imgPreview.removeClass(loadingClass); $.extend(imgMeta,{ loaded: true, width: this.width, height: this.height }); $imgPreview.attr('src',this.src); f_checkRequire('img'); })
-									.error(function() { $imgPreview.removeClass(loadingClass); $.extend(imgMeta,{ loaded: false, width:0, height:0 }); if($(this).attr('src')!='') f_checkRequire('img'); $imgPreview.attr('src',''); }),
+									.load(function() { $imgPreviewHolder.removeClass(loadingClass); $.extend(imgMeta,{ loaded: true, width: this.width, height: this.height }); $imgPreview.attr('src',this.src); f_checkRequire('img'); f_resizePreview(); })
+									.error(function() { $imgPreviewHolder.removeClass(loadingClass); $.extend(imgMeta,{ loaded: false, width:0, height:0 }); if($(this).attr('src')!='') f_checkRequire('img'); $imgPreview.attr('src',''); }),
 					$imgPreview = $('<img id="hhb-img">'),
 					$imgPreviewHolder = $('<div class="hhb-img-preview"></div>').append([$removeBtn,$imgPreview]),
 					$txtUrl = $('<input type="text" id="hhb-url" placeholder="Image URL">')
-									.change(function() { var src=$(this).val(); $imgPreview.addClass(loadingClass); $imgLoader.attr('src',src); f_checkRequire('url'); }).keydown(f_keydown),
+									.change(function() { var src=$(this).val(); $imgPreviewHolder.addClass(loadingClass); $imgLoader.attr('src',src); f_checkRequire('url'); }).keydown(f_keydown),
 					$txtCode = $('<input type="text" id="hhb-code" placeholder="Custom Code">').keydown(f_keydown),
 					$addBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-add" title="Manual add custom icon"></div>')
 									.click(function() {
-										console.log('Manual add custom icon',$txtUrl.val(),$txtCode.val(),imgMeta);
 										if (!imgMeta.loaded) f_checkRequire('submit');
 										else if (!_protected.addCustomIcon($txtUrl.val(),$txtCode.val(),imgMeta)) f_checkRequire('submit',true);
 										else $form.removeClass('hhb-enabled');
