@@ -228,7 +228,7 @@ HHBJSONDATA.listIcon = [
 		"width": 15,	"height": 15,
 		"genre": ["HKG"]
 	},
-	{	"code": ["fuck","[fu*k]","[fuck]"],
+	{	"code": ["fuck","[fu*k]","[fuck]","fu*k"],
 		"src": "hkg/fuck.gif",
 		"width": 37,	"height": 15,
 		"genre": ["HKG"]
@@ -1198,7 +1198,7 @@ HHBJSONDATA.listIcon = [
 		"width": 37,	"height": 32,
 		"genre": ["pkmon"]
 	},
-	{	"code": [":-(pkm2",":-(2pkm",":(pkm",":-(pkm"],
+	{	"code": [":-(pkm2",":-(2pkm"],
 		"src": "pkmon/frownhhb.gif",
 		"width": 46,	"height": 38,
 		"genre": ["pkmon"]
