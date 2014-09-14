@@ -617,7 +617,7 @@ var HHBJSONDATA,hhb;
 						var bodyHeight = offsetlm.bottom-($fmsg.offset().top-Math.ceil(parseFloat($fmsg.css('margin-top'))));
 						var bottomLine = $cview.offset().top+$cview.height();
 						if (offsetlm.top<bottomLine && offsetlm.bottom> bottomLine) {
-							$sbody.scrollTop(bodyHeight-$cview.height());
+							$sbody.scrollTop(Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2));
 						}
 					} catch(e) {};
 				}
