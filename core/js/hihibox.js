@@ -1835,7 +1835,7 @@ var HHBJSONDATA,hhb;
 		};
 		var initIconListData = function() {
 			var injectIcon = function() {
-				if (!env.builtinIconLoaded && !env.platformIconLoaded) return false;
+				if (!env.builtinIconLoaded || !env.platformIconLoaded) return false;
 				setLoadingStatus('injectIcon','init');
 				debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Injecting Icon...');
 				var count = platformObj.injectIcon(listParse);
