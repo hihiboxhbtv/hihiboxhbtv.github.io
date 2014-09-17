@@ -445,9 +445,13 @@ a:hover > .hhb-name-name {
 	vertical-align: text-bottom;
 }
 /* [S:2014-09-06] */
-.hhb-bbcode-img-tag {
+.hhb-bbcode-img-tag, .hhb-bbcode-url-tag {
 	display: inline-block;
 	position: relative;
+}
+.hhb-bbcode-url-tag img {
+	width: 0px;
+	height: 0px;
 }
 
 /* [S:2014-09-08] - Enable BBCode */
@@ -461,17 +465,16 @@ a:hover > .hhb-name-name {
 #hhb-genrelist, #hhb-iconset { display: none; }
 .hhb-enable-emotify #hhb-genrelist, .hhb-enable-emotify #hhb-iconset { display: block; }
 
-
 /* [S:2014-09-08] - Custom Icon */
 .hhb-enable-emotify.hhb-enable-bbcode #hhb-iconset .hhb-icon.custom,
 .hhb-enable-emotify.hhb-enable-bbcode #hhb-iconset .hhb-icon.custom.hhb-icon-button:hover  {
-	margin-top: 12px;
-	margin-left: 12px;
+	margin-top: 15px;
+	margin-left: 15px;
 }
 .hhb-enable-emotify.hhb-enable-bbcode #hhb-iconset .hhb-icon.hhb-filter-selected.custom:hover,
 .hhb-enable-emotify.hhb-enable-bbcode #hhb-iconset .hhb-icon.custom:hover {
-	margin-top: 11px;
-	margin-left: 11px;
+	margin-top: 14px;
+	margin-left: 14px;
 }
 .hhb-custom-icon-btn {
 	-moz-user-select: none;
