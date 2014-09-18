@@ -5,15 +5,25 @@
 		"developer": ["Lemon", "希治閣"],
 		"specialThanks": ["VannZic"]
 	},
-	"lastExtensionVersion": "v2.2",
+	"lastExtensionVersion": "v3.0",
 	"lastRelease": "2014-09-02",
-	"lastSummary": "[概要] 新增自動插入BBCode 功能, 同步化選項 及HihiBox v2.0 相關錯誤修正",
+	"lastSummary": "[概要] TBC...",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v2.2.0",
+	"coreVersion": "v3.0.3",
 	"lastUpdate": "2014-09-02",
 	"history": [
+		{
+			"version": "v3.0.0",
+			"lastUpdate": "2014-09-02",
+			"summary": [
+				"[概要] TBC..."
+			],
+			"detail": [
+				"[新增] TBC..."
+			]
+		},
 		{
 			"version": "v2.2.0",
 			"lastUpdate": "2014-09-02",
