@@ -668,7 +668,7 @@ var HHBJSONDATA,hhb;
 							$sbody.scrollTop(Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2));
 						}
 						/* Debug */
-						$lmsg.css({ backgroundColor: '#FF0000' }).animate({ backgroundColor: 'transparent' },{ easing: "easeOutExpo", duration: 10000 })
+						//$lmsg.css({ backgroundColor: '#FF0000' }).animate({ backgroundColor: 'transparent' },{ easing: "easeOutExpo", duration: 10000 })
 						
 						debugMsg(DEBUG_RETRY,'scrollToBottom',(offsetlm.top<bottomLine && offsetlm.bottom> bottomLine),
 						Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2),
@@ -3531,8 +3531,7 @@ var HHBJSONDATA,hhb;
 		}
 		detectExtension('eoiappopphdcceickjphgaaidacdkidi', '/css/images/animated-overlay.gif',
 			function(installed) {
-				//console.log('detectExtension',installed);
-				return true; /* debug */
+				console.log('detectExtension',installed);
 				if (!installed) {
 					$(	'<div id="hhb-update-reminder">'+
 							'<style>'+
