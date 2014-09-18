@@ -575,6 +575,7 @@ var HHBJSONDATA,hhb;
 												_protected.initCustomIconForm(src);
 											})
 									);
+									_protected.scrollToBottom();
 									if ($imgTags.length>0 && _protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
 								}).error(function() {
 									var $img = $('#'+bbcid);
@@ -669,7 +670,7 @@ var HHBJSONDATA,hhb;
 						/* Debug */
 						$lmsg.css({ backgroundColor: '#FF0000' }).animate({ backgroundColor: 'transparent' },{ easing: "easeOutExpo", duration: 10000 })
 						
-						debugMsg(DEBUG_SUCCESS,'scrollToBottom',(offsetlm.top<bottomLine && offsetlm.bottom> bottomLine),
+						debugMsg(DEBUG_RETRY,'scrollToBottom',(offsetlm.top<bottomLine && offsetlm.bottom> bottomLine),
 						Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2),
 						bodyHeight,$cview.height(),offsetlm);
 					} catch(e) {};
@@ -3513,7 +3514,7 @@ var HHBJSONDATA,hhb;
 				setLoadingStatus('importNameBanner','fail');
 			}
 		};
-		this.scrollToBottom = function() { platformObj.scrollToBottom(); };
+		this.scrollToBottom = _protected.scrollToBottom = function() { platformObj.scrollToBottom(); };
 		
 		envCheck();
 		
