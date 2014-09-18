@@ -216,7 +216,7 @@ var HHBJSONDATA,hhb;
 				analyzeBuiltinIcon: 1,
 				analyzeCustomIcon: 1,
 				analyzeChannelIcon: 1,
-				analyzePlatformIcon: 30,
+				analyzePlatformIcon: 50,
 				analyzeGJTVIcon: 30,
 				activateRebindUIBtn: 30,
 				bindBookmarkBtn: 30,
@@ -225,7 +225,8 @@ var HHBJSONDATA,hhb;
 			supportedPlatform: ['hitbox','twitch','justin','ustream'],
 			listGenre: [],
 			listIcon: [],
-			genreCategory: ['other','gjtv','platform','builtin','custom','channel','recent'],
+			listCustomIcon: [],
+			genreCategory: ['other','gjtv','platform','builtin','channel','custom','recent'],
 			defaultConfig: {
 				genre: 'HKG',
 				darkMode: 'light',
@@ -255,6 +256,7 @@ var HHBJSONDATA,hhb;
 			listGenre = _settings.listGenre,
 			genreCategory = _settings.genreCategory;
 			listIcon = _settings.listIcon,
+			listCustomIcon = _settings.listCustomIcon,
 			defaultConfig = _settings.defaultConfig,
 			config = _settings.config,
 			settings = {
@@ -279,8 +281,9 @@ var HHBJSONDATA,hhb;
 				isInitialize: false,
 					isIconListDataInited: false,
 						iconInjected: false,
-						builtinIconLoaded: false,
+						customIconLoaded: false,
 						channelIconLoaded: false,
+						builtinIconLoaded: false,
 						platformIconLoaded: false,
 						gjtvIconLoaded: false,
 					isUserInterfaceInited: false,
@@ -370,7 +373,8 @@ var HHBJSONDATA,hhb;
 			isContainUrl = false,
 			timerFilter = null,
 			timerCheckMsgInputUrl = null,
-			currFilterCodeHead = '';
+			currFilterCodeHead = '',
+			bbCodeCount = 0;
 			
 		/* Public Variables */
 		_protected.cssClass = cssClass;
@@ -463,7 +467,9 @@ var HHBJSONDATA,hhb;
 									.click(function() { $(this).parent().click(); })
 									.animate(
 										{ 'width': [nb.width,'px'].join('') },
-										{ easing: "easeOutExpo", duration: dur }
+										{ easing: "easeOutExpo", duration: dur,
+											complete: callback
+										}
 									).prependTo($(this));
 								var $nspan = $(nspan).appendTo($(this))
 								$nspan.width($nspan.width())
@@ -538,10 +544,47 @@ var HHBJSONDATA,hhb;
 					var rehtmltag = /<[^>]*>/ig;
 					var bbcode = [
 						{	tag: 'url',	match: /(\[url\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/url\])/ig,
-							replace: "<a href=\"$2\" target=\"_blank\" class=\"hhb-bbcode-url\" alt=\"$1$2$3\">$2<\/a>"
+							replace: function() {
+								var args = arguments,bbcid = 'hhb-bbcode-'+bbCodeCount;
+								$.each(args,function(idx,obj) { args[idx] = $('<div>').html(obj).text(); });
+								var $span = $("<span class='hhb-bbcode-url-tag' hhb-src='"+ args[2] +"'>");
+								var $imgf = $("<img alt='"+ args[1] +"'>"),$imgb = $("<img alt='"+ args[3] +"'>");
+								var $a = $("<a id='"+ bbcid +"' href='"+ args[2] +"' target='_blank' class='hhb-bbcode-url' alt='"+ args[0] +"'>"+ args[2] +"</a>");
+								bbCodeCount++;
+								return $('<div>').append($span.append([$imgf,$a,$imgb])).html();
+							}
 						},
 						{	tag: 'img',	match: /(\[img\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/img\])/ig,
-							replace: "<span class='hhb-bbcode-img-tag' hhb-src=\"$2\"><a href=\"$2\" target=\"_blank\"><img src=\"$2\" class=\"hhb-bbcode-img\" alt=\"$1$2$3\" onload=\"hhb.scrollToBottom();\"><\/a></span>"
+							replace: function() {
+								var args = arguments,bbcid = 'hhb-bbcode-'+bbCodeCount;
+								$.each(args,function(idx,obj) { args[idx] = $('<div>').html(obj).text(); });
+								var $span = $("<span class='hhb-bbcode-img-tag' hhb-src='"+ args[2] +"' hhb-alt='"+ args[0] +"'>");
+								var $a = $("<a href='"+ args[2] +"' target='_blank'>");
+								var $img = ("<img id='"+ bbcid +"' src='http://hihiboxhbtv.github.io/images/hihiloading.gif' class='hhb-bbcode-img' alt='"+ args[0] +"' onload='hhb.scrollToBottom();'>");
+								var $loader = $('<img>').load(function() {
+									$('#'+bbcid).attr('src',$(this).attr('src'));
+									/* custom icon - add */
+									var $img = $('#'+bbcid);
+									var $imgTags = $img.parents('.hhb-bbcode-img-tag:not(:has(.hhb-custom-icon-add))');
+									$imgTags.prepend(
+										$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" hhb-locale-title="{{info.name}} - {{iconlist.custom_icon.add}}" title="HihiBox - Add to Custom">')
+											.attr('title',locale.getLocaleMsg('info.name')+' - '+locale.getLocaleMsg('iconlist.custom_icon.add'))
+											.click(function(e) {
+												e.stopPropagation();
+												var src = $(this).parents('.hhb-bbcode-img-tag').attr('hhb-src');
+												_protected.initCustomIconForm(src);
+											})
+									);
+									if ($imgTags.length>0 && _protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
+								}).error(function() {
+									var $img = $('#'+bbcid);
+									var $imgTags = $img.parents('.hhb-bbcode-img-tag');
+									$imgTags.find('.hhb-custom-icon-add').detach();
+									$img.replaceWith($('<span>',{ text: $(this).attr('src'), alt: $imgTags.attr('hhb-alt') }));
+								}).attr('src',args[2]);
+								bbCodeCount++;
+								return $('<div>').append($span.append($a.append($img))).html();
+							}
 						}
 					];
 					$msgs.each(function() {
@@ -569,20 +612,6 @@ var HHBJSONDATA,hhb;
 						if (htmlm) $.each(htmlm,function(idx,obj) { ohtml = ohtml.replace('___hhb_bbc_html_'+idx+'___',obj); });
 						$(this).html(ohtml);
 					});
-					$msgs.find('.hhb-bbcode-img').error(function() {
-						$(this).parents('.hhb-bbcode-img-tag').find('.hhb-custom-icon-add').detach();
-						$(this).replaceWith($('<span>',{ text: $(this)[0].src, alt: $(this)[0].alt }));
-					});
-					/* custom icon - add */
-					var $imgTags = $msgs.find('.hhb-bbcode-img-tag:not(:has(.hhb-custom-icon-add))');
-					$imgTags.prepend(
-						$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" title="HihiBox - Add to Custom">').click(function(e) {
-							e.stopPropagation();
-							var src = $(this).parents('.hhb-bbcode-img-tag').attr('hhb-src');
-							_protected.initCustomIconForm(src);
-						})
-					);
-					if ($imgTags.length>0 && _protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
 					
 					return {
 						msg: $msgs.length,
@@ -635,8 +664,14 @@ var HHBJSONDATA,hhb;
 						var bodyHeight = offsetlm.bottom-($fmsg.offset().top-Math.ceil(parseFloat($fmsg.css('margin-top'))));
 						var bottomLine = $cview.offset().top+$cview.height();
 						if (offsetlm.top<bottomLine && offsetlm.bottom> bottomLine) {
-							$sbody.scrollTop(bodyHeight-$cview.height());
+							$sbody.scrollTop(Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2));
 						}
+						/* Debug */
+						$lmsg.css({ backgroundColor: '#FF0000' }).animate({ backgroundColor: 'transparent' },{ easing: "easeOutExpo", duration: 10000 })
+						
+						debugMsg(DEBUG_SUCCESS,'scrollToBottom',(offsetlm.top<bottomLine && offsetlm.bottom> bottomLine),
+						Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2),
+						bodyHeight,$cview.height(),offsetlm);
 					} catch(e) {};
 				}
 			},
@@ -680,7 +715,7 @@ var HHBJSONDATA,hhb;
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
 				_platform.genToggleButton = function(id) {
-					return $('<div id="'+id+'" class="icon-cog hoverG2" title="HihiBox"></div>');
+					return $('<div id="'+id+'" class="icon-cog hoverG2" hhb-locale-title="{{info.name}}" title="HihiBox"></div>');
 				};
 				_platform.onBindedToggleButton = function() {};
 				_platform.getShowChatBtn = function() {	return $(selector.showChatBtn);	};
@@ -867,7 +902,7 @@ var HHBJSONDATA,hhb;
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
 				_platform.genToggleButton = function(id) {
-					return $('<a id="'+id+'" class="button glyph-only" title="HihiBox"></a>');
+					return $('<a id="'+id+'" class="button glyph-only" hhb-locale-title="{{info.name}}" title="HihiBox"></a>');
 				};
 				_platform.onBindedToggleButton = function() {
 					var btnc = $('.chat-option-buttons').outerWidth();
@@ -1726,25 +1761,42 @@ var HHBJSONDATA,hhb;
 			env.platform = ((_platformObj[env.platform]) ? env.platform : '');
 			
 			/* check platform */
-			if (env.platform=='') {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Platform not detected! Initialization aborted! [',url,']');	return;	}
+			if (env.platform=='') {
+				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Platform not detected! Initialization aborted! [',url,']');
+				_gaTracker('core','fail','Initialization - Platform not detected');
+				return;
+			}
 			
 			/* chat excluded url */
 			platformObj = new _platformObj[env.platform];
 			env.isExcluded = platformObj.isExcluded();
-			if (env.isExcluded) {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Excluded URL! Initialization aborted! [',url,']');	return;	}
+			if (env.isExcluded) {
+				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Excluded URL! Initialization aborted! [',url,']');
+				_gaTracker('core','fail','Initialization - Excluded URL');
+				return;
+			}
 			
 			/* check channel */
 			env.channel = platformObj.getChannelID();
-			if (!env.channel || env.channel=='') {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Channel not detected! Initialization aborted! [',url,']');	return;	}
+			if (!env.channel || env.channel=='') {
+				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Channel not detected! Initialization aborted! [',url,']');
+				_gaTracker('core','fail','Initialization - Channel not detected');
+				return;
+			}
 			
 			/* prevent duplicate load of HihiBox */
 			var hhbLoaded = ($('body[class*="hhb-pf-"]').length>0);
-			if (hhbLoaded) {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'HihiBox detected! Initialization aborted!');	return;	}
+			if (hhbLoaded) {
+				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'HihiBox detected! Initialization aborted!');
+				_gaTracker('core','fail','Initialization - HihiBox detected');
+				return;
+			}
 			
 			platformObj.initialize();
 			env.userid = platformObj.getUsername();
 			env.features = platformObj.getFeatures();
 			debugMsg(DEBUG_ENV|DEBUG_ENV_SUCCESS,'Detected [',env,']');
+			_gaTracker('core','success','Initialize - Platform detected');
 			_gaTracker('env','platform',env.platform);
 			_gaTracker('env','channel',[env.channel,env.platform].join('@'));
 			if (env.userid && env.userid!='') {
@@ -1838,6 +1890,17 @@ var HHBJSONDATA,hhb;
 					debugMsg(DEBUG_EXT,'clearUsage',listUsage);
 				});
 		};
+		var pullCustomIconset = function() {
+			sendMessage({getCustomIconset: true},
+				function(response) {
+					if (!response) return;
+					if (!response.success) return;
+					if (!response.customIconset) return;
+					listCustomIcon = response.customIconset;
+					_protected.importCustomIcon(listCustomIcon);
+					debugMsg(DEBUG_EXT,'pullCustomIconset',listCustomIcon);
+				});
+		};
 		
 		/* Initializer */
 		var initialize = function() {
@@ -1857,15 +1920,17 @@ var HHBJSONDATA,hhb;
 		};
 		var initIconListData = function() {
 			var injectIcon = function() {
-				if (!env.builtinIconLoaded && !env.platformIconLoaded) return false;
+				if (!env.builtinIconLoaded || !env.platformIconLoaded) return false;
 				setLoadingStatus('injectIcon','init');
 				debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Injecting Icon...');
 				var count = platformObj.injectIcon(listParse);
 				if (count > 0) {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Injected Icon [I:',count,']');
+					_gaTracker('core','success','Icon List - Inject icon',count);
 					setLoadingStatus('injectIcon','complete');
 				} else {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Injected Icon Failed!');
+					_gaTracker('core','fail','Icon List - Inject icon');
 					setLoadingStatus('injectIcon','fail');
 				}
 			};
@@ -1895,7 +1960,10 @@ var HHBJSONDATA,hhb;
 					listGenre.push(tgenre);
 					count++;
 				});
-				if (count>0) debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Genre List [ C:',count,', G:',listGenre.length,']');
+				if (count>0) {
+					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Genre List [ C:',count,', G:',listGenre.length,']');
+					_gaTracker('core','success','Genre List - Analyzed',listGenre.length);
+				}
 				return listGenre;
 			}
 			var analyzeBuiltinIcon = function(_iconlist) {
@@ -1909,6 +1977,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzeBuiltinIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Built-in Icon Failed!');
+						_gaTracker('core','fail','Icon List - Load built-in icon');
 						setLoadingStatus('analyzeBuiltinIcon','fail')
 					}
 					return;
@@ -1917,10 +1986,12 @@ var HHBJSONDATA,hhb;
 				setLoadingStatus('analyzeBuiltinIcon','complete');
 				retryCount.analyzeBuiltinIcon = 0;
 				refreshList();
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Built-in Icon Succeed!');
+				_gaTracker('core','success','Icon List - Load built-in icon',analyzediconlist.length);
 			};
 			var analyzeCustomIcon = function(_iconlist) {
-				if (retryCount.analyzeCustomIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Custom Img Icon...'),setLoadingStatus('analyzeCustomIcon','init');
-				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Custom Img Icon Retry...'),setLoadingStatus('analyzeCustomIcon','retry');
+				if (retryCount.analyzeCustomIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Custom Icon...'),setLoadingStatus('analyzeCustomIcon','init');
+				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Custom Icon Retry...'),setLoadingStatus('analyzeCustomIcon','retry');
 				var iconlist = _iconlist, analyzediconlist;
 				analyzediconlist = analyzeIcon(iconlist,{ category: 'custom', genre: 'Custom' });
 				if (!analyzediconlist || analyzediconlist.length==0) {
@@ -1928,7 +1999,8 @@ var HHBJSONDATA,hhb;
 						setTimeout(function() { analyzeCustomIcon(_iconlist); },delay.analyzeCustomIcon);
 						retryCount.analyzeCustomIcon++;
 					} else {
-						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Custom Img Icon Failed!');
+						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Custom Icon Failed!');
+						_gaTracker('core','fail','Icon List - Load custom icon');
 						setLoadingStatus('analyzeCustomIcon','fail')
 					}
 					return;
@@ -1938,6 +2010,8 @@ var HHBJSONDATA,hhb;
 				retryCount.analyzeCustomIcon = 0;
 				refreshList(true);
 				if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Custom Icon Succeed!');
+				_gaTracker('core','success','Icon List - Load custom icon',analyzediconlist.length);
 			};
 			var analyzeChannelIcon = function(_iconlist) {
 				if (retryCount.analyzeChannelIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Channel Icon...'),setLoadingStatus('analyzeChannelIcon','init');
@@ -1950,6 +2024,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzeChannelIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Channel Icon Failed!');
+						_gaTracker('core','fail','Icon List - Load channel icon');
 						setLoadingStatus('analyzeChannelIcon','fail')
 					}
 					return;
@@ -1958,6 +2033,8 @@ var HHBJSONDATA,hhb;
 				setLoadingStatus('analyzeChannelIcon','complete');
 				retryCount.analyzeChannelIcon = 0;
 				refreshList();
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Channel Icon Succeed!');
+				_gaTracker('core','success','Icon List - Load channel icon',analyzediconlist.length);
 			};
 			var analyzePlatformIcon = function() {
 				if (retryCount.analyzePlatformIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Platform Icon...'),setLoadingStatus('analyzePlatformIcon','init');
@@ -1968,6 +2045,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzePlatformIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Platform Icon Failed!');
+						_gaTracker('core','fail','Icon List - Load platform icon');
 						setLoadingStatus('analyzePlatformIcon','fail');
 					}
 					return false;
@@ -1984,6 +2062,8 @@ var HHBJSONDATA,hhb;
 				setLoadingStatus('analyzePlatformIcon','complete');
 				retryCount.analyzePlatformIcon = 0;
 				refreshList();
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Platform Icon Succeed!');
+				_gaTracker('core','success','Icon List - Load platform icon',analyzediconlist.length);
 			};
 			var analyzeGJTVIcon = function() {
 				if (retryCount.analyzeGJTVIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing GJTV Icon...'),setLoadingStatus('analyzeGJTVIcon','init');
@@ -1994,6 +2074,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzeGJTVIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing GJTV Icon Failed!');
+						_gaTracker('core','fail','Icon List - Load GJTV icon');
 						setLoadingStatus('analyzeGJTVIcon','fail');
 					}
 					return false;
@@ -2034,6 +2115,8 @@ var HHBJSONDATA,hhb;
 				setLoadingStatus('analyzeGJTVIcon','complete');
 				retryCount.analyzeGJTVIcon = 0;
 				refreshList();
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing GJTV Icon Succeed!');
+				_gaTracker('core','success','Icon List - Load GJTV icon',analyzediconlist.length);
 			};
 			var analyzeIcon = function(iconlist,_options) {
 				var count = 0;
@@ -2055,7 +2138,8 @@ var HHBJSONDATA,hhb;
 					/* analyze Icon */
 					if (obj._comment) return true;
 					if (!obj.code || (!obj.isCustom && obj.code.length==0)) return true;
-					var tcode = [].concat(obj.code);
+					var tcode = [];
+					$.each(obj.code,function(idx,obj) { if (!obj.match(/\[img\][^\[]*\[\/img\]/ig)) tcode.push(obj); });
 					if (obj.alt&&obj.alt!='') obj.code.unshift(obj.alt);
 					var code = [].concat(obj.code);
 					if (_options.genre) obj.genre = (obj.genre||[]).concat(_options.genre);
@@ -2122,8 +2206,14 @@ var HHBJSONDATA,hhb;
 				
 				retryCount.analyzeIcon = 0;
 				
-				if (dcodelist.length>0) debugMsg(DEBUG_FAIL,'Icon Code Duplicated! [D:',dcodelist,']');
-				if (count>0) debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Icon List [ T:',iconlist.length,', G:',listGenre.length,', P:',listParse.length,']');
+				if (dcodelist.length>0) {
+					debugMsg(DEBUG_FAIL,'Icon Code Duplicated! [D:',dcodelist,']');
+					_gaTracker('core','fail','Icon List - Icon code duplicated',dcodelist.length);
+				}
+				if (count>0) {
+					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Icon List [ T:',analyzediconlist.length,'/',iconlist.length,', G:',listGenre.length,', P:',listParse.length,']');
+					_gaTracker('core','success','Icon List - Analyzed',listIcon.length+analyzediconlist.length);
+				}
 				return analyzediconlist;
 			};
 			var refreshList = function(skipInject) {
@@ -2131,16 +2221,17 @@ var HHBJSONDATA,hhb;
 				_protected.refreshIconList();
 			}
 			/* Custom Icon */
-			var addCustomIcon = function(url,code,meta) {
+			var addCustomIcon = function(url,code,meta,skipMessage) {
 				var importIcon = function(url,code,meta) {
 					var icon = {	code: [].concat(code),src: url,
 									width: meta.width, height: meta.height,
 									alt: ['[img]',url,'[/img]'].join(''),
 									isCustom: true
 								};
-					_hhb.importCustomIcon([icon]);
+					_protected.importCustomIcon([icon]);
 					if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
 					debugMsg(DEBUG_RUNTIME,'addCustomIcon',code,url,meta);
+					if (!skipMessage) sendMessage({addCustomIcon: { code: icon.code, src: icon.src }},function(response) {});
 				}
 				var obj = listCustomIconLookup[url];
 				if (obj) {
@@ -2158,10 +2249,16 @@ var HHBJSONDATA,hhb;
 			};
 			var modifyCustomIcon = function(url,code,meta) {
 				debugMsg(DEBUG_RUNTIME,'modifyCustomIcon',code,url,meta);
-				_protected.removeCustomIcon(url);
-				return _protected.addCustomIcon(url,code,meta);
+				var obj = listCustomIconLookup[url];
+				if (!obj) addCustomIcon(url,code,meta);
+				_protected.removeCustomIcon(url,true);
+				_protected.addCustomIcon(url,code,meta,true);
+				var tcode = code.trim().split(/[\s,]/),tcodelist=[];
+				$.each(tcode,function(idx,_code) { _code=_code.trim(); if (($.inArray(_code,obj.code) || !listIconLookup[_code]) && !_code=='' && !_code.match(/^\[(img|url)\]/i)) tcodelist.push(_code); });
+				sendMessage({modifyCustomIcon: { code: tcodelist, src: url }},function() {});
+				return true;
 			}
-			var removeCustomIcon = function(url) {
+			var removeCustomIcon = function(url,skipMessage) {
 				var obj = listCustomIconLookup[url];
 				if (obj.code) $.each(obj.code,function(idx,code) { delete listIconLookup[code]; });
 				obj.domObject.detach();
@@ -2170,7 +2267,8 @@ var HHBJSONDATA,hhb;
 				delete listCustomIconLookup[url];
 				if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
 				if (_protected.showIconMsg) _protected.showIconMsg();
-				debugMsg(DEBUG_RUNTIME,'removeCustomIcon',obj,listCustomIconLookup);
+				debugMsg(DEBUG_RUNTIME,'removeCustomIcon',url);
+				if (!skipMessage) sendMessage({removeCustomIcon: { src: obj.src }},function(response) {});
 				return true;
 			};
 			
@@ -2181,17 +2279,19 @@ var HHBJSONDATA,hhb;
 			_protected.importGenre = function(_genrelist) { 		if (settings.enable_emotify) analyzeGenre(_genrelist); }
 			_protected.importBuiltinIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeBuiltinIcon(_iconlist); }
 			_protected.importChannelIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeChannelIcon(_iconlist); }
-			_hhb.importCustomIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeCustomIcon(_iconlist); }
+			_protected.importCustomIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeCustomIcon(_iconlist); }
 			_protected.addCustomIcon = addCustomIcon;
 			_protected.removeCustomIcon = removeCustomIcon;
-			/* analyze GJTV Icon in twitch / justin */
-			if ($.inArray(env.platform,['twitch','justin']) >= 0) analyzeGJTVIcon();
+			/* analyze GJTV Icon in twitch */
+			if ($.inArray(env.platform,['twitch']) >= 0) analyzeGJTVIcon();
+			/* pull custom iconset */
+			pullCustomIconset();
 		}
 		var initUserInterface = function() {
 			var detectUI = function() {
 				setTimeout(function() { detectUI(); },delay.detectUI);
 				
-				debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Detecting UI...');
+				debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Detecting UI...');
 				var $holder = $(selector.holder);
 				var $button = $(selector.button);
 				if ($holder.length > 0 && $button.length > 0) {
@@ -2219,6 +2319,7 @@ var HHBJSONDATA,hhb;
 						setLoadingStatus('activateRebindUIBtn','retry');
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Activating Rebind UI Button Failed!');
+						_gaTracker('core','fail','User Interface - Rebind UI button');
 						setLoadingStatus('activateRebindUIBtn','fail');
 					}
 					return false;
@@ -2228,6 +2329,7 @@ var HHBJSONDATA,hhb;
 						bindUI();
 					}).addClass(cssClass.inited);
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Rebind UI Button');
+					_gaTracker('core','success','User Interface - Rebind UI button',retryCount.activateRebindUIBtn);					
 					setLoadingStatus('activateRebindUIBtn','complete');
 				}
 			};
@@ -2244,8 +2346,9 @@ var HHBJSONDATA,hhb;
 					
 					checkVersion();
 					
-					retryCount.bindHolderUI = 0;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Holder UI [G:',listGenre.length,', I:',listIcon.length,']');
+					_gaTracker('core','success','User Interface - Holder UI',retryCount.bindHolderUI);
+					retryCount.bindHolderUI = 0;
 					setLoadingStatus('bindHolderUI','complete');
 					return true;
 				}
@@ -2259,14 +2362,14 @@ var HHBJSONDATA,hhb;
 					loadingClass = 'hhb-loading';
 					f_keydown = function(e) { if ($form.is(':visible') && (e.which == 13)) $addBtn.click();	/* Press [Enter] */ },
 					f_checkRequire = function(field,codeDuplicated) {
-						var isInit = (field=='init');
+						var isInit = (field=='init'),isSubmit = (field=='submit');
 						var reqClass = 'hhb-required';
-						if (isInit || field!='img' || imgMeta.loaded) $imgPreviewHolder.removeClass(reqClass);
-						else $imgPreviewHolder.addClass(reqClass);
-						if (isInit || field!='url' || $txtUrl.val()!='') $txtUrl.removeClass(reqClass);
-						else $txtUrl.addClass(reqClass);
-						if (isInit || field!='code' || !codeDuplicated) $txtCode.removeClass(reqClass);
-						else $txtCode.addClass(reqClass);
+						if (!isInit && ((isSubmit || field=='img') && !imgMeta.loaded)) $imgPreviewHolder.addClass(reqClass);
+						else $imgPreviewHolder.removeClass(reqClass);
+						if (!isInit && ((isSubmit || field=='url') && $txtUrl.val()=='')) $txtUrl.addClass(reqClass);
+						else $txtUrl.removeClass(reqClass);
+						if (!isInit && ((isSubmit || field=='code') && codeDuplicated)) $txtCode.addClass(reqClass);
+						else $txtCode.removeClass(reqClass);
 					},
 					f_resizePreview = function() {
 						var $preview = $('.hhb-img-preview');
@@ -2275,17 +2378,17 @@ var HHBJSONDATA,hhb;
 							.css('max-width',$preview.innerWidth()-parseInt($preview.css('padding-left'))-parseInt($preview.css('padding-right')));
 					}
 					$form = $(selector.customIconForm),
-					$removeBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" title="Remove from Custom"></div>')
+					$removeBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" hhb-locale-title="{{iconlist.custom_icon.cancel}}" title="Cancel"></div>')
 									.click(function() { $form.removeClass('hhb-enabled'); }),
 					$imgLoader = $('<img>')
 									.load(function() { $imgPreviewHolder.removeClass(loadingClass); $.extend(imgMeta,{ loaded: true, width: this.width, height: this.height }); $imgPreview.attr('src',this.src); f_checkRequire('img'); f_resizePreview(); })
 									.error(function() { $imgPreviewHolder.removeClass(loadingClass); $.extend(imgMeta,{ loaded: false, width:0, height:0 }); if($(this).attr('src')!='') f_checkRequire('img'); $imgPreview.attr('src',''); }),
 					$imgPreview = $('<img id="hhb-img">'),
-					$imgPreviewHolder = $('<div class="hhb-img-preview"></div>').append([$removeBtn,$imgPreview]),
-					$txtUrl = $('<input type="text" id="hhb-url" placeholder="Image URL">')
+					$imgPreviewHolder = $('<div class="hhb-img-preview" hhb-locale-title="{{iconlist.custom_icon.preview}}"></div>').append([$removeBtn,$imgPreview]),
+					$txtUrl = $('<input type="text" id="hhb-url" hhb-locale-placeholder="{{iconlist.custom_icon.url}}" placeholder="Image URL">')
 									.change(function() { var src=$(this).val(); $imgPreviewHolder.addClass(loadingClass); $imgLoader.attr('src',src); f_checkRequire('url'); }).keydown(f_keydown),
-					$txtCode = $('<input type="text" id="hhb-code" placeholder="Custom Code">').keydown(f_keydown),
-					$addBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-add" title="Manual add custom icon"></div>')
+					$txtCode = $('<input type="text" id="hhb-code" hhb-locale-placeholder="{{iconlist.custom_icon.code}}" placeholder="Custom Code">').keydown(f_keydown),
+					$addBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-add" hhb-locale-title="{{iconlist.custom_icon.add}}" title="Add to Custom"></div>')
 									.click(function() {
 										if (!imgMeta.loaded) f_checkRequire('submit');
 										else if (!_protected.addCustomIcon($txtUrl.val(),$txtCode.val(),imgMeta)) f_checkRequire('submit',true);
@@ -2322,8 +2425,9 @@ var HHBJSONDATA,hhb;
 					platformObj.onBindedToggleButton();
 					activatePopupToggle();
 					if (settings.enable_bbcode) activateAutoCompleteBBCodeBtn();
-					retryCount.bindButtonUI = 0;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Toggle Button UI');
+					_gaTracker('core','success','User Interface - Toggle button UI',retryCount.bindButtonUI);
+					retryCount.bindButtonUI = 0;
 					setLoadingStatus('bindButtonUI','complete');
 					return true;
 				}
@@ -2426,8 +2530,9 @@ var HHBJSONDATA,hhb;
 						toggleHolder('toggle');
 					});
 				
-				retryCount.bindHolderToggleBtn = 0;
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Holder Toggle Button');
+				_gaTracker('core','success','User Interface - Holder toggle button',retryCount.bindHolderToggleBtn);
+				retryCount.bindHolderToggleBtn = 0;
 				setLoadingStatus('bindHolderToggleBtn','complete');
 			}
 			var activateSortMode = function() {
@@ -2446,8 +2551,9 @@ var HHBJSONDATA,hhb;
 				});
 				toggleSortMode('init');
 				
-				retryCount.activateSortMode = 0;
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Sort Mode');
+				_gaTracker('core','success','Sort Mode - Activated',retryCount.activateSortMode);
+				retryCount.activateSortMode = 0;
 				setLoadingStatus('activateSortMode','complete');
 			}
 			var selectGenre = function(genre) {
@@ -2514,23 +2620,27 @@ var HHBJSONDATA,hhb;
 							);
 					/* custom icon - remove / modify */
 					if (obj.isCustom) $icon.addClass('custom').prepend([
-							$('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" title="Remove from Custom">').click(function(e) {
-								if (!confirm('Confirm remove custom icon?')) return false;
-								e.stopPropagation();
-								var obj = $(this).parents('.hhb-icon').data('hhb-object'),
-									src = obj.src;
-								var src = $(this).parents('.hhb-icon').data('hhb-object').src;
-								_protected.removeCustomIcon(src);
-								console.log('Remove Custom Icon',src);
-							}),
-							$('<div class="hhb-custom-icon-btn hhb-custom-icon-modify" title="Modify custom icon">').click(function(e) {
-								e.stopPropagation();
-								var obj = $(this).parents('.hhb-icon').data('hhb-object'),
-									src = obj.src, code = obj.code, tcode = [];
-								$.each(code,function(idx,_code) { if (!_code.match(/^\[(img|url)\]/i)) tcode.push(_code); });
-								_protected.initCustomIconForm(src,tcode.join(', '));
-								console.log('Modify Custom Icon',src,tcode);
-							})
+							$('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" hhb-locale-title="{{iconlist.custom_icon.remove}}" title="Remove from Custom">')
+								.attr('title',locale.getLocaleMsg('iconlist.custom_icon.remove'))
+								.click(function(e) {
+									if (!confirm(locale.getLocaleMsg('iconlist.custom_icon.remove_confirm'))) return false;
+									e.stopPropagation();
+									var obj = $(this).parents('.hhb-icon').data('hhb-object'),
+										src = obj.src;
+									var src = $(this).parents('.hhb-icon').data('hhb-object').src;
+									_protected.removeCustomIcon(src);
+									console.log('Remove Custom Icon',src);
+								}),
+							$('<div class="hhb-custom-icon-btn hhb-custom-icon-modify" hhb-locale-title="{{iconlist.custom_icon.modify}}" title="Modify Custom Icon">')
+								.attr('title',locale.getLocaleMsg('iconlist.custom_icon.modify'))
+								.click(function(e) {
+									e.stopPropagation();
+									var obj = $(this).parents('.hhb-icon').data('hhb-object'),
+										src = obj.src, code = obj.code, tcode = [];
+									$.each(code,function(idx,_code) { if (!_code.match(/^\[(img|url)\]/i)) tcode.push(_code); });
+									_protected.initCustomIconForm(src,tcode.join(', '));
+									console.log('Modify Custom Icon',src,tcode);
+								})
 						]);
 					obj.domObject = $icon.data('hhb-object',obj);
 					$palIconset.append($icon);
@@ -2539,10 +2649,12 @@ var HHBJSONDATA,hhb;
 				$palIconset.append(
 					$('<div class="'+cssClass.icon+' custom hhb-icon-button" hhb-genre="Custom"></div>')
 						.append(
-							$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" title="Manual add custom icon">').click(function(e) {
-								e.stopPropagation();
-								_protected.initCustomIconForm();
-							})
+							$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" hhb-locale-title="{{iconlist.custom_icon.manual_add}}" title="Manual Add Custom Icon">')
+								.attr('title',locale.getLocaleMsg('iconlist.custom_icon.manual_add'))
+								.click(function(e) {
+									e.stopPropagation();
+									_protected.initCustomIconForm();
+								})
 						)
 				);
 				selectGenre('init');	/* select default genre */
@@ -2640,6 +2752,7 @@ var HHBJSONDATA,hhb;
 				version.sortGenre.current = version.sortGenre.pending;
 				setLoadingStatus('sortGenre','complete');
 				debugMsg(DEBUG_RUNTIME|DEBUG_SUCCESS,'Sort Genre List [V:',version.sortGenre.current,',C:',$newOrder.length,',T:',timer.sortGenre,']');
+				_gaTracker('core','success','Sort Genre List - Sorted');
 			};
 			var sortIconList = function(forced) {
 				if (version.sort.current==version.sort.pending) return;
@@ -2695,6 +2808,7 @@ var HHBJSONDATA,hhb;
 				version.sort.current = version.sort.pending;
 				setLoadingStatus('sort','complete');
 				debugMsg(DEBUG_RUNTIME|DEBUG_SUCCESS,'Sort Icon List [M:',sortModeClass[settings.icon_sort_by],',V:',version.sort.current,',C:',$newOrder.length,',T:',timer.sort,']');
+				_gaTracker('core','success','Sort Icon List - Sorted');
 			};
 			var showIconMsg = function() {
 				var $icon = $(selector.iconsetIcon).filter(':not(.hhb-icon-button)');
@@ -3126,6 +3240,7 @@ var HHBJSONDATA,hhb;
 				}
 				setLoadingStatus('analyzeNameBanner','complete');
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Name Banner List [NB:',count,']');
+				_gaTracker('core','success','Name Banner - Analyzed',count);
 				return olist;
 			};
 
@@ -3175,8 +3290,9 @@ var HHBJSONDATA,hhb;
 				});
 				toggleDarkMode('init');
 				
-				retryCount.bindDarkModeBtn = 0;
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Dark/Light Mode');
+				_gaTracker('core','success','Dark Mode - Activated',retryCount.bindDarkModeBtn);
+				retryCount.bindDarkModeBtn = 0;
 				setLoadingStatus('bindDarkModeBtn','complete');
 			};
 			
@@ -3236,8 +3352,9 @@ var HHBJSONDATA,hhb;
 						.mousemove(function() { f_showBtn(); })
 						.mouseout(function() { f_hideBtn(); });
 					checkIsBookmarked();
-					retryCount.bindPlayerBookmarkBtn = 0;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Player Bookmark Button');
+					_gaTracker('core','success','Bookmark - Bind player bookmark button',retryCount.bindPlayerBookmarkBtn);
+					retryCount.bindPlayerBookmarkBtn = 0;
 					setLoadingStatus('bindPlayerBookmarkBtn','complete');
 					return true;
 				}
@@ -3248,6 +3365,7 @@ var HHBJSONDATA,hhb;
 					setLoadingStatus('bindPlayerBookmarkBtn','retry');
 				} else {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Binding Player Bookmark Button Failed!');
+					_gaTracker('core','fail','Bookmark - Bind player bookmark button');
 					setLoadingStatus('bindPlayerBookmarkBtn','fail');
 				}
 			};
@@ -3258,8 +3376,9 @@ var HHBJSONDATA,hhb;
 					/* Activate bookmark button */
 					$bookmarkBtn.click(function() { toggleBookmark(); });
 					checkIsBookmarked();
-					retryCount.bindBookmarkBtn = 0;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Bookmark Button');
+					_gaTracker('core','success','Bookmark - Bind bookmark button',retryCount.bindBookmarkBtn);
+					retryCount.bindBookmarkBtn = 0;
 					setLoadingStatus('bindBookmarkBtn','complete');
 					return true;
 				}
@@ -3270,6 +3389,7 @@ var HHBJSONDATA,hhb;
 					setLoadingStatus('bindBookmarkBtn','retry');
 				} else {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Binding Bookmark Button Failed!');
+					_gaTracker('core','fail','Bookmark - Bind bookmark button');
 					setLoadingStatus('bindBookmarkBtn','fail');
 				}
 				
@@ -3374,6 +3494,7 @@ var HHBJSONDATA,hhb;
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Imported Icon List [G:',listGenre.length,', I:',listIcon.length,']');
 			} else {
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_FAIL,'Import Icon List Failed!');
+				_gaTracker('core','fail','Import - Icon list');
 				setLoadingStatus('importIconList','fail');
 			}
 		};
@@ -3388,6 +3509,7 @@ var HHBJSONDATA,hhb;
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Imported Name Banner List [NBL:',listNameBanner,']');
 			} else {
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_FAIL,'Import Name Banner Failed!');
+				_gaTracker('core','fail','Import - Name banner list');
 				setLoadingStatus('importNameBanner','fail');
 			}
 		};
