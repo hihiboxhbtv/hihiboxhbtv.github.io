@@ -2827,9 +2827,11 @@ var HHBJSONDATA,hhb;
 				});
 				
 				/* Channel Object */
-				objChannel = $.extend({	whitelistonly:false,
-										whitelist: [],
-										blacklist: []
+				objChannel = $.extend({	white_list_only:false,
+										white_list: [],
+										black_list: [],
+										badge: false,
+										icon_list: []
 									},objChannel);
 									
 				/* Channel Badge */
@@ -2842,10 +2844,10 @@ var HHBJSONDATA,hhb;
 				}
 				
 				/* Check Channel Config */
-				if (objChannel.whitelistonly) {
-					/* Whitelist */
-					if (objChannel.whitelist.length > 0) {
-						clist = filterName(objChannel.whitelist);
+				if (objChannel.white_list_only) {
+					/* White list */
+					if (objChannel.white_list.length > 0) {
+						clist = filterName(objChannel.white_list);
 						$.each(nblist,function(idx,obj){
 							try {
 								if (obj._comment) return true;
@@ -2879,8 +2881,8 @@ var HHBJSONDATA,hhb;
 					});
 				}
 				/* Channel blacklist handle */
-				if (objChannel.blacklist.length > 0) {
-					clist = filterName(objChannel.blacklist);
+				if (objChannel.black_list.length > 0) {
+					clist = filterName(objChannel.black_list);
 					for (var i=0;i<clist.length;i++) {
 						if (olist[clist[i]] && !olist[clist[i]].specialEnroll) {
 							delete olist[clist[i]];
@@ -2888,8 +2890,8 @@ var HHBJSONDATA,hhb;
 					}
 				}
 				/* Channel icon list */
-				if (objChannel.iconlist && $.isArray(objChannel.iconlist)) {
-					_protected.importChannelIcon(objChannel.iconlist);
+				if (objChannel.icon_list && $.isArray(objChannel.icon_list) && objChannel.icon_list.length > 0) {
+					_protected.importChannelIcon(objChannel.icon_list);
 				}
 				/* remove namespace */
 				/* generate css */
