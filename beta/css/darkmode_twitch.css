@@ -494,3 +494,6 @@ body.hhb-pf-twitch.hhb-darkmode.error_500,body.hhb-pf-twitch.hhb-darkmode.error_
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chat-interface {border-top:1px solid #363636;}
 .hhb-pf-twitch.hhb-darkmode .dropmenu, .hhb-pf-twitch.hhb-darkmode .ui-menu, .hhb-pf-twitch.hhb-darkmode .ui-multiselect-menu { color: #C4C4C4; border: 1px solid rgba(255,255,255,0.2); background: #000; }
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chatters-view .chatters { background: #0d0d0d; }
+
+/* [S:2014-09-24] */
+.hhb-pf-twitch.hhb-darkmode .chat-container, .hhb-pf-twitch.hhb-darkmode  .ember-chat-container { background: #0d0d0d; }
