@@ -819,7 +819,7 @@ var HHBJSONDATA,hhb;
 						darkModeAcceptor: 'body',
 						showChatBtn: 'a.button-simple.primary:contains("Show Chat")',
 						holderContainer: '.chat-messages',
-						buttonContainer: '.chat-option-buttons',
+						buttonContainer: '.chat-buttons-container',
 						buttonFront: '.viewers.button.normal_button',
 						msgBox: '.ember-text-area[placeholder!=""]',
 						newMsg: 'span.message:not(.hhb-msg)',
