@@ -434,7 +434,7 @@ var HHBJSONDATA,hhb;
 						} else {
 							/* insert text */
 							text = ((prefront.length>0)?' ':'')+text;
-							posfront=front+text;
+							posfront=prefront+text;
 						}
 						/* calc new cursor position */
 						strPos = strPos + (posfront.length-prefront.length);
