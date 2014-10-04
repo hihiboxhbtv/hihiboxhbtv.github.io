@@ -8,7 +8,7 @@ HHBJSONDATA.listIcon = [
 		"_end": 	"***************************************"
 	},
 
-	{	"code": ["O:-)","O:)"],
+	{	"code": ["O:-)"],
 		"src": "hkg/angel.gif",
 		"width": 15,	"height": 23,
 		"genre": ["HKG"]
@@ -28,7 +28,7 @@ HHBJSONDATA.listIcon = [
 		"width": 15,	"height": 15,
 		"genre": ["HKG"]
 	},
-	{	"code": [":-(",":("],
+	{	"code": [":-("],
 		"src": "hkg/frown.gif",
 		"width": 15,	"height": 15,
 		"genre": ["HKG"]
@@ -38,7 +38,7 @@ HHBJSONDATA.listIcon = [
 		"width": 30,	"height": 18,
 		"genre": ["HKG"]
 	},
-	{	"code": [";-)",";)"],
+	{	"code": [";-)"],
 		"src": "hkg/wink.gif",
 		"width": 15,	"height": 15,
 		"genre": ["HKG"]

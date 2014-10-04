@@ -143,8 +143,10 @@ var HHBJSONDATA,hhb;
 				checkedMsg: 'hhb-msg',
 				checkedName: 'hhb-name',
 				checkedBBCodeMsg: 'hhb-bbc-msg',
+				checkedQuote: 'hhb-quote-msg',
 				msgIcon: 'hhb-msgicon',
 				msgIconResized: 'hhb-resized',
+				msgQuote: 'hhb-quote',
 				resized: 'hhb-resized',
 				orgSize: 'hhb-org-size',
 				nameBanner: 'hhb-name-banner',
@@ -173,6 +175,7 @@ var HHBJSONDATA,hhb;
 				filterSelectedIcon: '#hhb-iconset .hhb-icon.hhb-filter-selected',
 				msgIcon: '.hhb-msgicon',
 				msgIconResized: '.hhb-msgicon.hhb-resized',
+				msgQuote: '.hhb-quote',
 				darkModeBtn: '#hhb-darkmode',
 				sortModeBtn: '#hhb-sortmode',
 				resetBtn: '#hhb-reset',
@@ -222,7 +225,7 @@ var HHBJSONDATA,hhb;
 				bindBookmarkBtn: 30,
 				bindPlayerBookmarkBtn: 30
 			},
-			supportedPlatform: ['hitbox','twitch','justin','ustream'],
+			supportedPlatform: ['hitbox','twitch','ustream'],
 			listGenre: [],
 			listIcon: [],
 			listCustomIcon: [],
@@ -364,6 +367,7 @@ var HHBJSONDATA,hhb;
 			listUsage = {},
 			listParse = [],
 			listIconLookup = {},
+			listEmoClsLookup = {},
 			listGenreLookup = {},
 			listCustomIconLookup = {},
 			listNameBanner = {},
@@ -407,12 +411,10 @@ var HHBJSONDATA,hhb;
 				},
 				replaceText: function(txtarea,text,reReplace) {
 					if (txtarea) {
-						text = text.trim()+' ';
 						var scrollPos = txtarea.scrollTop;
+						text = text.trim()+' ';
+						/* get original cursor position */
 						var strPos = 0;
-						if (reReplace instanceof RegExp) {
-							txtarea.value = txtarea.value.replace(reReplace,'');
-						}
 						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
 							"ff" : (document.selection ? "ie" : false ) );
 						if (br == "ie") { 
@@ -420,14 +422,23 @@ var HHBJSONDATA,hhb;
 							var range = document.selection.createRange();
 							range.moveStart ('character', -txtarea.value.length);
 							strPos = range.text.length;
+						} else if (br == "ff") strPos = txtarea.selectionStart;
+						var msg = txtarea.value||'';
+						var prefront = msg.substring(0,strPos);
+						var back = msg.substring(strPos,msg.length);
+						var posfront = ''
+						/* replace / insert text */
+						if (reReplace && reReplace instanceof RegExp) {
+							/* replace text */
+							posfront = prefront.replace(reReplace,text);
+						} else {
+							/* insert text */
+							text = ((prefront.length>0)?' ':'')+text;
+							posfront=front+text;
 						}
-						else if (br == "ff") strPos = txtarea.selectionStart;
-
-						var front = (txtarea.value).substring(0,strPos);  
-						var back = (txtarea.value).substring(strPos,txtarea.value.length);
-						text = ((front.length>0)?' ':'')+text;
-						txtarea.value=front+text+back;
-						strPos = strPos + text.length;
+						/* calc new cursor position */
+						strPos = strPos + (posfront.length-prefront.length);
+						txtarea.value = posfront+back;
 						if (br == "ie") { 
 							txtarea.focus();
 							var range = document.selection.createRange();
@@ -442,6 +453,7 @@ var HHBJSONDATA,hhb;
 							txtarea.focus();
 						}
 						txtarea.scrollTop = scrollPos;
+						txtarea.focus();
 					}
 				},
 				bindNameBanner: function(names,callback) {
@@ -674,6 +686,73 @@ var HHBJSONDATA,hhb;
 						Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2),
 						bodyHeight,$cview.height(),offsetlm);
 					} catch(e) {};
+				},
+				bindQuoter: function(_platform,selector) {
+					var replaceAlt = function(obj) {
+						return obj.children().each(function() {
+							var _objChildren = $(this).children();
+							if (_objChildren.length>0) replaceAlt($(this));
+							var alt = ($(this).attr('alt')||'').trim();
+							if (alt!='') $(this).replaceWith(alt);
+						});
+					}
+					var binder = function() {
+						var addQuote = function(thisObj,isNameOnly) {
+							var $msg = thisObj.clone();
+							var name = $msg.find(selector.chatName).text().trim();
+							var omsg = '';
+							if (name=='') name = thisObj.attr('class').replace(/^from_/ig,''); /* hitbox */
+							if (isNameOnly) omsg = '@'+ name +' « ';
+							else {
+								$msg.find(selector.chatQuoteRemove).remove();
+								$msg.find(selector.msgQuote).remove();
+								replaceAlt($msg);
+								var tmsg = $msg.text();
+								tmsg = tmsg.replace(/(\s|&nbsp;)+/ig,' ')
+									.replace(/&amp;/ig, '&')
+									.replace(/&lt;/ig, '<')
+									.replace(/&gt;/ig, '>')
+									.replace(/&quot;/ig, '"')
+									.replace(/&#039;/ig, '\'')
+									.replace(/(?:<[^>]*>)?\s*@.*\s«/i, '').trim();
+								omsg = '@'+ name +' : '+ tmsg +' « ';
+							}
+							var $msgBox = $(selector.msgBox);
+							if ($msgBox.val().indexOf('«')!=-1) $msgBox.prop('');
+							_platform.replaceText(omsg,/^(\@.*\s«\s)?/ig);
+						}
+						var $chatView = $(selector.chatView);
+						if ($chatView.length==0) {
+							setTimeout(binder,1000);
+							return ;
+						}
+						$chatView.on('click', selector.chatLine, function(e) {
+							if (e.ctrlKey) addQuote($(this));
+							else if (e.altKey) addQuote($(this),true);
+							e.stopPropagation();
+						}).on('click', selector.chatQuoteDisable, function(e) { e.stopPropagation(); });
+					};
+					binder();
+				},
+				parseQuote: function(msgs,cssClass) {
+					if (msgs.length==0) return { msg: 0, parsed: 0 };
+					var $msgs = msgs.addClass(cssClass.checkedQuote);
+					var pcount = 0;
+					$msgs.each(function() {
+						var $msg = $(this).clone();
+						var msgHtml = $msg.html();
+						var quoteMsg = '';
+						var msg = msgHtml;
+						var reQuote = /<[^<>]*>\s*@.*\s«/i;
+						console.log('debug','parseQuote',1,msg);
+						if (msgHtml.match(reQuote)) {
+							quoteMsg = msgHtml.match(reQuote)[0].replace(/\s*«$/i,'').trim();
+							msg = msgHtml.replace(reQuote,$('<span>',{ class: cssClass.msgQuote }).html(quoteMsg)[0].outerHTML);
+						console.log('debug','parseQuote',2,msg);
+						}
+						$(this).empty().html(msg);
+						console.log('debug','parseQuote',3,$(this).html());
+					});
 				}
 			},
 			hitbox: function() {
@@ -693,10 +772,15 @@ var HHBJSONDATA,hhb;
 						newMsg: '.chat-messages .message:not(.hhb-msg)',
 						newName: '.chat-messages .name:not(.hhb-name)',
 						newBBCodeMsg: '.chat-messages .message:not(.hhb-bbc-msg)',
+						newQuoteMsg: '.chat-messages .message:not(.hhb-quote-msg)',
 						timestampsBox: '#timestampsBox',
 						userName: '.navItemsUser .item.user:first-child span',
 						player: '#mediaplayer',
 						chatView: '.chat-messages',
+						chatLine: 'li',
+						chatName: '.title .name',
+						chatQuoteRemove: '.chat-compact-time, .chat-normal-time, .chat-badge-mod, .hhb-name-banner, .title .name, .chat-buffer',
+						chatQuoteDisable: 'ul > li a',
 						chatContainer: '.chatBody',
 						msgList: '.chatBody > li > div',
 						badgeBroadcaster: '.hhb-pf-hitbox .chat-messages .chat-badge-owner',
@@ -705,8 +789,8 @@ var HHBJSONDATA,hhb;
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
 				/* Initialize */
-				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:dashboard|settings|404|signup|video)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
-				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:embed\/|embedchat\/)?(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
+				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:settings|404|signup|video)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:embed\/|embedchat\/|dashboard\/)?(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
 				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-hitbox'); };
@@ -820,22 +904,26 @@ var HHBJSONDATA,hhb;
 						resized: bircount
 					};
 				};
+				_platform.bindQuoter = function() { _platformObj.default.bindQuoter(_platform,selector); }
+				_platform.getNewQuoteMsg = function() {	return $(selector.newQuoteMsg);	};
+				_platform.parseQuote = function() { 
+					var msgs = _platform.getNewQuoteMsg();
+					return _platformObj.default.parseQuote(msgs,cssClass);
+				}
 				_platform.scrollToBottom = function() {	return _platformObj.default.scrollToBottom(selector); };
-				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
-				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
+				_platform.getMsgBox = function(getDOM) { return (getDOM ? $(selector.msgBox)[0]||false : $(selector.msgBox)); };
+				_platform.getMsgInput = function() {	return $(selector.msgBox).val()||'';	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
-					var $msgBox = $(selector.msgBox);
-					if ($msgBox.length > 0) {
-						var txtarea = $msgBox[0];
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
 						_platformObj.default.replaceText(txtarea,text,reReplace);
 						_platform.updateMsg();
 					}
 				}
 				_platform.autoCompleteBBCode = function() {
-					var $msgBox = $(selector.msgBox);
-					if ($msgBox.length > 0) {
-						var txtarea = $msgBox[0];
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
 						_platformObj.default.autoCompleteBBCode(txtarea);
 						_platform.updateMsg();
 					}
@@ -873,17 +961,22 @@ var HHBJSONDATA,hhb;
 						darkModeAcceptor: 'body',
 						showChatBtn: 'a.button-simple.primary:contains("Show Chat")',
 						holderContainer: '.chat-messages',
-						buttonContainer: '.chat-option-buttons',
+						buttonContainer: '.chat-buttons-container',
 						buttonFront: '.viewers.button.normal_button',
 						msgBox: '.ember-text-area[placeholder!=""]',
 						newMsg: 'span.message:not(.hhb-msg)',
 						newName: '.chat-line .from:not(.hhb-name)',
 						newBBCodeMsg: 'span.message:not(.hhb-bbc-msg)',
+						newQuoteMsg: 'span.message:not(.hhb-quote-msg)',
 						emoticon: 'span.emoticon',
 						timestampsBox: '.chat-menu-content .ember-checkbox:contains("Time Stamps")',
 						userName: '#nav_personal .username',
 						player: 'object[data*="TwitchPlayer.swf"]',
 						chatView: '.chat-messages',
+						chatLine: '.chat-line',
+						chatName: '.from',
+						chatQuoteRemove: '.timestamp, .mod-icons, .from, .colon',
+						chatQuoteDisable: '.chat-line a',
 						chatContainer: '.chat-messages .tse-scroll-content',
 						msgList: '.chat-messages .chat-line',
 						badgeBroadcaster: '.hhb-pf-twitch .ember-chat .badges .broadcaster',
@@ -1000,6 +1093,7 @@ var HHBJSONDATA,hhb;
 					var list = [],
 						count = 0,
 						style = '';
+					listEmoClsLookup = {};
 					try {
 						var emoticonsController = window.App.__container__.lookup('controller:emoticons');
 						var emoteSets = emoticonsController.emoticonSets;
@@ -1053,6 +1147,7 @@ var HHBJSONDATA,hhb;
 							isEmoticon: true,
 							regex: regex
 						});
+						listEmoClsLookup[classname] = icon;
 						count++;
 					}
 					if (count > 0) {
@@ -1069,19 +1164,34 @@ var HHBJSONDATA,hhb;
 						var count = 0;
 						var bicount = 0, bircount = 0;
 						msgs.each(function() {
-							var emoticons = $(this)
-								.addClass(cssClass.checkedMsg)
-								.children(selector.emoticon)
-									.each(function() {
-										if ($(this).height() > limitHeight) $(this).addClass(cssClass.resized);
-										$(this).addClass(cssClass.msgIcon);
+							$(this).addClass(cssClass.checkedMsg);
+							if (env.isEmoticonInited) {
+								var emoticons = $(this)
+									.children(selector.emoticon)
+										.each(function() {
+											if ($(this).height() > limitHeight) $(this).addClass(cssClass.resized);
+											$(this).addClass(cssClass.msgIcon);
+										});
+								/* bind icon code */
+								$(this).children(selector.emoticon).each(function() {
+									var $hhbMsgIcon = $(this);
+									var classlist=$hhbMsgIcon.attr('class').split(' ');
+									$.each(classlist,function(idx,obj) {
+										if (obj.match(/^emo\-hhb\-/i)) {
+											var icon = listEmoClsLookup[obj];
+											if (!icon) return ;
+											if (icon.title && icon.title!='') $hhbMsgIcon.attr('title',icon.title);
+											if (icon.alt && icon.alt!='') $hhbMsgIcon.attr('alt',icon.alt);
+										}
 									});
-							var resized = $(this).children(selector.msgIconResized)
-								.click(function() {
-									$(this).toggleClass(cssClass.orgSize);
 								});
-							bicount += emoticons.length;
-							bircount += resized.length;
+								var resized = $(this).children(selector.msgIconResized)
+									.click(function() {
+										$(this).toggleClass(cssClass.orgSize);
+									});
+								bicount += emoticons.length;
+								bircount += resized.length;
+							}
 						});
 					}
 					return {
@@ -1090,22 +1200,26 @@ var HHBJSONDATA,hhb;
 						resized: bircount
 					};
 				};
+				_platform.bindQuoter = function() { _platformObj.default.bindQuoter(_platform,selector); }
+				_platform.getNewQuoteMsg = function() {	return $(selector.newQuoteMsg);	};
+				_platform.parseQuote = function() { 
+					var msgs = _platform.getNewQuoteMsg();
+					return _platformObj.default.parseQuote(msgs,cssClass);
+				}
 				_platform.scrollToBottom = function() {	return _platformObj.default.scrollToBottom(selector); };
-				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
-				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
+				_platform.getMsgBox = function(getDOM) { return (getDOM ? $(selector.msgBox)[0]||false : $(selector.msgBox)); };
+				_platform.getMsgInput = function() {	return $(selector.msgBox).val()||'';	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
-					var $msgBox = $(selector.msgBox);
-					if ($msgBox.length > 0) {
-						var txtarea = $msgBox[0];
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
 						_platformObj.default.replaceText(txtarea,text,reReplace);
 						_platform.updateMsg(txtarea.value);
 					}
 				}
 				_platform.autoCompleteBBCode = function() {
-					var $msgBox = $(selector.msgBox);
-					if ($msgBox.length > 0) {
-						var txtarea = $msgBox[0];
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
 						_platformObj.default.autoCompleteBBCode(txtarea);
 						_platform.updateMsg(txtarea.value);
 					}
@@ -1147,6 +1261,7 @@ var HHBJSONDATA,hhb;
 						newMsg: '.chat_line span.message:not(.hhb-msg)',
 						newName: '.chat_line .nick:not(.hhb-name)',
 						newBBCodeMsg: '.chat_line span.message:not(.hhb-bbc-msg)',
+						newQuoteMsg: '.chat_line span.message:not(.hhb-quote-msg)',
 						emoticon: 'span.emoticon',
 						timestampsBox: '#toggle-timestamp',
 						userName: '.global-header-user-info .global-header-username',
@@ -1379,13 +1494,12 @@ var HHBJSONDATA,hhb;
 						resized: bircount
 					};
 				};
-				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
-				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
+				_platform.getMsgBox = function(getDOM) { return (getDOM ? $(selector.msgBox)[0]||false : $(selector.msgBox)); };
+				_platform.getMsgInput = function() {	return $(selector.msgBox).val()||'';	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
-					var $msgBox = $(selector.msgBox);
-					if ($msgBox.length > 0) {
-						var txtarea = $msgBox[0];
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
 						_platformObj.default.replaceText(txtarea,text,reReplace);
 					}
 				};
@@ -1565,13 +1679,18 @@ var HHBJSONDATA,hhb;
 						resized: bircount
 					};
 				};
-				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
-				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
+				_platform.bindQuoter = function() { /* _platformObj.default.bindQuoter(_platform,selector); */ }
+				_platform.getNewQuoteMsg = function() {	return [];	};
+				_platform.parseQuote = function() { /*
+					var msgs = _platform.getNewQuoteMsg();
+					return _platformObj.default.parseQuote(msgs,cssClass); */
+				}
+				_platform.getMsgBox = function(getDOM) { return (getDOM ? $(selector.msgBox)[0]||false : $(selector.msgBox)); };
+				_platform.getMsgInput = function() {	return $(selector.msgBox).val()||'';	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
-					var $msgBox = $(selector.msgBox);
-					if ($msgBox.length > 0) {
-						var txtarea = $msgBox[0];
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
 						_platformObj.default.replaceText(txtarea,text,reReplace);
 					}
 				};
@@ -1907,6 +2026,7 @@ var HHBJSONDATA,hhb;
 		var initialize = function() {
 			setLoadingStatus('initialize','init');
 			debugMsg(DEBUG_ENV,'Initializing...');
+			platformObj.bindQuoter();
 			$.each(env.features,function(idx,feature) {
 				switch (feature) {
 				case 'ui':				initUserInterface();	break;
@@ -2157,8 +2277,8 @@ var HHBJSONDATA,hhb;
 					var src = (obj.src.match(/^https?/) ? '' : imgHost)+obj.src,
 						genre = (function(genre,code) { var tgenre=[]; if (genre) $.each(genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,code[0]),
 						usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {}),
-						alt = (obj.alt?obj.alt:'');
-						title = tcode.join(", "),
+						alt = (obj.alt?obj.alt:(tcode.length>0?tcode[0] : '')).replace('"','&quot;');
+						title = tcode.join(", ").replace('"','&quot;'),
 						tstyle = '';
 						tstyle += (obj.width) ? 'width:'+obj.width+'px;' : '',
 						tstyle += (obj.height) ? 'height:'+obj.height+'px;' : '';
@@ -2169,6 +2289,7 @@ var HHBJSONDATA,hhb;
 					var regex = new RegExp(re,'g');
 					obj.id = nextIconID;	nextIconID++;
 					obj.genre = genre;
+					obj.alt = alt;
 					obj.title = title;
 					obj.regex = regex;
 					obj.src = src;
@@ -2494,8 +2615,8 @@ var HHBJSONDATA,hhb;
 					$version.addClass('newRelease');
 				}
 				
-				$('a.hhb').attr('href',versionInfo.siteURI);
-				$('a.fb').attr('href',versionInfo.pageURI);
+				$('#hhb-header a.hhb').attr('href',versionInfo.siteURI);
+				$('#hhb-header a.fb').attr('href',versionInfo.pageURI);
 			};
 			
 			if (isStatusInited('initUserInterface')) return false;
@@ -2630,7 +2751,6 @@ var HHBJSONDATA,hhb;
 										src = obj.src;
 									var src = $(this).parents('.hhb-icon').data('hhb-object').src;
 									_protected.removeCustomIcon(src);
-									console.log('Remove Custom Icon',src);
 								}),
 							$('<div class="hhb-custom-icon-btn hhb-custom-icon-modify" hhb-locale-title="{{iconlist.custom_icon.modify}}" title="Modify Custom Icon">')
 								.attr('title',locale.getLocaleMsg('iconlist.custom_icon.modify'))
@@ -2640,7 +2760,6 @@ var HHBJSONDATA,hhb;
 										src = obj.src, code = obj.code, tcode = [];
 									$.each(code,function(idx,_code) { if (!_code.match(/^\[(img|url)\]/i)) tcode.push(_code); });
 									_protected.initCustomIconForm(src,tcode.join(', '));
-									console.log('Modify Custom Icon',src,tcode);
 								})
 						]);
 					obj.domObject = $icon.data('hhb-object',obj);
@@ -2829,8 +2948,19 @@ var HHBJSONDATA,hhb;
 				var msg = platformObj.getMsgInput();
 				var cidx = 0;
 				if (msg) {
-					if (msg.length >= icon_filter.minLength) {
-						var matches = msg.match(icon_filter.finder);
+					var strPos = 0;
+					var txtarea = platformObj.getMsgBox(true);
+					var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+						"ff" : (document.selection ? "ie" : false ) );
+					if (br == "ie") { 
+						txtarea.focus();
+						var range = document.selection.createRange();
+						range.moveStart ('character', -txtarea.value.length);
+						strPos = range.text.length;
+					} else if (br == "ff") strPos = txtarea.selectionStart;
+					var tmsg = msg.substring(0,strPos);
+					if (tmsg.length >= icon_filter.minLength) {
+						var matches = tmsg.match(icon_filter.finder);
 						var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
 						var recodehead = codehead.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 						var clist = obj.data('hhb-code').toLowerCase().split(' ');
@@ -2863,8 +2993,18 @@ var HHBJSONDATA,hhb;
 					platformObj.replaceText(text,icon_filter.finder);
 					isFiltering = false;
 					var msg = platformObj.getMsgInput();
-					msg = (msg) ? msg : '';
-					var matches = msg.match(icon_filter.finder);
+					var strPos = 0;
+					var txtarea = platformObj.getMsgBox(true);
+					var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+						"ff" : (document.selection ? "ie" : false ) );
+					if (br == "ie") { 
+						txtarea.focus();
+						var range = document.selection.createRange();
+						range.moveStart ('character', -txtarea.value.length);
+						strPos = range.text.length;
+					}
+					var tmsg = msg.substring(0,strPos);
+					var matches = tmsg.match(icon_filter.finder);
 					var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
 					_gaTracker('icon','filter','found',codehead.length);
 				} else {
@@ -2921,7 +3061,18 @@ var HHBJSONDATA,hhb;
 				var msg = platformObj.getMsgInput();
 				if (msg) {
 					if (msg.length >= icon_filter.minLength) {
-						var matches = msg.match(icon_filter.finder);
+						var strPos = 0;
+						var txtarea = platformObj.getMsgBox(true);
+						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+							"ff" : (document.selection ? "ie" : false ) );
+						if (br == "ie") { 
+							txtarea.focus();
+							var range = document.selection.createRange();
+							range.moveStart ('character', -txtarea.value.length);
+							strPos = range.text.length;
+						} else if (br == "ff") strPos = txtarea.selectionStart;
+						var tmsg = msg.substring(0,strPos);
+						var matches = tmsg.match(icon_filter.finder);
 						var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
 						var recodehead = codehead.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 						
@@ -3146,9 +3297,11 @@ var HHBJSONDATA,hhb;
 				});
 				
 				/* Channel Object */
-				objChannel = $.extend({	whitelistonly:false,
-										whitelist: [],
-										blacklist: []
+				objChannel = $.extend({	white_list_only:false,
+										white_list: [],
+										black_list: [],
+										badge: false,
+										icon_list: []
 									},objChannel);
 									
 				/* Channel Badge */
@@ -3161,10 +3314,10 @@ var HHBJSONDATA,hhb;
 				}
 				
 				/* Check Channel Config */
-				if (objChannel.whitelistonly) {
-					/* Whitelist */
-					if (objChannel.whitelist.length > 0) {
-						clist = filterName(objChannel.whitelist);
+				if (objChannel.white_list_only) {
+					/* White list */
+					if (objChannel.white_list.length > 0) {
+						clist = filterName(objChannel.white_list);
 						$.each(nblist,function(idx,obj){
 							try {
 								if (obj._comment) return true;
@@ -3198,8 +3351,8 @@ var HHBJSONDATA,hhb;
 					});
 				}
 				/* Channel blacklist handle */
-				if (objChannel.blacklist.length > 0) {
-					clist = filterName(objChannel.blacklist);
+				if (objChannel.black_list.length > 0) {
+					clist = filterName(objChannel.black_list);
 					for (var i=0;i<clist.length;i++) {
 						if (olist[clist[i]] && !olist[clist[i]].specialEnroll) {
 							delete olist[clist[i]];
@@ -3207,8 +3360,8 @@ var HHBJSONDATA,hhb;
 					}
 				}
 				/* Channel icon list */
-				if (objChannel.iconlist && $.isArray(objChannel.iconlist)) {
-					_protected.importChannelIcon(objChannel.iconlist);
+				if (objChannel.icon_list && $.isArray(objChannel.icon_list) && objChannel.icon_list.length > 0) {
+					_protected.importChannelIcon(objChannel.icon_list);
 				}
 				/* remove namespace */
 				/* generate css */
@@ -3433,6 +3586,8 @@ var HHBJSONDATA,hhb;
 					var result = platformObj.parseBBCode();
 					if (result.msg>0) $.extend(results,{ msgParsed: result.msg, bbcodeParsed: result.parsed });
 				}
+				platformObj.parseQuote();
+				
 				if (results.msgParsed>0) debugMsg(DEBUG_RUNTIME,'Messages Parsed [M:',results.msgParsed,',E:',results.iconEmotified,',R:',results.iconResized,',NB:',results.nameBannerShown,',BBC:',results.bbcodeParsed,']');
 				setTimeout(function() { parseIncoming(); },delay.parseIncoming);
 			};

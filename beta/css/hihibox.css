@@ -614,3 +614,12 @@ a:hover > .hhb-name-name {
 #hhb-custom-icon-form .hhb-loading {
 	background-color: #555555;
 }
+
+/* [S:2014-10-01] - Quote */
+.hhb-quote {
+	padding: 5px;
+	margin-top: 5px;
+	display: inline-block;
+	background: rgba(128,128,128,0.5);
+	border-radius: 5px;
+}
