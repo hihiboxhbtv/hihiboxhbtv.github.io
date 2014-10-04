@@ -702,7 +702,7 @@ var HHBJSONDATA,hhb;
 							var name = $msg.find(selector.chatName).text().trim();
 							var omsg = '';
 							if (name=='') name = thisObj.attr('class').replace(/^from_/ig,''); /* hitbox */
-							if (isNameOnly) omsg = '@'+ name +' « ';
+							if (isNameOnly) omsg = '@'+ name;
 							else {
 								$msg.find(selector.chatQuoteRemove).remove();
 								$msg.find(selector.msgQuote).remove();
@@ -715,11 +715,12 @@ var HHBJSONDATA,hhb;
 									.replace(/&quot;/ig, '"')
 									.replace(/&#039;/ig, '\'')
 									.replace(/(?:<[^>]*>)?\s*@.*\s«/i, '').trim();
-								omsg = '@'+ name +' : '+ tmsg +' « ';
+								omsg = '@'+ name +' : '+ tmsg;
 							}
+							omsg += ' « ';
 							var $msgBox = $(selector.msgBox);
 							if ($msgBox.val().indexOf('«')!=-1) $msgBox.prop('');
-							_platform.replaceText(omsg,/^(\@.*\s«\s)?/ig);
+							_platform.replaceText(omsg,/^(\@.*\s?«\s?)?/ig);
 						}
 						var $chatView = $(selector.chatView);
 						if ($chatView.length==0) {
@@ -730,6 +731,7 @@ var HHBJSONDATA,hhb;
 							if (e.ctrlKey) addQuote($(this));
 							else if (e.altKey) addQuote($(this),true);
 							e.stopPropagation();
+							return false;
 						}).on('click', selector.chatQuoteDisable, function(e) { e.stopPropagation(); });
 					};
 					binder();
@@ -744,14 +746,11 @@ var HHBJSONDATA,hhb;
 						var quoteMsg = '';
 						var msg = msgHtml;
 						var reQuote = /<[^<>]*>\s*@.*\s«/i;
-						console.log('debug','parseQuote',1,msg);
 						if (msgHtml.match(reQuote)) {
 							quoteMsg = msgHtml.match(reQuote)[0].replace(/\s*«$/i,'').trim();
 							msg = msgHtml.replace(reQuote,$('<span>',{ class: cssClass.msgQuote }).html(quoteMsg)[0].outerHTML);
-						console.log('debug','parseQuote',2,msg);
 						}
 						$(this).empty().html(msg);
-						console.log('debug','parseQuote',3,$(this).html());
 					});
 				}
 			},
