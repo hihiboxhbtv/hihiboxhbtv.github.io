@@ -414,18 +414,23 @@ var HHBJSONDATA,hhb;
 						var scrollPos = txtarea.scrollTop;
 						text = text.trim()+' ';
 						/* get original cursor position */
-						var strPos = 0;
+						var strPos = 0,strPosE = 0;
 						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
 							"ff" : (document.selection ? "ie" : false ) );
 						if (br == "ie") { 
 							txtarea.focus();
 							var range = document.selection.createRange();
+							var selText = range.text;
 							range.moveStart ('character', -txtarea.value.length);
 							strPos = range.text.length;
-						} else if (br == "ff") strPos = txtarea.selectionStart;
+							strPosE = strPos + selText.length;
+						} else if (br == "ff") {
+							strPos = txtarea.selectionStart;
+							strPosE = txtarea.selectionEnd;
+						}
 						var msg = txtarea.value||'';
 						var prefront = msg.substring(0,strPos);
-						var back = msg.substring(strPos,msg.length);
+						var back = msg.substring(strPosE,msg.length);
 						var posfront = ''
 						/* replace / insert text */
 						if (reReplace && reReplace instanceof RegExp) {
@@ -433,7 +438,7 @@ var HHBJSONDATA,hhb;
 							posfront = prefront.replace(reReplace,text);
 						} else {
 							/* insert text */
-							text = ((prefront.length>0)?' ':'')+text;
+							text = ((prefront.length>0 && !prefront.match(/\s$/))?' ':'')+text;
 							posfront=prefront+text;
 						}
 						/* calc new cursor position */
