@@ -2968,7 +2968,8 @@ var HHBJSONDATA,hhb;
 			};
 			var insertIcon = function(obj) {
 				var msg = platformObj.getMsgInput();
-				var cidx = 0;
+				var cidx = -1;
+				var clist = obj.data('hhb-code').split(' ');
 				if (msg) {
 					var strPos = 0;
 					var txtarea = platformObj.getMsgBox(true);
@@ -2983,14 +2984,13 @@ var HHBJSONDATA,hhb;
 					var tmsg = msg.substring(0,strPos);
 					if (tmsg.length >= icon_filter.minLength) {
 						var matches = tmsg.match(icon_filter.finder);
-						var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
+						var codehead = (matches) ? matches[0].trim() : '';
 						var recodehead = codehead.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-						var clist = obj.data('hhb-code').toLowerCase().split(' ');
-						for (var idx=0;idx<clist.length;idx++) if (clist[idx].match(new RegExp('^'+recodehead))) cidx=idx;
+						for (var idx=0;idx<clist.length;idx++) if (cidx<0 && clist[idx].match(new RegExp('^'+recodehead))) cidx=idx;
 					}
 				}
 				var objIcon = obj.data('hhb-object');
-				var code = (objIcon.alt&&objIcon.alt!=''? objIcon.alt : obj.data('hhb-code').split(' ')[cidx]);
+				var code = (cidx<0 ? objIcon.alt : clist[cidx]);
 				insertText(code);
 				addIconToRecent(obj,code);
 				
