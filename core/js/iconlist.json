@@ -1,4 +1,4 @@
-﻿HHBJSONDATA = HHBJSONDATA || {};
+﻿var HHBJSONDATA = HHBJSONDATA || {};
 
 HHBJSONDATA.listGenre = ["HKG","HKG2","meme","pkmon","腦魔","禿伯","小丑","Pixel","食鬼","聖誕","北極","口罩","新年","Cap圖","Emoji","Discuz"];
 HHBJSONDATA.listIcon = [
@@ -7,8 +7,7 @@ HHBJSONDATA.listIcon = [
 		"_comment": true,
 		"_end": 	"***************************************"
 	},
-
-	{	"code": ["O:-)","O:)"],
+	{	"code": ["O:-)"],
 		"src": "hkg/angel.gif",
 		"width": 15,	"height": 23,
 		"genre": ["HKG"]
@@ -28,7 +27,7 @@ HHBJSONDATA.listIcon = [
 		"width": 15,	"height": 15,
 		"genre": ["HKG"]
 	},
-	{	"code": [":-(",":("],
+	{	"code": [":-("],
 		"src": "hkg/frown.gif",
 		"width": 15,	"height": 15,
 		"genre": ["HKG"]
@@ -38,7 +37,7 @@ HHBJSONDATA.listIcon = [
 		"width": 30,	"height": 18,
 		"genre": ["HKG"]
 	},
-	{	"code": [";-)",";)"],
+	{	"code": [";-)"],
 		"src": "hkg/wink.gif",
 		"width": 15,	"height": 15,
 		"genre": ["HKG"]
@@ -53,17 +52,17 @@ HHBJSONDATA.listIcon = [
 		"width": 15,	"height": 15,
 		"genre": ["HKG"]
 	},
-	{	"code": [":D",":d"],
+	{	"code": [":D"],
 		"src": "hkg/biggrin.gif",
 		"width": 15,	"height": 15,
 		"genre": ["HKG"]
 	},
-	{	"code": [":O",":o"],
+	{	"code": [":O"],
 		"src": "hkg/oh.gif",
 		"width": 15,	"height": 15,
 		"genre": ["HKG"]
 	},
-	{	"code": [":P",":p"],
+	{	"code": [":P"],
 		"src": "hkg/tongue.gif",
 		"width": 15,	"height": 15,
 		"genre": ["HKG"]
@@ -148,7 +147,7 @@ HHBJSONDATA.listIcon = [
 		"width": 25,	"height": 15,
 		"genre": ["HKG"]
 	},
-	{	"code": ["Z_Z","z_z"],
+	{	"code": ["Z_Z"],
 		"src": "hkg/z_z.gif",
 		"width": 27,	"height": 25,
 		"genre": ["HKG"]
@@ -183,7 +182,7 @@ HHBJSONDATA.listIcon = [
 		"width": 19,	"height": 19,
 		"genre": ["HKG"]
 	},
-	{	"code": ["[censored]","***","#***#","[***]"],
+	{	"code": ["[censored]","***"],
 		"src": "hkg/censored.gif",
 		"width": 34,	"height": 15,
 		"genre": ["HKG"]
@@ -228,7 +227,7 @@ HHBJSONDATA.listIcon = [
 		"width": 15,	"height": 15,
 		"genre": ["HKG"]
 	},
-	{	"code": ["fuck","[fu*k]","[fuck]","fu*k"],
+	{	"code": ["fuck","fu*k"],
 		"src": "hkg/fuck.gif",
 		"width": 37,	"height": 15,
 		"genre": ["HKG"]
@@ -283,17 +282,17 @@ HHBJSONDATA.listIcon = [
 		"width": 30,	"height": 19,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[369bye]","[bye369]"],
+	{	"code": ["[369bye]","[bye369]","[Bye369]"],
 		"src": "hkg/hkg2/bye369.gif",
 		"width": 25,	"height": 15,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[crybye]","[byecry]"],
+	{	"code": ["[crybye]","[byecry]","[ByeCry]"],
 		"src": "hkg/hkg2/byecry.gif",
 		"width": 33,	"height": 18,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[sadbye]","[byesad]"],
+	{	"code": ["[sadbye]","[byesad]","[ByeSad]"],
 		"src": "hkg/hkg2/byesad.gif",
 		"width": 25,	"height": 15,
 		"genre": ["HKG2"]
@@ -303,187 +302,187 @@ HHBJSONDATA.listIcon = [
 		"width": 48,	"height": 32,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[fine]"],
+	{	"code": ["[fine]","[Fine]"],
 		"src": "hkg/hkg2/fine.gif",
 		"width": 56,	"height": 19,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[fine2]"],
+	{	"code": ["[fine2]","[Fine2]"],
 		"src": "hkg/hkg2/fine2.gif",
 		"width": 56,	"height": 19,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[grape]"],
+	{	"code": ["[grape]","[Grape]"],
 		"src": "hkg/hkg2/grape.gif",
 		"width": 25,	"height": 31,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[nogirls]"],
+	{	"code": ["[nogirls]","[NoGirls]"],
 		"src": "hkg/hkg2/nogirls.gif",
 		"width": 46,	"height": 46,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[notsad]"],
+	{	"code": ["[notsad]","[NotSad]"],
 		"src": "hkg/hkg2/notsad.gif",
 		"width": 19,	"height": 17,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[369peanuts]","[peanuts369]"],
+	{	"code": ["[369peanuts]","[peanuts369]","[Peanuts369]"],
 		"src": "hkg/hkg2/peanuts369.gif",
 		"width": 43,	"height": 28,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[peanuts]"],
+	{	"code": ["[peanuts]","[Peanuts]"],
 		"src": "hkg/hkg2/peanuts.gif",
 		"width": 49,	"height": 35,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[dogrun]"],
+	{	"code": ["[dogrun]","[DogRun]"],
 		"src": "hkg/hkg2/dogrun.gif",
 		"width": 157,	"height": 32,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["[ff]","[finalfantasy]"],
+	{	"code": ["[ff]","[finalfantasy]","[FinalFantasy]"],
 		"src": "hkg/hkg2/finalfantasy.png",
 		"width": 129,	"height": 32,
 		"genre": ["HKG2"]
 	},
-	{	"code": ["O:-)lm","O:)lm"],
+	{	"code": ["O:-)lm","[O:)lm]"],
 		"src": "lomore/angel.gif",
 		"width": 32,	"height": 39,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["xx(lm"],
+	{	"code": ["xx(lm","[xx(lm]"],
 		"src": "lomore/dead.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":)lm",":-)lm"],
+	{	"code": [":)lm","[:)lm]"],
 		"src": "lomore/smile.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":o)lm",":o)2lm"],
+	{	"code": [":o)lm","[:o)lm]","[:o)2lm]"],
 		"src": "lomore/clown.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":o)lm2",":o)3lm"],
+	{	"code": [":o)lm2",":o)2lm","[:o)3lm]"],
 		"src": "lomore/clown2.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":o)lm3",":o)4lm"],
+	{	"code": [":o)lm3",":o)3lm","[:o)4lm]"],
 		"src": "lomore/clown3.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":-(lm",":(lm"],
+	{	"code": [":-(lm"],
 		"src": "lomore/frown.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":~(lm"],
+	{	"code": [":~(lm","[:~(lm]"],
 		"src": "lomore/cry.gif",
 		"width": 50,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [";-)lm",";)lm"],
+	{	"code": [";-)lm","[;-)lm]"],
 		"src": "lomore/wink.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":-[lm"],
+	{	"code": [":-[lm","[:-[lm]"],
 		"src": "lomore/angry.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":-]lm"],
+	{	"code": [":-]lm","[:-]lm]"],
 		"src": "lomore/devil.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Dlm",":-Dlm",":dlm",":-dlm"],
+	{	"code": [":Dlm","[:Dlm]"],
 		"src": "lomore/biggrin.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Dlm2",":dlm2",":D2lm",":d2lm",":-Dlm2",":-dlm2",":-D2lm",":-d2lm"],
+	{	"code": [":Dlm2",":D2lm","[:D2lm]"],
 		"src": "lomore/biggrin2.jpg",
 		"width": 31,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Olm",":-Olm",":olm",":-olm"],
+	{	"code": [":Olm","[:Olm]"],
 		"src": "lomore/oh.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Plm",":-Plm",":plm",":-plm"],
+	{	"code": [":Plm","[:Plm]"],
 		"src": "lomore/tongue.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Plm2",":plm2",":P2lm",":p2lm",":-Plm2",":-plm2",":-P2lm",":-p2lm"],
+	{	"code": [":Plm2",":P2lm","[:P2lm]"],
 		"src": "lomore/tongue2.gif",
 		"width": 50,	"height": 50,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["^3^lm"],
+	{	"code": ["^3^lm","[^3^lm]"],
 		"src": "lomore/kiss.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["?_?lm"],
+	{	"code": ["?_?lm","[?_?lm]"],
 		"src": "lomore/wonder.gif",
 		"width": 32,	"height": 38,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#yup#lm"],
+	{	"code": ["#yup#lm","#yuplm#"],
 		"src": "lomore/agree.gif",
 		"width": 35,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#ng#lm"],
+	{	"code": ["#ng#lm","#nglm#"],
 		"src": "lomore/donno.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#hehe#lm"],
+	{	"code": ["#hehe#lm","#hehelm#"],
 		"src": "lomore/hehe.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#love#lm"],
+	{	"code": ["#love#lm","#lovelm#"],
 		"src": "lomore/love.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#oh#lm"],
+	{	"code": ["#oh#lm","#ohlm#"],
 		"src": "lomore/surprise.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#ass#lm","#as*#lm","#***#lm"],
+	{	"code": ["#ass#lm","#as*m#"],
 		"src": "lomore/ass.gif",
 		"width": 42,	"height": 38,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[sosad]lm"],
+	{	"code": ["[sosad]lm","[sosadlm]"],
 		"src": "lomore/sosad.gif",
 		"width": 36,	"height": 37,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[sosad]lm2","[sosad]2lm","[sosad2]lm"],
+	{	"code": ["[sosad]lm2","[sosad]2lm","[sosad2lm]"],
 		"src": "lomore/sosad2.gif",
 		"width": 45,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#good#lm"],
+	{	"code": ["#good#lm","#goodlm#"],
 		"src": "lomore/good.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#hoho#lm"],
+	{	"code": ["#hoho#lm","#hoholm#"],
 		"src": "lomore/hoho.gif",
 		"width": 96,	"height": 32,
 		"genre": ["腦魔"]
@@ -493,202 +492,202 @@ HHBJSONDATA.listIcon = [
 		"width": 120,	"height": 40,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#kill#lm"],
+	{	"code": ["#kill#lm","#killlm#"],
 		"src": "lomore/kill.gif",
 		"width": 64,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#bye#lm"],
+	{	"code": ["#bye#lm","#byelm#"],
 		"src": "lomore/bye.gif",
 		"width": 50,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["Z_Zlm","z_zlm"],
+	{	"code": ["Z_Zlm","[Z_Zlm]"],
 		"src": "lomore/z_z.gif",
 		"width": 45,	"height": 45,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["@_@lm"],
+	{	"code": ["@_@lm","[@_@lm]"],
 		"src": "lomore/@_@.gif",
 		"width": 35,	"height": 35,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#adore#lm"],
+	{	"code": ["#adore#lm","#adorelm#"],
 		"src": "lomore/adore.gif",
 		"width": 63,	"height": 61,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["???lm"],
+	{	"code": ["???lm","[???lm]"],
 		"src": "lomore/wonder2.gif",
 		"width": 32,	"height": 38,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[banghead]lm"],
+	{	"code": ["[banghead]lm","[bangheadlm]"],
 		"src": "lomore/banghead.gif",
 		"width": 41,	"height": 39,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[bouncer]lm"],
+	{	"code": ["[bouncer]lm","[bouncerlm]"],
 		"src": "lomore/bouncer.gif",
 		"width": 43,	"height": 82,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[bouncer]lm2","[bouncer2]lm"],
+	{	"code": ["[bouncer]lm2","[bouncer]2lm","[bouncer2lm]"],
 		"src": "lomore/bouncer2.gif",
 		"width": 41,	"height": 35,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[flowerface]lm"],
+	{	"code": ["[flowerface]lm","[flowerfacelm]"],
 		"src": "lomore/flowerface.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[shocking]lm"],
+	{	"code": ["[shocking]lm","[shockinglm]"],
 		"src": "lomore/shocking.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[photo]lm"],
+	{	"code": ["[photo]lm","[photolm]"],
 		"src": "lomore/photo.gif",
 		"width": 45,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[yipes]lm"],
+	{	"code": ["[yipes]lm","[yipeslm]"],
 		"src": "lomore/yipes.gif",
 		"width": 32,	"height": 47,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[369]lm"],
+	{	"code": ["[369]lm","[369lm]"],
 		"src": "lomore/369.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[bomb]lm"],
+	{	"code": ["[bomb]lm","[bomblm]"],
 		"src": "lomore/bomb.gif",
 		"width": 33,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[bomb]lm2","[bomb2]lm"],
+	{	"code": ["[bomb]lm2","[bomb]2lm","[bomb2lm]"],
 		"src": "lomore/bomb2.gif",
 		"width": 33,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[slick]lm"],
+	{	"code": ["[slick]lm","[slicklm]"],
 		"src": "lomore/slick.gif",
 		"width": 34,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["fucklm","fu*klm","***lm"],
+	{	"code": ["fucklm","[fu*klm]"],
 		"src": "lomore/fuck.gif",
 		"width": 45,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["fucklm2","fu*k2lm","fuck2lm","fu*klm2","***lm2","***2lm"],
+	{	"code": ["fucklm2","fuck2lm","[fu*k2lm]"],
 		"src": "lomore/fuck2.gif",
 		"width": 45,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#kill2#lm","#kill#lm2","#kill#2lm"],
+	{	"code": ["#kill2#lm","#kill2lm#"],
 		"src": "lomore/kill2.gif",
 		"width": 114,	"height": 39,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[offtopic]lm"],
+	{	"code": ["[offtopic]lm","[offtopiclm]"],
 		"src": "lomore/offtopic.gif",
 		"width": 50,	"height": 50,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Dlmg",":-Dlmg",":dlmg",":-dlmg"],
+	{	"code": [":Dlmg","[:Dlmg]"],
 		"src": "lomore/ghost/biggrin.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Olmg",":-Olmg",":olmg",":-olmg"],
+	{	"code": [":Olmg","[:Olmg]"],
 		"src": "lomore/ghost/Ohpaperfigure.gif",
 		"width": 32,	"height": 40,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Olmg2",":olmg2",":O2lmg",":o2lmg",":-Olmg2",":-olmg2",":-O2lmg",":-o2lmg"],
+	{	"code": [":Olmg2",":O2lmg","[:O2lmg]"],
 		"src": "lomore/ghost/Bloodya.gif",
 		"width": 32,	"height": 37,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Plmg",":-Plmg",":plmg",":-plmg"],
+	{	"code": [":Plmg","[:Plmg]"],
 		"src": "lomore/ghost/Tongue.gif",
 		"width": 32,	"height": 35,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":Plmg2",":plmg2",":P2lmg",":p2lmg",":-Plmg2",":-plmg2",":-P2lmg",":-p2lmg"],
+	{	"code": [":Plmg2",":P2lmg","[:P2lmg]"],
 		"src": "lomore/ghost/Tongue2.png",
 		"width": 32,	"height": 35,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#yup#lmg"],
+	{	"code": ["#yup#lmg","#yuplmg#"],
 		"src": "lomore/ghost/agree.gif",
 		"width": 35,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#oh#lmg"],
+	{	"code": ["#oh#lmg","#ohlmg#"],
 		"src": "lomore/ghost/Surpriseeye.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#good#lmg"],
+	{	"code": ["#good#lmg","#goodlmg#"],
 		"src": "lomore/ghost/Goodo.png",
 		"width": 32,	"height": 54,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#good#lmg2","#good2#lmg","#good#lm2g"],
+	{	"code": ["#good#lmg2","#good#2lmg","#good2lmg#"],
 		"src": "lomore/ghost/TaoistLM-1-.gif",
 		"width": 35,	"height": 54,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#hoho#lmg"],
+	{	"code": ["#hoho#lmg","#hoholmg#"],
 		"src": "lomore/ghost/Hohopaperfigure.gif",
 		"width": 96,	"height": 40,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#bye#lmg"],
+	{	"code": ["#bye#lmg","#byelmg#"],
 		"src": "lomore/ghost/bye.gif",
 		"width": 50,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["#bye#lmg2","#bye2#lmg","#bye#lm2g"],
+	{	"code": ["#bye#lmg2","#bye#2lmg","#bye2lmg#"],
 		"src": "lomore/ghost/Byeghost.gif",
 		"width": 50,	"height": 46,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["@_@lmg"],
+	{	"code": ["@_@lmg","[@_@lmg]"],
 		"src": "lomore/ghost/@_@.gif",
 		"width": 35,	"height": 35,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["@_@lmg2","@_@2lmg"],
+	{	"code": ["@_@lmg2","@_@2lmg","[@_@2lmg]"],
 		"src": "lomore/ghost/@_@2.gif",
 		"width": 35,	"height": 35,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[bouncer]lmg"],
+	{	"code": ["[bouncer]lmg","[bouncerlmg]"],
 		"src": "lomore/ghost/Bouncer_vampire.gif",
 		"width": 43,	"height": 90,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[bouncer]lmg2","[bouncer2]lmg","[bouncer]lm2g"],
+	{	"code": ["[bouncer]lmg2","[bouncer]2lmg","[bouncer2lmg]"],
 		"src": "lomore/ghost/Skelenomore.gif",
 		"width": 43,	"height": 82,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[shocking]lmg"],
+	{	"code": ["[shocking]lmg","[shockinglmg]"],
 		"src": "lomore/ghost/Skele2nomore.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[yipes]lmg"],
+	{	"code": ["[yipes]lmg","[yipeslmg]"],
 		"src": "lomore/ghost/Ghostnomore.gif",
 		"width": 32,	"height": 47,
 		"genre": ["腦魔"]
 	},
-	{	"code": ["[369]lmg"],
+	{	"code": ["[369]lmg","[369lmg]"],
 		"src": "lomore/ghost/Vampnomore.gif",
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
@@ -703,27 +702,27 @@ HHBJSONDATA.listIcon = [
 		"width": 32,	"height": 32,
 		"genre": ["腦魔"]
 	},
-	{	"code": [":troll:","[trollface]",":trollface:",":tf:"],
+	{	"code": [":trollface:",":troll:",":tf:","[Trollface]"],
 		"src": "meme/trollface.png",
 		"width": 200,	"height": 167,
 		"genre": ["meme"]
 	},
-	{	"code": [":no:","[no]"],
+	{	"code": [":no:","[no]","[No]"],
 		"src": "meme/no.png",
 		"width": 200,	"height": 213,
 		"genre": ["meme"]
 	},
-	{	"code": [":kidding:","[kidding?]"],
+	{	"code": [":kidding:","[AreYouKidding?]"],
 		"src": "meme/rufkingkiddingme.png",
 		"width": 210,	"height": 220,
 		"genre": ["meme"]
 	},
-	{	"code": [":deskflip:","[deskflip]"],
+	{	"code": [":deskflip:","[DeskFlip]"],
 		"src": "meme/deskflip.png",
 		"width": 200,	"height": 201,
 		"genre": ["meme"]
 	},
-	{	"code": [":yaoface:","[bitchplease]"],
+	{	"code": [":yaoface:","[BitchPlease]"],
 		"src": "meme/bitchplease.png",
 		"width": 142,	"height": 196,
 		"genre": ["meme"]
@@ -743,17 +742,17 @@ HHBJSONDATA.listIcon = [
 		"width": 352,	"height": 279,
 		"genre": ["meme"]
 	},
-	{	"code": [":soon:","[soon]"],
+	{	"code": [":soon:","[Soon]"],
 		"src": "meme/SoonComputer.png",
 		"width": 320,	"height": 240,
 		"genre": ["meme"]
 	},
-	{	"code": [":sir:","[likeasir]"],
+	{	"code": [":feellikeasir:",":sir:","[FeelLikeASir]"],
 		"src": "meme/feellikeasir.png",
 		"width": 300,	"height": 275,
 		"genre": ["meme"]
 	},
-	{	"code": [":yeah:","[ragepose]"],
+	{	"code": [":yeah:","[RagePose]"],
 		"src": "meme/Freddie.png",
 		"width": 239,	"height": 405,
 		"genre": ["meme"]
@@ -763,17 +762,17 @@ HHBJSONDATA.listIcon = [
 		"width": 251,	"height": 240,
 		"genre": ["meme"]
 	},
-	{	"code": [":lolol:","[lol]"],
+	{	"code": [":lolol:",":lol:","[LOL]"],
 		"src": "meme/lol.png",
 		"width": 200,	"height": 150,
 		"genre": ["meme"]
 	},
-	{	"code": [":badass:",":bad***:","[notme]"],
+	{	"code": [":badass:","[NotMe]"],
 		"src": "meme/watchout.png",
 		"width": 210,	"height": 159,
 		"genre": ["meme"]
 	},
-	{	"code": [":jackiechan:","[fulloffu*k]"],
+	{	"code": [":jackiechan:","[FullOfFu*k]"],
 		"src": "meme/jackiechan.png",
 		"width": 210,	"height": 140,
 		"genre": ["meme"]
@@ -783,22 +782,22 @@ HHBJSONDATA.listIcon = [
 		"width": 148,	"height": 220,
 		"genre": ["meme"]
 	},
-	{	"code": [":truestory:","[truestory]"],
+	{	"code": [":truestory:","[TrueStory]"],
 		"src": "meme/truestory.png",
 		"width": 200,	"height": 200,
 		"genre": ["meme"]
 	},
-	{	"code": [":ohgod:","[scared]"],
+	{	"code": [":ohgod:",":scared:","[Scared]"],
 		"src": "meme/ymscared.png",
 		"width": 210,	"height": 265,
 		"genre": ["meme"]
 	},
-	{	"code": [":bean:","[mrbean]"],
+	{	"code": [":mrbean:",":bean:","[IfYouKnowWhatIMean]"],
 		"src": "meme/ifyouknowwhatimean.png",
 		"width": 250,	"height": 250,
 		"genre": ["meme"]
 	},
-	{	"code": [":pokerface:","[pokerface]"],
+	{	"code": [":pokerface:","[Pokerface]"],
 		"src": "meme/pokerface.png",
 		"width": 140,	"height": 197,
 		"genre": ["meme"]
@@ -808,17 +807,17 @@ HHBJSONDATA.listIcon = [
 		"width": 234,	"height": 229,
 		"genre": ["meme"]
 	},
-	{	"code": [":fap:","[fap]"],
+	{	"code": [":fap:","[Fap]"],
 		"src": "meme/fap.png",
 		"width": 150,	"height": 134,
 		"genre": ["meme"]
 	},
-	{	"code": [":fuuu:","[fuuuu]"],
+	{	"code": [":fuuuu:","[RageFuuuu]"],
 		"src": "meme/fuuuu.png",
 		"width": 210,	"height": 172,
 		"genre": ["meme"]
 	},
-	{	"code": [":okay:","[okay]"],
+	{	"code": [":okay:","[Okay]"],
 		"src": "meme/okay.png",
 		"width": 151,	"height": 200,
 		"genre": ["meme"]
@@ -828,77 +827,77 @@ HHBJSONDATA.listIcon = [
 		"width": 325,	"height": 240,
 		"genre": ["meme"]
 	},
-	{	"code": [":foreveralone:",":falone:","[falone]"],
+	{	"code": [":foreveralone:",":falone:","[ForeverAlone]"],
 		"src": "meme/foreveralone.png",
 		"width": 142,	"height": 144,
 		"genre": ["meme"]
 	},
-	{	"code": [":sad:","[sad]","[yesucan]"],
+	{	"code": [":sad:",":yesucan:","[YesYouCan]"],
 		"src": "meme/yesucan.png",
 		"width": 210,	"height": 220,
 		"genre": ["meme"]
 	},
-	{	"code": [":soclose:","[soclose]"],
+	{	"code": [":soclose:","[SoClose]"],
 		"src": "meme/FreddieSoClose.png",
 		"width": 210,	"height": 220,
 		"genre": ["meme"]
 	},
-	{	"code": [":ohgodwhy:","[ohgodwhy]"],
+	{	"code": [":ohgodwhy:","[OhGodWhy]"],
 		"src": "meme/ohgodwhy.png",
 		"width": 273,	"height": 300,
 		"genre": ["meme"]
 	},
-	{	"code": [":iknowthatfeelbro:","[iknowthatfeelbro]"],
+	{	"code": [":iknowthatfeelbro:","[IKnowThatFeelBro]"],
 		"src": "meme/iknothtfeelbro.png",
 		"width": 400,	"height": 369,
 		"genre": ["meme"]
 	},
-	{	"code": ["[dontsay?]","[youdontsay?]"],
+	{	"code": [":udontsay:","[YouDontSay?]"],
 		"src": "meme/youdontsay.png",
 		"width": 200,	"height": 124,
 		"genre": ["meme"]
 	},
-	{	"code": ["[fuckyea]","[***yea]","[fu*kyea]"],
+	{	"code": [":fuckyea:","[Fu*kYea]"],
 		"src": "meme/fuckyea.png",
 		"width": 150,	"height": 115,
 		"genre": ["meme"]
 	},
-	{	"code": ["[fullpanel]"],
+	{	"code": [":fullpanel:","[FullPanel]"],
 		"src": "meme/super_fuuu_face.png",
 		"width": 200,	"height": 151,
 		"genre": ["meme"]
 	},
-	{	"code": ["[gaayyy]"],
+	{	"code": [":gaayyy:","[Gaayyy]"],
 		"src": "meme/gay.png",
 		"width": 316,	"height": 313,
 		"genre": ["meme"]
 	},
-	{	"code": ["[genius]"],
+	{	"code": [":genius:","[Genius]"],
 		"src": "meme/genius.png",
 		"width": 300,	"height": 188,
 		"genre": ["meme"]
 	},
-	{	"code": ["[megusta]"],
+	{	"code": [":megusta:","[MeGusta]"],
 		"src": "meme/megusta.png",
 		"width": 194,	"height": 177,
 		"genre": ["meme"]
 	},
-	{	"code": ["[serious?]"],
+	{	"code": [":serious:","[Serious?]"],
 		"src": "meme/seriously.png",
 		"width": 200,	"height": 204,
 		"genre": ["meme"]
 	},
-	{	"code": ["[takemymoney]"],
+	{	"code": [":shutupandtakemymoney:",":takemymoney:","[ShutUpAndTakeMyMoney]"],
 		"src": "meme/shutupandtakemymoney.png",
 		"width": 200,	"height": 114,
 		"genre": ["meme"]
 	},
-	{	"code": ["[yuno]","[whyyouno]"],
+	{	"code": [":yuno:","[yuno]","[WhyYouNo]"],
 		"src": "meme/yuno.png",
 		"width": 200,	"height": 203,
 		"genre": ["meme"]
 	},
-	{	"code": ["[notbad]"],
+	{	"code": [":notbad:","[NotBad]"],
 		"src": "meme/notbad.png",
 		"width": 288,	"height": 228,
 		"genre": ["meme"]
@@ -908,7 +907,7 @@ HHBJSONDATA.listIcon = [
 		"width": 32,	"height": 32,
 		"genre": ["禿伯"]
 	},
-	{	"code": [":-(t8"],
+	{	"code": [":-(t8",":(t8"],
 		"src": "tube8/frown.gif",
 		"width": 32,	"height": 32,
 		"genre": ["禿伯"]
@@ -958,7 +957,7 @@ HHBJSONDATA.listIcon = [
 		"width": 70,	"height": 32,
 		"genre": ["禿伯"]
 	},
-	{	"code": ["Z_Zt8"],
+	{	"code": ["Z_Zt8","z_zt8"],
 		"src": "tube8/z_z.gif",
 		"width": 45,	"height": 36,
 		"genre": ["禿伯"]
@@ -988,7 +987,7 @@ HHBJSONDATA.listIcon = [
 		"width": 41,	"height": 49,
 		"genre": ["禿伯"]
 	},
-	{	"code": ["fuckt8"],
+	{	"code": ["fuckt8","fu*kt8"],
 		"src": "tube8/fuck.gif",
 		"width": 50,	"height": 32,
 		"genre": ["禿伯"]
@@ -1083,17 +1082,17 @@ HHBJSONDATA.listIcon = [
 		"width": 15,	"height": 28,
 		"genre": ["小丑"]
 	},
-	{	"code": ["fuckcl"],
+	{	"code": ["fuckcl","fu*kcl"],
 		"src": "clown/fuck.gif",
 		"width": 37,	"height": 15,
 		"genre": ["小丑"]
 	},
-	{	"code": ["fuckcl2"],
+	{	"code": ["fuckcl2","fu*kcl2"],
 		"src": "clown/fuck2.gif",
 		"width": 24,	"height": 24,
 		"genre": ["小丑"]
 	},
-	{	"code": ["fuckcl3"],
+	{	"code": ["fuckcl3","fu*kcl3"],
 		"src": "clown/fuck3.gif",
 		"width": 25,	"height": 15,
 		"genre": ["小丑"]
@@ -1178,22 +1177,22 @@ HHBJSONDATA.listIcon = [
 		"width": 20,	"height": 27,
 		"genre": ["小丑"]
 	},
-	{	"code": [":)pkm",":-)pkm"],
+	{	"code": [":)pkm","[:)pkm]"],
 		"src": "pkmon/smile.gif",
 		"width": 28,	"height": 21,
 		"genre": ["pkmon"]
 	},
-	{	"code": [":o)pkm"],
+	{	"code": [":o)pkm","[:o)pkm]"],
 		"src": "pkmon/clown.gif",
 		"width": 31,	"height": 17,
 		"genre": ["pkmon"]
 	},
-	{	"code": [":o)pkm2",":o)2pkm"],
+	{	"code": [":o)pkm2",":o)2pkm","[:o)2pkm]"],
 		"src": "pkmon/clown2.gif",
 		"width": 37,	"height": 41,
 		"genre": ["pkmon"]
 	},
-	{	"code": [":-(pkm",":(pkm"],
+	{	"code": [":-(pkm","[:(pkm]"],
 		"src": "pkmon/frown.gif",
 		"width": 37,	"height": 32,
 		"genre": ["pkmon"]
@@ -1203,22 +1202,22 @@ HHBJSONDATA.listIcon = [
 		"width": 46,	"height": 38,
 		"genre": ["pkmon"]
 	},
-	{	"code": [":~(pkm"],
+	{	"code": [":~(pkm","[:~(pkm]"],
 		"src": "pkmon/cry.gif",
 		"width": 27,	"height": 27,
 		"genre": ["pkmon"]
 	},
-	{	"code": [":~(pkm2",":~(2pkm"],
+	{	"code": [":~(pkm2",":~(2pkm","[:~(2pkm]"],
 		"src": "pkmon/cry2.gif",
 		"width": 27,	"height": 27,
 		"genre": ["pkmon"]
 	},
-	{	"code": [":~(pkm3"],
+	{	"code": [":~(pkm3",":~(3pkm"],
 		"src": "pkmon/cryhhb.gif",
 		"width": 36,	"height": 29,
 		"genre": ["pkmon"]
 	},
-	{	"code": [";-)pkm",";)pkm"],
+	{	"code": [";-)pkm","[;)pkm]"],
 		"src": "pkmon/wink.gif",
 		"width": 36,	"height": 20,
 		"genre": ["pkmon"]
@@ -1228,27 +1227,27 @@ HHBJSONDATA.listIcon = [
 		"width": 31,	"height": 43,
 		"genre": ["pkmon"]
 	},
-	{	"code": [":Dpkm",":-Dpkm",":dpkm",":-dpkm"],
+	{	"code": [":Dpkm","[:Dpkm]"],
 		"src": "pkmon/biggrin.gif",
 		"width": 26,	"height": 19,
 		"genre": ["pkmon"]
 	},
-	{	"code": [":Opkm",":-Opkm",":opkm",":-opkm"],
+	{	"code": [":Opkm","[:Opkm]"],
 		"src": "pkmon/oh.gif",
 		"width": 25,	"height": 23,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["#yup#pkm"],
+	{	"code": ["#yup#pkm","#yuppkm#"],
 		"src": "pkmon/agree.gif",
 		"width": 40,	"height": 35,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["#ng#pkm"],
+	{	"code": ["#ng#pkm","#ngpkm#"],
 		"src": "pkmon/donno.gif",
 		"width": 16,	"height": 16,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["#hehe#pkm"],
+	{	"code": ["#hehe#pkm","#hehepkm#"],
 		"src": "pkmon/hehe.gif",
 		"width": 15,	"height": 15,
 		"genre": ["pkmon"]
@@ -1258,17 +1257,17 @@ HHBJSONDATA.listIcon = [
 		"width": 34,	"height": 59,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["#love#pkm"],
+	{	"code": ["#love#pkm","#lovepkm#"],
 		"src": "pkmon/love.gif",
 		"width": 31,	"height": 30,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["#cn#pkm"],
+	{	"code": ["#cn#pkm","#cnpkm#"],
 		"src": "pkmon/chicken.gif",
 		"width": 25,	"height": 21,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[sosad]pkm"],
+	{	"code": ["[sosad]pkm","[sosadpkm]"],
 		"src": "pkmon/sosad.gif",
 		"width": 22,	"height": 22,
 		"genre": ["pkmon"]
@@ -1278,17 +1277,17 @@ HHBJSONDATA.listIcon = [
 		"width": 49,	"height": 30,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["#good#pkm"],
+	{	"code": ["#good#pkm","#goodpkm#"],
 		"src": "pkmon/good.gif",
 		"width": 33,	"height": 26,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["#bad#pkm"],
+	{	"code": ["#bad#pkm","#badpkm#"],
 		"src": "pkmon/thumbDown.gif",
 		"width": 33,	"height": 26,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["#hoho#pkm"],
+	{	"code": ["#hoho#pkm","#hohopkm#"],
 		"src": "pkmon/hoho.gif",
 		"width": 83,	"height": 34,
 		"genre": ["pkmon"]
@@ -1303,22 +1302,22 @@ HHBJSONDATA.listIcon = [
 		"width": 73,	"height": 42,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["#bye#pkm"],
+	{	"code": ["#bye#pkm","#byepkm#"],
 		"src": "pkmon/bye.gif",
 		"width": 51,	"height": 32,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["Z_Zpkm","z_zpkm"],
+	{	"code": ["Z_Zpkm","[Z_Zpkm]"],
 		"src": "pkmon/z_z.gif",
 		"width": 28,	"height": 26,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["@_@pkm"],
+	{	"code": ["@_@pkm","[@_@pkm]"],
 		"src": "pkmon/@_@.gif",
 		"width": 58,	"height": 42,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["@_@pkm2"],
+	{	"code": ["@_@pkm2","@_@2pkm"],
 		"src": "pkmon/@_@hhb.gif",
 		"width": 65,	"height": 71,
 		"genre": ["pkmon"]
@@ -1328,12 +1327,12 @@ HHBJSONDATA.listIcon = [
 		"width": 40,	"height": 40,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["???pkm"],
+	{	"code": ["???pkm","[???pkm]"],
 		"src": "pkmon/wonder2.gif",
 		"width": 25,	"height": 30,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["???pkm2"],
+	{	"code": ["???pkm2","???2pkm"],
 		"src": "pkmon/wonder2hhb.gif",
 		"width": 37,	"height": 50,
 		"genre": ["pkmon"]
@@ -1343,17 +1342,17 @@ HHBJSONDATA.listIcon = [
 		"width": 50,	"height": 37,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[bouncer]pkm"],
+	{	"code": ["[bouncer]pkm","[bouncerpkm]"],
 		"src": "pkmon/bouncer.gif",
 		"width": 31,	"height": 31,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[bouncy]pkm"],
+	{	"code": ["[bouncy]pkm","[bouncypkm]"],
 		"src": "pkmon/bouncy.gif",
 		"width": 23,	"height": 27,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[censored]pkm","***pkm","[***]pkm","[***pkm]"],
+	{	"code": ["[censored]pkm","[censoredpkm]"],
 		"src": "pkmon/censored.gif",
 		"width": 34,	"height": 28,
 		"genre": ["pkmon"]
@@ -1363,12 +1362,12 @@ HHBJSONDATA.listIcon = [
 		"width": 49,	"height": 51,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[shocking]pkm"],
+	{	"code": ["[shocking]pkm","[shockingpkm]"],
 		"src": "pkmon/shocking.gif",
 		"width": 25,	"height": 25,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[shocking]pkm2"],
+	{	"code": ["[shocking]pkm2","[shocking]2pkm"],
 		"src": "pkmon/shockinghhb.gif",
 		"width": 33,	"height": 30,
 		"genre": ["pkmon"]
@@ -1378,37 +1377,37 @@ HHBJSONDATA.listIcon = [
 		"width": 20,	"height": 38,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[yipes]pkm"],
+	{	"code": ["[yipes]pkm","[yipespkm]"],
 		"src": "pkmon/yipes.gif",
 		"width": 32,	"height": 35,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[yipes]pkm2","[yipes2]pkm"],
+	{	"code": ["[yipes]pkm2","[yipes]2pkm","[yipes2pkm]"],
 		"src": "pkmon/yipes2.gif",
 		"width": 32,	"height": 32,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[369]pkm"],
+	{	"code": ["[369]pkm","[369pkm]"],
 		"src": "pkmon/369.gif",
 		"width": 19,	"height": 19,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[bomb]pkm"],
+	{	"code": ["[bomb]pkm","[bombpkm]"],
 		"src": "pkmon/bomb.gif",
 		"width": 20,	"height": 15,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[bomb]pkm2"],
+	{	"code": ["[bomb]pkm2","[bomb]2pkm"],
 		"src": "pkmon/bombhhb.gif",
 		"width": 33,	"height": 29,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[slick]pkm"],
+	{	"code": ["[slick]pkm","[slickpkm]"],
 		"src": "pkmon/slick.gif",
 		"width": 17,	"height": 13,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["fuckpkm","fu*kpkm","[fuck]pkm","[fu*k]pkm"],
+	{	"code": ["fuckpkm","[fu*k]pkm"],
 		"src": "pkmon/fuck.gif",
 		"width": 38,	"height": 17,
 		"genre": ["pkmon"]
@@ -1433,7 +1432,7 @@ HHBJSONDATA.listIcon = [
 		"width": 83,	"height": 72,
 		"genre": ["pkmon"]
 	},
-	{	"code": ["[dogrun]pkm"],
+	{	"code": ["[dogrun]pkm","[dogrunpkm]"],
 		"src": "pkmon/dogrun.gif",
 		"width": 170,	"height": 45,
 		"genre": ["pkmon"]
@@ -1533,7 +1532,7 @@ HHBJSONDATA.listIcon = [
 		"width": 18,	"height": 14,
 		"genre": ["Pixel"]
 	},
-	{	"code": ["#ass#px"],
+	{	"code": ["#ass#px","#as*#px"],
 		"src": "pixel/ass.gif",
 		"width": 24,	"height": 30,
 		"genre": ["Pixel"]
@@ -1638,7 +1637,7 @@ HHBJSONDATA.listIcon = [
 		"width": 16,	"height": 16,
 		"genre": ["Pixel"]
 	},
-	{	"code": ["fuckpx"],
+	{	"code": ["fuckpx","fu*kpx"],
 		"src": "pixel/fuck.gif",
 		"width": 40,	"height": 16,
 		"genre": ["Pixel"]
@@ -1658,7 +1657,7 @@ HHBJSONDATA.listIcon = [
 		"width": 42,	"height": 46,
 		"genre": ["Pixel"]
 	},
-	{	"code": ["O:-)g"],
+	{	"code": ["O:-)g","O:)g"],
 		"src": "ghost/angel.gif",
 		"width": 15,	"height": 23,
 		"genre": ["食鬼"]
@@ -1683,7 +1682,7 @@ HHBJSONDATA.listIcon = [
 		"width": 30,	"height": 18,
 		"genre": ["食鬼"]
 	},
-	{	"code": [";-)g"],
+	{	"code": [";-)g",";)g"],
 		"src": "ghost/wink.gif",
 		"width": 15,	"height": 15,
 		"genre": ["食鬼"]
@@ -1753,7 +1752,7 @@ HHBJSONDATA.listIcon = [
 		"width": 18,	"height": 13,
 		"genre": ["食鬼"]
 	},
-	{	"code": ["#ass#g"],
+	{	"code": ["#ass#g","#as*#g"],
 		"src": "ghost/ass.gif",
 		"width": 25,	"height": 29,
 		"genre": ["食鬼"]
@@ -1778,7 +1777,7 @@ HHBJSONDATA.listIcon = [
 		"width": 51,	"height": 18,
 		"genre": ["食鬼"]
 	},
-	{	"code": ["bye#g"],
+	{	"code": ["#bye#g"],
 		"src": "ghost/bye.gif",
 		"width": 25,	"height": 15,
 		"genre": ["食鬼"]
@@ -1858,7 +1857,7 @@ HHBJSONDATA.listIcon = [
 		"width": 15,	"height": 15,
 		"genre": ["食鬼"]
 	},
-	{	"code": ["fuckg"],
+	{	"code": ["fuckg","fu*kg"],
 		"src": "ghost/fuck.gif",
 		"width": 37,	"height": 15,
 		"genre": ["食鬼"]
@@ -1878,7 +1877,7 @@ HHBJSONDATA.listIcon = [
 		"width": 41,	"height": 46,
 		"genre": ["食鬼"]
 	},
-	{	"code": ["O:-)xm","[O:)x]","[O:-)x]"],
+	{	"code": ["O:-)xm","[O:-)x]"],
 		"src": "xmas/angel.gif",
 		"width": 21,	"height": 27,
 		"genre": ["聖誕"]
@@ -1888,7 +1887,7 @@ HHBJSONDATA.listIcon = [
 		"width": 21,	"height": 24,
 		"genre": ["聖誕"]
 	},
-	{	"code": [":)xm",":-)xm","[:)x]","[:-)x]"],
+	{	"code": [":)xm","[:)x]"],
 		"src": "xmas/smile.gif",
 		"width": 21,	"height": 24,
 		"genre": ["聖誕"]
@@ -1903,7 +1902,7 @@ HHBJSONDATA.listIcon = [
 		"width": 30,	"height": 30,
 		"genre": ["聖誕"]
 	},
-	{	"code": [":-(xm",":(xm","[:(x]","[:-(x]"],
+	{	"code": [":-(xm","[:-(x]"],
 		"src": "xmas/frown.gif",
 		"width": 21,	"height": 24,
 		"genre": ["聖誕"]
@@ -1913,7 +1912,7 @@ HHBJSONDATA.listIcon = [
 		"width": 30,	"height": 25,
 		"genre": ["聖誕"]
 	},
-	{	"code": [";-)xm",";)xm","[;)x]","[;-)x]"],
+	{	"code": [";-)xm","[;-)x]"],
 		"src": "xmas/wink.gif",
 		"width": 22,	"height": 27,
 		"genre": ["聖誕"]
@@ -1928,17 +1927,17 @@ HHBJSONDATA.listIcon = [
 		"width": 21,	"height": 24,
 		"genre": ["聖誕"]
 	},
-	{	"code": [":Dxm",":-Dxm","[:Dx]","[:-Dx]",":dxm",":-dxm","[:dx]","[:-dx]"],
+	{	"code": [":Dxm","[:Dx]"],
 		"src": "xmas/biggrin.gif",
 		"width": 21,	"height": 24,
 		"genre": ["聖誕"]
 	},
-	{	"code": [":Oxm",":-Oxm","[:Ox]","[:-Ox]",":oxm",":-oxm","[:ox]","[:-ox]"],
+	{	"code": [":Oxm","[:Ox]"],
 		"src": "xmas/oh.gif",
 		"width": 21,	"height": 24,
 		"genre": ["聖誕"]
 	},
-	{	"code": [":Pxm",":-Pxm","[:Px]","[:-Px]",":pxm",":-pxm","[:px]","[:-px]"],
+	{	"code": [":Pxm","[:Px]"],
 		"src": "xmas/tongue.gif",
 		"width": 21,	"height": 24,
 		"genre": ["聖誕"]
@@ -1983,12 +1982,12 @@ HHBJSONDATA.listIcon = [
 		"width": 22,	"height": 18,
 		"genre": ["聖誕"]
 	},
-	{	"code": ["#cn#2xm","#cn2x#"],
+	{	"code": ["#cn#xm2","#cn#2xm","#cn2x#"],
 		"src": "xmas/chicken2.gif",
 		"width": 20,	"height": 18,
 		"genre": ["聖誕"]
 	},
-	{	"code": ["#ass#xm","#as*x#","#assx#"],
+	{	"code": ["#ass#xm","#as*x#"],
 		"src": "xmas/ass.gif",
 		"width": 33,	"height": 35,
 		"genre": ["聖誕"]
@@ -2018,7 +2017,7 @@ HHBJSONDATA.listIcon = [
 		"width": 29,	"height": 24,
 		"genre": ["聖誕"]
 	},
-	{	"code": ["Z_Zxm","z_zxm","[Z_Zx]","[z_zx]"],
+	{	"code": ["Z_Zxm","[Z_Zx]"],
 		"src": "xmas/z_z.gif",
 		"width": 31,	"height": 25,
 		"genre": ["聖誕"]
@@ -2063,7 +2062,7 @@ HHBJSONDATA.listIcon = [
 		"width": 27,	"height": 31,
 		"genre": ["聖誕"]
 	},
-	{	"code": ["[censored]xm","[censoredx]","***xm","[***x]","#***#xm","#***x#"],
+	{	"code": ["[censored]xm","[censoredx]"],
 		"src": "xmas/censored.gif",
 		"width": 41,	"height": 24,
 		"genre": ["聖誕"]
@@ -2123,7 +2122,7 @@ HHBJSONDATA.listIcon = [
 		"width": 21,	"height": 24,
 		"genre": ["聖誕"]
 	},
-	{	"code": ["fuckxm","[fu*kx]","[fuckx]"],
+	{	"code": ["fuckxm","[fu*kx]"],
 		"src": "xmas/fuck.gif",
 		"width": 37,	"height": 37,
 		"genre": ["聖誕"]
@@ -2148,7 +2147,7 @@ HHBJSONDATA.listIcon = [
 		"width": 110,	"height": 33,
 		"genre": ["聖誕"]
 	},
-	{	"code": [":)gxm",":-)gxm","[:)gx]","[:-)gx]"],
+	{	"code": [":)gxm","[:)gx]"],
 		"src": "xmas/green/smile.gif",
 		"width": 21,	"height": 24,
 		"genre": ["聖誕"]
@@ -2158,7 +2157,7 @@ HHBJSONDATA.listIcon = [
 		"width": 24,	"height": 24,
 		"genre": ["聖誕"]
 	},
-	{	"code": [":-(gxm",":(gxm","[:(gx]","[:-(gx]"],
+	{	"code": [":-(gxm","[:(gx]"],
 		"src": "xmas/green/frown.gif",
 		"width": 21,	"height": 24,
 		"genre": ["聖誕"]
@@ -2193,247 +2192,247 @@ HHBJSONDATA.listIcon = [
 		"width": 21,	"height": 24,
 		"genre": ["聖誕"]
 	},
-	{	"code": ["fuckgxm","***gxm","[fu*kgx]","[fuckgx]","[***gx]"],
+	{	"code": ["fuckgxm","[fu*kgx]"],
 		"src": "xmas/green/fuck.gif",
 		"width": 37,	"height": 37,
 		"genre": ["聖誕"]
 	},
-	{	"code": ["O:-)fr","O:)fr"],
+	{	"code": ["O:-)fr","[O:-)fr]"],
 		"src": "frozen/angel.gif",
 		"width": 19,	"height": 33,
 		"genre": ["北極"]
 	},
-	{	"code": ["xx(fr"],
+	{	"code": ["xx(fr","[xx(fr]"],
 		"src": "frozen/dead.gif",
 		"width": 19,	"height": 24,
 		"genre": ["北極"]
 	},
-	{	"code": [":)fr",":-)fr"],
+	{	"code": [":)fr","[:)fr]"],
 		"src": "frozen/smile.gif",
 		"width": 19,	"height": 26,
 		"genre": ["北極"]
 	},
-	{	"code": [":o)fr"],
+	{	"code": [":o)fr","[:o)fr]"],
 		"src": "frozen/clown.gif",
 		"width": 19,	"height": 26,
 		"genre": ["北極"]
 	},
-	{	"code": [":-(fr",":(fr"],
+	{	"code": [":-(fr","[:-(fr]"],
 		"src": "frozen/frown.gif",
 		"width": 19,	"height": 26,
 		"genre": ["北極"]
 	},
-	{	"code": [":~(fr"],
+	{	"code": [":~(fr","[:~(fr]"],
 		"src": "frozen/cry.gif",
 		"width": 25,	"height": 24,
 		"genre": ["北極"]
 	},
-	{	"code": [";-)fr",";)fr"],
+	{	"code": [";-)fr","[;-)fr]"],
 		"src": "frozen/wink.gif",
 		"width": 19,	"height": 26,
 		"genre": ["北極"]
 	},
-	{	"code": [":-[fr"],
+	{	"code": [":-[fr","[:-[fr]"],
 		"src": "frozen/angry.gif",
 		"width": 19,	"height": 27,
 		"genre": ["北極"]
 	},
-	{	"code": [":-]fr"],
+	{	"code": [":-]fr","[:-]fr]"],
 		"src": "frozen/devil.gif",
 		"width": 19,	"height": 27,
 		"genre": ["北極"]
 	},
-	{	"code": [":Dfr",":-Dfr",":dfr",":-dfr"],
+	{	"code": [":Dfr","[:Dfr]"],
 		"src": "frozen/biggrin.gif",
 		"width": 19,	"height": 27,
 		"genre": ["北極"]
 	},
-	{	"code": [":Ofr",":-Ofr",":ofr",":-ofr"],
+	{	"code": [":Ofr","[:Ofr]"],
 		"src": "frozen/oh.gif",
 		"width": 19,	"height": 25,
 		"genre": ["北極"]
 	},
-	{	"code": [":Pfr",":-Pfr",":pfr",":-pfr"],
+	{	"code": [":Pfr","[:Pfr]"],
 		"src": "frozen/tongue.gif",
 		"width": 19,	"height": 25,
 		"genre": ["北極"]
 	},
-	{	"code": ["^3^fr"],
+	{	"code": ["^3^fr","[^3^fr]"],
 		"src": "frozen/kiss.gif",
 		"width": 19,	"height": 25,
 		"genre": ["北極"]
 	},
-	{	"code": ["?_?fr"],
+	{	"code": ["?_?fr","[?_?fr]"],
 		"src": "frozen/wonder.gif",
 		"width": 19,	"height": 25,
 		"genre": ["北極"]
 	},
-	{	"code": ["#yup#fr"],
+	{	"code": ["#yup#fr","#yupfr#"],
 		"src": "frozen/agree.gif",
 		"width": 29,	"height": 33,
 		"genre": ["北極"]
 	},
-	{	"code": ["#ng#fr"],
+	{	"code": ["#ng#fr","#ngfr#"],
 		"src": "frozen/donno.gif",
 		"width": 20,	"height": 23,
 		"genre": ["北極"]
 	},
-	{	"code": ["#hehe#fr"],
+	{	"code": ["#hehe#fr","#hehefr#"],
 		"src": "frozen/hehe.gif",
 		"width": 20,	"height": 23,
 		"genre": ["北極"]
 	},
-	{	"code": ["#love#fr"],
+	{	"code": ["#love#fr","#lovefr#"],
 		"src": "frozen/love.gif",
 		"width": 20,	"height": 25,
 		"genre": ["北極"]
 	},
-	{	"code": ["#oh#fr"],
+	{	"code": ["#oh#fr","#ohfr#"],
 		"src": "frozen/surprise.gif",
 		"width": 20,	"height": 25,
 		"genre": ["北極"]
 	},
-	{	"code": ["#cn#fr"],
+	{	"code": ["#cn#fr","#cnfr#"],
 		"src": "frozen/chicken.gif",
 		"width": 21,	"height": 21,
 		"genre": ["北極"]
 	},
-	{	"code": ["#ass#fr","#as*#fr"],
+	{	"code": ["#ass#fr","#as*fr#"],
 		"src": "frozen/ass.gif",
 		"width": 21,	"height": 31,
 		"genre": ["北極"]
 	},
-	{	"code": ["[sosad]fr"],
+	{	"code": ["[sosad]fr","[sosadfr]"],
 		"src": "frozen/sosad.gif",
 		"width": 25,	"height": 25,
 		"genre": ["北極"]
 	},
-	{	"code": ["#good#fr"],
+	{	"code": ["#good#fr","#goodfr#"],
 		"src": "frozen/good.gif",
 		"width": 27,	"height": 27,
 		"genre": ["北極"]
 	},
-	{	"code": ["#hoho#fr"],
+	{	"code": ["#hoho#fr","#hohofr#"],
 		"src": "frozen/hoho.gif",
 		"width": 61,	"height": 27,
 		"genre": ["北極"]
 	},
-	{	"code": ["#kill#fr"],
+	{	"code": ["#kill#fr","#killfr#"],
 		"src": "frozen/kill.gif",
 		"width": 35,	"height": 23,
 		"genre": ["北極"]
 	},
-	{	"code": ["#bye#fr"],
+	{	"code": ["#bye#fr","#byefr#"],
 		"src": "frozen/bye.gif",
 		"width": 27,	"height": 24,
 		"genre": ["北極"]
 	},
-	{	"code": ["Z_Zfr","z_zfr"],
+	{	"code": ["Z_Zfr","[Z_Zfr]"],
 		"src": "frozen/z_z.gif",
 		"width": 31,	"height": 33,
 		"genre": ["北極"]
 	},
-	{	"code": ["@_@fr"],
+	{	"code": ["@_@fr","[@_@fr]"],
 		"src": "frozen/@_@.gif",
 		"width": 23,	"height": 28,
 		"genre": ["北極"]
 	},
-	{	"code": ["#adore#fr"],
+	{	"code": ["#adore#fr","#adorefr#"],
 		"src": "frozen/adore.gif",
 		"width": 29,	"height": 26,
 		"genre": ["北極"]
 	},
-	{	"code": ["???fr"],
+	{	"code": ["???fr","[???fr]"],
 		"src": "frozen/wonder2.gif",
 		"width": 19,	"height": 30,
 		"genre": ["北極"]
 	},
-	{	"code": ["[banghead]fr"],
+	{	"code": ["[banghead]fr","[bangheadfr]"],
 		"src": "frozen/banghead.gif",
 		"width": 28,	"height": 32,
 		"genre": ["北極"]
 	},
-	{	"code": ["[banghead]fr2","[banghead]2fr","[banghead2]fr"],
+	{	"code": ["[banghead]fr2","[banghead]2fr","[banghead2fr]"],
 		"src": "frozen/banghead2.gif",
 		"width": 28,	"height": 27,
 		"genre": ["北極"]
 	},
-	{	"code": ["[bouncer]fr"],
+	{	"code": ["[bouncer]fr","[bouncerfr]"],
 		"src": "frozen/bouncer.gif",
 		"width": 35,	"height": 35,
 		"genre": ["北極"]
 	},
-	{	"code": ["[bouncy]fr"],
+	{	"code": ["[bouncy]fr","[bouncyfr]"],
 		"src": "frozen/bouncy.gif",
 		"width": 20,	"height": 24,
 		"genre": ["北極"]
 	},
-	{	"code": ["[censored]fr","***fr","#***#fr"],
+	{	"code": ["[censored]fr","[censoredfr]"],
 		"src": "frozen/censored.gif",
 		"width": 38,	"height": 23,
 		"genre": ["北極"]
 	},
-	{	"code": ["[flowerface]fr"],
+	{	"code": ["[flowerface]fr","[flowerfacefr]"],
 		"src": "frozen/flowerface.gif",
 		"width": 26,	"height": 30,
 		"genre": ["北極"]
 	},
-	{	"code": ["[shocking]fr"],
+	{	"code": ["[shocking]fr","[shockingfr]"],
 		"src": "frozen/shocking.gif",
 		"width": 26,	"height": 31,
 		"genre": ["北極"]
 	},
-	{	"code": ["[photo]fr"],
+	{	"code": ["[photo]fr","[photofr]"],
 		"src": "frozen/photo.gif",
 		"width": 25,	"height": 24,
 		"genre": ["北極"]
 	},
-	{	"code": ["#fire#fr"],
+	{	"code": ["#fire#fr","#firefr#"],
 		"src": "frozen/fire.gif",
 		"width": 21,	"height": 24,
 		"genre": ["北極"]
 	},
-	{	"code": ["[yipes]fr"],
+	{	"code": ["[yipes]fr","[yipesfr]"],
 		"src": "frozen/yipes.gif",
 		"width": 21,	"height": 38,
 		"genre": ["北極"]
 	},
-	{	"code": ["[369]fr"],
+	{	"code": ["[369]fr","[369fr]"],
 		"src": "frozen/369.gif",
 		"width": 21,	"height": 25,
 		"genre": ["北極"]
 	},
-	{	"code": ["[bomb]fr"],
+	{	"code": ["[bomb]fr","[bombfr]"],
 		"src": "frozen/bomb.gif",
 		"width": 24,	"height": 26,
 		"genre": ["北極"]
 	},
-	{	"code": ["[slick]fr"],
+	{	"code": ["[slick]fr","[slickfr]"],
 		"src": "frozen/slick.gif",
 		"width": 19,	"height": 23,
 		"genre": ["北極"]
 	},
-	{	"code": ["fuckfr","fu*kfr"],
+	{	"code": ["fuckfr","[fu*kfr]"],
 		"src": "frozen/fuck.gif",
 		"width": 41,	"height": 24,
 		"genre": ["北極"]
 	},
-	{	"code": ["#no#fr"],
+	{	"code": ["#no#fr","#nofr#"],
 		"src": "frozen/no.gif",
 		"width": 26,	"height": 26,
 		"genre": ["北極"]
 	},
-	{	"code": ["#kill2#fr","#kill#fr2"],
+	{	"code": ["#kill2#fr","#kill2fr#"],
 		"src": "frozen/kill2.gif",
 		"width": 103,	"height": 29,
 		"genre": ["北極"]
 	},
-	{	"code": ["[offtopic]fr"],
+	{	"code": ["[offtopic]fr","[offtopicfr]"],
 		"src": "frozen/offtopic.gif",
 		"width": 45,	"height": 50,
 		"genre": ["北極"]
 	},
-	{	"code": ["O:-)sk","O:)sk","[O:)sk]","[O:-)sk]"],
+	{	"code": ["O:-)sk","[O:-)sk]"],
 		"src": "sick/angel.gif",
 		"width": 15,	"height": 23,
 		"genre": ["口罩"]
@@ -2468,7 +2467,7 @@ HHBJSONDATA.listIcon = [
 		"width": 70,	"height": 35,
 		"genre": ["口罩"]
 	},
-	{	"code": ["#ass#sk","#as*sk#","#***#sk"],
+	{	"code": ["#ass#sk","#as*sk#"],
 		"src": "sick/ass.gif",
 		"width": 25,	"height": 29,
 		"genre": ["口罩"]
@@ -2513,7 +2512,7 @@ HHBJSONDATA.listIcon = [
 		"width": 60,	"height": 40,
 		"genre": ["口罩"]
 	},
-	{	"code": ["[flowerface]sk","[flowersk]"],
+	{	"code": ["[flowerface]sk","[flowerfacesk]"],
 		"src": "sick/flowerface.gif",
 		"width": 40,	"height": 40,
 		"genre": ["口罩"]
@@ -2538,7 +2537,7 @@ HHBJSONDATA.listIcon = [
 		"width": 15,	"height": 15,
 		"genre": ["口罩"]
 	},
-	{	"code": ["fucksk","[fu*ksk]","[fucksk]","[***sk]","***sk"],
+	{	"code": ["fucksk","[fu*ksk]"],
 		"src": "sick/fuck.gif",
 		"width": 45,	"height": 45,
 		"genre": ["口罩"]
@@ -2558,7 +2557,7 @@ HHBJSONDATA.listIcon = [
 		"width": 50,	"height": 50,
 		"genre": ["新年"]
 	},
-	{	"code": ["#ass#ny","#as*n#","#assn#","#***n#","#***#ny"],
+	{	"code": ["#ass#ny","#as*n#"],
 		"src": "newyear/ass.gif",
 		"width": 25,	"height": 80,
 		"genre": ["新年"]
@@ -2608,7 +2607,7 @@ HHBJSONDATA.listIcon = [
 		"width": 30,	"height": 50,
 		"genre": ["新年"]
 	},
-	{	"code": ["fuckny","[fu*kn]","[fuckn]","fu*kny","***ny"],
+	{	"code": ["fuckny","[fu*kn]"],
 		"src": "newyear/fuck.gif",
 		"width": 37,	"height": 25,
 		"genre": ["新年"]
@@ -2623,12 +2622,12 @@ HHBJSONDATA.listIcon = [
 		"width": 41,	"height": 46,
 		"genre": ["新年"]
 	},
-	{	"code": ["[wonggiyin]","[ohyeah]"],
+	{	"code": ["[wonggiyin]","[ohyeah]","[OhYeah]"],
 		"src": "capture/wongchiyin.jpg",
 		"width": 250,	"height": 141,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[talkthis]","[talkthese]","[saythese]"],
+	{	"code": ["[talkthis]","[talkthese]","[saythis]","[saythese]","[TalkThese]"],
 		"src": "capture/diusaythese.png",
 		"width": 200,	"height": 113,
 		"genre": ["Cap圖"]
@@ -2643,12 +2642,12 @@ HHBJSONDATA.listIcon = [
 		"width": 250,	"height": 141,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[repeatmistake]","[mistake]","[repeaterror]","[error]"],
+	{	"code": ["[repeatmistake]","[mistake]","[repeaterror]","[error]","[RepeatMistake]"],
 		"src": "capture/repeaterror.jpg",
 		"width": 250,	"height": 188,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[whynotboth]"],
+	{	"code": ["[whynotboth]","[WhyNotBoth]"],
 		"src": "capture/whynotboth.jpg",
 		"width": 250,	"height": 191,
 		"genre": ["Cap圖"]
@@ -2688,7 +2687,7 @@ HHBJSONDATA.listIcon = [
 		"width": 210,	"height": 134,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[never]","[succeed]","[neversucceed]"],
+	{	"code": ["[neversucceed]","[YouWillNeverSucceed]"],
 		"src": "capture/uwillneversucceed.jpg",
 		"width": 250,	"height": 203,
 		"genre": ["Cap圖"]
@@ -2698,122 +2697,122 @@ HHBJSONDATA.listIcon = [
 		"width": 200,	"height": 150,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[ambush]"],
+	{	"code": ["[ambush]","[Ambush]"],
 		"src": "capture/pkambush.png",
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[bye9bye]"],
+	{	"code": ["[bye9bye]","[Bye9Bye]"],
 		"src": "capture/wholefamilydie.png",
 		"width": 73,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[chances]","[nochances]"],
+	{	"code": ["[nochances]","[NoOpportunities]"],
 		"src": "capture/theseopportunities.png",
 		"width": 67,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[congrats]"],
+	{	"code": ["[congrats]","[Congrats]"],
 		"src": "capture/congrats.png",
 		"width": 74,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[crazy]"],
+	{	"code": ["[crazy]","[Crazy]"],
 		"src": "capture/heiscrazy.png",
 		"width": 67,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[deal]","[deal?]"],
+	{	"code": ["[deal]","[Deal?]"],
 		"src": "capture/diuornodiu.png",
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[eatshit]","[eatsh*t]"],
+	{	"code": ["[eatshit]","[EatSh*t]"],
 		"src": "capture/eatshit.png",
 		"width": 46,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[iamzero]"],
+	{	"code": ["[iamzero]","[IAmZero]"],
 		"src": "capture/ithinkiam0.png",
 		"width": 67,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[illusion]"],
+	{	"code": ["[illusion]","[Illusion]"],
 		"src": "capture/illusiononly.gif",
 		"width": 60,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[killme]"],
+	{	"code": ["[killme]","[KillMePlease]"],
 		"src": "capture/killmeplease.png",
 		"width": 66,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[more]"],
+	{	"code": ["[more]","[More]"],
 		"src": "capture/morepics.png",
 		"width": 66,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[mum]"],
+	{	"code": ["[mum]","[Mum!]"],
 		"src": "capture/mama.jpg",
 		"width": 70,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[playlife]"],
+	{	"code": ["[playlife]","[PlayLife]"],
 		"src": "capture/playlife.png",
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[rules]"],
+	{	"code": ["[rules]","[YouKnowTheRules]"],
 		"src": "capture/douknowtherules.png",
 		"width": 69,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[scareme]","[scareme?]"],
+	{	"code": ["[scareme]","[ScareMe?]"],
 		"src": "capture/tryingtoscareme.png",
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[seed]","[seed?]"],
+	{	"code": ["[seed]","[Seed?]"],
 		"src": "capture/seed.gif",
 		"width": 67,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[small]","[sosmall]"],
+	{	"code": ["[small]","[SoSmall]"],
 		"src": "capture/small.gif",
 		"width": 36,	"height": 22,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[sofunny]"],
+	{	"code": ["[sofunny]","[SoFunny]"],
 		"src": "capture/sofunny.png",
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[stopsaying]"],
+	{	"code": ["[stopsaying]","[StopSaying]"],
 		"src": "capture/stopsaying.gif",
 		"width": 67,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[ugly]"],
+	{	"code": ["[ugly]","[Ugly]"],
 		"src": "capture/suchanuglygirl.png",
 		"width": 75,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[unacceptable]"],
+	{	"code": ["[unacceptable]","[Unacceptable]"],
 		"src": "capture/icannotaccept.png",
 		"width": 67,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[uwants]","[uwant?]"],
+	{	"code": ["[uwants]","[YouWant?]"],
 		"src": "capture/wantit.png",
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[wadiu]"],
+	{	"code": ["[wadiu]","[WaDiu]"],
 		"src": "capture/wadiu.png",
 		"width": 50,	"height": 50,
 		"genre": ["Cap圖"]
 	},
-	{	"code": ["[wfc]"],
+	{	"code": ["[wfc]","[WFC]"],
 		"src": "capture/wfc.png",
 		"width": 83,	"height": 50,
 		"genre": ["Cap圖"]
