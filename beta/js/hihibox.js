@@ -737,7 +737,7 @@ var HHBJSONDATA,hhb;
 							else if (e.altKey) addQuote($(this),true);
 							e.stopPropagation();
 							return false;
-						}).on('click', selector.chatQuoteDisable, function(e) { e.stopPropagation(); });
+						}).on('click', selector.chatQuoteDisable, function(e) { if (e.ctrlKey||e.altKey) e.stopPropagation(); });
 					};
 					binder();
 				},
@@ -1061,14 +1061,17 @@ var HHBJSONDATA,hhb;
 						var h = cssitem.match(reHeight);	h = (h) ? h[1] : h;
 						if (cls && src && w && h) listCssLookup[cls] = { cls: cls, src: src, width: w, height: h };
 					}
+					var t=[].concat(defaultSet);
 					for (var i=0;i<defaultSet.length;i++) {
 						var emo = defaultSet[i], cls = emo.cls, cssInfo = listCssLookup[cls];
 						if (!cssInfo) continue;
 						if (!emo.isEmoticon||emo.isGJTVEmoticon||emo.isHHBEmoticon) continue;
 						var tcode = [];
 						var regex = emo.regex.toString();
-						var iconRegExp = new RegExp(regex.substring(1, regex.length-2).replace("?", ""), "g");
-						for (var j=0;j<2;j++) {
+						regex = regex.replace(/^\/(.+)\/[^\/]*$/, "$1");
+						var iconRegExp = new RegExp(regex, "g");
+						var qmCount = (regex.match(/\?/g)||[]).length;
+						for (var j=0;j<2+Math.pow(2,qmCount);j++) {
 							var genCode = new RandExp(iconRegExp).gen();
 							tcode = tcode.concat(($.inArray(genCode,tcode) < 0) ? genCode : []);
 						}
@@ -2251,10 +2254,10 @@ var HHBJSONDATA,hhb;
 				if (!(iconlist && iconlist.length > 0)) return false;
 				var analyzediconlist = [];
 				/* Check if code is duplicated */
-				var codeIsDuplicated = function(code) {
-					var ncode = [].concat(code);
-					for (var i=0;i<ncode.length;i++) if (listIconLookup[ncode[i]]) return true;
-					return false;
+				var codeCheck = function(code) {
+					var ocode = [].concat(code),ncode = [];
+					for (var i=0;i<ocode.length;i++) if (!listIconLookup[ocode[i]]) ncode.push(ocode[i]);
+					return ncode;
 				};
 				var dcodelist = [];
 				var rcount = 0,ocount = 0,pcount = 0;
@@ -2264,14 +2267,28 @@ var HHBJSONDATA,hhb;
 					if (obj._comment) return true;
 					if (!obj.code || (!obj.isCustom && obj.code.length==0)) return true;
 					var tcode = [];
-					$.each(obj.code,function(idx,obj) { if (!obj.match(/\[img\][^\[]*\[\/img\]/ig)) tcode.push(obj); });
+					/* generate code list for display, lower case */
+					$.each(obj.code,function(idx,_code) {
+						if (!_code.match(/\[img\][^\[]*\[\/img\]/ig)) {
+							tcode.push(_code);
+							if (_code.match(/[A-Z]/)) {
+								var _lcode = _code.toLowerCase();
+								if ($.inArray(_lcode,obj.code) < 0) {
+									tcode.push(_lcode);
+									obj.code.push(_lcode);
+								}
+							}
+						}
+					});
 					if (obj.alt&&obj.alt!='') obj.code.unshift(obj.alt);
 					var code = [].concat(obj.code);
 					if (_options.genre) obj.genre = (obj.genre||[]).concat(_options.genre);
-					if (codeIsDuplicated(code)) {
+					var checkedCode = codeCheck(code);
+					if (checkedCode.length == 0) {
 						dcodelist = dcodelist.concat(code);
 						return true;
 					}
+					code = checkedCode;
 					for (var i=0;i<code.length;i++) {
 						if (code[i]=='') {
 							code.splice(i,1);
@@ -2293,6 +2310,7 @@ var HHBJSONDATA,hhb;
 					var regex = new RegExp(re,'g');
 					obj.id = nextIconID;	nextIconID++;
 					obj.genre = genre;
+					obj.code = code;
 					obj.alt = alt;
 					obj.title = title;
 					obj.regex = regex;
@@ -2380,7 +2398,7 @@ var HHBJSONDATA,hhb;
 				_protected.removeCustomIcon(url,true);
 				_protected.addCustomIcon(url,code,meta,true);
 				var tcode = code.trim().split(/[\s,]/),tcodelist=[];
-				$.each(tcode,function(idx,_code) { _code=_code.trim(); if (($.inArray(_code,obj.code) || !listIconLookup[_code]) && !_code=='' && !_code.match(/^\[(img|url)\]/i)) tcodelist.push(_code); });
+				$.each(tcode,function(idx,_code) { _code=_code.trim(); if (($.inArray(_code,obj.code)>=0 || !listIconLookup[_code]) && !_code=='' && !_code.match(/^\[(img|url)\]/i)) tcodelist.push(_code); });
 				sendMessage({modifyCustomIcon: { code: tcodelist, src: url }},function() {});
 				return true;
 			}
