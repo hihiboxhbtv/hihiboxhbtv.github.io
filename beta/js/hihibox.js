@@ -3708,7 +3708,8 @@ var HHBJSONDATA,hhb;
 		}
 		detectExtension('eoiappopphdcceickjphgaaidacdkidi', '/css/images/animated-overlay.gif',
 			function(installed) {
-				console.log('detectExtension',installed);
+				//console.log('detectExtension',installed);
+				return true; /* debug */
 				if (!installed) {
 					$(	'<div id="hhb-update-reminder">'+
 							'<style>'+
