@@ -1,6 +1,6 @@
 ﻿var HHBJSONDATA = HHBJSONDATA || {};
 
-HHBJSONDATA.listGenre = ["HKG","HKG2","meme","pkmon","腦魔","禿伯","小丑","Pixel","食鬼","聖誕","北極","口罩","新年","Cap圖","Emoji","Discuz"];
+HHBJSONDATA.listGenre = ["HKG","HKG2","雨傘","meme","pkmon","腦魔","禿伯","小丑","Pixel","食鬼","聖誕","北極","口罩","新年","Cap圖","Emoji","Discuz"];
 HHBJSONDATA.listIcon = [
 	{	"_start": 	"***************************************",
 		"comment": 	"HKG",
@@ -2816,6 +2816,236 @@ HHBJSONDATA.listIcon = [
 		"src": "capture/wfc.png",
 		"width": 83,	"height": 50,
 		"genre": ["Cap圖"]
+	},
+	{	"code": [":-(ur"],
+		"src": "umbrella/frown.png",
+		"width": 36,	"height": 39,
+		"genre": ["雨傘"]
+	},
+	{	"code": [":~(ur"],
+		"src": "umbrella/cry.gif",
+		"width": 43,	"height": 40,
+		"genre": ["雨傘"]
+	},
+	{	"code": [":-[ur"],
+		"src": "umbrella/angry.png",
+		"width": 36,	"height": 39,
+		"genre": ["雨傘"]
+	},
+	{	"code": [":Dur"],
+		"src": "umbrella/biggrin.png",
+		"width": 36,	"height": 39,
+		"genre": ["雨傘"]
+	},
+	{	"code": [":Our"],
+		"src": "umbrella/oh.png",
+		"width": 36,	"height": 39,
+		"genre": ["雨傘"]
+	},
+	{	"code": [":Pur"],
+		"src": "umbrella/tongue.png",
+		"width": 36,	"height": 39,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["^3^ur"],
+		"src": "umbrella/kiss.png",
+		"width": 36,	"height": 39,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["?_?ur"],
+		"src": "umbrella/wonder.png",
+		"width": 36,	"height": 39,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["[sosad]ur"],
+		"src": "umbrella/sosad.gif",
+		"width": 39,	"height": 43,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#good#ur"],
+		"src": "umbrella/good.png",
+		"width": 36,	"height": 39,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#hoho#ur"],
+		"src": "umbrella/hoho.gif",
+		"width": 59,	"height": 25,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["???ur"],
+		"src": "umbrella/wonder2.png",
+		"width": 36,	"height": 39,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["[bouncer]ur"],
+		"src": "umbrella/bouncer.gif",
+		"width": 54,	"height": 60,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#kill#ur"],
+		"src": "umbrella/kill.gif",
+		"width": 51,	"height": 18,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["[flowerface]ur","[umbrellaface]ur"],
+		"src": "umbrella/flowerface.gif",
+		"width": 33,	"height": 33,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#fire#ur"],
+		"src": "umbrella/fire.gif",
+		"width": 36,	"height": 40,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#fire#2ur","#fire#ur2"],
+		"src": "umbrella/fire2.gif",
+		"width": 46,	"height": 37,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#kill2#ur"],
+		"src": "umbrella/kill2.gif",
+		"width": 102,	"height": 33,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["[offtopic]ur"],
+		"src": "umbrella/offtopic.png",
+		"width": 41,	"height": 46,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#rainclown#ur",":o)ur2",":o)2ur"],
+		"src": "umbrella/rainclown.gif",
+		"width": 37,	"height": 38,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#rainfrown#ur",":-(ur2",":-(2ur"],
+		"src": "umbrella/rainfrown.gif",
+		"width": 37,	"height": 38,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#rainlove#ur","#love#ur2","#love#2ur"],
+		"src": "umbrella/rainlove.gif",
+		"width": 37,	"height": 38,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#rainphoto#ur","[photo]ur2","[photo]2ur"],
+		"src": "umbrella/rainphoto.gif",
+		"width": 43,	"height": 38,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#rainfire#ur","#fire#ur3","#fire#3ur"],
+		"src": "umbrella/rainfire.gif",
+		"width": 37,	"height": 38,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#rainkill2#ur","#kill2#ur2","#kill2#2ur"],
+		"src": "umbrella/rainkill2.gif",
+		"width": 116,	"height": 38,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["[timescover]ur"],
+		"src": "umbrella/timescover.png",
+		"width": 63,	"height": 56,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#angrycn#ur","#cnangry#ur"],
+		"src": "umbrella/angrychicken.gif",
+		"width": 36,	"height": 49,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["[sosadbiggrin]ur","[biggrinsosad]ur"],
+		"src": "umbrella/biggrinsosad.gif",
+		"width": 32,	"height": 38,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["[fruitninja]ur"],
+		"src": "umbrella/fruitninja.gif",
+		"width": 34,	"height": 27,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#kill2clown#ur"],
+		"src": "umbrella/kill2clown.gif",
+		"width": 130,	"height": 42,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#killclown#ur"],
+		"src": "umbrella/killclown.gif",
+		"width": 83,	"height": 33,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["[redflag]ur","[stopcharging]ur"],
+		"src": "umbrella/redflag.gif",
+		"width": 60,	"height": 60,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["[yellowflag]ur","[donotcross]ur"],
+		"src": "umbrella/yellowflag.gif",
+		"width": 60,	"height": 60,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["[blackflag]ur","[tearsmoke]ur"],
+		"src": "umbrella/blackflag.gif",
+		"width": 60,	"height": 60,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["[orangeflag]ur","[disperse]ur"],
+		"src": "umbrella/orangeflag.gif",
+		"width": 60,	"height": 60,
+		"genre": ["雨傘"]
+	},
+	{	"code": [":)urlm",":)lmur"],
+		"src": "umbrella/lomore/smile.png",
+		"width": 51,	"height": 43,
+		"genre": ["雨傘","腦魔"]
+	},
+	{	"code": [":~(urlm",":~(lmur"],
+		"src": "umbrella/lomore/cry.gif",
+		"width": 61,	"height": 43,
+		"genre": ["雨傘","腦魔"]
+	},
+	{	"code": [":-[urlm",":-[lmur"],
+		"src": "umbrella/lomore/angry.png",
+		"width": 51,	"height": 43,
+		"genre": ["雨傘","腦魔"]
+	},
+	{	"code": [":Durlm",":Dlmur"],
+		"src": "umbrella/lomore/biggrin.gif",
+		"width": 51,	"height": 43,
+		"genre": ["雨傘","腦魔"]
+	},
+	{	"code": ["?_?urlm","?_?lmur"],
+		"src": "umbrella/lomore/wonder.gif",
+		"width": 51,	"height": 43,
+		"genre": ["雨傘","腦魔"]
+	},
+	{	"code": ["#ng#urlm","#ng#lmur"],
+		"src": "umbrella/lomore/donno.gif",
+		"width": 51,	"height": 43,
+		"genre": ["雨傘","腦魔"]
+	},
+	{	"code": ["#oh#urlm","#oh#lmur"],
+		"src": "umbrella/lomore/ho.gif",
+		"width": 51,	"height": 43,
+		"genre": ["雨傘","腦魔"]
+	},
+	{	"code": ["#yup#urlm","#yup#lmur"],
+		"src": "umbrella/lomore/agree.gif",
+		"width": 51,	"height": 45,
+		"genre": ["雨傘","腦魔"]
+	},
+	{	"code": ["[369]urlm","[369]lmur"],
+		"src": "umbrella/lomore/369.gif",
+		"width": 51,	"height": 43,
+		"genre": ["雨傘","腦魔"]
+	},
+	{	"code": ["fuckurlm","fucklmur"],
+		"src": "umbrella/lomore/fuck.gif",
+		"width": 57,	"height": 43,
+		"genre": ["雨傘","腦魔"]
+	},
+	{	"code": [":Ourlmg",":Olmgur"],
+		"src": "umbrella/lomore/bloodya.gif",
+		"width": 51,	"height": 43,
+		"genre": ["雨傘","腦魔"]
 	},
 	{	"code":["😄"],
 		"src":"emoji/705.png",

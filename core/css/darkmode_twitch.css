@@ -497,3 +497,7 @@ body.hhb-pf-twitch.hhb-darkmode.error_500,body.hhb-pf-twitch.hhb-darkmode.error_
 
 /* [S:2014-09-24] */
 .hhb-pf-twitch.hhb-darkmode .chat-container, .hhb-pf-twitch.hhb-darkmode  .ember-chat-container { background: #0d0d0d; }
+
+/* [S:2014-10-03] */
+.hhb-pf-twitch.hhb-darkmode .loading-mask { background: rgba(13,13,13,0.5); }
+.hhb-pf-twitch.hhb-darkmode .ember-chat .chatters-view { background: #0d0d0d; }

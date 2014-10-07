@@ -105,8 +105,8 @@ var HHBJSONDATA,hhb;
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v2.2',
-		lastUpdate: '2014-09-08'
+		coreVersion: 'v3.0',
+		lastUpdate: '2014-10-07'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -130,7 +130,8 @@ var HHBJSONDATA,hhb;
 				resetBtn: 'hhb-reset',
 				bookmarkBtn: 'hhb-bookmark',
 				popupBtn: 'hhb-popup',
-				bbCodeBtn: 'hhb-bbcode'
+				bbCodeBtn: 'hhb-bbcode',
+				customIconForm: 'hhb-custom-icon-form'
 			},
 			cssClass: {
 				inited: 'hhb-inited',
@@ -142,8 +143,10 @@ var HHBJSONDATA,hhb;
 				checkedMsg: 'hhb-msg',
 				checkedName: 'hhb-name',
 				checkedBBCodeMsg: 'hhb-bbc-msg',
+				checkedQuote: 'hhb-quote-msg',
 				msgIcon: 'hhb-msgicon',
 				msgIconResized: 'hhb-resized',
+				msgQuote: 'hhb-quote',
 				resized: 'hhb-resized',
 				orgSize: 'hhb-org-size',
 				nameBanner: 'hhb-name-banner',
@@ -172,15 +175,18 @@ var HHBJSONDATA,hhb;
 				filterSelectedIcon: '#hhb-iconset .hhb-icon.hhb-filter-selected',
 				msgIcon: '.hhb-msgicon',
 				msgIconResized: '.hhb-msgicon.hhb-resized',
+				msgQuote: '.hhb-quote',
 				darkModeBtn: '#hhb-darkmode',
 				sortModeBtn: '#hhb-sortmode',
 				resetBtn: '#hhb-reset',
 				bookmarkBtn: '#hhb-bookmark',
 				popupBtn: '#hhb-popup',
-				bbCodeBtn: '#hhb-bbcode'
+				bbCodeBtn: '#hhb-bbcode',
+				customIconForm: '#hhb-custom-icon-form'
 			},
 			delay: {
 				analyzeBuiltinIcon: 200,
+				analyzeCustomIcon: 200,
 				analyzeChannelIcon: 200,
 				analyzePlatformIcon: 500,
 				analyzeGJTVIcon: 1000,
@@ -210,18 +216,20 @@ var HHBJSONDATA,hhb;
 			},
 			limit: {
 				msgIconHeight: 60,
-				analyzeBuiltinIcon: 30,
-				analyzeChannelIcon: 30,
-				analyzePlatformIcon: 30,
+				analyzeBuiltinIcon: 1,
+				analyzeCustomIcon: 1,
+				analyzeChannelIcon: 1,
+				analyzePlatformIcon: 50,
 				analyzeGJTVIcon: 30,
 				activateRebindUIBtn: 30,
 				bindBookmarkBtn: 30,
 				bindPlayerBookmarkBtn: 30
 			},
-			supportedPlatform: ['hitbox','twitch','justin','ustream'],
+			supportedPlatform: ['hitbox','twitch','ustream'],
 			listGenre: [],
 			listIcon: [],
-			genreCategory: ['other','gjtv','platform','builtin','channel','recent'],
+			listCustomIcon: [],
+			genreCategory: ['other','gjtv','platform','builtin','channel','custom','recent'],
 			defaultConfig: {
 				genre: 'HKG',
 				darkMode: 'light',
@@ -251,6 +259,7 @@ var HHBJSONDATA,hhb;
 			listGenre = _settings.listGenre,
 			genreCategory = _settings.genreCategory;
 			listIcon = _settings.listIcon,
+			listCustomIcon = _settings.listCustomIcon,
 			defaultConfig = _settings.defaultConfig,
 			config = _settings.config,
 			settings = {
@@ -275,8 +284,9 @@ var HHBJSONDATA,hhb;
 				isInitialize: false,
 					isIconListDataInited: false,
 						iconInjected: false,
-						builtinIconLoaded: false,
+						customIconLoaded: false,
 						channelIconLoaded: false,
+						builtinIconLoaded: false,
 						platformIconLoaded: false,
 						gjtvIconLoaded: false,
 					isUserInterfaceInited: false,
@@ -299,6 +309,7 @@ var HHBJSONDATA,hhb;
 			loadingStatus = {},
 			retryCount = {
 				analyzeBuiltinIcon: 0,
+				analyzeCustomIcon: 0,
 				analyzeChannelIcon: 0,
 				analyzePlatformIcon: 0,
 				analyzeGJTVIcon: 0,
@@ -328,6 +339,7 @@ var HHBJSONDATA,hhb;
 				initIconListData: 			{ start: 0, end: 0, duration: 0 },
 					injectIcon: 			{ start: 0, end: 0, duration: 0 },
 					analyzeBuiltinIcon: 	{ start: 0, end: 0, duration: 0 },
+					analyzeCustomIcon:		{ start: 0, end: 0, duration: 0 },
 					analyzeChannelIcon:		{ start: 0, end: 0, duration: 0 },
 					analyzePlatformIcon: 	{ start: 0, end: 0, duration: 0 },
 					analyzeGJTVIcon: 		{ start: 0, end: 0, duration: 0 },
@@ -355,7 +367,9 @@ var HHBJSONDATA,hhb;
 			listUsage = {},
 			listParse = [],
 			listIconLookup = {},
+			listEmoClsLookup = {},
 			listGenreLookup = {},
+			listCustomIconLookup = {},
 			listNameBanner = {},
 			nextGenreID = 1,
 			nextIconID = 1,
@@ -363,7 +377,8 @@ var HHBJSONDATA,hhb;
 			isContainUrl = false,
 			timerFilter = null,
 			timerCheckMsgInputUrl = null,
-			currFilterCodeHead = '';
+			currFilterCodeHead = '',
+			bbCodeCount = 0;
 			
 		/* Public Variables */
 		_protected.cssClass = cssClass;
@@ -383,11 +398,12 @@ var HHBJSONDATA,hhb;
 								'<div id="'+idObj.bbCodeBtn+'" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.popupBtn+'" hhb-locale-title="{{iconlist.popup_fixed}}" title="Popup" class="funcIcon">&nbsp;</div>'+
 								'<span class="version" title="">'+infoObj.coreVersion+'</span>'+
-								'<a href="http://bit.ly/hihibox_site" target="_new" class="hhb"><span class="name" title="">'+infoObj.name+'</span></a>'+
-								'<a href="http://bit.ly/hihibox_site" target="_new" class="hhb"><div class="icon hhb" hhb-locale-title="{{iconlist.site}}" title="Website"></div></a>'+
+								'<a href="http://bit.ly/hihiboxhbtv" target="_new" class="hhb"><span class="name" title="">'+infoObj.name+'</span></a>'+
+								'<a href="http://bit.ly/hihiboxhbtv" target="_new" class="hhb"><div class="icon hhb" hhb-locale-title="{{iconlist.site}}" title="Website"></div></a>'+
 								'<a href="http://bit.ly/hihibox_fb" target="_new" class="fb"><div class="icon fb" hhb-locale-title="{{iconlist.fbpage}}" title="Facebook Page"></div></a></div>'+
 								'<div id="'+idObj.genreContainer+'"></div>'+
 								'<div id="'+idObj.iconset+'"></div>'+
+								'<div id="'+idObj.customIconForm+'"></div>'+
 							'</div>');
 				},
 				genPlayerBookmarkBtn: function(idBtn) {
@@ -395,27 +411,39 @@ var HHBJSONDATA,hhb;
 				},
 				replaceText: function(txtarea,text,reReplace) {
 					if (txtarea) {
-						text = text.trim()+' ';
 						var scrollPos = txtarea.scrollTop;
-						var strPos = 0;
-						if (reReplace instanceof RegExp) {
-							txtarea.value = txtarea.value.replace(reReplace,'');
-						}
+						text = text.trim()+' ';
+						/* get original cursor position */
+						var strPos = 0,strPosE = 0;
 						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
 							"ff" : (document.selection ? "ie" : false ) );
 						if (br == "ie") { 
 							txtarea.focus();
 							var range = document.selection.createRange();
+							var selText = range.text;
 							range.moveStart ('character', -txtarea.value.length);
 							strPos = range.text.length;
+							strPosE = strPos + selText.length;
+						} else if (br == "ff") {
+							strPos = txtarea.selectionStart;
+							strPosE = txtarea.selectionEnd;
 						}
-						else if (br == "ff") strPos = txtarea.selectionStart;
-
-						var front = (txtarea.value).substring(0,strPos);  
-						var back = (txtarea.value).substring(strPos,txtarea.value.length);
-						text = ((front.length>0)?' ':'')+text;
-						txtarea.value=front+text+back;
-						strPos = strPos + text.length;
+						var msg = txtarea.value||'';
+						var prefront = msg.substring(0,strPos);
+						var back = msg.substring(strPosE,msg.length);
+						var posfront = ''
+						/* replace / insert text */
+						if (reReplace && reReplace instanceof RegExp) {
+							/* replace text */
+							posfront = prefront.replace(reReplace,text);
+						} else {
+							/* insert text */
+							text = ((prefront.length>0 && !prefront.match(/\s$/))?' ':'')+text;
+							posfront=prefront+text;
+						}
+						/* calc new cursor position */
+						strPos = strPos + (posfront.length-prefront.length);
+						txtarea.value = posfront+back;
 						if (br == "ie") { 
 							txtarea.focus();
 							var range = document.selection.createRange();
@@ -430,6 +458,7 @@ var HHBJSONDATA,hhb;
 							txtarea.focus();
 						}
 						txtarea.scrollTop = scrollPos;
+						txtarea.focus();
 					}
 				},
 				bindNameBanner: function(names,callback) {
@@ -455,7 +484,9 @@ var HHBJSONDATA,hhb;
 									.click(function() { $(this).parent().click(); })
 									.animate(
 										{ 'width': [nb.width,'px'].join('') },
-										{ easing: "easeOutExpo", duration: dur }
+										{ easing: "easeOutExpo", duration: dur,
+											complete: callback
+										}
 									).prependTo($(this));
 								var $nspan = $(nspan).appendTo($(this))
 								$nspan.width($nspan.width())
@@ -529,13 +560,49 @@ var HHBJSONDATA,hhb;
 					var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
 					var rehtmltag = /<[^>]*>/ig;
 					var bbcode = [
-						{	tag: 'url',
-							match: /(\[url\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/url\])/ig,
-							replace: "<a href=\"$2\" target=\"_blank\" class=\"hhb-bbcode-url\" alt=\"$1$2$3\">$2<\/a>"
+						{	tag: 'url',	match: /(\[url\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/url\])/ig,
+							replace: function() {
+								var args = arguments,bbcid = 'hhb-bbcode-'+bbCodeCount;
+								$.each(args,function(idx,obj) { args[idx] = $('<div>').html(obj).text(); });
+								var $span = $("<span class='hhb-bbcode-url-tag' hhb-src='"+ args[2] +"'>");
+								var $imgf = $("<img alt='"+ args[1] +"'>"),$imgb = $("<img alt='"+ args[3] +"'>");
+								var $a = $("<a id='"+ bbcid +"' href='"+ args[2] +"' target='_blank' class='hhb-bbcode-url' alt='"+ args[0] +"'>"+ args[2] +"</a>");
+								bbCodeCount++;
+								return $('<div>').append($span.append([$imgf,$a,$imgb])).html();
+							}
 						},
-						{	tag: 'img',
-							match: /(\[img\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/img\])/ig,
-							replace: "<span class='hhb-bbcode-img-tag'><a href=\"$2\" target=\"_blank\"><img src=\"$2\" class=\"hhb-bbcode-img\" alt=\"$1$2$3\" onload=\"hhb.scrollToBottom();\"><\/a></span>"
+						{	tag: 'img',	match: /(\[img\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/img\])/ig,
+							replace: function() {
+								var args = arguments,bbcid = 'hhb-bbcode-'+bbCodeCount;
+								$.each(args,function(idx,obj) { args[idx] = $('<div>').html(obj).text(); });
+								var $span = $("<span class='hhb-bbcode-img-tag' hhb-src='"+ args[2] +"' hhb-alt='"+ args[0] +"'>");
+								var $a = $("<a href='"+ args[2] +"' target='_blank'>");
+								var $img = ("<img id='"+ bbcid +"' src='http://hihiboxhbtv.github.io/images/hihiloading.gif' class='hhb-bbcode-img' alt='"+ args[0] +"' onload='hhb.scrollToBottom();'>");
+								var $loader = $('<img>').load(function() {
+									$('#'+bbcid).attr('src',$(this).attr('src'));
+									/* custom icon - add */
+									var $img = $('#'+bbcid);
+									var $imgTags = $img.parents('.hhb-bbcode-img-tag:not(:has(.hhb-custom-icon-add))');
+									$imgTags.prepend(
+										$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" hhb-locale-title="{{info.name}} - {{iconlist.custom_icon.add}}" title="HihiBox - Add to Custom">')
+											.attr('title',locale.getLocaleMsg('info.name')+' - '+locale.getLocaleMsg('iconlist.custom_icon.add'))
+											.click(function(e) {
+												e.stopPropagation();
+												var src = $(this).parents('.hhb-bbcode-img-tag').attr('hhb-src');
+												_protected.initCustomIconForm(src);
+											})
+									);
+									_protected.scrollToBottom();
+									if ($imgTags.length>0 && _protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
+								}).error(function() {
+									var $img = $('#'+bbcid);
+									var $imgTags = $img.parents('.hhb-bbcode-img-tag');
+									$imgTags.find('.hhb-custom-icon-add').detach();
+									$img.replaceWith($('<span>',{ text: $(this).attr('src'), alt: $imgTags.attr('hhb-alt') }));
+								}).attr('src',args[2]);
+								bbCodeCount++;
+								return $('<div>').append($span.append($a.append($img))).html();
+							}
 						}
 					];
 					$msgs.each(function() {
@@ -563,9 +630,7 @@ var HHBJSONDATA,hhb;
 						if (htmlm) $.each(htmlm,function(idx,obj) { ohtml = ohtml.replace('___hhb_bbc_html_'+idx+'___',obj); });
 						$(this).html(ohtml);
 					});
-					$msgs.find('.hhb-bbcode-img').error(function() {
-						$(this).replaceWith($('<span>',{ text: $(this)[0].src, alt: $(this)[0].alt }));
-					});
+					
 					return {
 						msg: $msgs.length,
 						parsed: pcount
@@ -575,8 +640,8 @@ var HHBJSONDATA,hhb;
 					if (txtarea) {
 						var omsg = txtarea.value;
 						var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
-						var reimg = /((?:https?|ftp)[^#?\s]+(?:\.(?:gif|png|jpe?g))(?:[^\s]*))/ig;
-						var reurl = /((?:https?|ftp)(?:[^\s]*))/ig;
+						var reimg = /((?:https?|ftp)[^#?\s]+(?:\.(?:gif|png|jpe?g))(?:[^\s\[]*))/ig;
+						var reurl = /((?:https?|ftp)(?:[^\s\[]*))/ig;
 						var bbcodem = omsg.match(rebbcode);
 						var imgm = omsg.match(reimg);
 						var urlm = omsg.match(reurl);
@@ -619,7 +684,79 @@ var HHBJSONDATA,hhb;
 						if (offsetlm.top<bottomLine && offsetlm.bottom> bottomLine) {
 							$sbody.scrollTop(Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2));
 						}
+						
+						debugMsg(DEBUG_RETRY,'scrollToBottom',(offsetlm.top<bottomLine && offsetlm.bottom> bottomLine),
+						Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2),
+						bodyHeight,$cview.height(),offsetlm);
 					} catch(e) {};
+				},
+				bindQuoter: function(_platform,selector) {
+					var replaceAlt = function(obj) {
+						return obj.children().each(function() {
+							var _objChildren = $(this).children();
+							if (_objChildren.length>0) replaceAlt($(this));
+							var alt = ($(this).attr('alt')||'').trim();
+							if (alt!='') $(this).replaceWith(alt);
+						});
+					}
+					var binder = function() {
+						var addQuote = function(thisObj,isNameOnly) {
+							var $msg = thisObj.clone();
+							var name = $msg.find(selector.chatName).text().trim();
+							var omsg = '';
+							if (name=='') name = thisObj.attr('class').replace(/^from_/ig,''); /* hitbox */
+							if (isNameOnly) omsg = '@'+ name;
+							else {
+								$msg.find(selector.chatQuoteRemove).remove();
+								$msg.find(selector.msgQuote).remove();
+								replaceAlt($msg);
+								var tmsg = $msg.text();
+								tmsg = tmsg.replace(/(\s|&nbsp;)+/ig,' ')
+									.replace(/&amp;/ig, '&')
+									.replace(/&lt;/ig, '<')
+									.replace(/&gt;/ig, '>')
+									.replace(/&quot;/ig, '"')
+									.replace(/&#039;/ig, '\'')
+									.replace(/(?:<[^>]*>)?\s*@.*\s«/i, '').trim();
+								omsg = '@'+ name +' : '+ tmsg;
+							}
+							omsg += ' « ';
+							var $msgBox = $(selector.msgBox);
+							if ($msgBox.val().indexOf('«')!=-1) $msgBox.prop('');
+							_platform.replaceText(omsg,/^(\@.*\s?«\s?)?/ig);
+						}
+						var $chatView = $(selector.chatView);
+						if ($chatView.length==0) {
+							setTimeout(binder,1000);
+							return ;
+						}
+						$chatView.on('click', selector.chatLine, function(e) {
+							if (e.ctrlKey||e.altKey) {
+								if (e.ctrlKey) addQuote($(this));
+								else if (e.altKey) addQuote($(this),true);
+								e.stopPropagation();
+								return false;
+							}
+						});
+					};
+					binder();
+				},
+				parseQuote: function(msgs,cssClass) {
+					if (msgs.length==0) return { msg: 0, parsed: 0 };
+					var $msgs = msgs.addClass(cssClass.checkedQuote);
+					var pcount = 0;
+					$msgs.each(function() {
+						var $msg = $(this).clone();
+						var msgHtml = $msg.html();
+						var quoteMsg = '';
+						var msg = msgHtml;
+						var reQuote = /<[^<>]*>\s*@.*\s«/i;
+						if (msgHtml.match(reQuote)) {
+							quoteMsg = msgHtml.match(reQuote)[0].replace(/\s*«$/i,'').trim();
+							msg = msgHtml.replace(reQuote,$('<span>',{ class: cssClass.msgQuote }).html(quoteMsg)[0].outerHTML);
+						}
+						$(this).empty().html(msg);
+					});
 				}
 			},
 			hitbox: function() {
@@ -639,10 +776,14 @@ var HHBJSONDATA,hhb;
 						newMsg: '.chat-messages .message:not(.hhb-msg)',
 						newName: '.chat-messages .name:not(.hhb-name)',
 						newBBCodeMsg: '.chat-messages .message:not(.hhb-bbc-msg)',
+						newQuoteMsg: '.chat-messages .message:not(.hhb-quote-msg)',
 						timestampsBox: '#timestampsBox',
 						userName: '.navItemsUser .item.user:first-child span',
 						player: '#mediaplayer',
 						chatView: '.chat-messages',
+						chatLine: 'li',
+						chatName: '.title .name',
+						chatQuoteRemove: '.chat-compact-time, .chat-normal-time, .chat-badge-mod, .hhb-name-banner, .title .name, .chat-buffer',
 						chatContainer: '.chatBody',
 						msgList: '.chatBody > li > div',
 						badgeBroadcaster: '.hhb-pf-hitbox .chat-messages .chat-badge-owner',
@@ -651,8 +792,8 @@ var HHBJSONDATA,hhb;
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
 				/* Initialize */
-				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:dashboard|settings|404|signup|video)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
-				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:embed\/|embedchat\/)?(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
+				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:settings|404|signup|video)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:embed\/|embedchat\/|dashboard\/)?(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
 				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-hitbox'); };
@@ -662,7 +803,7 @@ var HHBJSONDATA,hhb;
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
 				_platform.genToggleButton = function(id) {
-					return $('<div id="'+id+'" class="icon-cog hoverG2" title="HihiBox"></div>');
+					return $('<div id="'+id+'" class="icon-cog hoverG2" hhb-locale-title="{{info.name}}" title="HihiBox"></div>');
 				};
 				_platform.onBindedToggleButton = function() {};
 				_platform.getShowChatBtn = function() {	return $(selector.showChatBtn);	};
@@ -766,22 +907,26 @@ var HHBJSONDATA,hhb;
 						resized: bircount
 					};
 				};
+				_platform.bindQuoter = function() { _platformObj.default.bindQuoter(_platform,selector); }
+				_platform.getNewQuoteMsg = function() {	return $(selector.newQuoteMsg);	};
+				_platform.parseQuote = function() { 
+					var msgs = _platform.getNewQuoteMsg();
+					return _platformObj.default.parseQuote(msgs,cssClass);
+				}
 				_platform.scrollToBottom = function() {	return _platformObj.default.scrollToBottom(selector); };
-				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
-				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
+				_platform.getMsgBox = function(getDOM) { return (getDOM ? $(selector.msgBox)[0]||false : $(selector.msgBox)); };
+				_platform.getMsgInput = function() {	return $(selector.msgBox).val()||'';	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
-					var $msgBox = $(selector.msgBox);
-					if ($msgBox.length > 0) {
-						var txtarea = $msgBox[0];
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
 						_platformObj.default.replaceText(txtarea,text,reReplace);
 						_platform.updateMsg();
 					}
 				}
 				_platform.autoCompleteBBCode = function() {
-					var $msgBox = $(selector.msgBox);
-					if ($msgBox.length > 0) {
-						var txtarea = $msgBox[0];
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
 						_platformObj.default.autoCompleteBBCode(txtarea);
 						_platform.updateMsg();
 					}
@@ -825,11 +970,15 @@ var HHBJSONDATA,hhb;
 						newMsg: 'span.message:not(.hhb-msg)',
 						newName: '.chat-line .from:not(.hhb-name)',
 						newBBCodeMsg: 'span.message:not(.hhb-bbc-msg)',
+						newQuoteMsg: 'span.message:not(.hhb-quote-msg)',
 						emoticon: 'span.emoticon',
 						timestampsBox: '.chat-menu-content .ember-checkbox:contains("Time Stamps")',
 						userName: '#nav_personal .username',
 						player: 'object[data*="TwitchPlayer.swf"]',
 						chatView: '.chat-messages',
+						chatLine: '.chat-line',
+						chatName: '.from',
+						chatQuoteRemove: '.timestamp, .mod-icons, .from, .colon',
 						chatContainer: '.chat-messages .tse-scroll-content',
 						msgList: '.chat-messages .chat-line',
 						badgeBroadcaster: '.hhb-pf-twitch .ember-chat .badges .broadcaster',
@@ -849,7 +998,7 @@ var HHBJSONDATA,hhb;
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
 				_platform.genToggleButton = function(id) {
-					return $('<a id="'+id+'" class="button glyph-only" title="HihiBox"></a>');
+					return $('<a id="'+id+'" class="button glyph-only" hhb-locale-title="{{info.name}}" title="HihiBox"></a>');
 				};
 				_platform.onBindedToggleButton = function() {
 					var btnc = $('.chat-option-buttons').outerWidth();
@@ -910,14 +1059,17 @@ var HHBJSONDATA,hhb;
 						var h = cssitem.match(reHeight);	h = (h) ? h[1] : h;
 						if (cls && src && w && h) listCssLookup[cls] = { cls: cls, src: src, width: w, height: h };
 					}
+					var t=[].concat(defaultSet);
 					for (var i=0;i<defaultSet.length;i++) {
 						var emo = defaultSet[i], cls = emo.cls, cssInfo = listCssLookup[cls];
 						if (!cssInfo) continue;
 						if (!emo.isEmoticon||emo.isGJTVEmoticon||emo.isHHBEmoticon) continue;
 						var tcode = [];
 						var regex = emo.regex.toString();
-						var iconRegExp = new RegExp(regex.substring(1, regex.length-2).replace("?", ""), "g");
-						for (var j=0;j<2;j++) {
+						regex = regex.replace(/^\/(.+)\/[^\/]*$/, "$1");
+						var iconRegExp = new RegExp(regex, "g");
+						var qmCount = (regex.match(/\?/g)||[]).length;
+						for (var j=0;j<2+Math.pow(2,qmCount);j++) {
 							var genCode = new RandExp(iconRegExp).gen();
 							tcode = tcode.concat(($.inArray(genCode,tcode) < 0) ? genCode : []);
 						}
@@ -946,6 +1098,7 @@ var HHBJSONDATA,hhb;
 					var list = [],
 						count = 0,
 						style = '';
+					listEmoClsLookup = {};
 					try {
 						var emoticonsController = window.App.__container__.lookup('controller:emoticons');
 						var emoteSets = emoticonsController.emoticonSets;
@@ -999,6 +1152,7 @@ var HHBJSONDATA,hhb;
 							isEmoticon: true,
 							regex: regex
 						});
+						listEmoClsLookup[classname] = icon;
 						count++;
 					}
 					if (count > 0) {
@@ -1015,19 +1169,34 @@ var HHBJSONDATA,hhb;
 						var count = 0;
 						var bicount = 0, bircount = 0;
 						msgs.each(function() {
-							var emoticons = $(this)
-								.addClass(cssClass.checkedMsg)
-								.children(selector.emoticon)
-									.each(function() {
-										if ($(this).height() > limitHeight) $(this).addClass(cssClass.resized);
-										$(this).addClass(cssClass.msgIcon);
+							$(this).addClass(cssClass.checkedMsg);
+							if (env.isEmoticonInited) {
+								var emoticons = $(this)
+									.children(selector.emoticon)
+										.each(function() {
+											if ($(this).height() > limitHeight) $(this).addClass(cssClass.resized);
+											$(this).addClass(cssClass.msgIcon);
+										});
+								/* bind icon code */
+								$(this).children(selector.emoticon).each(function() {
+									var $hhbMsgIcon = $(this);
+									var classlist=$hhbMsgIcon.attr('class').split(' ');
+									$.each(classlist,function(idx,obj) {
+										if (obj.match(/^emo\-hhb\-/i)) {
+											var icon = listEmoClsLookup[obj];
+											if (!icon) return ;
+											if (icon.title && icon.title!='') $hhbMsgIcon.attr('title',icon.title);
+											if (icon.alt && icon.alt!='') $hhbMsgIcon.attr('alt',icon.alt);
+										}
 									});
-							var resized = $(this).children(selector.msgIconResized)
-								.click(function() {
-									$(this).toggleClass(cssClass.orgSize);
 								});
-							bicount += emoticons.length;
-							bircount += resized.length;
+								var resized = $(this).children(selector.msgIconResized)
+									.click(function() {
+										$(this).toggleClass(cssClass.orgSize);
+									});
+								bicount += emoticons.length;
+								bircount += resized.length;
+							}
 						});
 					}
 					return {
@@ -1036,22 +1205,26 @@ var HHBJSONDATA,hhb;
 						resized: bircount
 					};
 				};
+				_platform.bindQuoter = function() { _platformObj.default.bindQuoter(_platform,selector); }
+				_platform.getNewQuoteMsg = function() {	return $(selector.newQuoteMsg);	};
+				_platform.parseQuote = function() { 
+					var msgs = _platform.getNewQuoteMsg();
+					return _platformObj.default.parseQuote(msgs,cssClass);
+				}
 				_platform.scrollToBottom = function() {	return _platformObj.default.scrollToBottom(selector); };
-				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
-				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
+				_platform.getMsgBox = function(getDOM) { return (getDOM ? $(selector.msgBox)[0]||false : $(selector.msgBox)); };
+				_platform.getMsgInput = function() {	return $(selector.msgBox).val()||'';	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
-					var $msgBox = $(selector.msgBox);
-					if ($msgBox.length > 0) {
-						var txtarea = $msgBox[0];
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
 						_platformObj.default.replaceText(txtarea,text,reReplace);
 						_platform.updateMsg(txtarea.value);
 					}
 				}
 				_platform.autoCompleteBBCode = function() {
-					var $msgBox = $(selector.msgBox);
-					if ($msgBox.length > 0) {
-						var txtarea = $msgBox[0];
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
 						_platformObj.default.autoCompleteBBCode(txtarea);
 						_platform.updateMsg(txtarea.value);
 					}
@@ -1093,6 +1266,7 @@ var HHBJSONDATA,hhb;
 						newMsg: '.chat_line span.message:not(.hhb-msg)',
 						newName: '.chat_line .nick:not(.hhb-name)',
 						newBBCodeMsg: '.chat_line span.message:not(.hhb-bbc-msg)',
+						newQuoteMsg: '.chat_line span.message:not(.hhb-quote-msg)',
 						emoticon: 'span.emoticon',
 						timestampsBox: '#toggle-timestamp',
 						userName: '.global-header-user-info .global-header-username',
@@ -1325,13 +1499,12 @@ var HHBJSONDATA,hhb;
 						resized: bircount
 					};
 				};
-				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
-				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
+				_platform.getMsgBox = function(getDOM) { return (getDOM ? $(selector.msgBox)[0]||false : $(selector.msgBox)); };
+				_platform.getMsgInput = function() {	return $(selector.msgBox).val()||'';	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
-					var $msgBox = $(selector.msgBox);
-					if ($msgBox.length > 0) {
-						var txtarea = $msgBox[0];
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
 						_platformObj.default.replaceText(txtarea,text,reReplace);
 					}
 				};
@@ -1511,13 +1684,18 @@ var HHBJSONDATA,hhb;
 						resized: bircount
 					};
 				};
-				_platform.getMsgBox = function() {	return $(selector.msgBox);	};
-				_platform.getMsgInput = function() {	return $(selector.msgBox).val();	};
+				_platform.bindQuoter = function() { /* _platformObj.default.bindQuoter(_platform,selector); */ }
+				_platform.getNewQuoteMsg = function() {	return [];	};
+				_platform.parseQuote = function() { /*
+					var msgs = _platform.getNewQuoteMsg();
+					return _platformObj.default.parseQuote(msgs,cssClass); */
+				}
+				_platform.getMsgBox = function(getDOM) { return (getDOM ? $(selector.msgBox)[0]||false : $(selector.msgBox)); };
+				_platform.getMsgInput = function() {	return $(selector.msgBox).val()||'';	};
 				_platform.insertText = function(text) {	_platform.replaceText(text);	};
 				_platform.replaceText = function(text,reReplace) {
-					var $msgBox = $(selector.msgBox);
-					if ($msgBox.length > 0) {
-						var txtarea = $msgBox[0];
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
 						_platformObj.default.replaceText(txtarea,text,reReplace);
 					}
 				};
@@ -1608,6 +1786,7 @@ var HHBJSONDATA,hhb;
 				/* initIconListData */
 				case 'injectIcon':				env.iconInjected = true;	break;
 				case 'analyzeBuiltinIcon':		env.builtinIconLoaded = true;	break;
+				case 'analyzeCustomIcon':		env.customIconLoaded = true;	break;
 				case 'analyzeChannelIcon':		env.channelIconLoaded = true;	break;
 				case 'analyzePlatformIcon':		env.platformIconLoaded = true;	break;
 				case 'analyzeGJTVIcon':			env.gjtvIconLoaded = true;	break;
@@ -1651,6 +1830,7 @@ var HHBJSONDATA,hhb;
 				/* initIconListData */
 				case 'injectIcon':
 				case 'analyzeBuiltinIcon':
+				case 'analyzeCustomIcon':
 				case 'analyzeChannelIcon':
 				case 'analyzePlatformIcon':
 				case 'analyzeGJTVIcon':
@@ -1706,25 +1886,42 @@ var HHBJSONDATA,hhb;
 			env.platform = ((_platformObj[env.platform]) ? env.platform : '');
 			
 			/* check platform */
-			if (env.platform=='') {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Platform not detected! Initialization aborted! [',url,']');	return;	}
+			if (env.platform=='') {
+				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Platform not detected! Initialization aborted! [',url,']');
+				_gaTracker('core','fail','Initialization - Platform not detected');
+				return;
+			}
 			
 			/* chat excluded url */
 			platformObj = new _platformObj[env.platform];
 			env.isExcluded = platformObj.isExcluded();
-			if (env.isExcluded) {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Excluded URL! Initialization aborted! [',url,']');	return;	}
+			if (env.isExcluded) {
+				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Excluded URL! Initialization aborted! [',url,']');
+				_gaTracker('core','fail','Initialization - Excluded URL');
+				return;
+			}
 			
 			/* check channel */
 			env.channel = platformObj.getChannelID();
-			if (!env.channel || env.channel=='') {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Channel not detected! Initialization aborted! [',url,']');	return;	}
+			if (!env.channel || env.channel=='') {
+				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Channel not detected! Initialization aborted! [',url,']');
+				_gaTracker('core','fail','Initialization - Channel not detected');
+				return;
+			}
 			
 			/* prevent duplicate load of HihiBox */
 			var hhbLoaded = ($('body[class*="hhb-pf-"]').length>0);
-			if (hhbLoaded) {	debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'HihiBox detected! Initialization aborted!');	return;	}
+			if (hhbLoaded) {
+				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'HihiBox detected! Initialization aborted!');
+				_gaTracker('core','fail','Initialization - HihiBox detected');
+				return;
+			}
 			
 			platformObj.initialize();
 			env.userid = platformObj.getUsername();
 			env.features = platformObj.getFeatures();
 			debugMsg(DEBUG_ENV|DEBUG_ENV_SUCCESS,'Detected [',env,']');
+			_gaTracker('core','success','Initialize - Platform detected');
 			_gaTracker('env','platform',env.platform);
 			_gaTracker('env','channel',[env.channel,env.platform].join('@'));
 			if (env.userid && env.userid!='') {
@@ -1759,6 +1956,8 @@ var HHBJSONDATA,hhb;
 					if (!response.settings) return;
 					env.settingsLoaded = true;
 					$.extend(settings,response.settings);
+					if (settings.enable_bbcode) $('body').addClass('hhb-enable-bbcode');
+					if (settings.enable_emotify) $('body').addClass('hhb-enable-emotify');
 					bindIconListLocale();
 					debugMsg(DEBUG_EXT,'pullSettings',settings);
 					/* initialize core */
@@ -1816,11 +2015,23 @@ var HHBJSONDATA,hhb;
 					debugMsg(DEBUG_EXT,'clearUsage',listUsage);
 				});
 		};
+		var pullCustomIconset = function() {
+			sendMessage({getCustomIconset: true},
+				function(response) {
+					if (!response) return;
+					if (!response.success) return;
+					if (!response.customIconset) return;
+					listCustomIcon = response.customIconset;
+					_protected.importCustomIcon(listCustomIcon);
+					debugMsg(DEBUG_EXT,'pullCustomIconset',listCustomIcon);
+				});
+		};
 		
 		/* Initializer */
 		var initialize = function() {
 			setLoadingStatus('initialize','init');
 			debugMsg(DEBUG_ENV,'Initializing...');
+			platformObj.bindQuoter();
 			$.each(env.features,function(idx,feature) {
 				switch (feature) {
 				case 'ui':				initUserInterface();	break;
@@ -1841,9 +2052,11 @@ var HHBJSONDATA,hhb;
 				var count = platformObj.injectIcon(listParse);
 				if (count > 0) {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Injected Icon [I:',count,']');
+					_gaTracker('core','success','Icon List - Inject icon',count);
 					setLoadingStatus('injectIcon','complete');
 				} else {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Injected Icon Failed!');
+					_gaTracker('core','fail','Icon List - Inject icon');
 					setLoadingStatus('injectIcon','fail');
 				}
 			};
@@ -1873,7 +2086,10 @@ var HHBJSONDATA,hhb;
 					listGenre.push(tgenre);
 					count++;
 				});
-				if (count>0) debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Genre List [ C:',count,', G:',listGenre.length,']');
+				if (count>0) {
+					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Genre List [ C:',count,', G:',listGenre.length,']');
+					_gaTracker('core','success','Genre List - Analyzed',listGenre.length);
+				}
 				return listGenre;
 			}
 			var analyzeBuiltinIcon = function(_iconlist) {
@@ -1887,6 +2103,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzeBuiltinIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Built-in Icon Failed!');
+						_gaTracker('core','fail','Icon List - Load built-in icon');
 						setLoadingStatus('analyzeBuiltinIcon','fail')
 					}
 					return;
@@ -1895,6 +2112,32 @@ var HHBJSONDATA,hhb;
 				setLoadingStatus('analyzeBuiltinIcon','complete');
 				retryCount.analyzeBuiltinIcon = 0;
 				refreshList();
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Built-in Icon Succeed!');
+				_gaTracker('core','success','Icon List - Load built-in icon',analyzediconlist.length);
+			};
+			var analyzeCustomIcon = function(_iconlist) {
+				if (retryCount.analyzeCustomIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Custom Icon...'),setLoadingStatus('analyzeCustomIcon','init');
+				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing Custom Icon Retry...'),setLoadingStatus('analyzeCustomIcon','retry');
+				var iconlist = _iconlist, analyzediconlist;
+				analyzediconlist = analyzeIcon(iconlist,{ category: 'custom', genre: 'Custom' });
+				if (!analyzediconlist || analyzediconlist.length==0) {
+					if (retryCount.analyzeCustomIcon < limit.analyzeCustomIcon) {
+						setTimeout(function() { analyzeCustomIcon(_iconlist); },delay.analyzeCustomIcon);
+						retryCount.analyzeCustomIcon++;
+					} else {
+						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Custom Icon Failed!');
+						_gaTracker('core','fail','Icon List - Load custom icon');
+						setLoadingStatus('analyzeCustomIcon','fail')
+					}
+					return;
+				}
+				listIcon = listIcon.concat(analyzediconlist);
+				setLoadingStatus('analyzeCustomIcon','complete');
+				retryCount.analyzeCustomIcon = 0;
+				refreshList(true);
+				if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Custom Icon Succeed!');
+				_gaTracker('core','success','Icon List - Load custom icon',analyzediconlist.length);
 			};
 			var analyzeChannelIcon = function(_iconlist) {
 				if (retryCount.analyzeChannelIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Channel Icon...'),setLoadingStatus('analyzeChannelIcon','init');
@@ -1907,6 +2150,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzeChannelIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Channel Icon Failed!');
+						_gaTracker('core','fail','Icon List - Load channel icon');
 						setLoadingStatus('analyzeChannelIcon','fail')
 					}
 					return;
@@ -1915,6 +2159,8 @@ var HHBJSONDATA,hhb;
 				setLoadingStatus('analyzeChannelIcon','complete');
 				retryCount.analyzeChannelIcon = 0;
 				refreshList();
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Channel Icon Succeed!');
+				_gaTracker('core','success','Icon List - Load channel icon',analyzediconlist.length);
 			};
 			var analyzePlatformIcon = function() {
 				if (retryCount.analyzePlatformIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Platform Icon...'),setLoadingStatus('analyzePlatformIcon','init');
@@ -1925,6 +2171,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzePlatformIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Platform Icon Failed!');
+						_gaTracker('core','fail','Icon List - Load platform icon');
 						setLoadingStatus('analyzePlatformIcon','fail');
 					}
 					return false;
@@ -1941,6 +2188,8 @@ var HHBJSONDATA,hhb;
 				setLoadingStatus('analyzePlatformIcon','complete');
 				retryCount.analyzePlatformIcon = 0;
 				refreshList();
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Platform Icon Succeed!');
+				_gaTracker('core','success','Icon List - Load platform icon',analyzediconlist.length);
 			};
 			var analyzeGJTVIcon = function() {
 				if (retryCount.analyzeGJTVIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing GJTV Icon...'),setLoadingStatus('analyzeGJTVIcon','init');
@@ -1951,6 +2200,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzeGJTVIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing GJTV Icon Failed!');
+						_gaTracker('core','fail','Icon List - Load GJTV icon');
 						setLoadingStatus('analyzeGJTVIcon','fail');
 					}
 					return false;
@@ -1991,38 +2241,63 @@ var HHBJSONDATA,hhb;
 				setLoadingStatus('analyzeGJTVIcon','complete');
 				retryCount.analyzeGJTVIcon = 0;
 				refreshList();
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing GJTV Icon Succeed!');
+				_gaTracker('core','success','Icon List - Load GJTV icon',analyzediconlist.length);
 			};
 			var analyzeIcon = function(iconlist,_options) {
 				var count = 0;
 				var genreOther = 'Other',
-					genreRecent = 'Recent';
+					genreRecent = 'Recent',
+					genreCustom = 'Custom';
 				if (!(iconlist && iconlist.length > 0)) return false;
 				var analyzediconlist = [];
 				/* Check if code is duplicated */
-				var codeIsDuplicated = function(code) {
-					var ncode = [].concat(code);
-					for (var i=0;i<ncode.length;i++) if (listIconLookup[ncode[i]]) return true;
-					return false;
+				var codeCheck = function(code) {
+					var ocode = [].concat(code),ncode = [];
+					for (var i=0;i<ocode.length;i++) if (!listIconLookup[ocode[i]]) ncode.push(ocode[i]);
+					return ncode;
 				};
 				var dcodelist = [];
-				var rcount = 0,ocount = 0;
+				var rcount = 0,ocount = 0,pcount = 0;
 				debugMsg('analyzeIcon',_options,iconlist.length,dcodelist.length);
 				$.each(iconlist,function(idx,obj) {
 					/* analyze Icon */
 					if (obj._comment) return true;
-					if (!obj.code || obj.code.length==0) return true;
+					if (!obj.code || (!obj.isCustom && obj.code.length==0)) return true;
+					var tcode = [];
+					/* generate code list for display, lower case */
+					$.each(obj.code,function(idx,_code) {
+						if (!_code.match(/\[img\][^\[]*\[\/img\]/ig)) {
+							tcode.push(_code);
+							if (_code.match(/[A-Z]/)) {
+								var _lcode = _code.toLowerCase();
+								if ($.inArray(_lcode,obj.code) < 0) {
+									tcode.push(_lcode);
+									obj.code.push(_lcode);
+								}
+							}
+						}
+					});
+					if (obj.alt&&obj.alt!='') obj.code.unshift(obj.alt);
 					var code = [].concat(obj.code);
 					if (_options.genre) obj.genre = (obj.genre||[]).concat(_options.genre);
-					if (codeIsDuplicated(code)) {
+					var checkedCode = codeCheck(code);
+					if (checkedCode.length == 0) {
 						dcodelist = dcodelist.concat(code);
 						return true;
 					}
-					for (var i=0;i<code.length;i++) listIconLookup[code[i]] = obj;
+					code = checkedCode;
+					for (var i=0;i<code.length;i++) {
+						if (code[i]=='') {
+							code.splice(i,1);
+							i--;
+						} else listIconLookup[code[i]] = obj;
+					}
 					var src = (obj.src.match(/^https?/) ? '' : imgHost)+obj.src,
 						genre = (function(genre,code) { var tgenre=[]; if (genre) $.each(genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,code[0]),
 						usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {}),
-						codelist = code.join(", "),
-						title = codelist,
+						alt = (obj.alt?obj.alt:(tcode.length>0?tcode[0] : '')).replace('"','&quot;');
+						title = tcode.join(", ").replace('"','&quot;'),
 						tstyle = '';
 						tstyle += (obj.width) ? 'width:'+obj.width+'px;' : '',
 						tstyle += (obj.height) ? 'height:'+obj.height+'px;' : '';
@@ -2033,6 +2308,8 @@ var HHBJSONDATA,hhb;
 					var regex = new RegExp(re,'g');
 					obj.id = nextIconID;	nextIconID++;
 					obj.genre = genre;
+					obj.code = code;
+					obj.alt = alt;
 					obj.title = title;
 					obj.regex = regex;
 					obj.src = src;
@@ -2053,44 +2330,110 @@ var HHBJSONDATA,hhb;
 						}
 					});
 					
-					/* add to parse list */
-					listParse.push(obj);
+					/* add to custom icon lookup list */
+					if (obj.isCustom) listCustomIconLookup[obj.src] = obj;
+					else {	/* add to parse list */
+						listParse.push(obj);
+						pcount++;
+					}
 					/* add to new icon list */
 					analyzediconlist.push(obj);
 					count++;
 				});
 				
 				analyzeGenre(genreRecent,{ category: 'recent' });
+				analyzeGenre(genreCustom,{ category: 'custom' });
 				if (ocount>0) analyzeGenre(genreOther,{ category: 'other' });
-				listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
+				if (pcount>0) listParse.sort(function(a,b) { return b.code[0].length-a.code[0].length; });
 				
 				retryCount.analyzeIcon = 0;
 				
-				if (dcodelist.length>0) debugMsg(DEBUG_FAIL,'Icon Code Duplicated! [D:',dcodelist,']');
-				if (count>0) debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Icon List [ T:',iconlist.length,', G:',listGenre.length,', P:',listParse.length,']');
+				if (dcodelist.length>0) {
+					debugMsg(DEBUG_FAIL,'Icon Code Duplicated! [D:',dcodelist,']');
+					_gaTracker('core','fail','Icon List - Icon code duplicated',dcodelist.length);
+				}
+				if (count>0) {
+					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Icon List [ T:',analyzediconlist.length,'/',iconlist.length,', G:',listGenre.length,', P:',listParse.length,']');
+					_gaTracker('core','success','Icon List - Analyzed',listIcon.length+analyzediconlist.length);
+				}
 				return analyzediconlist;
 			};
-			var refreshList = function() {
-				injectIcon();
+			var refreshList = function(skipInject) {
+				if (!skipInject) injectIcon();
 				_protected.refreshIconList();
 			}
+			/* Custom Icon */
+			var addCustomIcon = function(url,code,meta,skipMessage) {
+				var importIcon = function(url,code,meta) {
+					var icon = {	code: [].concat(code),src: url,
+									width: meta.width, height: meta.height,
+									alt: ['[img]',url,'[/img]'].join(''),
+									isCustom: true
+								};
+					_protected.importCustomIcon([icon]);
+					if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
+					debugMsg(DEBUG_RUNTIME,'addCustomIcon',code,url,meta);
+					if (!skipMessage) sendMessage({addCustomIcon: { code: icon.code, src: icon.src }},function(response) {});
+				}
+				var obj = listCustomIconLookup[url];
+				if (obj) {
+					return modifyCustomIcon(url,code,meta);
+				} else {
+					var tcode = code.trim().split(/[\s,]+/),tcodelist=[];
+					$.each(tcode,function(idx,_code) { _code=_code.trim(); if (!listIconLookup[_code] && !_code=='' && !_code.match(/^\[(img|url)\]/i)) tcodelist.push(_code); });
+					if (meta) importIcon(url,tcodelist,meta)
+					else $("<img/>").attr("src", url).load(function(){
+							s = {width:this.width, height:this.height};
+							importIcon(url,tcodelist,s);
+						});
+				}
+				return true;
+			};
+			var modifyCustomIcon = function(url,code,meta) {
+				debugMsg(DEBUG_RUNTIME,'modifyCustomIcon',code,url,meta);
+				var obj = listCustomIconLookup[url];
+				if (!obj) addCustomIcon(url,code,meta);
+				_protected.removeCustomIcon(url,true);
+				_protected.addCustomIcon(url,code,meta,true);
+				var tcode = code.trim().split(/[\s,]+/),tcodelist=[];
+				$.each(tcode,function(idx,_code) { _code=_code.trim(); if ($.inArray(_code,obj.code)>=0 || (!listIconLookup[_code] && !_code=='' && !_code.match(/^\[(img|url)\]/i))) tcodelist.push(_code); });
+				sendMessage({modifyCustomIcon: { code: tcodelist, src: url }},function() {});
+				return true;
+			}
+			var removeCustomIcon = function(url,skipMessage) {
+				var obj = listCustomIconLookup[url];
+				if (obj.code) $.each(obj.code,function(idx,code) { delete listIconLookup[code]; });
+				obj.domObject.detach();
+				for (var i=0;i<listIcon.length;i++) { if (listIcon[i].src!=url) continue; listIcon.splice(i,1); i--; };
+				$.each(obj.code,function(idx,code) { delete listIconLookup[code]; });
+				delete listCustomIconLookup[url];
+				if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
+				if (_protected.showIconMsg) _protected.showIconMsg();
+				debugMsg(DEBUG_RUNTIME,'removeCustomIcon',url);
+				if (!skipMessage) sendMessage({removeCustomIcon: { src: obj.src }},function(response) {});
+				return true;
+			};
 			
 			if (isStatusInited('initIconListData')) return false;
 			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initIconListData');
 			setLoadingStatus('initIconListData','init');
-			//analyzeBuiltinIcon();
 			analyzePlatformIcon();
 			_protected.importGenre = function(_genrelist) { 		if (settings.enable_emotify) analyzeGenre(_genrelist); }
 			_protected.importBuiltinIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeBuiltinIcon(_iconlist); }
 			_protected.importChannelIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeChannelIcon(_iconlist); }
-			/* analyze GJTV Icon in twitch / justin */
-			if ($.inArray(env.platform,['twitch','justin']) >= 0) analyzeGJTVIcon();
+			_protected.importCustomIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeCustomIcon(_iconlist); }
+			_protected.addCustomIcon = addCustomIcon;
+			_protected.removeCustomIcon = removeCustomIcon;
+			/* analyze GJTV Icon in twitch */
+			if ($.inArray(env.platform,['twitch']) >= 0) analyzeGJTVIcon();
+			/* pull custom iconset */
+			pullCustomIconset();
 		}
 		var initUserInterface = function() {
 			var detectUI = function() {
 				setTimeout(function() { detectUI(); },delay.detectUI);
 				
-				debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Detecting UI...');
+				debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Detecting UI...');
 				var $holder = $(selector.holder);
 				var $button = $(selector.button);
 				if ($holder.length > 0 && $button.length > 0) {
@@ -2118,6 +2461,7 @@ var HHBJSONDATA,hhb;
 						setLoadingStatus('activateRebindUIBtn','retry');
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Activating Rebind UI Button Failed!');
+						_gaTracker('core','fail','User Interface - Rebind UI button');
 						setLoadingStatus('activateRebindUIBtn','fail');
 					}
 					return false;
@@ -2127,6 +2471,7 @@ var HHBJSONDATA,hhb;
 						bindUI();
 					}).addClass(cssClass.inited);
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Rebind UI Button');
+					_gaTracker('core','success','User Interface - Rebind UI button',retryCount.activateRebindUIBtn);					
 					setLoadingStatus('activateRebindUIBtn','complete');
 				}
 			};
@@ -2138,12 +2483,14 @@ var HHBJSONDATA,hhb;
 				if ($holderCon.length > 0) {
 					var $palHolder = platformObj.genHolder(id,versionInfo).hide();
 					$palHolder.appendTo($holderCon);
+					bindCustomIconForm();
 					bindIconListLocale();
 					
 					checkVersion();
 					
-					retryCount.bindHolderUI = 0;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Holder UI [G:',listGenre.length,', I:',listIcon.length,']');
+					_gaTracker('core','success','User Interface - Holder UI',retryCount.bindHolderUI);
+					retryCount.bindHolderUI = 0;
 					setLoadingStatus('bindHolderUI','complete');
 					return true;
 				}
@@ -2151,6 +2498,61 @@ var HHBJSONDATA,hhb;
 				retryCount.bindHolderUI++;
 				debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Binding Holder UI Retry...');
 				setLoadingStatus('bindHolderUI','retry');
+			};
+			var bindCustomIconForm = function() {
+				var imgMeta = { loaded: false, width: 0, height: 0 },
+					loadingClass = 'hhb-loading';
+					f_keydown = function(e) { if ($form.is(':visible') && (e.which == 13)) $addBtn.click();	/* Press [Enter] */ },
+					f_checkRequire = function(field,codeDuplicated) {
+						var isInit = (field=='init'),isSubmit = (field=='submit');
+						var reqClass = 'hhb-required';
+						if (!isInit && ((isSubmit || field=='img') && !imgMeta.loaded)) $imgPreviewHolder.addClass(reqClass);
+						else $imgPreviewHolder.removeClass(reqClass);
+						if (!isInit && ((isSubmit || field=='url') && $txtUrl.val()=='')) $txtUrl.addClass(reqClass);
+						else $txtUrl.removeClass(reqClass);
+						if (!isInit && ((isSubmit || field=='code') && codeDuplicated)) $txtCode.addClass(reqClass);
+						else $txtCode.removeClass(reqClass);
+					},
+					f_resizePreview = function() {
+						var $preview = $('.hhb-img-preview');
+						$form.find('#hhb-img')
+							.css('max-height',$preview.innerHeight()-parseInt($preview.css('padding-top'))-parseInt($preview.css('padding-bottom')))
+							.css('max-width',$preview.innerWidth()-parseInt($preview.css('padding-left'))-parseInt($preview.css('padding-right')));
+					}
+					$form = $(selector.customIconForm),
+					$removeBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" hhb-locale-title="{{iconlist.custom_icon.cancel}}" title="Cancel"></div>')
+									.click(function() { $form.removeClass('hhb-enabled'); }),
+					$imgLoader = $('<img>')
+									.load(function() { $imgPreviewHolder.removeClass(loadingClass); $.extend(imgMeta,{ loaded: true, width: this.width, height: this.height }); $imgPreview.attr('src',this.src); f_checkRequire('img'); f_resizePreview(); })
+									.error(function() { $imgPreviewHolder.removeClass(loadingClass); $.extend(imgMeta,{ loaded: false, width:0, height:0 }); if($(this).attr('src')!='') f_checkRequire('img'); $imgPreview.attr('src',''); }),
+					$imgPreview = $('<img id="hhb-img">'),
+					$imgPreviewHolder = $('<div class="hhb-img-preview" hhb-locale-title="{{iconlist.custom_icon.preview}}"></div>').append([$removeBtn,$imgPreview]),
+					$txtUrl = $('<input type="text" id="hhb-url" hhb-locale-placeholder="{{iconlist.custom_icon.url}}" placeholder="Image URL">')
+									.change(function() { var src=$(this).val(); $imgPreviewHolder.addClass(loadingClass); $imgLoader.attr('src',src); f_checkRequire('url'); }).keydown(f_keydown),
+					$txtCode = $('<input type="text" id="hhb-code" hhb-locale-placeholder="{{iconlist.custom_icon.code}}" placeholder="Custom Code">').keydown(f_keydown),
+					$addBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-add" hhb-locale-title="{{iconlist.custom_icon.add}}" title="Add to Custom"></div>')
+									.click(function() {
+										if (!imgMeta.loaded) f_checkRequire('submit');
+										else if (!_protected.addCustomIcon($txtUrl.val(),$txtCode.val(),imgMeta)) f_checkRequire('submit',true);
+										else $form.removeClass('hhb-enabled');
+									}),
+					initCustomIconForm = function(src,code) {
+						var tsrc=src||'',tcode=code||'';
+						$txtUrl.val(tsrc).change().prop('readonly',(tsrc!=''));
+						$txtCode.val(tcode);
+						$form.addClass('hhb-enabled');
+						_protected.toggleHolder('show');
+						if ($txtUrl.val()=='') $txtUrl.focus();
+						else if ($txtCode.val()=='') $txtCode.focus();
+						f_checkRequire('init');
+					};
+					
+				$form.append([
+					$imgPreviewHolder,
+					$('<div class="hhb-input"></div>').append([$txtUrl,$txtCode]),
+					$addBtn
+				]);
+				_protected.initCustomIconForm = initCustomIconForm;
 			};
 			var bindButtonUI = function() {
 				var $button = $(selector.button);
@@ -2164,9 +2566,10 @@ var HHBJSONDATA,hhb;
 					else $buttonCon.append($palButton);
 					platformObj.onBindedToggleButton();
 					activatePopupToggle();
-					activateAutoCompleteBBCodeBtn();
-					retryCount.bindButtonUI = 0;
+					if (settings.enable_bbcode) activateAutoCompleteBBCodeBtn();
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Toggle Button UI');
+					_gaTracker('core','success','User Interface - Toggle button UI',retryCount.bindButtonUI);
+					retryCount.bindButtonUI = 0;
 					setLoadingStatus('bindButtonUI','complete');
 					return true;
 				}
@@ -2230,8 +2633,8 @@ var HHBJSONDATA,hhb;
 					$version.addClass('newRelease');
 				}
 				
-				$('a.hhb').attr('href',versionInfo.siteURI);
-				$('a.fb').attr('href',versionInfo.pageURI);
+				$('#hhb-header a.hhb').attr('href',versionInfo.siteURI);
+				$('#hhb-header a.fb').attr('href',versionInfo.pageURI);
 			};
 			
 			if (isStatusInited('initUserInterface')) return false;
@@ -2243,7 +2646,7 @@ var HHBJSONDATA,hhb;
 			var bindUIControl = function() {
 				bindHolderToggleBtn();		/* Activate holder toggle button */
 				toggleTimestamps('show');	/* Show timestamps */
-				activateSortMode()			/* Activate sort mode */
+				if (settings.enable_emotify) activateSortMode()			/* Activate sort mode */
 				refreshIconList();
 			};
 			var refreshIconList = function() {
@@ -2267,8 +2670,9 @@ var HHBJSONDATA,hhb;
 						toggleHolder('toggle');
 					});
 				
-				retryCount.bindHolderToggleBtn = 0;
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Holder Toggle Button');
+				_gaTracker('core','success','User Interface - Holder toggle button',retryCount.bindHolderToggleBtn);
+				retryCount.bindHolderToggleBtn = 0;
 				setLoadingStatus('bindHolderToggleBtn','complete');
 			}
 			var activateSortMode = function() {
@@ -2287,8 +2691,9 @@ var HHBJSONDATA,hhb;
 				});
 				toggleSortMode('init');
 				
-				retryCount.activateSortMode = 0;
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Sort Mode');
+				_gaTracker('core','success','Sort Mode - Activated',retryCount.activateSortMode);
+				retryCount.activateSortMode = 0;
 				setLoadingStatus('activateSortMode','complete');
 			}
 			var selectGenre = function(genre) {
@@ -2341,9 +2746,9 @@ var HHBJSONDATA,hhb;
 			var bindIconList = function() {
 				setTimeout(function() { bindIconList() },delay.bindIconList);
 				if (version.iconList.current==version.iconList.pending) return;
-				var palIconset = $(selector.iconset).empty();
-				if (!palIconset.length > 0) return;
-				palIconset.append($('<div id="'+id.iconMsgBox+'">-</div>'));
+				var $palIconset = $(selector.iconset).empty();
+				if (!$palIconset.length > 0) return;
+				$palIconset.append($('<div id="'+id.iconMsgBox+'">-</div>'));
 				$.each(listIcon,function(idx,obj) {
 					if (!obj.isParsed) return true;
 					var $icon = 
@@ -2353,9 +2758,43 @@ var HHBJSONDATA,hhb;
 							.append($(obj.img)
 								.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
 							);
+					/* custom icon - remove / modify */
+					if (obj.isCustom) $icon.addClass('custom').prepend([
+							$('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" hhb-locale-title="{{iconlist.custom_icon.remove}}" title="Remove from Custom">')
+								.attr('title',locale.getLocaleMsg('iconlist.custom_icon.remove'))
+								.click(function(e) {
+									if (!confirm(locale.getLocaleMsg('iconlist.custom_icon.remove_confirm'))) return false;
+									e.stopPropagation();
+									var obj = $(this).parents('.hhb-icon').data('hhb-object'),
+										src = obj.src;
+									var src = $(this).parents('.hhb-icon').data('hhb-object').src;
+									_protected.removeCustomIcon(src);
+								}),
+							$('<div class="hhb-custom-icon-btn hhb-custom-icon-modify" hhb-locale-title="{{iconlist.custom_icon.modify}}" title="Modify Custom Icon">')
+								.attr('title',locale.getLocaleMsg('iconlist.custom_icon.modify'))
+								.click(function(e) {
+									e.stopPropagation();
+									var obj = $(this).parents('.hhb-icon').data('hhb-object'),
+										src = obj.src, code = obj.code, tcode = [];
+									$.each(code,function(idx,_code) { if (!_code.match(/^\[(img|url)\]/i)) tcode.push(_code); });
+									_protected.initCustomIconForm(src,tcode.join(', '));
+								})
+						]);
 					obj.domObject = $icon.data('hhb-object',obj);
-					palIconset.append($icon);
+					$palIconset.append($icon);
 				});
+				/* Custom icon - manual add button */
+				$palIconset.append(
+					$('<div class="'+cssClass.icon+' custom hhb-icon-button" hhb-genre="Custom"></div>')
+						.append(
+							$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" hhb-locale-title="{{iconlist.custom_icon.manual_add}}" title="Manual Add Custom Icon">')
+								.attr('title',locale.getLocaleMsg('iconlist.custom_icon.manual_add'))
+								.click(function(e) {
+									e.stopPropagation();
+									_protected.initCustomIconForm();
+								})
+						)
+				);
 				selectGenre('init');	/* select default genre */
 				version.iconList.current = version.iconList.pending;
 				debugMsg(DEBUG_RUNTIME|DEBUG_REFRESH,'Binded Icon List [I:',listIcon.length,']');
@@ -2451,6 +2890,7 @@ var HHBJSONDATA,hhb;
 				version.sortGenre.current = version.sortGenre.pending;
 				setLoadingStatus('sortGenre','complete');
 				debugMsg(DEBUG_RUNTIME|DEBUG_SUCCESS,'Sort Genre List [V:',version.sortGenre.current,',C:',$newOrder.length,',T:',timer.sortGenre,']');
+				_gaTracker('core','success','Sort Genre List - Sorted');
 			};
 			var sortIconList = function(forced) {
 				if (version.sort.current==version.sort.pending) return;
@@ -2499,16 +2939,17 @@ var HHBJSONDATA,hhb;
 				}
 				var f_sort = f_current_sort();
 				var sortModeClass = ['','default','usage','recent'];
-				var $orgIcon = $(selector.iconsetIcon);
+				var $orgIcon = $(selector.iconsetIcon).filter(':not(.hhb-icon-button)');
 				var $newOrder = $orgIcon.sort(f_sort);
-				$(selector.iconset).append($newOrder);
+				$(selector.iconset).append($newOrder).append($('.hhb-icon.hhb-icon-button'));
 				
 				version.sort.current = version.sort.pending;
 				setLoadingStatus('sort','complete');
 				debugMsg(DEBUG_RUNTIME|DEBUG_SUCCESS,'Sort Icon List [M:',sortModeClass[settings.icon_sort_by],',V:',version.sort.current,',C:',$newOrder.length,',T:',timer.sort,']');
+				_gaTracker('core','success','Sort Icon List - Sorted');
 			};
 			var showIconMsg = function() {
-				var $icon = $(selector.iconsetIcon);
+				var $icon = $(selector.iconsetIcon).filter(':not(.hhb-icon-button)');
 				var $sicon = $icon.filter(':visible');
 				var i=$icon.length, si=$sicon.length;
 				var delay = 3000, fidur = 0, fiop = 1, fodur = 400, foop = 0.3 ,fease = "easeOutQuad";
@@ -2521,20 +2962,31 @@ var HHBJSONDATA,hhb;
 				else $iconMsgBox.text('Icon not found').clearQueue().show().fadeTo(fidur,fiop,fease);
 				$iconMsgBox.filter(':visible').delay(delay).fadeTo(fodur,foop,fease);
 			};
-			
 			var insertIcon = function(obj) {
 				var msg = platformObj.getMsgInput();
-				var cidx = 0;
+				var cidx = -1;
+				var clist = obj.data('hhb-code').split(' ');
 				if (msg) {
-					if (msg.length >= icon_filter.minLength) {
-						var matches = msg.match(icon_filter.finder);
-						var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
+					var strPos = 0;
+					var txtarea = platformObj.getMsgBox(true);
+					var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+						"ff" : (document.selection ? "ie" : false ) );
+					if (br == "ie") { 
+						txtarea.focus();
+						var range = document.selection.createRange();
+						range.moveStart ('character', -txtarea.value.length);
+						strPos = range.text.length;
+					} else if (br == "ff") strPos = txtarea.selectionStart;
+					var tmsg = msg.substring(0,strPos);
+					if (tmsg.length >= icon_filter.minLength) {
+						var matches = tmsg.match(icon_filter.finder);
+						var codehead = (matches) ? matches[0].trim() : '';
 						var recodehead = codehead.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-						var clist = obj.data('hhb-code').toLowerCase().split(' ');
-						for (var idx=0;idx<clist.length;idx++) if (clist[idx].match(new RegExp('^'+recodehead))) cidx=idx;
+						for (var idx=0;idx<clist.length;idx++) if (cidx<0 && clist[idx].match(new RegExp('^'+recodehead))) cidx=idx;
 					}
 				}
-				var code = obj.data('hhb-code').split(' ')[cidx];
+				var objIcon = obj.data('hhb-object');
+				var code = (objIcon.isCustom||cidx<0 ? objIcon.alt : clist[cidx]);
 				insertText(code);
 				addIconToRecent(obj,code);
 				
@@ -2559,8 +3011,18 @@ var HHBJSONDATA,hhb;
 					platformObj.replaceText(text,icon_filter.finder);
 					isFiltering = false;
 					var msg = platformObj.getMsgInput();
-					msg = (msg) ? msg : '';
-					var matches = msg.match(icon_filter.finder);
+					var strPos = 0;
+					var txtarea = platformObj.getMsgBox(true);
+					var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+						"ff" : (document.selection ? "ie" : false ) );
+					if (br == "ie") { 
+						txtarea.focus();
+						var range = document.selection.createRange();
+						range.moveStart ('character', -txtarea.value.length);
+						strPos = range.text.length;
+					}
+					var tmsg = msg.substring(0,strPos);
+					var matches = tmsg.match(icon_filter.finder);
 					var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
 					_gaTracker('icon','filter','found',codehead.length);
 				} else {
@@ -2617,13 +3079,24 @@ var HHBJSONDATA,hhb;
 				var msg = platformObj.getMsgInput();
 				if (msg) {
 					if (msg.length >= icon_filter.minLength) {
-						var matches = msg.match(icon_filter.finder);
+						var strPos = 0;
+						var txtarea = platformObj.getMsgBox(true);
+						var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+							"ff" : (document.selection ? "ie" : false ) );
+						if (br == "ie") { 
+							txtarea.focus();
+							var range = document.selection.createRange();
+							range.moveStart ('character', -txtarea.value.length);
+							strPos = range.text.length;
+						} else if (br == "ff") strPos = txtarea.selectionStart;
+						var tmsg = msg.substring(0,strPos);
+						var matches = tmsg.match(icon_filter.finder);
 						var codehead = (matches) ? matches[0].toLowerCase().trim() : '';
 						var recodehead = codehead.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 						
 						if (recodehead.length >= icon_filter.minLength) {
 							var fselector = function() { 
-								var ism = false, clist = $(this).data('hhb-code').toLowerCase().split(' ');
+								var ism = false, clist = ($(this).data('hhb-code')||'').toLowerCase().split(' ');
 								for (var idx=0;idx<clist.length;idx++) if (clist[idx].match(new RegExp('^'+recodehead))) return true;
 								return false;
 							};
@@ -2729,10 +3202,12 @@ var HHBJSONDATA,hhb;
 								filterIcon();
 							},delay.icon_filter);
 						}
-						if (timerCheckMsgInputUrl) clearTimeout(timerCheckMsgInputUrl);
-						timerCheckMsgInputUrl = setTimeout(function() {
-							checkMsgInputUrl();
-						},delay.check_url);
+						if (settings.enable_bbcode) {
+							if (timerCheckMsgInputUrl) clearTimeout(timerCheckMsgInputUrl);
+							timerCheckMsgInputUrl = setTimeout(function() {
+								checkMsgInputUrl();
+							},delay.check_url);
+						}
 					}
 					if ($(selector.holder).is(':visible')) {
 						if (e.which == 13) {	/* Press [Enter] */
@@ -2763,8 +3238,8 @@ var HHBJSONDATA,hhb;
 						var ousage = $.extend({count:0,lastUsed:0},ticon.usage);
 						ticon.usage = $.extend(ousage,{	count: ousage.count + tusage.count, lastUsed: tusage.lastUsed });
 						count++;
-						
-						if (tcode!='') _gaTracker('icon','send',obj.code,tusage.count);
+						if (ticon.isCustom) _gaTracker('icon','sendCustom',ticon.src,tusage.count);
+						else if (tcode!='') _gaTracker('icon','send',obj.code,tusage.count);
 						$.each(tgenre,function(key,obj) {
 							if (obj=='') return;
 							_gaTracker('genre','use',obj,tusage.count);
@@ -2786,12 +3261,25 @@ var HHBJSONDATA,hhb;
 				}
 			};
 			
+			/* Custom Icon */
+			var bindCustomIconImgTag = function() {
+				var $imgTag = $('.hhb-bbcode-img-tag');
+				$imgTag.each(function() {
+					var src = $(this).attr('hhb-src');
+					if (listCustomIconLookup[src]) $(this).addClass('hhb-custom-icon');
+					else $(this).removeClass('hhb-custom-icon');
+				});
+			}
+			
 			if (isStatusInited('initEmoticon')) return false;
 			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initEmoticon');
 			setLoadingStatus('initEmoticon','init');
 			initializeHotkey();
 			bindUIControl();
+			_protected.toggleHolder = toggleHolder;
 			_protected.refreshIconList = refreshIconList;
+			_protected.showIconMsg = showIconMsg;
+			_protected.bindCustomIconImgTag = bindCustomIconImgTag;
 		};
 		var initNameBanner = function(nblist,nbcontrol) {
 			if (!nblist || !nbcontrol) return false;
@@ -2924,6 +3412,7 @@ var HHBJSONDATA,hhb;
 				}
 				setLoadingStatus('analyzeNameBanner','complete');
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Name Banner List [NB:',count,']');
+				_gaTracker('core','success','Name Banner - Analyzed',count);
 				return olist;
 			};
 
@@ -2973,8 +3462,9 @@ var HHBJSONDATA,hhb;
 				});
 				toggleDarkMode('init');
 				
-				retryCount.bindDarkModeBtn = 0;
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Dark/Light Mode');
+				_gaTracker('core','success','Dark Mode - Activated',retryCount.bindDarkModeBtn);
+				retryCount.bindDarkModeBtn = 0;
 				setLoadingStatus('bindDarkModeBtn','complete');
 			};
 			
@@ -3034,8 +3524,9 @@ var HHBJSONDATA,hhb;
 						.mousemove(function() { f_showBtn(); })
 						.mouseout(function() { f_hideBtn(); });
 					checkIsBookmarked();
-					retryCount.bindPlayerBookmarkBtn = 0;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Player Bookmark Button');
+					_gaTracker('core','success','Bookmark - Bind player bookmark button',retryCount.bindPlayerBookmarkBtn);
+					retryCount.bindPlayerBookmarkBtn = 0;
 					setLoadingStatus('bindPlayerBookmarkBtn','complete');
 					return true;
 				}
@@ -3046,6 +3537,7 @@ var HHBJSONDATA,hhb;
 					setLoadingStatus('bindPlayerBookmarkBtn','retry');
 				} else {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Binding Player Bookmark Button Failed!');
+					_gaTracker('core','fail','Bookmark - Bind player bookmark button');
 					setLoadingStatus('bindPlayerBookmarkBtn','fail');
 				}
 			};
@@ -3056,8 +3548,9 @@ var HHBJSONDATA,hhb;
 					/* Activate bookmark button */
 					$bookmarkBtn.click(function() { toggleBookmark(); });
 					checkIsBookmarked();
-					retryCount.bindBookmarkBtn = 0;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Bookmark Button');
+					_gaTracker('core','success','Bookmark - Bind bookmark button',retryCount.bindBookmarkBtn);
+					retryCount.bindBookmarkBtn = 0;
 					setLoadingStatus('bindBookmarkBtn','complete');
 					return true;
 				}
@@ -3068,6 +3561,7 @@ var HHBJSONDATA,hhb;
 					setLoadingStatus('bindBookmarkBtn','retry');
 				} else {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Binding Bookmark Button Failed!');
+					_gaTracker('core','fail','Bookmark - Bind bookmark button');
 					setLoadingStatus('bindBookmarkBtn','fail');
 				}
 				
@@ -3110,6 +3604,8 @@ var HHBJSONDATA,hhb;
 					var result = platformObj.parseBBCode();
 					if (result.msg>0) $.extend(results,{ msgParsed: result.msg, bbcodeParsed: result.parsed });
 				}
+				platformObj.parseQuote();
+				
 				if (results.msgParsed>0) debugMsg(DEBUG_RUNTIME,'Messages Parsed [M:',results.msgParsed,',E:',results.iconEmotified,',R:',results.iconResized,',NB:',results.nameBannerShown,',BBC:',results.bbcodeParsed,']');
 				setTimeout(function() { parseIncoming(); },delay.parseIncoming);
 			};
@@ -3123,8 +3619,13 @@ var HHBJSONDATA,hhb;
 		
 		/* Shared Methods */
 		var resizeIconset = function() {
-			var iconsetHeight = $(selector.holder).innerHeight()-$(selector.header).outerHeight()-$(selector.genreContainer).outerHeight();
+			var iconsetHeight = $(selector.holder).innerHeight()-parseInt($(selector.holder).css('padding-top'))-$(selector.header).outerHeight()-$(selector.genreContainer).outerHeight()-parseInt($(selector.genreContainer).css('border-top-width'));
 			$(selector.iconset).outerHeight(iconsetHeight);
+			var $form = $(selector.customIconForm).outerHeight(iconsetHeight);
+			var $preview = $('.hhb-img-preview');
+			$form.find('#hhb-img')
+				.css('max-height',$preview.innerHeight()-parseInt($preview.css('padding-top'))-parseInt($preview.css('padding-bottom')))
+				.css('max-width',$preview.innerWidth()-parseInt($preview.css('padding-left'))-parseInt($preview.css('padding-right')));
 		}
 		var bindIconListLocale = function() {
 			locale.bindLocale(settings.locale,null,function() {
@@ -3167,6 +3668,7 @@ var HHBJSONDATA,hhb;
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Imported Icon List [G:',listGenre.length,', I:',listIcon.length,']');
 			} else {
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_FAIL,'Import Icon List Failed!');
+				_gaTracker('core','fail','Import - Icon list');
 				setLoadingStatus('importIconList','fail');
 			}
 		};
@@ -3181,10 +3683,11 @@ var HHBJSONDATA,hhb;
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Imported Name Banner List [NBL:',listNameBanner,']');
 			} else {
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_FAIL,'Import Name Banner Failed!');
+				_gaTracker('core','fail','Import - Name banner list');
 				setLoadingStatus('importNameBanner','fail');
 			}
 		};
-		this.scrollToBottom = function() { platformObj.scrollToBottom(); };
+		this.scrollToBottom = _protected.scrollToBottom = function() { platformObj.scrollToBottom(); };
 		
 		envCheck();
 		
@@ -3192,60 +3695,6 @@ var HHBJSONDATA,hhb;
 	};
 	
 	$(document).ready(function() {
-		function detectExtension(extensionId, path, callback) { 
-			var img; 
-			img = new Image(); 
-			img.src = "chrome-extension://" + extensionId + path; 
-			img.onload = function() { callback(true); }; 
-			img.onerror = function() { callback(false); }; 
-		}
-		detectExtension('eoiappopphdcceickjphgaaidacdkidi', '/css/images/animated-overlay.gif',
-			function(installed) {
-				console.log('detectExtension',installed);
-				if (!installed) {
-					$(	'<div id="hhb-update-reminder">'+
-							'<style>'+
-								'#hhb-update-reminder {'+
-									'position:absolute;top:0px;right:0px;z-index: 9999;'+
-									'padding: 0px;font-size: 12px;'+
-									'background-color: rgba(8,112,45,0.8);'+
-								'}'+
-								'#hhb-update-reminder,'+
-								'#hhb-update-reminder * {'+
-									'-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;'+
-								'}'+
-								'#hhb-update-reminder div.close {'+
-									'display: inline-block;cursor:pointer;'+
-									'padding: 10px 15px;margin: 2px 10px 0px 0px;'+
-									'border-right: 1px solid #cccccc;'+
-								'}'+
-								'body.hhb-pf-twitch #hhb-update-reminder div.close {'+
-									'padding: 8px 15px;'+
-								'}'+
-								'#hhb-update-reminder div.close:before { content: "x"; }'+
-								'#hhb-update-reminder a,'+
-								'#hhb-update-reminder div.close {'+
-									'color: #FFFFFF;'+
-								'}'+
-								'#hhb-update-reminder a:hover .text,'+
-								'#hhb-update-reminder div.close:hover { color:#8FBF00; }'+
-								'#hhb-update-reminder a .text {'+
-									'display:inline-block;padding: 10px 10px 0px 20px;font-size: 12px;'+
-								'}'+
-								'#hhb-update-reminder a .logo {'+
-									'width:36px;height:36px;float:right'+
-								'}'+
-							'</style>'+
-							'<a href="https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi" target="_hihibox">'+
-								'<div class="text">請按此下載HihiBox 完全版</div>'+
-								'<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/t1.0-1/p50x50/10342775_552261241551569_504391291480808308_t.png" class="logo">'+
-							'</a>'+
-						'</div>'
-					).prepend($('<div class="close">').click(function() { $('#hhb-update-reminder').detach(); }))
-					.appendTo('body');
-				}
-			});
-			
 		/* Google Analytics */
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

@@ -5,18 +5,32 @@
 		"developer": ["Lemon", "希治閣"],
 		"specialThanks": ["VannZic"]
 	},
-	"lastExtensionVersion": "v2.2",
-	"lastRelease": "2014-09-08",
-	"lastSummary": "[概要] 新增自動插入BBCode 功能, 同步化選項 及HihiBox v2.0 相關錯誤修正",
+	"lastExtensionVersion": "v3.0",
+	"lastRelease": "2014-10-08",
+	"lastSummary": "[概要] 新增自訂表情, 一鍵引用, 並優化書籤同步功能",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v2.2.0",
-	"lastUpdate": "2014-09-08",
+	"coreVersion": "v3.0.0",
+	"lastUpdate": "2014-10-08",
 	"history": [
 		{
+			"version": "v3.0.0",
+			"lastUpdate": "2014-10-08",
+			"summary": [
+				"[概要] 新增自訂表情, 一鍵引用, 並優化書籤同步功能"
+			],
+			"detail": [
+				"[新增] 自訂表情及其同步功能",
+				"[新增] 一鍵引用功能 (Ctrl+Click / Alt+Click)",
+				"[優化] 書籤同步功能",
+				"[優化] 加入[IMG] Preloader",
+				"[修正] Hitbox 聊天室相關錯誤修正"
+			]
+		},
+		{
 			"version": "v2.2.0",
-			"lastUpdate": "2014-09-08",
+			"lastUpdate": "2014-09-02",
 			"summary": [
 				"[概要] 新增頻道專屬icon, 自訂聊天室連結, 優化匯出備份檔格式 及HihiBox v2.1 相關錯誤修正"
 			],
