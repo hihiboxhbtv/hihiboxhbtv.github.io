@@ -106,7 +106,7 @@ var HHBJSONDATA,hhb;
 			specialThanks: ["VannZic"]
 		},
 		coreVersion: 'v3.0',
-		lastUpdate: '2014-10-07'
+		lastUpdate: '2014-10-08'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
