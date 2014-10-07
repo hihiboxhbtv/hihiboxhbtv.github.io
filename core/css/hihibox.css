@@ -237,7 +237,8 @@
 #hhb-genrelist .hhb-genre.other.hhb-active, #hhb-genrelist .hhb-genre.gjtv.hhb-active { 		background-color: #AAAAAA;		color: #333333;	}
 
 #hhb-genrelist .hhb-genre[hhb-genre="雨傘"] {	background-color: rgb(192,192,0);	color: #333333; }
-#hhb-genrelist .hhb-genre[hhb-genre="雨傘"]:hover { background-color: rgb(255,255,0); }
+#hhb-genrelist .hhb-genre[hhb-genre="雨傘"]:hover,
+#hhb-genrelist .hhb-genre[hhb-genre="雨傘"].hhb-active { background-color: rgb(255,255,0); }
 
 #hhb-genrelist::-webkit-scrollbar,
 #hhb-iconset::-webkit-scrollbar {
