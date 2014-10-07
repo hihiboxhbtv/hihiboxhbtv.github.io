@@ -2381,7 +2381,7 @@ var HHBJSONDATA,hhb;
 				if (obj) {
 					return modifyCustomIcon(url,code,meta);
 				} else {
-					var tcode = code.trim().split(/[\s,]/),tcodelist=[];
+					var tcode = code.trim().split(/[\s,]+/),tcodelist=[];
 					$.each(tcode,function(idx,_code) { _code=_code.trim(); if (!listIconLookup[_code] && !_code=='' && !_code.match(/^\[(img|url)\]/i)) tcodelist.push(_code); });
 					if (meta) importIcon(url,tcodelist,meta)
 					else $("<img/>").attr("src", url).load(function(){
@@ -2397,8 +2397,8 @@ var HHBJSONDATA,hhb;
 				if (!obj) addCustomIcon(url,code,meta);
 				_protected.removeCustomIcon(url,true);
 				_protected.addCustomIcon(url,code,meta,true);
-				var tcode = code.trim().split(/[\s,]/),tcodelist=[];
-				$.each(tcode,function(idx,_code) { _code=_code.trim(); if (($.inArray(_code,obj.code)>=0 || !listIconLookup[_code]) && !_code=='' && !_code.match(/^\[(img|url)\]/i)) tcodelist.push(_code); });
+				var tcode = code.trim().split(/[\s,]+/),tcodelist=[];
+				$.each(tcode,function(idx,_code) { _code=_code.trim(); if ($.inArray(_code,obj.code)>=0 || (!listIconLookup[_code] && !_code=='' && !_code.match(/^\[(img|url)\]/i))) tcodelist.push(_code); });
 				sendMessage({modifyCustomIcon: { code: tcodelist, src: url }},function() {});
 				return true;
 			}
