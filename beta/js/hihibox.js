@@ -733,11 +733,13 @@ var HHBJSONDATA,hhb;
 							return ;
 						}
 						$chatView.on('click', selector.chatLine, function(e) {
-							if (e.ctrlKey) addQuote($(this));
-							else if (e.altKey) addQuote($(this),true);
-							e.stopPropagation();
-							return false;
-						}).on('click', selector.chatQuoteDisable, function(e) { if (e.ctrlKey||e.altKey) e.stopPropagation(); });
+							if (e.ctrlKey||e.altKey) {
+								if (e.ctrlKey) addQuote($(this));
+								else if (e.altKey) addQuote($(this),true);
+								e.stopPropagation();
+								return false;
+							}
+						});
 					};
 					binder();
 				},
@@ -784,7 +786,6 @@ var HHBJSONDATA,hhb;
 						chatLine: 'li',
 						chatName: '.title .name',
 						chatQuoteRemove: '.chat-compact-time, .chat-normal-time, .chat-badge-mod, .hhb-name-banner, .title .name, .chat-buffer',
-						chatQuoteDisable: 'ul > li a',
 						chatContainer: '.chatBody',
 						msgList: '.chatBody > li > div',
 						badgeBroadcaster: '.hhb-pf-hitbox .chat-messages .chat-badge-owner',
@@ -980,7 +981,6 @@ var HHBJSONDATA,hhb;
 						chatLine: '.chat-line',
 						chatName: '.from',
 						chatQuoteRemove: '.timestamp, .mod-icons, .from, .colon',
-						chatQuoteDisable: '.chat-line a',
 						chatContainer: '.chat-messages .tse-scroll-content',
 						msgList: '.chat-messages .chat-line',
 						badgeBroadcaster: '.hhb-pf-twitch .ember-chat .badges .broadcaster',
@@ -2990,7 +2990,7 @@ var HHBJSONDATA,hhb;
 					}
 				}
 				var objIcon = obj.data('hhb-object');
-				var code = (cidx<0 ? objIcon.alt : clist[cidx]);
+				var code = (objIcon.isCustom||cidx<0 ? objIcon.alt : clist[cidx]);
 				insertText(code);
 				addIconToRecent(obj,code);
 				
