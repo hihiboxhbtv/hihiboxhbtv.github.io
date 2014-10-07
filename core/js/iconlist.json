@@ -2872,6 +2872,11 @@ HHBJSONDATA.listIcon = [
 		"width": 59,	"height": 25,
 		"genre": ["雨傘"]
 	},
+	{	"code": ["#hoho#ur2","#hoho#2ur"],
+		"src": "umbrella/hoho2.gif",
+		"width": 59,	"height": 18,
+		"genre": ["雨傘"]
+	},
 	{	"code": ["???ur"],
 		"src": "umbrella/wonder2.png",
 		"width": 36,	"height": 39,
