@@ -235,6 +235,10 @@
 #hhb-genrelist .hhb-genre.other:hover, #hhb-genrelist .hhb-genre.gjtv:hover,
 #hhb-genrelist .hhb-genre.other.hhb-active, #hhb-genrelist .hhb-genre.gjtv.hhb-active { 		background-color: #AAAAAA;		color: #333333;	}
 
+#hhb-genrelist .hhb-genre[hhb-genre="«B³Ê"] {	background-color: rgb(192,192,0);	color: #333333; }
+#hhb-genrelist .hhb-genre[hhb-genre="«B³Ê"]:hover,
+#hhb-genrelist .hhb-genre[hhb-genre="«B³Ê"].hhb-active { background-color: rgb(255,255,0); }
+
 #hhb-genrelist::-webkit-scrollbar,
 #hhb-iconset::-webkit-scrollbar {
 	width: 5px !important;

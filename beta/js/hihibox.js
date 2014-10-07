@@ -105,8 +105,8 @@ var HHBJSONDATA,hhb;
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v2.2',
-		lastUpdate: '2014-09-02'
+		coreVersion: 'v3.0',
+		lastUpdate: '2014-10-07'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -684,8 +684,6 @@ var HHBJSONDATA,hhb;
 						if (offsetlm.top<bottomLine && offsetlm.bottom> bottomLine) {
 							$sbody.scrollTop(Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2));
 						}
-						/* Debug */
-						//$lmsg.css({ backgroundColor: '#FF0000' }).animate({ backgroundColor: 'transparent' },{ easing: "easeOutExpo", duration: 10000 })
 						
 						debugMsg(DEBUG_RETRY,'scrollToBottom',(offsetlm.top<bottomLine && offsetlm.bottom> bottomLine),
 						Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2),
