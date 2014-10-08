@@ -106,7 +106,7 @@ var HHBJSONDATA,hhb;
 			specialThanks: ["VannZic"]
 		},
 		coreVersion: 'v3.0',
-		lastUpdate: '2014-10-07'
+		lastUpdate: '2014-10-08'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -558,7 +558,7 @@ var HHBJSONDATA,hhb;
 					var $msgs = msgs.addClass(cssClass.checkedBBCodeMsg);
 					var pcount = 0;
 					var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
-					var rehtmltag = /<[^>]*>/ig;
+					var rehtmltag = /<[^<>]*>/ig;
 					var bbcode = [
 						{	tag: 'url',	match: /(\[url\])(?:<a[^>]+>)?((?:https?|ftp)(?:[^\s]*))(?:<\/a>)?(\[\/url\])/ig,
 							replace: function() {
@@ -566,7 +566,7 @@ var HHBJSONDATA,hhb;
 								$.each(args,function(idx,obj) { args[idx] = $('<div>').html(obj).text(); });
 								var $span = $("<span class='hhb-bbcode-url-tag' hhb-src='"+ args[2] +"'>");
 								var $imgf = $("<img alt='"+ args[1] +"'>"),$imgb = $("<img alt='"+ args[3] +"'>");
-								var $a = $("<a id='"+ bbcid +"' href='"+ args[2] +"' target='_blank' class='hhb-bbcode-url' alt='"+ args[0] +"'>"+ args[2] +"</a>");
+								var $a = $("<a id='"+ bbcid +"' href='"+ args[2] +"' target='_blank' class='hhb-bbcode-url' alt='"+ args[2] +"'>"+ args[2] +"</a>");
 								bbCodeCount++;
 								return $('<div>').append($span.append([$imgf,$a,$imgb])).html();
 							}
@@ -606,6 +606,17 @@ var HHBJSONDATA,hhb;
 						}
 					];
 					$msgs.each(function() {
+						/* GJTV compactible - Start */
+						var $gjtvImg = $(this).find('.gjtv-img');
+						$gjtvImg.each(function() {
+							var href = $(this).find('a').attr('href')||'';
+							if (href!='') {
+								var imgTag = '[img]'+ href.replace(/(https?|ftp)(?:<[^<>]*>){2}([^\s]*)/i,'$1:\/$2') +'[/img]';
+								$(this).replaceWith(imgTag);
+							}
+						});
+						/* GJTV compactible - End */
+						
 						var html = $(this).html();
 						var ohtml = html;
 						var htmlm = ohtml.match(rehtmltag);
