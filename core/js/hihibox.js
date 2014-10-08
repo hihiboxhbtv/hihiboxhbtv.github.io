@@ -750,7 +750,7 @@ var HHBJSONDATA,hhb;
 						var msgHtml = $msg.html();
 						var quoteMsg = '';
 						var msg = msgHtml;
-						var reQuote = /<[^<>]*>\s*@.*\s«/i;
+						var reQuote = /(<[^<>]*>\s*)?@.*\s«/i;
 						if (msgHtml.match(reQuote)) {
 							quoteMsg = msgHtml.match(reQuote)[0].replace(/\s*«$/i,'').trim();
 							msg = msgHtml.replace(reQuote,$('<span>',{ class: cssClass.msgQuote }).html(quoteMsg)[0].outerHTML);
@@ -2521,7 +2521,7 @@ var HHBJSONDATA,hhb;
 					}
 					$form = $(selector.customIconForm),
 					$removeBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" hhb-locale-title="{{iconlist.custom_icon.cancel}}" title="Cancel"></div>')
-									.click(function() { $form.removeClass('hhb-enabled'); }),
+									.click(function() { hideCustomIconForm(); }),
 					$imgLoader = $('<img>')
 									.load(function() { $imgPreviewHolder.removeClass(loadingClass); $.extend(imgMeta,{ loaded: true, width: this.width, height: this.height }); $imgPreview.attr('src',this.src); f_checkRequire('img'); f_resizePreview(); })
 									.error(function() { $imgPreviewHolder.removeClass(loadingClass); $.extend(imgMeta,{ loaded: false, width:0, height:0 }); if($(this).attr('src')!='') f_checkRequire('img'); $imgPreview.attr('src',''); }),
@@ -2546,6 +2546,11 @@ var HHBJSONDATA,hhb;
 						else if ($txtCode.val()=='') $txtCode.focus();
 						f_checkRequire('init');
 					};
+					hideCustomIconForm = function() {
+						$txtUrl.val('').change();
+						$txtCode.val('');
+						$form.removeClass('hhb-enabled'); 
+					};
 					
 				$form.append([
 					$imgPreviewHolder,
@@ -2553,6 +2558,7 @@ var HHBJSONDATA,hhb;
 					$addBtn
 				]);
 				_protected.initCustomIconForm = initCustomIconForm;
+				_protected.hideCustomIconForm = hideCustomIconForm;
 			};
 			var bindButtonUI = function() {
 				var $button = $(selector.button);
@@ -2814,6 +2820,9 @@ var HHBJSONDATA,hhb;
 					$holder.show(0);
 				} else {
 					$holder.hide(0);
+				}
+				if (!$holder.is(':visible')) {
+					_protected.hideCustomIconForm();
 				}
 				var $holder = $(selector.holder),
 					$iconMsgBox = $(selector.iconMsgBox)
