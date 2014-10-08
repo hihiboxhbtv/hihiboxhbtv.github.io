@@ -2967,12 +2967,17 @@ HHBJSONDATA.listIcon = [
 		"width": 34,	"height": 27,
 		"genre": ["雨傘"]
 	},
-	{	"code": ["#kill2clown#ur"],
+	{	"code": ["#kill2clown#ur","#clownkill2#ur"],
 		"src": "umbrella/kill2clown.gif",
 		"width": 130,	"height": 42,
 		"genre": ["雨傘"]
 	},
-	{	"code": ["#killclown#ur"],
+	{	"code": ["#kill2banghead#ur","[bangheadkill2]ur"],
+		"src": "umbrella/kill2banghead.gif",
+		"width": 145,	"height": 51,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["#killclown#ur","#clownkill#ur"],
 		"src": "umbrella/killclown.gif",
 		"width": 83,	"height": 33,
 		"genre": ["雨傘"]
