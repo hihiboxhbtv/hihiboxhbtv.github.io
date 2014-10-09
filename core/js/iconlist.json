@@ -2887,6 +2887,11 @@ HHBJSONDATA.listIcon = [
 		"width": 36,	"height": 39,
 		"genre": ["雨傘"]
 	},
+	{	"code": ["[banghead]ur"],
+		"src": "umbrella/banghead.gif",
+		"width": 34,	"height": 21,
+		"genre": ["雨傘"]
+	},
 	{	"code": ["[bouncer]ur"],
 		"src": "umbrella/bouncer.gif",
 		"width": 54,	"height": 60,
@@ -2952,8 +2957,8 @@ HHBJSONDATA.listIcon = [
 		"width": 116,	"height": 38,
 		"genre": ["雨傘"]
 	},
-	{	"code": ["[timescover]ur"],
-		"src": "umbrella/timescover.png",
+	{	"code": ["[timecover]ur"],
+		"src": "umbrella/timecover.png",
 		"width": 63,	"height": 56,
 		"genre": ["雨傘"]
 	},
@@ -3005,6 +3010,11 @@ HHBJSONDATA.listIcon = [
 	{	"code": ["[orangeflag]ur","[disperse]ur"],
 		"src": "umbrella/orangeflag.gif",
 		"width": 60,	"height": 60,
+		"genre": ["雨傘"]
+	},
+	{	"code": ["[pepperspray]ur"],
+		"src": "umbrella/pepperspray.gif",
+		"width": 69,	"height": 28,
 		"genre": ["雨傘"]
 	},
 	{	"code": [":)urlm",":)lmur"],

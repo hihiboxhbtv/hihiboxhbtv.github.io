@@ -761,7 +761,7 @@ var HHBJSONDATA,hhb;
 						var msgHtml = $msg.html();
 						var quoteMsg = '';
 						var msg = msgHtml;
-						var reQuote = /(<[^<>]*>\s*)?@.*\s«/i;
+						var reQuote = /(<(?!\/)[^<>]*>\s*)?@.*\s«/i;
 						if (msgHtml.match(reQuote)) {
 							quoteMsg = msgHtml.match(reQuote)[0].replace(/\s*«$/i,'').trim();
 							msg = msgHtml.replace(reQuote,$('<span>',{ class: cssClass.msgQuote }).html(quoteMsg)[0].outerHTML);
@@ -794,7 +794,7 @@ var HHBJSONDATA,hhb;
 						chatView: '.chat-messages',
 						chatLine: 'li',
 						chatName: '.title .name',
-						chatQuoteRemove: '.chat-compact-time, .chat-normal-time, .chat-badge-mod, .hhb-name-banner, .title .name, .chat-buffer',
+						chatQuoteRemove: '.chat-compact-time, .chat-normal-time, .chat-status-time, .chat-badge-mod, .hhb-name-banner, .title .name, .chat-buffer',
 						chatContainer: '.chatBody',
 						msgList: '.chatBody > li > div',
 						badgeBroadcaster: '.hhb-pf-hitbox .chat-messages .chat-badge-owner',
@@ -3164,9 +3164,12 @@ var HHBJSONDATA,hhb;
 				}
 			};
 			var initializeHotkey = function() {
-				var $target = platformObj.getMsgBox(),
-					$target = ($target.length > 0 ? $target : $(document));
-				$target.keydown(function(e) {
+				var $msgBox = platformObj.getMsgBox();
+				if ($msgBox.length <= 0) {
+					setTimeout(initializeHotkey,1000);
+					return false;
+				}
+				$msgBox.keydown(function(e) {
 					if ($(selector.holder).is(':visible') && !isContainUrl) {
 						if (e.which == 13) {	/* Press [Enter] */
 							if (env.platform=='twitch') {
