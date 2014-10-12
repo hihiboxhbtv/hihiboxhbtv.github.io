@@ -131,7 +131,9 @@ var HHBJSONDATA,hhb;
 				bookmarkBtn: 'hhb-bookmark',
 				popupBtn: 'hhb-popup',
 				bbCodeBtn: 'hhb-bbcode',
-				customIconForm: 'hhb-custom-icon-form'
+				customIconForm: 'hhb-custom-icon-form',
+				imgSizerBtn: 'hhb-img-sizer',
+				imgSizerForm: 'hhb-img-sizer-form'
 			},
 			cssClass: {
 				inited: 'hhb-inited',
@@ -182,7 +184,9 @@ var HHBJSONDATA,hhb;
 				bookmarkBtn: '#hhb-bookmark',
 				popupBtn: '#hhb-popup',
 				bbCodeBtn: '#hhb-bbcode',
-				customIconForm: '#hhb-custom-icon-form'
+				customIconForm: '#hhb-custom-icon-form',
+				imgSizerBtn: '#hhb-img-sizer',
+				imgSizerForm: '#hhb-img-sizer-form'
 			},
 			delay: {
 				analyzeBuiltinIcon: 200,
@@ -267,7 +271,9 @@ var HHBJSONDATA,hhb;
 				default_genre: 'HKG',
 				last_genre: 'HKG',
 				dark_mode: true,
-				icon_sort_by: 1
+				icon_sort_by: 1,
+				img_max_width: 300,
+				img_max_height: 150
 			},
 			env = {
 				hasjQuery: false,
@@ -396,6 +402,7 @@ var HHBJSONDATA,hhb;
 								'<div id="'+idObj.darkModeBtn+'" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.sortModeBtn+'" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.bbCodeBtn+'" class="funcIcon">&nbsp;</div>'+
+								'<div id="'+idObj.imgSizerBtn+'" hhb-locale-title-debug="{{iconlist.img_sizer_btn}}" title="Image Sizer" class="funcIcon"></div>'+
 								'<div id="'+idObj.popupBtn+'" hhb-locale-title="{{iconlist.popup_fixed}}" title="Popup" class="funcIcon">&nbsp;</div>'+
 								'<span class="version" title="">'+infoObj.coreVersion+'</span>'+
 								'<a href="http://bit.ly/hihiboxhbtv" target="_new" class="hhb"><span class="name" title="">'+infoObj.name+'</span></a>'+
@@ -404,6 +411,18 @@ var HHBJSONDATA,hhb;
 								'<div id="'+idObj.genreContainer+'"></div>'+
 								'<div id="'+idObj.iconset+'"></div>'+
 								'<div id="'+idObj.customIconForm+'"></div>'+
+								'<div id="'+idObj.imgSizerForm+'">'+
+									'<div class="hhb-container">'+
+										'<div id="value-img-max-holder" class="value">'+
+											'<div id="value-img-max-hitbox" hhb-locale-title-debug="{{iconlist.img_sizer.max_size}}" title="Max. Image Size"></div>'+
+											'<div id="value-img-max">'+
+											'<div id="value-img-max-text"></div>'+
+											'</div>'+
+										'</div>'+
+										'<div id="slider-img-max-height" hhb-locale-title-debug="{{iconlist.img_sizer.max_height}}" title="Max. Image Height"></div>'+
+										'<div id="slider-img-max-width" hhb-locale-title-debug="{{iconlist.img_sizer.max_width}}" title="Max. Image Width"></div>'+
+									'</div>'+
+								'</div>'+
 							'</div>');
 				},
 				genPlayerBookmarkBtn: function(idBtn) {
@@ -767,6 +786,7 @@ var HHBJSONDATA,hhb;
 							msg = msgHtml.replace(reQuote,$('<span>',{ class: cssClass.msgQuote }).html(quoteMsg)[0].outerHTML);
 						}
 						$(this).empty().html(msg);
+						_protected.scrollToBottom();
 					});
 				}
 			},
@@ -2583,7 +2603,10 @@ var HHBJSONDATA,hhb;
 					else $buttonCon.append($palButton);
 					platformObj.onBindedToggleButton();
 					activatePopupToggle();
-					if (settings.enable_bbcode) activateAutoCompleteBBCodeBtn();
+					if (settings.enable_bbcode) {
+						activateAutoCompleteBBCodeBtn();
+						activateImageSizer();
+					}
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Toggle Button UI');
 					_gaTracker('core','success','User Interface - Toggle button UI',retryCount.bindButtonUI);
 					retryCount.bindButtonUI = 0;
@@ -2627,6 +2650,54 @@ var HHBJSONDATA,hhb;
 					})
 					.attr('hhb-locale-title','{{iconlist.insert_bbcode}}');
 				bindIconListLocale();
+			}
+			var activateImageSizer = function() {
+				var $style = $('<style type="text/css" class="hhb-settings-style">').appendTo('head');
+				var $form = $(selector.imgSizerForm);
+				var $button = $(selector.imgSizerBtn).click(function() { toggleImageSizerForm(); });
+				var imgMaxUpdate = function(options) {
+					var _options = $.extend({},options);
+					var _mw=(_options.width && _options.width>=50) ? _options.width : settings.img_max_width,
+						_mh=(_options.height && _options.height>=50) ? _options.height : settings.img_max_height;
+					$('#value-img-max').css({ width: _mw, height: _mh });
+					$('#value-img-max-text').text(_mw +' x '+ _mh);
+					$style.text('.hhb-bbcode-img { max-width: {{width}}px; max-height: {{height}}px; }'
+						.replace('{{width}}',_mw)
+						.replace('{{height}}',_mh)
+					);
+					if (_options.saveSetting) pushSettings({ img_max_width: _mw, img_max_height: _mh });
+				};
+				var toggleImageSizerForm = function(status) {
+					var _status = ($.inArray(status,['hide','show']) < 0) ? '' : status;
+					if (_status=='show') $form.addClass('hhb-enabled');
+					else if (_status=='hide') $form.removeClass('hhb-enabled');
+					else $form.toggleClass('hhb-enabled');
+					if ($form.hasClass('hhb-enabled')) $button.addClass('active');
+					else $button.removeClass('active');
+				}
+				_protected.toggleImageSizerForm = toggleImageSizerForm;
+				var $maxWidthSlider = $('#slider-img-max-width');
+				var $maxHeightSlider = $('#slider-img-max-height');
+				
+				var $hitbox = $('#value-img-max-hitbox').mousemove(function(e) {
+					if (e.which!=1) return false;
+					var _w = e.offsetX,_h = $hitbox.height()-e.offsetY;
+					$maxWidthSlider.slider({ value: _w });
+					$maxHeightSlider.slider({ value: _h });
+				});
+				
+				$maxWidthSlider.slider({ 
+					min: 50,max: 350,step: 5, value: settings.img_max_width,
+					slide: function( event, ui ) { imgMaxUpdate({ width: ui.value }); },
+					change: function( event, ui) { imgMaxUpdate({ width: ui.value, saveSetting: true }); }
+				});
+				$maxHeightSlider.slider({ 
+					orientation: "vertical",
+					min: 50,max: 150,step: 5, value: settings.img_max_height,
+					slide: function( event, ui ) { imgMaxUpdate({ height: ui.value }); },
+					change: function( event, ui) { imgMaxUpdate({ height: ui.value, saveSetting: true }); }
+				});
+				imgMaxUpdate();
 			}
 			var checkVersion = function() {
 				sendMessage({getVersionInfo: true},function(response) {
@@ -2732,6 +2803,8 @@ var HHBJSONDATA,hhb;
 								).addClass(cssClass.iconHide);
 				var csicon = $icon.length-$hicon.length;
 				showIconMsg();
+				_protected.toggleImageSizerForm('hide');
+				_protected.hideCustomIconForm();
 				pushSettings({ last_genre: aGenre });
 				
 				_gaTracker('genre',act,aGenre);
@@ -3649,6 +3722,7 @@ var HHBJSONDATA,hhb;
 			$form.find('#hhb-img')
 				.css('max-height',$preview.innerHeight()-parseInt($preview.css('padding-top'))-parseInt($preview.css('padding-bottom')))
 				.css('max-width',$preview.innerWidth()-parseInt($preview.css('padding-left'))-parseInt($preview.css('padding-right')));
+			var $imgSizerform = $(selector.imgSizerForm).outerHeight(iconsetHeight);
 		}
 		var bindIconListLocale = function() {
 			locale.bindLocale(settings.locale,null,function() {

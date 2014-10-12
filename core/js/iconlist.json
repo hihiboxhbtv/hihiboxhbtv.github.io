@@ -2887,6 +2887,11 @@ HHBJSONDATA.listIcon = [
 		"width": 59,	"height": 18,
 		"genre": ["雨傘"]
 	},
+	{	"code": ["#adorespray#ur","[adorespray]ur"],
+		"src": "umbrella/adorespray.gif",
+		"width": 65,	"height": 28,
+		"genre": ["雨傘"]
+	},
 	{	"code": ["???ur"],
 		"src": "umbrella/wonder2.png",
 		"width": 36,	"height": 39,

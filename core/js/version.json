@@ -7,13 +7,24 @@
 	},
 	"lastExtensionVersion": "v3.0",
 	"lastRelease": "2014-10-08",
-	"lastSummary": "[概要] 新增自訂表情, 一鍵引用, 並優化書籤同步功能",
+	"lastSummary": "[概要] 新增自訂表情, 一鍵引用, 圖片顯示尺寸設定 及 雨傘系列 並優化書籤同步功能",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v3.0.0",
-	"lastUpdate": "2014-10-08",
+	"coreVersion": "v3.0.1",
+	"lastUpdate": "2014-10-12",
 	"history": [
+		{
+			"version": "v3.0.1",
+			"lastUpdate": "2014-10-12",
+			"summary": [
+				"[概要] 新增圖片顯示尺寸設定 及 雨傘系列"
+			],
+			"detail": [
+				"[新增] 圖片顯示尺寸設定",
+				"[新增] 雨傘系列"
+			]
+		},
 		{
 			"version": "v3.0.0",
 			"lastUpdate": "2014-10-08",
