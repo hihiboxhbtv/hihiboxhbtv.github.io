@@ -2907,6 +2907,7 @@ var HHBJSONDATA,hhb;
 				}
 				if (!$holder.is(':visible')) {
 					_protected.hideCustomIconForm();
+					_protected.toggleImageSizerForm('hide');
 				}
 				var $holder = $(selector.holder),
 					$iconMsgBox = $(selector.iconMsgBox)
