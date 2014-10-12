@@ -666,7 +666,7 @@ a:hover > .hhb-name-name {
 #value-img-max-holder {
 	left: 20px;
 	right: 0px;
-	bottom: 25px;
+	bottom: 30px;
 	top: 0px;
 	background-color: #111111;
 	border: 1px solid #CCCCCC;
@@ -700,18 +700,26 @@ a:hover > .hhb-name-name {
 	width: 100px;
 	height: 30px;
 	padding: 10px;
+	font-size: 12px;
 }
 #slider-img-max-height {
 	left: 0px;
+	top: 20px;
 	bottom: 70px;
 	width: 5px;
-	height: 100px;
+	max-height: 100px;
 }
 #slider-img-max-width {
 	left: 70px;
-	bottom: 5px;
-	width: 300px;
+	right: 20px;
+	bottom: 10px;
+	max-width: 300px;
 	height: 5px;
+}
+#slider-img-max-width .ui-slider-handle, #slider-img-max-height .ui-slider-handle {
+	padding: 0px;
+	width: 1.2em;
+	height: 1.2em;
 }
 #slider-img-max-width .ui-slider-handle {
 	margin-top: -.2em;
