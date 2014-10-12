@@ -107,7 +107,7 @@
 }
 #hhb-header .icon,
 #hhb-header .funcIcon {
-	margin: -1px 5px 0px 0px;
+	margin: -1px 3px 0px 0px;
 	float: left;
 	border: 0px;
 	width: 24px;
@@ -169,11 +169,11 @@
 	text-transform: none;
 	cursor: pointer;
 	line-height: 26px;
-	font-size: 18px !important;
+	font-size: 16px !important;
 	color: #FFFFFF;
 }
 #hhb-header span.version {
-	margin-left: 5px;
+	margin-left: 4px;
 	font-size: 12px;
 	font-weight: normal;
 	cursor: pointer;

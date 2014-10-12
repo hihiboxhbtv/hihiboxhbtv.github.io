@@ -105,8 +105,8 @@ var HHBJSONDATA,hhb;
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v3.0',
-		lastUpdate: '2014-10-08'
+		coreVersion: 'v3.0.1',
+		lastUpdate: '2014-10-12'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -2701,7 +2701,10 @@ var HHBJSONDATA,hhb;
 			}
 			var checkVersion = function() {
 				sendMessage({getVersionInfo: true},function(response) {
-					$.extend(versionInfo,response.versionInfo);
+					$.extend(versionInfo,response.versionInfo,{
+						coreVersion: versionInfo.coreVersion,
+						lastUpdate: versionInfo.lastUpdate
+					});
 					initInfo();
 				});
 			};
