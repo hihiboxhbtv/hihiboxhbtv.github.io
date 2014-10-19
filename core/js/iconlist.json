@@ -3032,6 +3032,11 @@ HHBJSONDATA.listIcon = [
 		"width": 65,	"height": 28,
 		"genre": ["雨傘"]
 	},
+	{	"code": ["[happybirthday]ur"],
+		"src": "umbrella/happybirthdayflag.gif",
+		"width": 50,	"height": 41,
+		"genre": ["雨傘"]
+	},
 	{	"code": [":)urlm",":)lmur"],
 		"src": "umbrella/lomore/smile.png",
 		"width": 51,	"height": 43,
@@ -3086,6 +3091,16 @@ HHBJSONDATA.listIcon = [
 		"src": "umbrella/lomore/bloodya.gif",
 		"width": 51,	"height": 43,
 		"genre": ["雨傘","腦魔"]
+	},
+	{	"code": ["#good#urxm","#good#xmur"],
+		"src": "umbrella/xmas/good.png",
+		"width": 40,	"height": 39,
+		"genre": ["雨傘","聖誕"]
+	},
+	{	"code": ["#adore369police#urxm","#adore369police#xmur","[adore369police]urxm","[adore369police]xmur"],
+		"src": "umbrella/xmas/adore369police.gif",
+		"width": 137,	"height": 37,
+		"genre": ["雨傘","聖誕"]
 	},
 	{	"code":["������"],
 		"src":"emoji/705.png",
