@@ -501,3 +501,9 @@ body.hhb-pf-twitch.hhb-darkmode.error_500,body.hhb-pf-twitch.hhb-darkmode.error_
 /* [S:2014-10-03] */
 .hhb-pf-twitch.hhb-darkmode .loading-mask { background: rgba(13,13,13,0.5); }
 .hhb-pf-twitch.hhb-darkmode .ember-chat .chatters-view { background: #0d0d0d; }
+
+/* [S:2014-10-17] */
+.hhb-pf-twitch.hhb-darkmode .hostmode-title-container { background: #000; }
+.hhb-pf-twitch.hhb-darkmode .hostmode-title-container .hostmode-title .what { background: #9bbe5a; color: #000; }
+.hhb-pf-twitch.hhb-darkmode .close-hostmode { background: #000; border-top: 1px solid rgba(255,255,255,0.2); border-bottom: 1px solid rgba(255,255,255,0.2); }
+.hhb-pf-twitch.hhb-darkmode .target-frame { background: #000; }

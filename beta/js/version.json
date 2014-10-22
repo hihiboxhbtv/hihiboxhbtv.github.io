@@ -5,23 +5,48 @@
 		"developer": ["Lemon", "希治閣"],
 		"specialThanks": ["VannZic"]
 	},
-	"lastExtensionVersion": "v3.0",
-	"lastRelease": "2014-09-02",
+	"lastExtensionVersion": "v4.0",
+	"lastRelease": "2014-10-22",
 	"lastSummary": "[概要] TBC...",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v3.0.4",
-	"lastUpdate": "2014-09-02",
+	"coreVersion": "v4.0.0",
+	"lastUpdate": "2014-10-22",
 	"history": [
 		{
-			"version": "v3.0.0",
-			"lastUpdate": "2014-09-02",
+			"version": "v4.0",
+			"lastUpdate": "2014-10-22",
 			"summary": [
 				"[概要] TBC..."
 			],
 			"detail": [
 				"[新增] TBC..."
+			]
+		},
+		{
+			"version": "v3.0.1",
+			"lastUpdate": "2014-10-12",
+			"summary": [
+				"[概要] 新增圖片顯示尺寸設定 及 雨傘系列"
+			],
+			"detail": [
+				"[新增] 圖片顯示尺寸設定",
+				"[新增] 雨傘系列"
+			]
+		},
+		{
+			"version": "v3.0.0",
+			"lastUpdate": "2014-10-08",
+			"summary": [
+				"[概要] 新增自訂表情, 一鍵引用, 並優化書籤同步功能"
+			],
+			"detail": [
+				"[新增] 自訂表情及其同步功能",
+				"[新增] 一鍵引用功能 (Ctrl+Click / Alt+Click)",
+				"[優化] 書籤同步功能",
+				"[優化] 加入[IMG] Preloader",
+				"[修正] Hitbox 聊天室相關錯誤修正"
 			]
 		},
 		{

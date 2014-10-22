@@ -53,6 +53,12 @@ var HHBJSONDATA,hhb;
 
 	/*! jQuery Easing v1.3 | http://gsgd.co.uk/sandbox/jquery/easing/ */
 	jQuery.easing["jswing"]=jQuery.easing["swing"];jQuery.extend(jQuery.easing,{def:"easeOutQuad",swing:function(a,b,c,d,e){return jQuery.easing[jQuery.easing.def](a,b,c,d,e)},easeInQuad:function(a,b,c,d,e){return d*(b/=e)*b+c},easeOutQuad:function(a,b,c,d,e){return-d*(b/=e)*(b-2)+c},easeInOutQuad:function(a,b,c,d,e){if((b/=e/2)<1)return d/2*b*b+c;return-d/2*(--b*(b-2)-1)+c},easeInCubic:function(a,b,c,d,e){return d*(b/=e)*b*b+c},easeOutCubic:function(a,b,c,d,e){return d*((b=b/e-1)*b*b+1)+c},easeInOutCubic:function(a,b,c,d,e){if((b/=e/2)<1)return d/2*b*b*b+c;return d/2*((b-=2)*b*b+2)+c},easeInQuart:function(a,b,c,d,e){return d*(b/=e)*b*b*b+c},easeOutQuart:function(a,b,c,d,e){return-d*((b=b/e-1)*b*b*b-1)+c},easeInOutQuart:function(a,b,c,d,e){if((b/=e/2)<1)return d/2*b*b*b*b+c;return-d/2*((b-=2)*b*b*b-2)+c},easeInQuint:function(a,b,c,d,e){return d*(b/=e)*b*b*b*b+c},easeOutQuint:function(a,b,c,d,e){return d*((b=b/e-1)*b*b*b*b+1)+c},easeInOutQuint:function(a,b,c,d,e){if((b/=e/2)<1)return d/2*b*b*b*b*b+c;return d/2*((b-=2)*b*b*b*b+2)+c},easeInSine:function(a,b,c,d,e){return-d*Math.cos(b/e*(Math.PI/2))+d+c},easeOutSine:function(a,b,c,d,e){return d*Math.sin(b/e*(Math.PI/2))+c},easeInOutSine:function(a,b,c,d,e){return-d/2*(Math.cos(Math.PI*b/e)-1)+c},easeInExpo:function(a,b,c,d,e){return b==0?c:d*Math.pow(2,10*(b/e-1))+c},easeOutExpo:function(a,b,c,d,e){return b==e?c+d:d*(-Math.pow(2,-10*b/e)+1)+c},easeInOutExpo:function(a,b,c,d,e){if(b==0)return c;if(b==e)return c+d;if((b/=e/2)<1)return d/2*Math.pow(2,10*(b-1))+c;return d/2*(-Math.pow(2,-10*--b)+2)+c},easeInCirc:function(a,b,c,d,e){return-d*(Math.sqrt(1-(b/=e)*b)-1)+c},easeOutCirc:function(a,b,c,d,e){return d*Math.sqrt(1-(b=b/e-1)*b)+c},easeInOutCirc:function(a,b,c,d,e){if((b/=e/2)<1)return-d/2*(Math.sqrt(1-b*b)-1)+c;return d/2*(Math.sqrt(1-(b-=2)*b)+1)+c},easeInElastic:function(a,b,c,d,e){var f=1.70158;var g=0;var h=d;if(b==0)return c;if((b/=e)==1)return c+d;if(!g)g=e*.3;if(h<Math.abs(d)){h=d;var f=g/4}else var f=g/(2*Math.PI)*Math.asin(d/h);return-(h*Math.pow(2,10*(b-=1))*Math.sin((b*e-f)*2*Math.PI/g))+c},easeOutElastic:function(a,b,c,d,e){var f=1.70158;var g=0;var h=d;if(b==0)return c;if((b/=e)==1)return c+d;if(!g)g=e*.3;if(h<Math.abs(d)){h=d;var f=g/4}else var f=g/(2*Math.PI)*Math.asin(d/h);return h*Math.pow(2,-10*b)*Math.sin((b*e-f)*2*Math.PI/g)+d+c},easeInOutElastic:function(a,b,c,d,e){var f=1.70158;var g=0;var h=d;if(b==0)return c;if((b/=e/2)==2)return c+d;if(!g)g=e*.3*1.5;if(h<Math.abs(d)){h=d;var f=g/4}else var f=g/(2*Math.PI)*Math.asin(d/h);if(b<1)return-.5*h*Math.pow(2,10*(b-=1))*Math.sin((b*e-f)*2*Math.PI/g)+c;return h*Math.pow(2,-10*(b-=1))*Math.sin((b*e-f)*2*Math.PI/g)*.5+d+c},easeInBack:function(a,b,c,d,e,f){if(f==undefined)f=1.70158;return d*(b/=e)*b*((f+1)*b-f)+c},easeOutBack:function(a,b,c,d,e,f){if(f==undefined)f=1.70158;return d*((b=b/e-1)*b*((f+1)*b+f)+1)+c},easeInOutBack:function(a,b,c,d,e,f){if(f==undefined)f=1.70158;if((b/=e/2)<1)return d/2*b*b*(((f*=1.525)+1)*b-f)+c;return d/2*((b-=2)*b*(((f*=1.525)+1)*b+f)+2)+c},easeInBounce:function(a,b,c,d,e){return d-jQuery.easing.easeOutBounce(a,e-b,0,d,e)+c},easeOutBounce:function(a,b,c,d,e){if((b/=e)<1/2.75){return d*7.5625*b*b+c}else if(b<2/2.75){return d*(7.5625*(b-=1.5/2.75)*b+.75)+c}else if(b<2.5/2.75){return d*(7.5625*(b-=2.25/2.75)*b+.9375)+c}else{return d*(7.5625*(b-=2.625/2.75)*b+.984375)+c}},easeInOutBounce:function(a,b,c,d,e){if(b<e/2)return jQuery.easing.easeInBounce(a,b*2,0,d,e)*.5+c;return jQuery.easing.easeOutBounce(a,b*2-e,0,d,e)*.5+d*.5+c}})
+
+	/*! jQuery isImg selector | Ref: http://james.padolsey.com/javascript/regex-selector-for-jquery/ */
+	jQuery.expr[':'].isIMG = function(elem, index, match) {
+		var regex = /^\[img\][^\[]+\[\/img\]$/ig;
+		return regex.test(jQuery(elem)['attr']('alt'));
+	}
 	
 	/* JavaScript Pretty Date | http://ejohn.org/blog/javascript-pretty-date/ | Copyright (c) 2011 John Resig (ejohn.org) | Licensed under the MIT and GPL licenses. */
 	function prettyDate(e){
@@ -105,8 +111,8 @@ var HHBJSONDATA,hhb;
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v3.0',
-		lastUpdate: '2014-10-08'
+		coreVersion: 'v4.0.0',
+		lastUpdate: '2014-10-22'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -131,7 +137,10 @@ var HHBJSONDATA,hhb;
 				bookmarkBtn: 'hhb-bookmark',
 				popupBtn: 'hhb-popup',
 				bbCodeBtn: 'hhb-bbcode',
-				customIconForm: 'hhb-custom-icon-form'
+				customIconForm: 'hhb-custom-icon-form',
+				imgSizerBtn: 'hhb-img-sizer',
+				imgSizerForm: 'hhb-img-sizer-form',
+				closeBtn: 'hhb-close'
 			},
 			cssClass: {
 				inited: 'hhb-inited',
@@ -182,7 +191,10 @@ var HHBJSONDATA,hhb;
 				bookmarkBtn: '#hhb-bookmark',
 				popupBtn: '#hhb-popup',
 				bbCodeBtn: '#hhb-bbcode',
-				customIconForm: '#hhb-custom-icon-form'
+				customIconForm: '#hhb-custom-icon-form',
+				imgSizerBtn: '#hhb-img-sizer',
+				imgSizerForm: '#hhb-img-sizer-form',
+				closeBtn: '#hhb-close'
 			},
 			delay: {
 				analyzeBuiltinIcon: 200,
@@ -223,9 +235,11 @@ var HHBJSONDATA,hhb;
 				analyzeGJTVIcon: 30,
 				activateRebindUIBtn: 30,
 				bindBookmarkBtn: 30,
-				bindPlayerBookmarkBtn: 30
+				bindPlayerBookmarkBtn: 30,
+				bindCloseBtn: 30,
+				activateMsgCharsCounter: 30
 			},
-			supportedPlatform: ['hitbox','twitch','ustream'],
+			supportedPlatform: ['hitbox','twitch','ustream','hkgolden'],
 			listGenre: [],
 			listIcon: [],
 			listCustomIcon: [],
@@ -267,7 +281,9 @@ var HHBJSONDATA,hhb;
 				default_genre: 'HKG',
 				last_genre: 'HKG',
 				dark_mode: true,
-				icon_sort_by: 1
+				icon_sort_by: 1,
+				img_max_width: 300,
+				img_max_height: 150
 			},
 			env = {
 				hasjQuery: false,
@@ -321,6 +337,8 @@ var HHBJSONDATA,hhb;
 				bindDarkModeBtn: 0,
 				bindBookmarkBtn: 0,
 				bindPlayerBookmarkBtn: 0,
+				bindCloseBtn: 0,
+				activateMsgCharsCounter: 0,
 				detectUI: 0
 			},
 			timestamps = {
@@ -335,29 +353,33 @@ var HHBJSONDATA,hhb;
 				usage: { pending: 0, current: 0 }
 			},
 			timer = {
-				initialize: 				{ start: 0, end: 0, duration: 0 },
-				initIconListData: 			{ start: 0, end: 0, duration: 0 },
-					injectIcon: 			{ start: 0, end: 0, duration: 0 },
-					analyzeBuiltinIcon: 	{ start: 0, end: 0, duration: 0 },
-					analyzeCustomIcon:		{ start: 0, end: 0, duration: 0 },
-					analyzeChannelIcon:		{ start: 0, end: 0, duration: 0 },
-					analyzePlatformIcon: 	{ start: 0, end: 0, duration: 0 },
-					analyzeGJTVIcon: 		{ start: 0, end: 0, duration: 0 },
-				initUserInterface: 			{ start: 0, end: 0, duration: 0 },
-					bindUI:					{ start: 0, end: 0, duration: 0 },
-					bindHolderUI:			{ start: 0, end: 0, duration: 0 },
-					bindButtonUI:			{ start: 0, end: 0, duration: 0 },
-				initEmoticon: 				{ start: 0, end: 0, duration: 0 },
-					bindHolderToggleBtn: 	{ start: 0, end: 0, duration: 0 },
-					activateSortMode: 		{ start: 0, end: 0, duration: 0 },
-				initNameBanner: 			{ start: 0, end: 0, duration: 0 },
-					analyzeNameBanner: 		{ start: 0, end: 0, duration: 0 },
-				initDarkMode: 				{ start: 0, end: 0, duration: 0 },
-					bindDarkModeBtn: 		{ start: 0, end: 0, duration: 0 },
-				initBookmark: 				{ start: 0, end: 0, duration: 0 },
-					bindPlayerBookmarkBtn: 	{ start: 0, end: 0, duration: 0 },
-					bindBookmarkBtn: 		{ start: 0, end: 0, duration: 0 },
-				initIncomingParser:			{ start: 0, end: 0, duration: 0 },
+				initialize: 					{ start: 0, end: 0, duration: 0 },
+				initIconListData: 				{ start: 0, end: 0, duration: 0 },
+					injectIcon: 				{ start: 0, end: 0, duration: 0 },
+					analyzeBuiltinIcon: 		{ start: 0, end: 0, duration: 0 },
+					analyzeCustomIcon:			{ start: 0, end: 0, duration: 0 },
+					analyzeChannelIcon:			{ start: 0, end: 0, duration: 0 },
+					analyzePlatformIcon: 		{ start: 0, end: 0, duration: 0 },
+					analyzeGJTVIcon: 			{ start: 0, end: 0, duration: 0 },
+				initUserInterface: 				{ start: 0, end: 0, duration: 0 },
+					bindUI:						{ start: 0, end: 0, duration: 0 },
+					bindHolderUI:				{ start: 0, end: 0, duration: 0 },
+					bindButtonUI:				{ start: 0, end: 0, duration: 0 },
+				initEmoticon: 					{ start: 0, end: 0, duration: 0 },
+					bindHolderToggleBtn: 		{ start: 0, end: 0, duration: 0 },
+					activateSortMode: 			{ start: 0, end: 0, duration: 0 },
+				initNameBanner: 				{ start: 0, end: 0, duration: 0 },
+					analyzeNameBanner: 			{ start: 0, end: 0, duration: 0 },
+				initDarkMode: 					{ start: 0, end: 0, duration: 0 },
+					bindDarkModeBtn: 			{ start: 0, end: 0, duration: 0 },
+				initBookmark: 					{ start: 0, end: 0, duration: 0 },
+					bindPlayerBookmarkBtn: 		{ start: 0, end: 0, duration: 0 },
+					bindBookmarkBtn: 			{ start: 0, end: 0, duration: 0 },
+				initIncomingParser:				{ start: 0, end: 0, duration: 0 },
+				initCloseBtn:					{ start: 0, end: 0, duration: 0 },
+					bindCloseBtn:				{ start: 0, end: 0, duration: 0 },
+				initMsgCharsCounter:			{ start: 0, end: 0, duration: 0 },
+					activateMsgCharsCounter:	{ start: 0, end: 0, duration: 0 },
 				
 				sort: { start: 0, end: 0, duration: 0 },
 				sortGenre: { start: 0, end: 0, duration: 0 }
@@ -373,6 +395,7 @@ var HHBJSONDATA,hhb;
 			listNameBanner = {},
 			nextGenreID = 1,
 			nextIconID = 1,
+			isBindingIcon = true,
 			isFiltering = false,
 			isContainUrl = false,
 			timerFilter = null,
@@ -388,14 +411,16 @@ var HHBJSONDATA,hhb;
 		/* Private platform object */
 		var _platformObj = {
 			default: {
-				supportedFeatures: ['iconlist_data','ui','emoticon','name_banner','darkmode','bookmark','incoming_parser'],
+				supportedFeatures: ['iconlist_data','ui','emoticon','bbcode','name_banner','darkmode','bookmark','incoming_parser','quoter','close_btn','msg_chars_counter'],
 				genHolder: function(idObj,infoObj) {
 					return $('<div id="'+idObj.holder+'">'+
 								'<div id="hhb-header">'+
+								'<div id="'+idObj.closeBtn+'" hhb-locale-title="{{iconlist.close}}" title="Close" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.bookmarkBtn+'" hhb-locale-title="{{iconlist.bookmark}}" title="Bookmark" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.darkModeBtn+'" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.sortModeBtn+'" class="funcIcon">&nbsp;</div>'+
 								'<div id="'+idObj.bbCodeBtn+'" class="funcIcon">&nbsp;</div>'+
+								'<div id="'+idObj.imgSizerBtn+'" hhb-locale-title-debug="{{iconlist.img_sizer_btn}}" title="Image Sizer" class="funcIcon"></div>'+
 								'<div id="'+idObj.popupBtn+'" hhb-locale-title="{{iconlist.popup_fixed}}" title="Popup" class="funcIcon">&nbsp;</div>'+
 								'<span class="version" title="">'+infoObj.coreVersion+'</span>'+
 								'<a href="http://bit.ly/hihiboxhbtv" target="_new" class="hhb"><span class="name" title="">'+infoObj.name+'</span></a>'+
@@ -404,6 +429,18 @@ var HHBJSONDATA,hhb;
 								'<div id="'+idObj.genreContainer+'"></div>'+
 								'<div id="'+idObj.iconset+'"></div>'+
 								'<div id="'+idObj.customIconForm+'"></div>'+
+								'<div id="'+idObj.imgSizerForm+'">'+
+									'<div class="hhb-container">'+
+										'<div id="value-img-max-holder" class="value">'+
+											'<div id="value-img-max-hitbox" hhb-locale-title-debug="{{iconlist.img_sizer.max_size}}" title="Max. Image Size"></div>'+
+											'<div id="value-img-max">'+
+											'<div id="value-img-max-text"></div>'+
+											'</div>'+
+										'</div>'+
+										'<div id="slider-img-max-height" hhb-locale-title-debug="{{iconlist.img_sizer.max_height}}" title="Max. Image Height"></div>'+
+										'<div id="slider-img-max-width" hhb-locale-title-debug="{{iconlist.img_sizer.max_width}}" title="Max. Image Width"></div>'+
+									'</div>'+
+								'</div>'+
 							'</div>');
 				},
 				genPlayerBookmarkBtn: function(idBtn) {
@@ -460,6 +497,7 @@ var HHBJSONDATA,hhb;
 						txtarea.scrollTop = scrollPos;
 						txtarea.focus();
 					}
+					$(txtarea).change();
 				},
 				bindNameBanner: function(names,callback) {
 					var callback = callback || function() {};
@@ -580,24 +618,12 @@ var HHBJSONDATA,hhb;
 								var $img = ("<img id='"+ bbcid +"' src='http://hihiboxhbtv.github.io/images/hihiloading.gif' class='hhb-bbcode-img' alt='"+ args[0] +"' onload='hhb.scrollToBottom();'>");
 								var $loader = $('<img>').load(function() {
 									$('#'+bbcid).attr('src',$(this).attr('src'));
-									/* custom icon - add */
 									var $img = $('#'+bbcid);
-									var $imgTags = $img.parents('.hhb-bbcode-img-tag:not(:has(.hhb-custom-icon-add))');
-									$imgTags.prepend(
-										$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" hhb-locale-title="{{info.name}} - {{iconlist.custom_icon.add}}" title="HihiBox - Add to Custom">')
-											.attr('title',locale.getLocaleMsg('info.name')+' - '+locale.getLocaleMsg('iconlist.custom_icon.add'))
-											.click(function(e) {
-												e.stopPropagation();
-												var src = $(this).parents('.hhb-bbcode-img-tag').attr('hhb-src');
-												_protected.initCustomIconForm(src);
-											})
-									);
 									_protected.scrollToBottom();
 									if ($imgTags.length>0 && _protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
 								}).error(function() {
 									var $img = $('#'+bbcid);
 									var $imgTags = $img.parents('.hhb-bbcode-img-tag');
-									$imgTags.find('.hhb-custom-icon-add').detach();
 									$img.replaceWith($('<span>',{ text: $(this).attr('src'), alt: $imgTags.attr('hhb-alt') }));
 								}).attr('src',args[2]);
 								bbCodeCount++;
@@ -753,7 +779,7 @@ var HHBJSONDATA,hhb;
 					binder();
 				},
 				parseQuote: function(msgs,cssClass) {
-					if (msgs.length==0) return { msg: 0, parsed: 0 };
+					if (!msgs||msgs.length==0) return { msg: 0, parsed: 0 };
 					var $msgs = msgs.addClass(cssClass.checkedQuote);
 					var pcount = 0;
 					$msgs.each(function() {
@@ -767,6 +793,7 @@ var HHBJSONDATA,hhb;
 							msg = msgHtml.replace(reQuote,$('<span>',{ class: cssClass.msgQuote }).html(quoteMsg)[0].outerHTML);
 						}
 						$(this).empty().html(msg);
+						_protected.scrollToBottom();
 					});
 				}
 			},
@@ -774,7 +801,7 @@ var HHBJSONDATA,hhb;
 				/* Private variables */
 				var _platform = this,
 					id = 'hitbox',
-					supportedFeatures = ['ui','emoticon','name_banner','darkmode','bookmark'],
+					supportedFeatures = ['ui','emoticon','bbcode','name_banner','darkmode','bookmark','quoter'],
 					cssClass = $.extend(_protected.cssClass,{
 						darkMode: 'hhb-darkmode'
 					}),
@@ -967,7 +994,7 @@ var HHBJSONDATA,hhb;
 				/* Private variables */
 				var _platform = this,
 					id = 'twitch',
-					supportedFeatures = ['ui','emoticon','name_banner','darkmode','bookmark'],
+					supportedFeatures = ['ui','emoticon','bbcode','name_banner','darkmode','bookmark','quoter'],
 					cssClass = $.extend(_protected.cssClass,{
 						darkMode: 'hhb-darkmode'
 					}),
@@ -1719,6 +1746,96 @@ var HHBJSONDATA,hhb;
 				};
 				_platform.genBadgeCss = function(badges) { return _platformObj.default.genBadgeCss(badges,selector); };
 			},
+			hkgolden: function() {
+				/* Private variables */
+				var _platform = this,
+					id = 'hkgolden',
+					supportedFeatures = ['ui','emoticon','bbcode','close_btn','msg_chars_counter'],
+					cssClass = $.extend(_protected.cssClass,{
+						darkMode: 'hhb-darkmode'
+					}),
+					selector = $.extend(_protected.selector,{
+						darkModeAcceptor: 'body',
+						buttonContainer: '',
+						holderContainer: 'body',
+						buttonFront: ['a[href^="Javascript:bookmarkPost("]', '#ctl00_ContentPlaceHolder1_btn_Submit', '#ctl00_ContentPlaceHolder1_btn_Send'],
+						msgBox: '#ctl00_ContentPlaceHolder1_messagetext',
+						emoticon: 'span.emoticon'
+					}),
+					limit = $.extend(_protected.limit,{}),
+					msgMaxLength = 2500;
+				/* Public methods */
+				/* Initialize */
+				_platform.isExcluded = function() {  var m=document.URL.match(/^https?\:\/\/.+\.hkgolden.com\/(?!view|post|SendPM)/i); return ((m) ? m.length>0 : false); }
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.hkgolden.com\/(post|view|SendPM)(?:.+(message|userid)=(\d+))?/i); return (m && m[1]) ? m[1] +(m[2] && m[3] ? '_'+m[2]+'_'+m[3] : '') : ''; }
+				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
+				_platform.getFeatures = function() {	return supportedFeatures;	};
+				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-hkgolden'); };
+				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
+				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
+				_platform.getButtonFront = function() {
+					if ($.isArray(selector.buttonFront)) {
+						for (var i=0;i<selector.buttonFront.length;i++) {
+							var _selector = selector.buttonFront[i],
+								$obj = $(_selector);
+							if ($obj.length > 0) return $obj;
+						}
+					}
+					return [];
+				};
+				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
+				_platform.genToggleButton = function(id) {
+					return $('<div id="'+id+'" hhb-locale-title="{{info.name}}" title="HihiBox"></div>');
+				};
+				_platform.onBindedToggleButton = function() {};
+				_platform.getShowChatBtn = function() {	return [];	};
+				_platform.toggleTimestamps = function(act) { return true; };
+				_platform.getPlatformIcon = function() { return []; };
+				_platform.getPlayer = function() { return false; }
+			
+				/* Icon emotify */
+				_platform.injectIcon = function(iconlist) { return iconlist.length; };
+				_platform.getNewMsg = function() {	return $(selector.newMsg);	};
+				_platform.bindResizer = function() {
+					return {
+						msg: 0, 
+						emotified: 0,
+						resized: 0
+					};
+				};
+				_platform.bindQuoter = function() {}
+				_platform.getNewQuoteMsg = function() {	return false;	};
+				_platform.parseQuote = function() { 
+					var msgs = _platform.getNewQuoteMsg();
+					return _platformObj.default.parseQuote(msgs,cssClass);
+				}
+				_platform.scrollToBottom = function() {	return _platformObj.default.scrollToBottom(selector); };
+				_platform.getMsgBox = function(getDOM) { return (getDOM ? $(selector.msgBox)[0]||false : $(selector.msgBox)); };
+				_platform.getMsgInput = function() {	return $(selector.msgBox).val()||'';	};
+				_platform.insertText = function(text) {	_platform.replaceText(text);	};
+				_platform.replaceText = function(text,reReplace) {
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
+						_platformObj.default.replaceText(txtarea,text,reReplace);
+						_platform.updateMsg(txtarea.value);
+					}
+				}
+				_platform.autoCompleteBBCode = function() {
+					var txtarea = platformObj.getMsgBox(true);
+					if (txtarea) {
+						_platformObj.default.autoCompleteBBCode(txtarea);
+						_platform.updateMsg(txtarea.value);
+					}
+				}
+				_platform.updateMsg = function(msg) {};
+				
+				/* BBCode */
+				_platform.getNewBBCodeMsg = function() { return false; };
+				_platform.parseBBCode = function() { return false; };
+				
+				/* Msg chars counter */
+				_platform.getMsgMaxLength = function() { return msgMaxLength; };
+			}
 		};
 		
 		var debugMsg = function() {
@@ -1819,12 +1936,16 @@ var HHBJSONDATA,hhb;
 				/* update loaded feature */
 				switch (target) {
 				case 'initIconListData':	loadedFeature('iconlist_data');		break;
-				case 'initUserInterface':	loadedFeature('ui');					break;
+				case 'initUserInterface':	loadedFeature('ui');				break;
 				case 'initEmoticon':		loadedFeature('emoticon');			break;
+				//case 'initBBCode':		loadedFeature('bbcode');			break;
 				case 'initNameBanner':		loadedFeature('name_banner');		break;
 				case 'initDarkMode':		loadedFeature('darkmode');			break;
 				case 'initBookmark':		loadedFeature('bookmark');			break;
 				case 'initIncomingParser':	loadedFeature('incoming_parser');	break;
+				case 'initQuoter':			loadedFeature('quoter');			break;
+				case 'initCloseBtn':		loadedFeature('close_btn');			break;
+				case 'initMsgCharsCounter':	loadedFeature('msg_chars_counter');	break;
 				}
 				/* check timer end */
 				switch (target) {
@@ -1877,6 +1998,18 @@ var HHBJSONDATA,hhb;
 				case 'initIncomingParser':
 					if (isStatusSuccess('initIncomingParser')) setLoadingStatus('initIncomingParser','complete');
 					break;
+				/* initQuoter */
+				case 'initQuoter':
+					if (isStatusSuccess('initQuoter')) setLoadingStatus('initQuoter','complete');
+					break;
+				/* initCloseBtn */
+				case 'bindCloseBtn':
+					if (isStatusSuccess('bindCloseBtn')) setLoadingStatus('initCloseBtn','complete');
+					break;
+				/* initMsgCharsCounter */
+				case 'activateMsgCharsCounter':
+					if (isStatusSuccess('activateMsgCharsCounter')) setLoadingStatus('initMsgCharsCounter','complete');
+					break;
 				}
 			}
 			if (gaSubmit && ttimer.start > 0 && ttimer.duration > 0) {
@@ -1888,11 +2021,12 @@ var HHBJSONDATA,hhb;
 			var url = document.URL.toLowerCase();
 			debugMsg(DEBUG_ENV|DEBUG_ENV_INIT,'Detecting Platform... [URI:',url,']');
 			env.hasjQuery = (!(typeof $ === 'undefined'));
-			env.platform = (url.match("^http:\/\/[^\/]*hitbox\.tv\/") ? 'hitbox' :
-								(url.match("^http:\/\/[^\/]*twitch\.tv\/") ? 'twitch' : 
-									(url.match("^http:\/\/[^\/]*justin\.tv\/") ? 'justin': 
-										(url.match("^http:\/\/[^\/]*ustream\.tv\/") ? 'ustream': '')
-							))).toLowerCase();
+			env.platform = (url.match("^https?:\/\/.+\.hitbox\.tv\/") ? 'hitbox' :
+								(url.match("^https?:\/\/.+\.twitch\.tv\/") ? 'twitch' : 
+									(url.match("^https?:\/\/.+\.justin\.tv\/") ? 'justin': 
+										(url.match("^https?:\/\/.+\.ustream\.tv\/") ? 'ustream':
+											(url.match("^https?:\/\/.+\.hkgolden\.com\/") ? 'hkgolden': '')
+							)))).toLowerCase();	
 			env.platform = (($.inArray(env.platform,supportedPlatform) >= 0) ? env.platform : '');
 			env.platform = ((_platformObj[env.platform]) ? env.platform : '');
 			
@@ -1967,8 +2101,8 @@ var HHBJSONDATA,hhb;
 					if (!response.settings) return;
 					env.settingsLoaded = true;
 					$.extend(settings,response.settings);
-					if (settings.enable_bbcode) $('body').addClass('hhb-enable-bbcode');
-					if (settings.enable_emotify) $('body').addClass('hhb-enable-emotify');
+					if (settings.enable_bbcode) activateFeature('bbcode');
+					if (settings.enable_emotify) activateFeature('emoticon');
 					bindIconListLocale();
 					debugMsg(DEBUG_EXT,'pullSettings',settings);
 					/* initialize core */
@@ -2041,17 +2175,22 @@ var HHBJSONDATA,hhb;
 		/* Initializer */
 		var initialize = function() {
 			setLoadingStatus('initialize','init');
-			debugMsg(DEBUG_ENV,'Initializing...');
-			platformObj.bindQuoter();
-			$.each(env.features,function(idx,feature) {
+			debugMsg(DEBUG_ENV,'Initializing...[F:',env.features,']');
+			var initer = function(feature) {
 				switch (feature) {
-				case 'ui':				initUserInterface();	break;
-				case 'emoticon':		env.listeningIconListData = true;		break;
-				case 'name_banner':		env.listeningNameBannerData = true;		break;
-				case 'darkmode':		initDarkMode();			break;
-				case 'bookmark':		initBookmark();			break;
-				case 'incoming_parser':	initIncomingParser();	break;
+				case 'ui':					initUserInterface();	break;
+				case 'emoticon':			env.listeningIconListData = true;		break;
+				case 'name_banner':			env.listeningNameBannerData = true;		break;
+				case 'darkmode':			initDarkMode();			break;
+				case 'bookmark':			initBookmark();			break;
+				case 'incoming_parser':		initIncomingParser();	break;
+				case 'quoter':				initQuoter();	break;
+				case 'close_btn':			initCloseBtn();	break;
+				case 'msg_chars_counter':	initMsgCharsCounter();	break;
 				}
+			}
+			$.each(env.features,function(idx,feature) {
+				setTimeout(function() { initer(feature); },1);
 			});
 			debugMsg(DEBUG_ENV,'Initialized');
 		};
@@ -2275,29 +2414,25 @@ var HHBJSONDATA,hhb;
 					/* analyze Icon */
 					if (obj._comment) return true;
 					if (!obj.code || (!obj.isCustom && obj.code.length==0)) return true;
-					var tcode = [];
 					/* generate code list for display, lower case */
+					if (obj.hkg_alt) obj.code.push(obj.hkg_alt);
+					if (obj.gjtv_alt) obj.code.push(obj.gjtv_alt);
 					$.each(obj.code,function(idx,_code) {
-						if (!_code.match(/\[img\][^\[]*\[\/img\]/ig)) {
-							tcode.push(_code);
-							if (_code.match(/[A-Z]/)) {
-								var _lcode = _code.toLowerCase();
-								if ($.inArray(_lcode,obj.code) < 0) {
-									tcode.push(_lcode);
-									obj.code.push(_lcode);
-								}
-							}
+						if (!_code.match(/\[img\][^\[]*\[\/img\]/ig) && (_code.match(/[A-Z]/))) {
+							var _lcode = _code.toLowerCase();
+							if ($.inArray(_lcode,obj.code) < 0) obj.code.push(_lcode);
 						}
 					});
 					if (obj.alt&&obj.alt!='') obj.code.unshift(obj.alt);
-					var code = [].concat(obj.code);
+					var _ocode = [].concat(obj.code),_ncode = [],_tcode = [];
+					$.each(_ocode,function(idx,_code) { _code = _code.trim(); if ($.inArray(_code,_ncode)<0) { _ncode.push(_code); if (!_code.match(/\[img\][^\[]*\[\/img\]/ig)) _tcode.push(_code); } });
 					if (_options.genre) obj.genre = (obj.genre||[]).concat(_options.genre);
-					var checkedCode = codeCheck(code);
+					var checkedCode = codeCheck(_ncode);
 					if (checkedCode.length == 0) {
-						dcodelist = dcodelist.concat(code);
+						dcodelist = dcodelist.concat(_ncode);
 						return true;
 					}
-					code = checkedCode;
+					var code = checkedCode;
 					for (var i=0;i<code.length;i++) {
 						if (code[i]=='') {
 							code.splice(i,1);
@@ -2307,20 +2442,22 @@ var HHBJSONDATA,hhb;
 					var src = (obj.src.match(/^https?/) ? '' : imgHost)+obj.src,
 						genre = (function(genre,code) { var tgenre=[]; if (genre) $.each(genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,code[0]),
 						usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {}),
-						alt = (obj.alt?obj.alt:(tcode.length>0?tcode[0] : '')).replace('"','&quot;');
-						title = tcode.join(", ").replace('"','&quot;'),
+						alt = (obj.alt?obj.alt:(_ncode.length>0?_ncode[0] : '')).replace('"','&quot;'),
+						hkg_alt = (obj.hkg_alt? obj.hkg_alt : '[img]'+src+'[/img]'),
+						title = _tcode.join(", ").replace('"','&quot;'),
 						tstyle = '';
 						tstyle += (obj.width) ? 'width:'+obj.width+'px;' : '',
 						tstyle += (obj.height) ? 'height:'+obj.height+'px;' : '';
 					var	style = (tstyle!='') ? ' style="'+tstyle+'"' : '',
 						img = '<img src="'+src+'" title="'+title+'"'+style+' class="'+cssClass.msgIcon+((obj.height > limit.msgIconHeight) ? ' '+cssClass.resized : '')+'"/>',
 						re = "";
-					$.each(code,function(idx2,code2) { re += (re!="" ? '|' : '')+code2.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); });
+					$.each(_ncode,function(idx2,code2) { re += (re!="" ? '|' : '')+code2.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); });
 					var regex = new RegExp(re,'g');
 					obj.id = nextIconID;	nextIconID++;
 					obj.genre = genre;
-					obj.code = code;
+					obj.code = _ncode;
 					obj.alt = alt;
+					obj.hkg_alt = hkg_alt;
 					obj.title = title;
 					obj.regex = regex;
 					obj.src = src;
@@ -2405,9 +2542,9 @@ var HHBJSONDATA,hhb;
 				var obj = listCustomIconLookup[url];
 				if (!obj) addCustomIcon(url,code,meta);
 				_protected.removeCustomIcon(url,true);
-				_protected.addCustomIcon(url,code,meta,true);
 				var tcode = code.trim().split(/[\s,]+/),tcodelist=[];
-				$.each(tcode,function(idx,_code) { _code=_code.trim(); if ($.inArray(_code,obj.code)>=0 || (!listIconLookup[_code] && !_code=='' && !_code.match(/^\[(img|url)\]/i))) tcodelist.push(_code); });
+				$.each(tcode,function(idx,_code) { _code=_code.trim(); if (!listIconLookup[_code] && !_code=='' && !_code.match(/^\[(img|url)\]/i)) tcodelist.push(_code); });
+				_protected.addCustomIcon(url,code,meta,true);
 				sendMessage({modifyCustomIcon: { code: tcodelist, src: url }},function() {});
 				return true;
 			}
@@ -2426,7 +2563,7 @@ var HHBJSONDATA,hhb;
 			};
 			
 			if (isStatusInited('initIconListData')) return false;
-			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initIconListData');
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing Icon List');
 			setLoadingStatus('initIconListData','init');
 			analyzePlatformIcon();
 			_protected.importGenre = function(_genrelist) { 		if (settings.enable_emotify) analyzeGenre(_genrelist); }
@@ -2438,7 +2575,7 @@ var HHBJSONDATA,hhb;
 			/* analyze GJTV Icon in twitch */
 			if ($.inArray(env.platform,['twitch']) >= 0) analyzeGJTVIcon();
 			/* pull custom iconset */
-			pullCustomIconset();
+			if (settings.enable_bbcode) pullCustomIconset();
 		}
 		var initUserInterface = function() {
 			var detectUI = function() {
@@ -2512,7 +2649,7 @@ var HHBJSONDATA,hhb;
 			};
 			var bindCustomIconForm = function() {
 				var imgMeta = { loaded: false, width: 0, height: 0 },
-					loadingClass = 'hhb-loading';
+					loadingClass = 'hhb-loading',
 					f_keydown = function(e) { if ($form.is(':visible') && (e.which == 13)) $addBtn.click();	/* Press [Enter] */ },
 					f_checkRequire = function(field,codeDuplicated) {
 						var isInit = (field=='init'),isSubmit = (field=='submit');
@@ -2529,7 +2666,7 @@ var HHBJSONDATA,hhb;
 						$form.find('#hhb-img')
 							.css('max-height',$preview.innerHeight()-parseInt($preview.css('padding-top'))-parseInt($preview.css('padding-bottom')))
 							.css('max-width',$preview.innerWidth()-parseInt($preview.css('padding-left'))-parseInt($preview.css('padding-right')));
-					}
+					},
 					$form = $(selector.customIconForm),
 					$removeBtn = $('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" hhb-locale-title="{{iconlist.custom_icon.cancel}}" title="Cancel"></div>')
 									.click(function() { hideCustomIconForm(); }),
@@ -2568,6 +2705,43 @@ var HHBJSONDATA,hhb;
 					$('<div class="hhb-input"></div>').append([$txtUrl,$txtCode]),
 					$addBtn
 				]);
+				
+				/* [IMG] Selector */
+			var $hhbImgSelector = $('<div id="hhb-img-selector">'),
+				$hhbImgHolderAnchor = $('<a target="_img">');
+				$hhbImgHolder = $('<div id="hhb-img-holder">').append($hhbImgHolderAnchor).appendTo($hhbImgSelector),
+				$hhbCustomIconAddBtn = $('<div id="hhb-img-custom-icon-add" class="hhb-custom-icon-btn hhb-custom-icon-add">')
+											.attr('title',locale.getLocaleMsg('info.name')+' - '+locale.getLocaleMsg('iconlist.custom_icon.add'))
+											.click(function(e) {
+												e.stopPropagation();
+												var src = $hhbImgHolderAnchor.find('img').attr('src');
+												_protected.initCustomIconForm(src);
+												$hhbImgSelector.hide();
+											}).appendTo($hhbImgHolder);
+				$('body').append($hhbImgSelector.hide())
+					.on('mouseenter','img:isIMG()',function(e) {
+						if (e.ctrlKey||e.altKey) return false;
+						var _this = $(this),_src = _this.attr('src');
+						if (_this.parents('#hhb-img-holder').length > 0) return false;
+						$hhbImgHolderAnchor.find('img').remove();
+						$hhbImgHolderAnchor.append(_this.clone());
+						$hhbImgHolderAnchor.attr('href',_src);
+						$hhbImgSelector.show().css({ left: _this.offset().left-6, top: _this.offset().top-6 });
+						if (listCustomIconLookup[_src]) $hhbCustomIconAddBtn.hide();
+						else $hhbCustomIconAddBtn.show();
+					}).on('keydown',function(e) {
+						if (e.ctrlKey||e.altKey) $hhbImgSelector.hide();
+					}).on('keyup',function(e) {
+						if ($hhbImgHolderAnchor.find('img').length > 0) $hhbImgSelector.show();
+					}).on('mouseenter','#hhb-img-selector, #hhb-img-holder, #hhb-custom-icon-add',function(e) {
+						if (e.ctrlKey||e.altKey) return false;
+						if ($hhbImgHolderAnchor.find('img').length > 0) $hhbImgSelector.show();
+					}).on('mouseleave','#hhb-img-selector, #hhb-img-holder, #hhb-custom-icon-add',function(e) {
+						if (e.ctrlKey||e.altKey) return false;
+						$hhbImgHolderAnchor.find('img').remove();
+						$hhbImgSelector.hide();
+					});
+
 				_protected.initCustomIconForm = initCustomIconForm;
 				_protected.hideCustomIconForm = hideCustomIconForm;
 			};
@@ -2576,14 +2750,17 @@ var HHBJSONDATA,hhb;
 				if ($button.length > 0) return true;
 				if (retryCount.bindButtonUI==0) setLoadingStatus('bindButtonUI','init');
 				var $buttonCon = platformObj.getButtonContainer();
-				if ($buttonCon.length > 0) {
+				var $palButtonFront = platformObj.getButtonFront();
+				if (($buttonCon.length > 0)||($palButtonFront.length > 0)) {
 					var $palButton = platformObj.genToggleButton(id.button);
-					var palButtonFront = platformObj.getButtonFront();
-					if (palButtonFront.length > 0) $palButton.insertAfter(palButtonFront);
+					if ($palButtonFront.length > 0) $palButton.insertAfter($palButtonFront);
 					else $buttonCon.append($palButton);
 					platformObj.onBindedToggleButton();
-					activatePopupToggle();
-					if (settings.enable_bbcode) activateAutoCompleteBBCodeBtn();
+					if ($.inArray(env.platform,['hitbox','twitch']) >= 0) activatePopupToggle();
+					if (settings.enable_bbcode) {
+						activateAutoCompleteBBCodeBtn();
+						activateImageSizer();
+					}
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Toggle Button UI');
 					_gaTracker('core','success','User Interface - Toggle button UI',retryCount.bindButtonUI);
 					retryCount.bindButtonUI = 0;
@@ -2628,6 +2805,54 @@ var HHBJSONDATA,hhb;
 					.attr('hhb-locale-title','{{iconlist.insert_bbcode}}');
 				bindIconListLocale();
 			}
+			var activateImageSizer = function() {
+				var $style = $('<style type="text/css" class="hhb-settings-style">').appendTo('head');
+				var $form = $(selector.imgSizerForm);
+				var $button = $(selector.imgSizerBtn).click(function() { toggleImageSizerForm(); });
+				var imgMaxUpdate = function(options) {
+					var _options = $.extend({},options);
+					var _mw=(_options.width && _options.width>=50) ? _options.width : settings.img_max_width,
+						_mh=(_options.height && _options.height>=50) ? _options.height : settings.img_max_height;
+					$('#value-img-max').css({ width: _mw, height: _mh });
+					$('#value-img-max-text').text(_mw +' x '+ _mh);
+					$style.text('.hhb-bbcode-img { max-width: {{width}}px; max-height: {{height}}px; }'
+						.replace('{{width}}',_mw)
+						.replace('{{height}}',_mh)
+					);
+					if (_options.saveSetting) pushSettings({ img_max_width: _mw, img_max_height: _mh });
+				};
+				var toggleImageSizerForm = function(status) {
+					var _status = ($.inArray(status,['hide','show']) < 0) ? '' : status;
+					if (_status=='show') $form.addClass('hhb-enabled');
+					else if (_status=='hide') $form.removeClass('hhb-enabled');
+					else $form.toggleClass('hhb-enabled');
+					if ($form.hasClass('hhb-enabled')) $button.addClass('active');
+					else $button.removeClass('active');
+				}
+				_protected.toggleImageSizerForm = toggleImageSizerForm;
+				var $maxWidthSlider = $('#slider-img-max-width');
+				var $maxHeightSlider = $('#slider-img-max-height');
+				
+				var $hitbox = $('#value-img-max-hitbox').mousemove(function(e) {
+					if (e.which!=1) return false;
+					var _w = e.offsetX,_h = $hitbox.height()-e.offsetY;
+					$maxWidthSlider.slider({ value: _w });
+					$maxHeightSlider.slider({ value: _h });
+				});
+				
+				$maxWidthSlider.slider({ 
+					min: 50,max: 350,step: 5, value: settings.img_max_width,
+					slide: function( event, ui ) { imgMaxUpdate({ width: ui.value }); },
+					change: function( event, ui) { imgMaxUpdate({ width: ui.value, saveSetting: true }); }
+				});
+				$maxHeightSlider.slider({ 
+					orientation: "vertical",
+					min: 50,max: 150,step: 5, value: settings.img_max_height,
+					slide: function( event, ui ) { imgMaxUpdate({ height: ui.value }); },
+					change: function( event, ui) { imgMaxUpdate({ height: ui.value, saveSetting: true }); }
+				});
+				imgMaxUpdate();
+			}
 			var checkVersion = function() {
 				sendMessage({getVersionInfo: true},function(response) {
 					$.extend(versionInfo,response.versionInfo,{
@@ -2657,7 +2882,7 @@ var HHBJSONDATA,hhb;
 			};
 			
 			if (isStatusInited('initUserInterface')) return false;
-			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initUserInterface');
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing User Interface');
 			setLoadingStatus('initUserInterface','init');
 			detectUI();
 		};
@@ -2734,89 +2959,157 @@ var HHBJSONDATA,hhb;
 								).addClass(cssClass.iconHide);
 				var csicon = $icon.length-$hicon.length;
 				showIconMsg();
+				if (_protected.toggleImageSizerForm) _protected.toggleImageSizerForm('hide');
+				if (_protected.hideCustomIconForm) _protected.hideCustomIconForm();
 				pushSettings({ last_genre: aGenre });
 				
 				_gaTracker('genre',act,aGenre);
 				debugMsg(DEBUG_RUNTIME,'Selected Genre [G:',aGenre,',I:',csicon,']');
 				return true;
 			};
+			var _procGenreList,_procIconList;
+			var Processor = function(_options) {
+				var options = $.extend({ list: [], process: function(idx,obj) {}, finish: function() {}, partition: 100, interval: 0 },_options);
+				var _list = ($.isArray(options.list) ? options.list : []);
+				var _process = ($.isFunction(options.process) ? options.process : function(idx,obj) {});
+				var _finish = ($.isFunction(options.finish) ? options.finish : function(idx,obj) {});
+				var _starttime=0,_endtime=0;
+				var _count = _list.length;
+				var _partition = (options.partition>0 ? options.partition : 100),
+					_interval = (options.interval>0 ? options.interval : 0),
+					_curr = 0;
+				var _stop = false;
+				this.isProcessing = isProcessing = false;
+				this.stop = stop = function() { 
+					isProcessing = false;
+					_stop = true;
+					_endtime = (new Date()).getTime();
+					return !_stop;
+				};
+				this.start = start = function() {
+					_starttime = (new Date()).getTime();
+					_stop = false;
+					isProcessing = true;
+					_sub_process();
+					return !_stop;
+				};
+				_sub_process = function() {
+					if (_stop || _count<=0) return stop();
+					isProcessing = true;
+					var _next = (_curr+_partition<_count) ? _curr+_partition : _count;
+					var _plist = _list.slice(_curr,_next);
+					$.each(_plist,_process);
+					_curr = _next;
+					if (_curr==_count) {
+						_finish.apply(this);
+						stop();
+						return false;
+					}
+					setTimeout(function() { _sub_process(); },_interval);
+				};
+				start();
+			};
 			var bindGenreList = function() {
-				setTimeout(function() { bindGenreList() },delay.bindGenreList);
 				if (version.genreList.current==version.genreList.pending) return;
-				var palGenre = $(selector.genreContainer).empty();
-				if (!palGenre.length > 0) return;
-				$.each(listGenre,function(idx,obj) {
-					if (!obj.isParsed) return true;
-					palGenre.append(
-						$('<div class="'+cssClass.genre+'" hhb-genre="'+obj.name+'">'+obj.name+'</div>')
-							.addClass(genreCategory[obj.category])
-							.data('hhb-object',obj)
-							.click(function() {
-								var genre = $(this).data('hhb-object');
-								selectGenre(genre.name);
-							})
-					);
+				var $palGenre = $(selector.genreContainer).empty();
+				if (!$palGenre.length > 0) {
+					setTimeout(function() { bindGenreList() },delay.bindGenreList);
+					return;
+				}
+				if (_procGenreList && _procGenreList.stop) _procGenreList.stop();
+				_procGenreList = new Processor({
+					list: listGenre, partition: 100,
+					process: function(idx,obj) {
+						if (!obj.isParsed) return true;
+						$palGenre.append(
+							$('<div class="'+cssClass.genre+'" hhb-genre="'+obj.name+'">'+obj.name+'</div>')
+								.addClass(genreCategory[obj.category])
+								.data('hhb-object',obj)
+								.click(function() {
+									var genre = $(this).data('hhb-object');
+									selectGenre(genre.name);
+								})
+						);
+					},
+					finish: function() {
+						version.genreList.current = version.genreList.pending;
+						version.sortGenre.pending++;
+						sortGenreList(true);
+						debugMsg(DEBUG_RUNTIME|DEBUG_REFRESH,'Binded Genre List [G:',listGenre.length,']');
+					}
 				});
-				version.genreList.current = version.genreList.pending;
-				version.sortGenre.pending++;
-				sortGenreList(true);
-				debugMsg(DEBUG_RUNTIME|DEBUG_REFRESH,'Binded Genre List [G:',listGenre.length,']');
 			};
 			var bindIconList = function() {
-				setTimeout(function() { bindIconList() },delay.bindIconList);
 				if (version.iconList.current==version.iconList.pending) return;
-				var $palIconset = $(selector.iconset).empty();
-				if (!$palIconset.length > 0) return;
-				$palIconset.append($('<div id="'+id.iconMsgBox+'">-</div>'));
-				$.each(listIcon,function(idx,obj) {
-					if (!obj.isParsed) return true;
-					var $icon = 
-						$('<div class="'+cssClass.icon+'" hhb-id="'+obj.id+'" hhb-code="'+obj.code[0]+'" hhb-genre="'+obj.genre.join(' ')+'"></div>')
-							.data('hhb-code',obj.code.join(' '))
-							.click(function() {	insertIcon($(this)); })
-							.append($(obj.img)
-								.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
-							);
-					/* custom icon - remove / modify */
-					if (obj.isCustom) $icon.addClass('custom').prepend([
-							$('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" hhb-locale-title="{{iconlist.custom_icon.remove}}" title="Remove from Custom">')
-								.attr('title',locale.getLocaleMsg('iconlist.custom_icon.remove'))
-								.click(function(e) {
-									if (!confirm(locale.getLocaleMsg('iconlist.custom_icon.remove_confirm'))) return false;
-									e.stopPropagation();
-									var obj = $(this).parents('.hhb-icon').data('hhb-object'),
-										src = obj.src;
-									var src = $(this).parents('.hhb-icon').data('hhb-object').src;
-									_protected.removeCustomIcon(src);
-								}),
-							$('<div class="hhb-custom-icon-btn hhb-custom-icon-modify" hhb-locale-title="{{iconlist.custom_icon.modify}}" title="Modify Custom Icon">')
-								.attr('title',locale.getLocaleMsg('iconlist.custom_icon.modify'))
-								.click(function(e) {
-									e.stopPropagation();
-									var obj = $(this).parents('.hhb-icon').data('hhb-object'),
-										src = obj.src, code = obj.code, tcode = [];
-									$.each(code,function(idx,_code) { if (!_code.match(/^\[(img|url)\]/i)) tcode.push(_code); });
-									_protected.initCustomIconForm(src,tcode.join(', '));
-								})
-						]);
-					obj.domObject = $icon.data('hhb-object',obj);
-					$palIconset.append($icon);
+				var $palGenre = $(selector.genreContainer),
+					$palIconset = $(selector.iconset),
+					$palIconMsgBox = $(selector.iconMsgBox),
+					$dom = $('<div>');
+				if (!$palGenre.children().length > 0 || !$palIconset.length > 0) {
+					setTimeout(function() { bindIconList() },delay.bindIconList);
+					return;
+				}
+				if ($palIconMsgBox.length==0) $palIconMsgBox = $('<div id="'+id.iconMsgBox+'">-</div>');
+				$palIconset.append($palIconMsgBox);
+				if (_procIconList && _procIconList.stop) _procIconList.stop();
+				_procIconList = new Processor({
+					list: listIcon, partition: 100, interval: 100,
+					process: function(idx,obj) {
+						if (!obj.isParsed) return true;
+						if (obj.domObject) return true;
+						var $icon = 
+							$('<div class="'+cssClass.icon+'" hhb-id="'+obj.id+'" hhb-code="'+obj.code[0]+'" hhb-genre="'+obj.genre.join(' ')+'"></div>')
+								.addClass('hhb-hide')
+								.data('hhb-code',obj.code.join(' '))
+								.click(function() {	insertIcon($(this)); })
+								.append($(obj.img)
+									.error(function() {	$(this).parent().addClass(cssClass.iconMissing); showIconMsg(); })
+								);
+						/* custom icon - remove / modify */
+						if (obj.isCustom) $icon.addClass('custom').prepend([
+								$('<div class="hhb-custom-icon-btn hhb-custom-icon-remove" hhb-locale-title="{{iconlist.custom_icon.remove}}" title="Remove from Custom">')
+									.attr('title',locale.getLocaleMsg('iconlist.custom_icon.remove'))
+									.click(function(e) {
+										if (!confirm(locale.getLocaleMsg('iconlist.custom_icon.remove_confirm'))) return false;
+										e.stopPropagation();
+										var obj = $(this).parents('.hhb-icon').data('hhb-object'),
+											src = obj.src;
+										var src = $(this).parents('.hhb-icon').data('hhb-object').src;
+										_protected.removeCustomIcon(src);
+									}),
+								$('<div class="hhb-custom-icon-btn hhb-custom-icon-modify" hhb-locale-title="{{iconlist.custom_icon.modify}}" title="Modify Custom Icon">')
+									.attr('title',locale.getLocaleMsg('iconlist.custom_icon.modify'))
+									.click(function(e) {
+										e.stopPropagation();
+										var obj = $(this).parents('.hhb-icon').data('hhb-object'),
+											src = obj.src, code = obj.code, tcode = [];
+										$.each(code,function(idx,_code) { if (!_code.match(/^\[(img|url)\]/i)) tcode.push(_code); });
+										_protected.initCustomIconForm(src,tcode.join(', '));
+									})
+							]);
+						obj.domObject = $icon.data('hhb-object',obj);
+						$palIconset.append($icon);
+						showIconMsg();
+					},
+					finish: function() {
+						/* Custom icon - manual add button */
+						var $icon = $('<div class="'+cssClass.icon+' custom hhb-icon-button" hhb-genre="Custom"></div>')
+								.append(
+									$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" hhb-locale-title="{{iconlist.custom_icon.manual_add}}" title="Manual Add Custom Icon">')
+										.attr('title',locale.getLocaleMsg('iconlist.custom_icon.manual_add'))
+										.click(function(e) {
+											e.stopPropagation();
+											_protected.initCustomIconForm();
+										})
+								).addClass('hhb-hide');
+						$palIconset.append($icon);
+						isBindingIcon = false;
+						$dom = null;
+						selectGenre('init');	/* select default genre */
+						version.iconList.current = version.iconList.pending;
+						debugMsg(DEBUG_RUNTIME|DEBUG_REFRESH,'Binded Icon List [I:',listIcon.length,']');
+					}
 				});
-				/* Custom icon - manual add button */
-				$palIconset.append(
-					$('<div class="'+cssClass.icon+' custom hhb-icon-button" hhb-genre="Custom"></div>')
-						.append(
-							$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" hhb-locale-title="{{iconlist.custom_icon.manual_add}}" title="Manual Add Custom Icon">')
-								.attr('title',locale.getLocaleMsg('iconlist.custom_icon.manual_add'))
-								.click(function(e) {
-									e.stopPropagation();
-									_protected.initCustomIconForm();
-								})
-						)
-				);
-				selectGenre('init');	/* select default genre */
-				version.iconList.current = version.iconList.pending;
-				debugMsg(DEBUG_RUNTIME|DEBUG_REFRESH,'Binded Icon List [I:',listIcon.length,']');
 			};
 			var toggleHolder = function(act,keepFilter) {
 				var $holder = $(selector.holder);
@@ -2836,6 +3129,7 @@ var HHBJSONDATA,hhb;
 				}
 				if (!$holder.is(':visible')) {
 					_protected.hideCustomIconForm();
+					_protected.toggleImageSizerForm('hide');
 				}
 				var $holder = $(selector.holder),
 					$iconMsgBox = $(selector.iconMsgBox)
@@ -2978,7 +3272,9 @@ var HHBJSONDATA,hhb;
 				var $iconMsgBox = $(selector.iconMsgBox)
 									.mouseenter(function() { $(this).clearQueue().fadeTo(fidur,fiop,fease); })
 									.mouseleave(function() { $(this).clearQueue().delay(delay).fadeTo(fodur,foop,fease); });
-				if (si > 0) 
+				
+				if (isBindingIcon) $iconMsgBox.text(['Loading...( ',i,' )'].join('')).clearQueue().show().fadeTo(fidur,fiop,fease);
+				else if (si > 0) 
 					if (isFiltering) $iconMsgBox.text(['Filtering...( ',si,'/',i,' )'].join('')).clearQueue().show().fadeTo(fidur,fiop,fease);
 					else $iconMsgBox.hide()
 				else $iconMsgBox.text('Icon not found').clearQueue().show().fadeTo(fidur,fiop,fease);
@@ -3008,7 +3304,9 @@ var HHBJSONDATA,hhb;
 					}
 				}
 				var objIcon = obj.data('hhb-object');
-				var code = (objIcon.isCustom||cidx<0 ? objIcon.alt : clist[cidx]);
+				var code = 	(objIcon.isCustom ? objIcon.alt : 
+								(env.platform=='hkgolden' ? objIcon.hkg_alt : 
+									(cidx<0 ? objIcon.alt : clist[cidx])));
 				insertText(code);
 				addIconToRecent(obj,code);
 				
@@ -3166,13 +3464,22 @@ var HHBJSONDATA,hhb;
 				}
 			};
 			var initializeHotkey = function() {
+				var $body = $(selector.body);
 				var $msgBox = platformObj.getMsgBox();
 				if ($msgBox.length <= 0) {
 					setTimeout(initializeHotkey,1000);
 					return false;
 				}
+				$body.keydown(function(e) {
+					if ($(selector.holder).is(':visible')) {
+						if (e.which == 27) {	/* Press [Escape] */
+							toggleHolder('hide');
+							return false;
+						}
+					}
+				});
 				$msgBox.keydown(function(e) {
-					if ($(selector.holder).is(':visible') && !isContainUrl) {
+					if ($(selector.holder).is(':visible')) {
 						if (e.which == 13) {	/* Press [Enter] */
 							if (env.platform=='twitch') {
 								commitUsage();
@@ -3187,9 +3494,6 @@ var HHBJSONDATA,hhb;
 							return false;
 						} else if (e.which == 45) {	/* Press [Insert] */
 							insertSelectedIcon();
-							return false;
-						} else if (e.which == 27) {	/* Press [Escape] */
-							toggleHolder('hide');
 							return false;
 						} else if (e.which == 33) {	/* Press [PageUp] */
 							selectIconPrevPage();
@@ -3240,7 +3544,8 @@ var HHBJSONDATA,hhb;
 							return false;
 						}
 					}
-				});
+					
+				})
 			};
 			
 			/* Icon usage */
@@ -3297,7 +3602,7 @@ var HHBJSONDATA,hhb;
 			}
 			
 			if (isStatusInited('initEmoticon')) return false;
-			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initEmoticon');
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing Emoticon');
 			setLoadingStatus('initEmoticon','init');
 			initializeHotkey();
 			bindUIControl();
@@ -3441,7 +3746,7 @@ var HHBJSONDATA,hhb;
 				return olist;
 			};
 
-			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initNameBanner');
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing Name Banner');
 			setLoadingStatus('initNameBanner','init');
 			return analyzeNameBanner(nblist,nbcontrol);
 		};
@@ -3489,12 +3794,13 @@ var HHBJSONDATA,hhb;
 				
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Dark/Light Mode');
 				_gaTracker('core','success','Dark Mode - Activated',retryCount.bindDarkModeBtn);
+				activateFeature('darkmode');
 				retryCount.bindDarkModeBtn = 0;
 				setLoadingStatus('bindDarkModeBtn','complete');
 			};
 			
 			if (isStatusInited('initDarkMode')) return false;
-			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initDarkMode');
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing Dark Mode');
 			setLoadingStatus('initDarkMode','init');
 			bindDarkModeBtn();
 		};
@@ -3575,6 +3881,7 @@ var HHBJSONDATA,hhb;
 					checkIsBookmarked();
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Bookmark Button');
 					_gaTracker('core','success','Bookmark - Bind bookmark button',retryCount.bindBookmarkBtn);
+					activateFeature('bookmark');
 					retryCount.bindBookmarkBtn = 0;
 					setLoadingStatus('bindBookmarkBtn','complete');
 					return true;
@@ -3605,7 +3912,7 @@ var HHBJSONDATA,hhb;
 			}
 			
 			if (isStatusInited('initBookmark')) return false;
-			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initBookmark');
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing Bookmark');
 			setLoadingStatus('initBookmark','init');
 			bindBookmarkBtn();
 			bindPlayerBookmarkBtn();
@@ -3637,9 +3944,88 @@ var HHBJSONDATA,hhb;
 
 			if (isStatusInited('initIncomingParser')) return false;
 			setLoadingStatus('initIncomingParser','init');
-			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'initIncomingParser');
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing Incoming Parser');
 			parseIncoming();
 			setLoadingStatus('initIncomingParser','complete');
+		};
+		var initQuoter = function() {			
+			if (isStatusInited('initQuoter')) return false;
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing Quoter');
+			setLoadingStatus('initQuoter','init');
+			platformObj.bindQuoter();
+			debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Quoter');
+			_gaTracker('core','success','Quoter - Activated');
+			activateFeature('quoter');
+			setLoadingStatus('initQuoter','complete');
+		};
+		var initCloseBtn = function() {
+			var bindCloseBtn = function() {
+				if (retryCount.bindCloseBtn==0) setLoadingStatus('bindCloseBtn','init');
+				var $closeBtn = $(selector.closeBtn);
+				if ($closeBtn.length==0) {
+					setTimeout(function() { bindCloseBtn(); },delay.bindCloseBtn);
+					retryCount.bindCloseBtn++;
+					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Close Button Retry...');
+					setLoadingStatus('bindCloseBtn','retry');
+					return false;
+				}
+				/* Activate close button */
+				$closeBtn.click(function(e) {
+					_protected.toggleHolder('hide');
+				});
+				
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Close Button');
+				_gaTracker('core','success','Close Button - Activated',retryCount.bindCloseBtn);
+				activateFeature('close_btn');
+				retryCount.bindCloseBtn = 0;
+				setLoadingStatus('bindCloseBtn','complete');
+			};
+			
+			if (isStatusInited('initCloseBtn')) return false;
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing Close Button');
+			setLoadingStatus('initCloseBtn','init');
+			bindCloseBtn();
+		};
+		var initMsgCharsCounter = function() {
+			var activateMsgCharsCounter = function() {
+				if (retryCount.activateMsgCharsCounter==0) setLoadingStatus('activateMsgCharsCounter','init');
+				var $msgBox = platformObj.getMsgBox();
+				if ($msgBox.length <= 0) {
+					setTimeout(function() { activateMsgCharsCounter(); },delay.activateMsgCharsCounter);
+					retryCount.activateMsgCharsCounter++;
+					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Message Chars Counter Retry...');
+					setLoadingStatus('activateMsgCharsCounter','retry');
+					return false;
+				}
+				/* Activate msg chars counter */
+				$msgBox.keyup(function(e) {
+					msgLengthCheck($(this).val());
+				}).change(function(e) {
+					msgLengthCheck($(this).val());
+				});
+				var maxLength = platformObj.getMsgMaxLength();
+				var $msgCharsCounter = $('<div id="hhb-msg-chars-counter">').text('0 / '+ maxLength).insertAfter($('#hhb-button'));
+				var msgLengthCheck = function(_msg) {
+					_msg = _msg||'';
+					var s = (typeof convert_text == 'function' ? convert_text(_msg) : _msg);
+					var counterLength = (typeof countLength == 'function' ? countLength(s) : s.length);
+					$msgCharsCounter.text(counterLength +' / '+ maxLength);
+					if (counterLength > maxLength) $msgCharsCounter.addClass('max');
+					else  $msgCharsCounter.removeClass('max');
+				};
+				msgLengthCheck();
+				
+				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Message Chars Counter');
+				_gaTracker('core','success','Msg Chars Counter - Activated',retryCount.activateMsgCharsCounter);
+				activateFeature('msg_chars_counter');
+				retryCount.activateMsgCharsCounter = 0;
+				setLoadingStatus('activateMsgCharsCounter','complete');
+			};
+			
+			if (isStatusInited('initMsgCharsCounter')) return false;
+			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing Message Chars Counter');
+			setLoadingStatus('initMsgCharsCounter','init');
+			activateMsgCharsCounter();
 		};
 		
 		/* Shared Methods */
@@ -3651,6 +4037,7 @@ var HHBJSONDATA,hhb;
 			$form.find('#hhb-img')
 				.css('max-height',$preview.innerHeight()-parseInt($preview.css('padding-top'))-parseInt($preview.css('padding-bottom')))
 				.css('max-width',$preview.innerWidth()-parseInt($preview.css('padding-left'))-parseInt($preview.css('padding-right')));
+			var $imgSizerform = $(selector.imgSizerForm).outerHeight(iconsetHeight);
 		}
 		var bindIconListLocale = function() {
 			locale.bindLocale(settings.locale,null,function() {
@@ -3661,6 +4048,10 @@ var HHBJSONDATA,hhb;
 				$version.text(versionInfo.coreVersion)
 					.attr('title',locale.getLocaleMsg('info.last_update',[versionInfo.lastUpdate]));
 			});
+		}
+		var activateFeature = function(_feature) {
+			if ($.inArray(_feature,env.features) < 0) return false;
+			$('body').addClass('hhb-enable-'+_feature);
 		}
 		
 		var _gaTracker = function(category,action,label,value) {
