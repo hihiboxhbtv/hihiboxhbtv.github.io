@@ -214,6 +214,9 @@
 	overflow: scroll;
 	overflow-x: hidden;
 }
+.hhb-pf-hkgolden #hhb-genrelist {
+	height: 75px;
+}
 #hhb-genrelist .hhb-genre {
 	margin: 2px;
 	padding: 3px 5px;
