@@ -2425,24 +2425,25 @@ var HHBJSONDATA,hhb;
 					});
 					if (obj.alt&&obj.alt!='') obj.code.unshift(obj.alt);
 					var _ocode = [].concat(obj.code),_ncode = [],_tcode = [];
-					$.each(_ocode,function(idx,_code) { _code = _code.trim(); if ($.inArray(_code,_ncode)<0) { _ncode.push(_code); if (!_code.match(/\[img\][^\[]*\[\/img\]/ig)) _tcode.push(_code); } });
+					$.each(_ocode,function(idx,_code) { _code = _code.trim(); if ($.inArray(_code,_ncode)<0) _ncode.push(_code); });
 					if (_options.genre) obj.genre = (obj.genre||[]).concat(_options.genre);
 					var checkedCode = codeCheck(_ncode);
 					if (checkedCode.length == 0) {
 						dcodelist = dcodelist.concat(_ncode);
 						return true;
 					}
-					var code = checkedCode;
-					for (var i=0;i<code.length;i++) {
-						if (code[i]=='') {
-							code.splice(i,1);
+					var _final_code = checkedCode;
+					for (var i=0;i<_final_code.length;i++) {
+						if (_final_code[i]=='') {
+							_final_code.splice(i,1);
 							i--;
-						} else listIconLookup[code[i]] = obj;
+						} else listIconLookup[_final_code[i]] = obj;
 					}
+					$.each(_final_code,function(idx,_code) { _code = _code.trim(); if (!_code.match(/\[img\][^\[]*\[\/img\]/ig)) _tcode.push(_code); });
 					var src = (obj.src.match(/^https?/) ? '' : imgHost)+obj.src,
-						genre = (function(genre,code) { var tgenre=[]; if (genre) $.each(genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,code[0]),
-						usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[code[0]]) ? listUsage[code[0]] : {}),
-						alt = (obj.alt?obj.alt:(_ncode.length>0?_ncode[0] : '')).replace('"','&quot;'),
+						genre = (function(_genre,_code) { var tgenre=[]; if (_genre) $.each(_genre,function(idx,obj){ if($.inArray(obj,tgenre)<0) tgenre.push(obj); }); if (tgenre.length==0) tgenre.push(genreOther); if (listUsage[_code]) tgenre.push(genreRecent); return tgenre; })(obj.genre,_final_code[0]),
+						usage = $.extend({	count: 0, lastUsed: 0	},(listUsage[_final_code[0]]) ? listUsage[_final_code[0]] : {}),
+						alt = (obj.alt?obj.alt:(_final_code.length>0?_final_code[0] : '')).replace('"','&quot;'),
 						hkg_alt = (obj.hkg_alt? obj.hkg_alt : '[img]'+src+'[/img]'),
 						title = _tcode.join(", ").replace('"','&quot;'),
 						tstyle = '';
@@ -2451,11 +2452,11 @@ var HHBJSONDATA,hhb;
 					var	style = (tstyle!='') ? ' style="'+tstyle+'"' : '',
 						img = '<img src="'+src+'" title="'+title+'"'+style+' class="'+cssClass.msgIcon+((obj.height > limit.msgIconHeight) ? ' '+cssClass.resized : '')+'"/>',
 						re = "";
-					$.each(_ncode,function(idx2,code2) { re += (re!="" ? '|' : '')+code2.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); });
+					$.each(_final_code,function(idx2,code2) { re += (re!="" ? '|' : '')+code2.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"); });
 					var regex = new RegExp(re,'g');
 					obj.id = nextIconID;	nextIconID++;
 					obj.genre = genre;
-					obj.code = _ncode;
+					obj.code = _final_code;
 					obj.alt = alt;
 					obj.hkg_alt = hkg_alt;
 					obj.title = title;
