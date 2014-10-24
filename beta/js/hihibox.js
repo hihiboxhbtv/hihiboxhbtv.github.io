@@ -143,6 +143,7 @@ var HHBJSONDATA,hhb;
 				closeBtn: 'hhb-close'
 			},
 			cssClass: {
+				button: 'hhb-button',
 				inited: 'hhb-inited',
 				active: 'hhb-active',
 				genre: 'hhb-genre',
@@ -170,7 +171,7 @@ var HHBJSONDATA,hhb;
 				body: 'body',
 				holder: '#hhb-holder',
 				header: '#hhb-header',
-				button: '#hhb-button',
+				button: '.hhb-button',
 				playerBookmark: '#hhb-player-bookmark',
 				genreContainer: '#hhb-genrelist',
 				genreContainerGenre: '#hhb-genrelist .hhb-genre',
@@ -194,7 +195,8 @@ var HHBJSONDATA,hhb;
 				customIconForm: '#hhb-custom-icon-form',
 				imgSizerBtn: '#hhb-img-sizer',
 				imgSizerForm: '#hhb-img-sizer-form',
-				closeBtn: '#hhb-close'
+				closeBtn: '#hhb-close',
+				msgCharsCounterContainer: '#newmessage .hhb-button'
 			},
 			delay: {
 				analyzeBuiltinIcon: 200,
@@ -840,8 +842,8 @@ var HHBJSONDATA,hhb;
 				_platform.getButtonFront = function() {	return [];	};
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
-				_platform.genToggleButton = function(id) {
-					return $('<div id="'+id+'" class="icon-cog hoverG2" hhb-locale-title="{{info.name}}" title="HihiBox"></div>');
+				_platform.genToggleButton = function(_class) {
+					return $('<div class="'+_class+'" class="icon-cog hoverG2" hhb-locale-title="{{info.name}}" title="HihiBox"></div>');
 				};
 				_platform.onBindedToggleButton = function() {};
 				_platform.getShowChatBtn = function() {	return $(selector.showChatBtn);	};
@@ -1035,8 +1037,8 @@ var HHBJSONDATA,hhb;
 				_platform.getButtonFront = function() {	return $(selector.buttonFront);	};
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
-				_platform.genToggleButton = function(id) {
-					return $('<a id="'+id+'" class="button glyph-only" hhb-locale-title="{{info.name}}" title="HihiBox"></a>');
+				_platform.genToggleButton = function(_class) {
+					return $('<a class="'+_class+'" class="button glyph-only" hhb-locale-title="{{info.name}}" title="HihiBox"></a>');
 				};
 				_platform.onBindedToggleButton = function() {
 					var btnc = $('.chat-option-buttons').outerWidth();
@@ -1323,8 +1325,8 @@ var HHBJSONDATA,hhb;
 				_platform.getButtonFront = function() {	return [];	};
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
-				_platform.genToggleButton = function(id) {
-					return $('<a id="'+id+'" href="#"></a>');
+				_platform.genToggleButton = function(_class) {
+					return $('<a class="'+_class+'" href="#"></a>');
 				};
 				_platform.onBindedToggleButton = function() {
 					$('#chat_emotes_trigger').hide(0);
@@ -1597,8 +1599,8 @@ var HHBJSONDATA,hhb;
 				_platform.getButtonFront = function() {	return [];	};
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
-				_platform.genToggleButton = function(id) {
-					return $('<a id="'+id+'" href="#"></a>');
+				_platform.genToggleButton = function(_class) {
+					return $('<a class="'+_class+'" href="#"></a>');
 				};
 				_platform.onBindedToggleButton = function() {
 					$('#chat_emotes_trigger').hide(0);
@@ -1758,7 +1760,7 @@ var HHBJSONDATA,hhb;
 						darkModeAcceptor: 'body',
 						buttonContainer: '',
 						holderContainer: 'body',
-						buttonFront: ['a[href^="Javascript:bookmarkPost("]', '#ctl00_ContentPlaceHolder1_btn_Submit', '#ctl00_ContentPlaceHolder1_btn_Send'],
+						buttonFront: ['a[href^="Javascript:bookmarkPost("], a[href^="post.aspx?mt=Y"]', '#ctl00_ContentPlaceHolder1_btn_Submit, a[href^="post.aspx?mt=Y"]', '#ctl00_ContentPlaceHolder1_btn_Send'],
 						msgBox: '#ctl00_ContentPlaceHolder1_messagetext',
 						emoticon: 'span.emoticon'
 					}),
@@ -1784,8 +1786,8 @@ var HHBJSONDATA,hhb;
 					return [];
 				};
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
-				_platform.genToggleButton = function(id) {
-					return $('<div id="'+id+'" hhb-locale-title="{{info.name}}" title="HihiBox"></div>');
+				_platform.genToggleButton = function(_class) {
+					return $('<div class="'+_class+'" hhb-locale-title="{{info.name}}" title="HihiBox"></div>');
 				};
 				_platform.onBindedToggleButton = function() {};
 				_platform.getShowChatBtn = function() {	return [];	};
@@ -2754,7 +2756,7 @@ var HHBJSONDATA,hhb;
 				var $buttonCon = platformObj.getButtonContainer();
 				var $palButtonFront = platformObj.getButtonFront();
 				if (($buttonCon.length > 0)||($palButtonFront.length > 0)) {
-					var $palButton = platformObj.genToggleButton(id.button);
+					var $palButton = platformObj.genToggleButton(cssClass.button);
 					if ($palButtonFront.length > 0) $palButton.insertAfter($palButtonFront);
 					else $buttonCon.append($palButton);
 					platformObj.onBindedToggleButton();
@@ -4012,7 +4014,7 @@ var HHBJSONDATA,hhb;
 						msgLengthCheck($(this).val());
 					});
 					var maxLength = platformObj.getMsgMaxLength();
-					var $msgCharsCounter = $('<div id="hhb-msg-chars-counter">').text('0 / '+ maxLength).insertAfter($('#hhb-button'));
+					var $msgCharsCounter = $('<div id="hhb-msg-chars-counter">').text('0 / '+ maxLength).insertAfter($(selector.msgCharsCounterContainer));
 					var msgLengthCheck = function(_msg) {
 						_msg = _msg||'';
 						var s = (typeof convert_text == 'function' ? convert_text(_msg) : _msg);

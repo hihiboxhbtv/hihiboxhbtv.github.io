@@ -423,13 +423,13 @@ a:hover > .hhb-name-name {
 .hhb-darkmode .hhb-name-banner:hover {
 	box-shadow: 0px 0px 10px 1px rgba(255,255,255,1);
 }
-.hhb-pf-hitbox #hhb-button {
+.hhb-pf-hitbox .hhb-button {
 	top: 2.5em;
 	width: 34px;
 	height: 34px;
 }
-.hhb-pf-twitch #hhb-button {}
-.hhb-pf-justin #hhb-button {
+.hhb-pf-twitch .hhb-button {}
+.hhb-pf-justin .hhb-button {
 	width: 22px;
 	height: 22px;
 	display: block;
@@ -437,24 +437,24 @@ a:hover > .hhb-name-name {
 	bottom: 2px;
 	right: 2px;
 }
-.hhb-pf-hkgolden #hhb-button,
-.hhb-pf-hkgolden #hhb-button:hover {
+.hhb-pf-hkgolden .hhb-button,
+.hhb-pf-hkgolden .hhb-button:hover {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihibox_hkg.png');
 	display: inline-block;
 	width: 75px;
 	height: 24px;
 	margin-left: 4px;
 }
-#hhb-button {
+.hhb-button {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon.png');
 	background-repeat: no-repeat;
 	background-position: center;
 	cursor: pointer;
 }
-#hhb-button:hover {
+.hhb-button:hover {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon_hover.png');
 }
-#hhb-button:before {
+.hhb-button:before {
 	content: initial;
 }
 
