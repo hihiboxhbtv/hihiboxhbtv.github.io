@@ -395,13 +395,13 @@ var HHBJSONDATA,hhb;
 			listNameBanner = {},
 			nextGenreID = 1,
 			nextIconID = 1,
-			isBindingIcon = true,
 			isFiltering = false,
 			isContainUrl = false,
 			timerFilter = null,
 			timerCheckMsgInputUrl = null,
 			currFilterCodeHead = '',
-			bbCodeCount = 0;
+			bbCodeCount = 0,
+			holdIconListBinding = false;
 			
 		/* Public Variables */
 		_protected.cssClass = cssClass;
@@ -2065,6 +2065,7 @@ var HHBJSONDATA,hhb;
 			platformObj.initialize();
 			env.userid = platformObj.getUsername();
 			env.features = platformObj.getFeatures();
+			if (env.platform=='hkgolden') holdIconListBinding = true; /* HKGolden only */
 			debugMsg(DEBUG_ENV|DEBUG_ENV_SUCCESS,'Detected [',env,']');
 			_gaTracker('core','success','Initialize - Platform detected');
 			_gaTracker('env','platform',env.platform);
@@ -2566,7 +2567,7 @@ var HHBJSONDATA,hhb;
 			if (isStatusInited('initIconListData')) return false;
 			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing Icon List');
 			setLoadingStatus('initIconListData','init');
-			analyzePlatformIcon();
+			if (env.platform!='hkgolden') analyzePlatformIcon();
 			_protected.importGenre = function(_genrelist) { 		if (settings.enable_emotify) analyzeGenre(_genrelist); }
 			_protected.importBuiltinIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeBuiltinIcon(_iconlist); }
 			_protected.importChannelIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeChannelIcon(_iconlist); }
@@ -2894,9 +2895,10 @@ var HHBJSONDATA,hhb;
 				if (settings.enable_emotify) activateSortMode()			/* Activate sort mode */
 				refreshIconList();
 			};
-			var refreshIconList = function() {
-				version.genreList.pending++;
-				version.iconList.pending++;
+			var refreshIconList = function(_options) {
+				var _opts = $.extend({ updateGenre: true, updateIcon: true },_options);
+				if (_opts.updateGenre) version.genreList.pending++;
+				if (_opts.updateIcon) version.iconList.pending++;
 				bindGenreList();	/* list all HihiBox Genre */
 				bindIconList();	/* list all HihiBox icon */
 			};
@@ -2970,7 +2972,7 @@ var HHBJSONDATA,hhb;
 			};
 			var _procGenreList,_procIconList;
 			var Processor = function(_options) {
-				var options = $.extend({ list: [], process: function(idx,obj) {}, finish: function() {}, partition: 100, interval: 0 },_options);
+				var options = $.extend({ name: 'default', list: [], process: function(idx,obj) {}, finish: function() {}, partition: 100, interval: 0 },_options);
 				var _list = ($.isArray(options.list) ? options.list : []);
 				var _process = ($.isFunction(options.process) ? options.process : function(idx,obj) {});
 				var _finish = ($.isFunction(options.finish) ? options.finish : function(idx,obj) {});
@@ -3018,21 +3020,23 @@ var HHBJSONDATA,hhb;
 					return;
 				}
 				if (_procGenreList && _procGenreList.stop) _procGenreList.stop();
+				var _genreChildList = [];
 				_procGenreList = new Processor({
+					name: 'bindGenreList',
 					list: listGenre, partition: 100,
 					process: function(idx,obj) {
 						if (!obj.isParsed) return true;
-						$palGenre.append(
-							$('<div class="'+cssClass.genre+'" hhb-genre="'+obj.name+'">'+obj.name+'</div>')
-								.addClass(genreCategory[obj.category])
-								.data('hhb-object',obj)
-								.click(function() {
-									var genre = $(this).data('hhb-object');
-									selectGenre(genre.name);
-								})
-						);
+						var $genre = $('<div class="'+cssClass.genre+'" hhb-genre="'+obj.name+'">'+obj.name+'</div>')
+							.addClass(genreCategory[obj.category])
+							.data('hhb-object',obj)
+							.click(function() {
+								var genre = $(this).data('hhb-object');
+								selectGenre(genre.name);
+							});
+						_genreChildList.push($genre);
 					},
 					finish: function() {
+						$palGenre.append(_genreChildList);
 						version.genreList.current = version.genreList.pending;
 						version.sortGenre.pending++;
 						sortGenreList(true);
@@ -3040,7 +3044,9 @@ var HHBJSONDATA,hhb;
 					}
 				});
 			};
+			var _iconChildList = [];
 			var bindIconList = function() {
+				if (holdIconListBinding) return ;
 				if (version.iconList.current==version.iconList.pending) return;
 				var $palGenre = $(selector.genreContainer),
 					$palIconset = $(selector.iconset),
@@ -3054,7 +3060,8 @@ var HHBJSONDATA,hhb;
 				$palIconset.append($palIconMsgBox);
 				if (_procIconList && _procIconList.stop) _procIconList.stop();
 				_procIconList = new Processor({
-					list: listIcon, partition: 100, interval: 100,
+					name: 'bindIconList',
+					list: listIcon, partition: 20, interval: 100,
 					process: function(idx,obj) {
 						if (!obj.isParsed) return true;
 						if (obj.domObject) return true;
@@ -3089,8 +3096,8 @@ var HHBJSONDATA,hhb;
 									})
 							]);
 						obj.domObject = $icon.data('hhb-object',obj);
-						$palIconset.append($icon);
-						showIconMsg();
+						_iconChildList.push($icon);
+						showIconMsg({ isLoading: true, loadedCount: _iconChildList.length });
 					},
 					finish: function() {
 						/* Custom icon - manual add button */
@@ -3103,9 +3110,9 @@ var HHBJSONDATA,hhb;
 											_protected.initCustomIconForm();
 										})
 								).addClass('hhb-hide');
-						$palIconset.append($icon);
-						isBindingIcon = false;
+						$palIconset.append(_iconChildList);
 						$dom = null;
+						showIconMsg();
 						selectGenre('init');	/* select default genre */
 						version.iconList.current = version.iconList.pending;
 						debugMsg(DEBUG_RUNTIME|DEBUG_REFRESH,'Binded Icon List [I:',listIcon.length,']');
@@ -3138,6 +3145,10 @@ var HHBJSONDATA,hhb;
 				
 				sortGenreList(true);
 				sortIconList(true);
+				if (holdIconListBinding) {
+					holdIconListBinding = false;
+					refreshIconList({ updateGenre: false });
+				}
 				showIconMsg();
 			};
 			var toggleTimestamps = function(act) {
@@ -3265,21 +3276,23 @@ var HHBJSONDATA,hhb;
 				debugMsg(DEBUG_RUNTIME|DEBUG_SUCCESS,'Sort Icon List [M:',sortModeClass[settings.icon_sort_by],',V:',version.sort.current,',C:',$newOrder.length,',T:',timer.sort,']');
 				_gaTracker('core','success','Sort Icon List - Sorted');
 			};
-			var showIconMsg = function() {
-				var $icon = $(selector.iconsetIcon).filter(':not(.hhb-icon-button)');
-				var $sicon = $icon.filter(':visible');
-				var i=$icon.length, si=$sicon.length;
-				var delay = 3000, fidur = 0, fiop = 1, fodur = 400, foop = 0.3 ,fease = "easeOutQuad";
+			var showIconMsg = function(_options) {
+				var options = $.extend({ isLoading: false, loadedCount: 0 },_options);
+				var delay = 500, fidur = 0, fiop = 1, fodur = 400, foop = 0.3 ,fease = "easeOutQuad";
 				var $iconMsgBox = $(selector.iconMsgBox)
-									.mouseenter(function() { $(this).clearQueue().fadeTo(fidur,fiop,fease); })
-									.mouseleave(function() { $(this).clearQueue().delay(delay).fadeTo(fodur,foop,fease); });
+									.mouseenter(function() { $(this).addClass('focus'); /*clearQueue().fadeTo(fidur,fiop,fease);*/ })
+									.mouseleave(function() { $(this).removeClass('focus'); /*clearQueue().fadeTo(fodur,foop,fease);*/ });
 				
-				if (isBindingIcon) $iconMsgBox.text(['Loading...( ',i,' )'].join('')).clearQueue().show().fadeTo(fidur,fiop,fease);
-				else if (si > 0) 
-					if (isFiltering) $iconMsgBox.text(['Filtering...( ',si,'/',i,' )'].join('')).clearQueue().show().fadeTo(fidur,fiop,fease);
-					else $iconMsgBox.hide()
-				else $iconMsgBox.text('Icon not found').clearQueue().show().fadeTo(fidur,fiop,fease);
-				$iconMsgBox.filter(':visible').delay(delay).fadeTo(fodur,foop,fease);
+				if (options.isLoading) $iconMsgBox.text(['Loading...( ',options.loadedCount,' )'].join(''));
+				else {
+					var $icon = $(selector.iconsetIcon).filter(':not(.hhb-icon-button)');
+					var $sicon = $icon.filter(':visible');
+					var i=$icon.length, si=$sicon.length;
+					if (si > 0) {
+						if (isFiltering) $iconMsgBox.text(['Filtering...( ',si,'/',i,' )'].join(''));
+						else $iconMsgBox.text(['Selected Genre...( ',si,'/',i,' )'].join(''));
+					} else $iconMsgBox.text('Icon not found');
+				}
 			};
 			var insertIcon = function(obj) {
 				var msg = platformObj.getMsgInput();
@@ -3991,37 +4004,44 @@ var HHBJSONDATA,hhb;
 			var activateMsgCharsCounter = function() {
 				if (retryCount.activateMsgCharsCounter==0) setLoadingStatus('activateMsgCharsCounter','init');
 				var $msgBox = platformObj.getMsgBox();
-				if ($msgBox.length <= 0) {
+				if ($msgBox.length > 0) {
+					/* Activate msg chars counter */
+					$msgBox.keyup(function(e) {
+						msgLengthCheck($(this).val());
+					}).change(function(e) {
+						msgLengthCheck($(this).val());
+					});
+					var maxLength = platformObj.getMsgMaxLength();
+					var $msgCharsCounter = $('<div id="hhb-msg-chars-counter">').text('0 / '+ maxLength).insertAfter($('#hhb-button'));
+					var msgLengthCheck = function(_msg) {
+						_msg = _msg||'';
+						var s = (typeof convert_text == 'function' ? convert_text(_msg) : _msg);
+						var counterLength = (typeof countLength == 'function' ? countLength(s) : s.length);
+						$msgCharsCounter.text(counterLength +' / '+ maxLength);
+						if (counterLength > maxLength) $msgCharsCounter.addClass('max');
+						else  $msgCharsCounter.removeClass('max');
+					};
+					msgLengthCheck();
+					
+					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Message Chars Counter');
+					_gaTracker('core','success','Msg Chars Counter - Activated',retryCount.activateMsgCharsCounter);
+					activateFeature('msg_chars_counter');
+					retryCount.activateMsgCharsCounter = 0;
+					setLoadingStatus('activateMsgCharsCounter','complete');
+					return true;
+				}
+				if (retryCount.activateMsgCharsCounter < limit.activateMsgCharsCounter) {
 					setTimeout(function() { activateMsgCharsCounter(); },delay.activateMsgCharsCounter);
 					retryCount.activateMsgCharsCounter++;
 					debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Activating Message Chars Counter Retry...');
 					setLoadingStatus('activateMsgCharsCounter','retry');
-					return false;
+				} else {
+					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Activating Message Chars Counter Failed!');
+					_gaTracker('core','fail','Msg Chars Counter - Activating');
+					setLoadingStatus('activateMsgCharsCounter','fail');
 				}
-				/* Activate msg chars counter */
-				$msgBox.keyup(function(e) {
-					msgLengthCheck($(this).val());
-				}).change(function(e) {
-					msgLengthCheck($(this).val());
-				});
-				var maxLength = platformObj.getMsgMaxLength();
-				var $msgCharsCounter = $('<div id="hhb-msg-chars-counter">').text('0 / '+ maxLength).insertAfter($('#hhb-button'));
-				var msgLengthCheck = function(_msg) {
-					_msg = _msg||'';
-					var s = (typeof convert_text == 'function' ? convert_text(_msg) : _msg);
-					var counterLength = (typeof countLength == 'function' ? countLength(s) : s.length);
-					$msgCharsCounter.text(counterLength +' / '+ maxLength);
-					if (counterLength > maxLength) $msgCharsCounter.addClass('max');
-					else  $msgCharsCounter.removeClass('max');
-				};
-				msgLengthCheck();
 				
-				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Message Chars Counter');
-				_gaTracker('core','success','Msg Chars Counter - Activated',retryCount.activateMsgCharsCounter);
-				activateFeature('msg_chars_counter');
-				retryCount.activateMsgCharsCounter = 0;
-				setLoadingStatus('activateMsgCharsCounter','complete');
-			};
+			}
 			
 			if (isStatusInited('initMsgCharsCounter')) return false;
 			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing Message Chars Counter');

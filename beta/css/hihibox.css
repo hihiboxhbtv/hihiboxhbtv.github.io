@@ -208,7 +208,7 @@
 #hhb-genrelist {
 	padding: 3px 0px;
 	width: 100%;
-	height: 52px;
+	height: 50px;
 	font-size: 12px;
 	border-top: 1px solid #EEEEEE;
 	overflow: scroll;
@@ -330,6 +330,14 @@
 	font-size: 10px;
 	cursor: pointer;
 	z-index: 50;
+	opacity: 0.3;
+	-webkit-transition: opacity 0.4s;
+	transition: opacity 0.4s;
+}
+#hhb-iconset #hhb-msgbox.focus {
+	opacity: 0.9;
+	-webkit-transition: opacity 0.4s;
+	transition: opacity 0.4s;
 }
 .hhb-msg:before { content: ' '; }
 .hhb-msgicon {
