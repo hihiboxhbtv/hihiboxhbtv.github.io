@@ -622,7 +622,6 @@ var HHBJSONDATA,hhb;
 									$('#'+bbcid).attr('src',$(this).attr('src'));
 									var $img = $('#'+bbcid);
 									_protected.scrollToBottom();
-									if ($imgTags.length>0 && _protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
 								}).error(function() {
 									var $img = $('#'+bbcid);
 									var $imgTags = $img.parents('.hhb-bbcode-img-tag');
@@ -2288,7 +2287,6 @@ var HHBJSONDATA,hhb;
 				setLoadingStatus('analyzeCustomIcon','complete');
 				retryCount.analyzeCustomIcon = 0;
 				refreshList(true);
-				if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Custom Icon Succeed!');
 				_gaTracker('core','success','Icon List - Load custom icon',analyzediconlist.length);
 			};
@@ -2523,7 +2521,6 @@ var HHBJSONDATA,hhb;
 									isCustom: true
 								};
 					_protected.importCustomIcon([icon]);
-					if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
 					debugMsg(DEBUG_RUNTIME,'addCustomIcon',code,url,meta);
 					if (!skipMessage) sendMessage({addCustomIcon: { code: icon.code, src: icon.src }},function(response) {});
 				}
@@ -2555,11 +2552,10 @@ var HHBJSONDATA,hhb;
 			var removeCustomIcon = function(url,skipMessage) {
 				var obj = listCustomIconLookup[url];
 				if (obj.code) $.each(obj.code,function(idx,code) { delete listIconLookup[code]; });
-				obj.domObject.detach();
+				obj.domObject.remove();
 				for (var i=0;i<listIcon.length;i++) { if (listIcon[i].src!=url) continue; listIcon.splice(i,1); i--; };
 				$.each(obj.code,function(idx,code) { delete listIconLookup[code]; });
 				delete listCustomIconLookup[url];
-				if (_protected.bindCustomIconImgTag) _protected.bindCustomIconImgTag();
 				if (_protected.showIconMsg) _protected.showIconMsg();
 				debugMsg(DEBUG_RUNTIME,'removeCustomIcon',url);
 				if (!skipMessage) sendMessage({removeCustomIcon: { src: obj.src }},function(response) {});
@@ -3104,7 +3100,9 @@ var HHBJSONDATA,hhb;
 					},
 					finish: function() {
 						/* Custom icon - manual add button */
-						var $icon = $('<div class="'+cssClass.icon+' custom hhb-icon-button" hhb-genre="Custom"></div>')
+						var $icon = $(selector.icon+'.custom.hhb-icon-button');
+						if (!($icon && $icon.length > 0)) {
+							$icon = $('<div class="'+cssClass.icon+' custom hhb-icon-button" hhb-genre="Custom"></div>')
 								.append(
 									$('<div class="hhb-custom-icon-btn hhb-custom-icon-add" hhb-locale-title="{{iconlist.custom_icon.manual_add}}" title="Manual Add Custom Icon">')
 										.attr('title',locale.getLocaleMsg('iconlist.custom_icon.manual_add'))
@@ -3113,7 +3111,9 @@ var HHBJSONDATA,hhb;
 											_protected.initCustomIconForm();
 										})
 								).addClass('hhb-hide');
-						$palIconset.append(_iconChildList).append($icon);
+						}
+						$palIconset.append(_iconChildList).append($icon);_iconChildList = [];
+						
 						$dom = null;
 						showIconMsg();
 						selectGenre('init');	/* select default genre */
@@ -3607,16 +3607,6 @@ var HHBJSONDATA,hhb;
 				}
 			};
 			
-			/* Custom Icon */
-			var bindCustomIconImgTag = function() {
-				var $imgTag = $('.hhb-bbcode-img-tag');
-				$imgTag.each(function() {
-					var src = $(this).attr('hhb-src');
-					if (listCustomIconLookup[src]) $(this).addClass('hhb-custom-icon');
-					else $(this).removeClass('hhb-custom-icon');
-				});
-			}
-			
 			if (isStatusInited('initEmoticon')) return false;
 			debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Initializing Emoticon');
 			setLoadingStatus('initEmoticon','init');
@@ -3625,7 +3615,6 @@ var HHBJSONDATA,hhb;
 			_protected.toggleHolder = toggleHolder;
 			_protected.refreshIconList = refreshIconList;
 			_protected.showIconMsg = showIconMsg;
-			_protected.bindCustomIconImgTag = bindCustomIconImgTag;
 		};
 		var initNameBanner = function(nblist,nbcontrol) {
 			if (!nblist || !nbcontrol) return false;
@@ -4133,62 +4122,7 @@ var HHBJSONDATA,hhb;
 		return this;
 	};
 	
-	$(document).ready(function() {
-		function detectExtension(extensionId, path, callback) { 
-			var img; 
-			img = new Image(); 
-			img.src = "chrome-extension://" + extensionId + path; 
-			img.onload = function() { callback(true); }; 
-			img.onerror = function() { callback(false); }; 
-		}
-		detectExtension('eoiappopphdcceickjphgaaidacdkidi', '/css/images/animated-overlay.gif',
-			function(installed) {
-				//console.log('detectExtension',installed);
-				return true; /* debug */
-				if (!installed) {
-					$(	'<div id="hhb-update-reminder">'+
-							'<style>'+
-								'#hhb-update-reminder {'+
-									'position:absolute;top:0px;right:0px;z-index: 9999;'+
-									'padding: 0px;font-size: 12px;'+
-									'background-color: rgba(8,112,45,0.8);'+
-								'}'+
-								'#hhb-update-reminder,'+
-								'#hhb-update-reminder * {'+
-									'-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;'+
-								'}'+
-								'#hhb-update-reminder div.close {'+
-									'display: inline-block;cursor:pointer;'+
-									'padding: 10px 15px;margin: 2px 10px 0px 0px;'+
-									'border-right: 1px solid #cccccc;'+
-								'}'+
-								'body.hhb-pf-twitch #hhb-update-reminder div.close {'+
-									'padding: 8px 15px;'+
-								'}'+
-								'#hhb-update-reminder div.close:before { content: "x"; }'+
-								'#hhb-update-reminder a,'+
-								'#hhb-update-reminder div.close {'+
-									'color: #FFFFFF;'+
-								'}'+
-								'#hhb-update-reminder a:hover .text,'+
-								'#hhb-update-reminder div.close:hover { color:#8FBF00; }'+
-								'#hhb-update-reminder a .text {'+
-									'display:inline-block;padding: 10px 10px 0px 20px;font-size: 12px;'+
-								'}'+
-								'#hhb-update-reminder a .logo {'+
-									'width:36px;height:36px;float:right'+
-								'}'+
-							'</style>'+
-							'<a href="https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi" target="_hihibox">'+
-								'<div class="text">請按此下載HihiBox 完全版</div>'+
-								'<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/t1.0-1/p50x50/10342775_552261241551569_504391291480808308_t.png" class="logo">'+
-							'</a>'+
-						'</div>'
-					).prepend($('<div class="close">').click(function() { $('#hhb-update-reminder').detach(); }))
-					.appendTo('body');
-				}
-			});
-			
+	$(document).ready(function() {			
 		/* Google Analytics */
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
