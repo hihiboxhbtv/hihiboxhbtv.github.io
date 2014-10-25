@@ -5,24 +5,38 @@
 		"developer": ["Lemon", "希治閣"],
 		"specialThanks": ["VannZic"]
 	},
-	"lastExtensionVersion": "v3.0",
-	"lastRelease": "2014-10-08",
-	"lastSummary": "[概要] 新增自訂表情, 一鍵引用, 圖片顯示尺寸設定 及 雨傘系列 並優化書籤同步功能",
+	"lastExtensionVersion": "v4.0",
+	"lastRelease": "2014-10-26",
+	"lastSummary": "[概要] 精選多項實用功能支援HKGolden.com, 並新增水彩, 草泥馬系列icon",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v3.0.1",
-	"lastUpdate": "2014-10-12",
+	"coreVersion": "v4.0.0",
+	"lastUpdate": "2014-10-26",
 	"history": [
+		{
+			"version": "v4.0",
+			"lastUpdate": "2014-10-26",
+			"summary": [
+				"[概要] 精選多項實用功能支援HKGolden.com, 並新增水彩, 草泥馬系列icon"
+			],
+			"detail": [
+				"[新增] 多項精選功能 (追加支援HKGolden.com)",
+				"[新增] 訊息長度計功能 (HKGolden.com)",
+				"[新增] 水彩, 草泥馬系列icon",
+				"[優化] [IMG] 選取介面更新",
+				"[修正] HihiBox v3.0 相關錯誤修正"
+			]
+		},
 		{
 			"version": "v3.0.1",
 			"lastUpdate": "2014-10-12",
 			"summary": [
-				"[概要] 新增圖片顯示尺寸設定 及 雨傘系列"
+				"[概要] 新增圖片顯示尺寸設定 及 雨傘系列icon"
 			],
 			"detail": [
 				"[新增] 圖片顯示尺寸設定",
-				"[新增] 雨傘系列"
+				"[新增] 雨傘系列icon"
 			]
 		},
 		{
@@ -164,7 +178,7 @@
 				"[新增] 本機儲存表情使用記錄, 所選分類, Dark mode 開關及排序方式等資料",
 				"[新增] 表情篩選功能相關訊息",
 				"[新增] 自定義name banner, 管理員徽章",
-				"[新增] Pixel, 食鬼, 聖誕, 北極, 口罩系列",
+				"[新增] Pixel, 食鬼, 聖誕, 北極, 口罩系列icon",
 				"[優化] 沿用當前平台轉換表情之方法",
 				"[優化] 點擊後顯示表情原圖大小",
 				"[優化] 需時較長功能的觸發方式",
@@ -201,8 +215,8 @@
 				"[新增] icon 一覽表, 可點選圖示即時輸入",
 				"[改善] icon 代碼說明 (將游標移至icon 上顯示)",
 				"[改善] 某些較大的icon 會被限制其闊度 (可於圖上點擊放大)",
-				"[新增] icon 禿伯, 小丑, 腦魔系列",
-				"[修正] icon pkmon 系列"
+				"[新增] 禿伯, 小丑, 腦魔系列icon",
+				"[修正] pkmon 系列icon"
 			]
 		},
 		{
@@ -212,7 +226,7 @@
 				"[概要] 新增icon"
 				],
 			"detail": [
-				"[新增] icon pkmon 系列",
+				"[新增] pkmon 系列icon",
 				"[新增] 數個特別icon"
 			]
 		},

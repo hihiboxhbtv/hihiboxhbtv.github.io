@@ -28,6 +28,16 @@
 	-webkit-box-sizing:border-box;
 	font-family: Roboto, sans-serif;
 }
+.hhb-pf-hkgolden #hhb-holder {
+	position: fixed;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: initial;
+	height: initial !important;
+	min-width: 350px;
+	width: 20%;
+}
 #hhb-holder.ui-state-disabled {
 	opacity: initial;
 }
@@ -142,15 +152,13 @@
 #hhb-header #hhb-sortmode.funcIcon.usage { background-image: url('http://hihiboxhbtv.github.io/images/sort_usage.png'); }
 #hhb-header #hhb-sortmode.funcIcon.recent { background-image: url('http://hihiboxhbtv.github.io/images/sort_recent.png'); }
 
-#hhb-header #hhb-reset.funcIcon { background-image: url('http://hihiboxhbtv.github.io/images/reset.png'); }
-#hhb-header #hhb-reset.funcIcon:hover { background-image: url('http://hihiboxhbtv.github.io/images/reset.png'); }
-
 #hhb-header #hhb-bookmark.funcIcon:before { content: '\e804'; }
 #hhb-header #hhb-bookmark.funcIcon.isBookmarked:before { content: '\e803'; } 
 
 #hhb-header #hhb-bbcode.funcIcon:before { content: '\e80f'; }
 
 /* Popup toggle */
+.hhb-pf-hkgolden #hhb-header #hhb-popup.funcIcon { display: none; }
 #hhb-header #hhb-popup.funcIcon:before { content: '\e802'; }
 #hhb-holder.hhb-draggable #hhb-popup.funcIcon:before { content: '\e805'; }
 
@@ -200,11 +208,14 @@
 #hhb-genrelist {
 	padding: 3px 0px;
 	width: 100%;
-	height: 52px;
+	height: 50px;
 	font-size: 12px;
 	border-top: 1px solid #EEEEEE;
 	overflow: scroll;
 	overflow-x: hidden;
+}
+.hhb-pf-hkgolden #hhb-genrelist {
+	height: 75px;
 }
 #hhb-genrelist .hhb-genre {
 	margin: 2px;
@@ -319,6 +330,14 @@
 	font-size: 10px;
 	cursor: pointer;
 	z-index: 50;
+	opacity: 0.3;
+	-webkit-transition: opacity 0.4s;
+	transition: opacity 0.4s;
+}
+#hhb-iconset #hhb-msgbox.focus {
+	opacity: 0.9;
+	-webkit-transition: opacity 0.4s;
+	transition: opacity 0.4s;
 }
 .hhb-msg:before { content: ' '; }
 .hhb-msgicon {
@@ -404,23 +423,20 @@ a:hover > .hhb-name-name {
 .hhb-darkmode .hhb-name-banner:hover {
 	box-shadow: 0px 0px 10px 1px rgba(255,255,255,1);
 }
-.hhb-pf-hitbox #hhb-button {
-	background: url('http://hihiboxhbtv.github.io/images/hihiicon.png');
-	background-repeat: no-repeat;
-	background-position: center;
+.hhb-button {
+	display: inline-block;
+}
+.hhb-pf-hitbox .hhb-button {
 	top: 2.5em;
 	width: 34px;
 	height: 34px;
 }
-.hhb-pf-twitch #hhb-button {
-	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon.png');
-	background-repeat: no-repeat;
-	background-position: center;
+.hhb-pf-twitch .hhb-button {
+	padding: 0px 10px;
+	width: 24px;
+	height: 24px;
 }
-.hhb-pf-justin #hhb-button {
-	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon.png');
-	background-repeat: no-repeat;
-	background-position: center;
+.hhb-pf-justin .hhb-button {
 	width: 22px;
 	height: 22px;
 	display: block;
@@ -428,10 +444,38 @@ a:hover > .hhb-name-name {
 	bottom: 2px;
 	right: 2px;
 }
-#hhb-button:hover {
+.hhb-pf-hkgolden .hhb-button,
+.hhb-pf-hkgolden .hhb-button:hover {
+	background-image: url('http://hihiboxhbtv.github.io/images/hihibox_hkg.png');
+	width: 75px;
+	height: 24px;
+	margin-left: 4px;
+}
+.hhb-pf-hkgolden #newmessage .hhb-button,
+.hhb-pf-hkgolden #newmessage .hhb-button:hover {
+	background-image: url('http://hihiboxhbtv.github.io/images/hihibox_hkg_new.png');
+	width: 75px;
+	height: 24px;
+	margin-left: 4px;
+}
+.hhb-pf-hkgolden .repliers_right .hhb-button,
+.hhb-pf-hkgolden .repliers_right .hhb-button:hover {
+	background-image: url('http://hihiboxhbtv.github.io/images/hihibox_hkg_open.png');
+	width: 89px;
+	height: 22px;
+	margin-bottom: -7px;
+	margin-left: 5px;
+}
+.hhb-button {
+	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+}
+.hhb-button:hover {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon_hover.png');
 }
-#hhb-button:before {
+.hhb-button:before {
 	content: initial;
 }
 
@@ -470,21 +514,20 @@ a:hover > .hhb-name-name {
 #hhb-header #hhb-bbcode.funcIcon { display: none; }
 .hhb-enable-bbcode #hhb-header #hhb-bbcode.funcIcon { display: inline-block; }
 
-/* [S:2014-09-08] - Enable Emotify */
-.hhb-enable-emotify #hhb-holder { height: 300px; }
-#hhb-header #hhb-sortmode.funcIcon { display: none; }
-.hhb-enable-emotify #hhb-header #hhb-sortmode.funcIcon { display: inline-block; }
-#hhb-genrelist, #hhb-iconset { display: none; }
-.hhb-enable-emotify #hhb-genrelist, .hhb-enable-emotify #hhb-iconset { display: block; }
+/* [S:2014-09-08] - Enable Emoticon */
+#hhb-header #hhb-sortmode.funcIcon, #hhb-genrelist, #hhb-iconset { display: none; }
+.hhb-enable-emoticon #hhb-holder { height: 300px; }
+.hhb-enable-emoticon #hhb-header #hhb-sortmode.funcIcon { display: inline-block; }
+.hhb-enable-emoticon #hhb-genrelist, .hhb-enable-emoticon #hhb-iconset { display: block; }
 
 /* [S:2014-09-08] - Custom Icon */
-.hhb-enable-emotify.hhb-enable-bbcode #hhb-iconset .hhb-icon.custom,
-.hhb-enable-emotify.hhb-enable-bbcode #hhb-iconset .hhb-icon.custom.hhb-icon-button:hover  {
+.hhb-enable-emoticon.hhb-enable-bbcode #hhb-iconset .hhb-icon.custom,
+.hhb-enable-emoticon.hhb-enable-bbcode #hhb-iconset .hhb-icon.custom.hhb-icon-button:hover  {
 	margin-top: 15px;
 	margin-left: 15px;
 }
-.hhb-enable-emotify.hhb-enable-bbcode #hhb-iconset .hhb-icon.hhb-filter-selected.custom:hover,
-.hhb-enable-emotify.hhb-enable-bbcode #hhb-iconset .hhb-icon.custom:hover {
+.hhb-enable-emoticon.hhb-enable-bbcode #hhb-iconset .hhb-icon.hhb-filter-selected.custom:hover,
+.hhb-enable-emoticon.hhb-enable-bbcode #hhb-iconset .hhb-icon.custom:hover {
 	margin-top: 14px;
 	margin-left: 14px;
 }
@@ -527,9 +570,9 @@ a:hover > .hhb-name-name {
 .hhb-custom-icon-add:before {	content: "\e808";	}
 .hhb-custom-icon-modify:before {	content: "\e80b";	}
 .hhb-custom-icon-remove:before {	content: "\e80e";	}
-.hhb-enable-emotify.hhb-enable-bbcode .hhb-bbcode-img-tag:not(.hhb-custom-icon):hover .hhb-custom-icon-add, 
-.hhb-enable-emotify.hhb-enable-bbcode #hhb-iconset .hhb-icon:hover .hhb-custom-icon-remove { display: inline-block; }
-.hhb-enable-emotify.hhb-enable-bbcode #hhb-iconset .hhb-icon:hover .hhb-custom-icon-modify { display: inline-block; }
+.hhb-enable-emoticon.hhb-enable-bbcode .hhb-bbcode-img-tag:not(.hhb-custom-icon):hover .hhb-custom-icon-add, 
+.hhb-enable-emoticon.hhb-enable-bbcode #hhb-iconset .hhb-icon:hover .hhb-custom-icon-remove { display: inline-block; }
+.hhb-enable-emoticon.hhb-enable-bbcode #hhb-iconset .hhb-icon:hover .hhb-custom-icon-modify { display: inline-block; }
 #hhb-iconset .hhb-icon.hhb-icon-button {
 	margin: 0px 0px 0px 20px;
 	padding: 0px;
@@ -701,12 +744,13 @@ a:hover > .hhb-name-name {
 	height: 30px;
 	padding: 10px;
 	font-size: 12px;
+	color: #EEEEEE;
 }
 #slider-img-max-height {
 	left: 0px;
-	top: 20px;
 	bottom: 70px;
 	width: 5px;
+	height: 90%;
 	max-height: 100px;
 }
 #slider-img-max-width {
@@ -744,4 +788,50 @@ a:hover > .hhb-name-name {
 #slider-img-max-width.ui-widget-content,
 #slider-img-max-width .ui-slider-handle {
 	cursor: w-resize;
+}
+
+/* [S: 2014-10-13] - Features */
+#hhb-header #hhb-bookmark.funcIcon,
+#hhb-header #hhb-darkmode.funcIcon,
+.hhb-pf-hkgolden #hhb-header #hhb-img-sizer.funcIcon { display: none; }
+.hhb-enable-bookmark #hhb-header #hhb-bookmark.funcIcon { display: inline-block; }
+.hhb-enable-darkmode #hhb-header #hhb-darkmode.funcIcon { display: inline-block; }
+
+/* [S: 2014-10-17] - IMG selector */
+#hhb-img-selector {
+	position: absolute;
+	z-index: 10;
+}
+#hhb-img-holder {
+	position: relative;
+	background-color: rgb(20,150,150);
+	border: 1px solid #111111;
+	border-radius:5px;
+	padding: 5px;
+}
+.hhb-darkmode #hhb-img-holder {
+	border: 1px solid #EEEEEE;
+}
+#hhb-img-holder .hhb-bbcode-img {
+	margin-top: 0px;
+}
+#hhb-img-custom-icon-add {
+	position: absolute;
+	left: initial;
+	bottom: -10px;
+	right: -10px;
+	display:block;
+}
+/* [S: 2014-10-20] - Close Btn */
+#hhb-header #hhb-close.funcIcon:before { content: '\e80e'; }
+#hhb-header #hhb-close.funcIcon { display: none; padding-right: 2px; }
+.hhb-enable-close_btn #hhb-header #hhb-close.funcIcon { display: inline-block; }
+
+/* [S: 2014-10-20] - Msg chars counter */
+#hhb-msg-chars-counter {
+	display: inline-block;
+	margin-left: 4px;
+}
+#hhb-msg-chars-counter.max {
+	color: #FF0000;
 }
