@@ -445,6 +445,21 @@ a:hover > .hhb-name-name {
 	height: 24px;
 	margin-left: 4px;
 }
+.hhb-pf-hkgolden #newmessage .hhb-button,
+.hhb-pf-hkgolden #newmessage .hhb-button:hover {
+	background-image: url('http://hihiboxhbtv.github.io/images/hihibox_hkg_new.png');
+	width: 75px;
+	height: 24px;
+	margin-left: 4px;
+}
+.hhb-pf-hkgolden .repliers_right .hhb-button,
+.hhb-pf-hkgolden .repliers_right .hhb-button:hover {
+	background-image: url('http://hihiboxhbtv.github.io/images/hihibox_hkg_open.gif');
+	width: 89px;
+	height: 22px;
+	margin-bottom: -7px;
+	margin-left: 5px;
+}
 .hhb-button {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon.png');
 	background-repeat: no-repeat;
