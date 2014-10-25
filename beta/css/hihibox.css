@@ -423,12 +423,19 @@ a:hover > .hhb-name-name {
 .hhb-darkmode .hhb-name-banner:hover {
 	box-shadow: 0px 0px 10px 1px rgba(255,255,255,1);
 }
+.hhb-button {
+	display: inline-block;
+}
 .hhb-pf-hitbox .hhb-button {
 	top: 2.5em;
 	width: 34px;
 	height: 34px;
 }
-.hhb-pf-twitch .hhb-button {}
+.hhb-pf-twitch .hhb-button {
+	padding: 0px 10px;
+	width: 24px;
+	height: 24px;
+}
 .hhb-pf-justin .hhb-button {
 	width: 22px;
 	height: 22px;
@@ -440,7 +447,6 @@ a:hover > .hhb-name-name {
 .hhb-pf-hkgolden .hhb-button,
 .hhb-pf-hkgolden .hhb-button:hover {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihibox_hkg.png');
-	display: inline-block;
 	width: 75px;
 	height: 24px;
 	margin-left: 4px;
@@ -454,7 +460,7 @@ a:hover > .hhb-name-name {
 }
 .hhb-pf-hkgolden .repliers_right .hhb-button,
 .hhb-pf-hkgolden .repliers_right .hhb-button:hover {
-	background-image: url('http://hihiboxhbtv.github.io/images/hihibox_hkg_open.gif');
+	background-image: url('http://hihiboxhbtv.github.io/images/hihibox_hkg_open.png');
 	width: 89px;
 	height: 22px;
 	margin-bottom: -7px;
