@@ -3113,7 +3113,7 @@ var HHBJSONDATA,hhb;
 											_protected.initCustomIconForm();
 										})
 								).addClass('hhb-hide');
-						$palIconset.append(_iconChildList);
+						$palIconset.append(_iconChildList).append($icon);
 						$dom = null;
 						showIconMsg();
 						selectGenre('init');	/* select default genre */
