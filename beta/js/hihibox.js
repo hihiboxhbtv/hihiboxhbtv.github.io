@@ -3560,8 +3560,7 @@ var HHBJSONDATA,hhb;
 							return false;
 						}
 					}
-					
-				})
+				});
 			};
 			
 			/* Icon usage */
