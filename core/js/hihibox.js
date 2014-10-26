@@ -2971,9 +2971,11 @@ var HHBJSONDATA,hhb;
 			};
 			var _procGenreList,_procIconList;
 			var Processor = function(_options) {
-				var options = $.extend({ name: 'default', list: [], process: function(idx,obj) {}, finish: function() {}, partition: 100, interval: 0 },_options);
+				var options = $.extend({ name: 'default', list: [], process: function(idx,obj) {}, batch_done: function() {}, done: function() {}, finish: function() {}, partition: 100, interval: 0 },_options);
 				var _list = ($.isArray(options.list) ? options.list : []);
 				var _process = ($.isFunction(options.process) ? options.process : function(idx,obj) {});
+				var _batch_done = ($.isFunction(options.batch_done) ? options.batch_done : function() {});
+				var _done = ($.isFunction(options.done) ? options.done : function() {});
 				var _finish = ($.isFunction(options.finish) ? options.finish : function(idx,obj) {});
 				var _starttime=0,_endtime=0;
 				var _count = _list.length;
@@ -2997,13 +2999,16 @@ var HHBJSONDATA,hhb;
 				};
 				_sub_process = function() {
 					if (_stop || _count<=0) return stop();
+					var _this = this;
 					isProcessing = true;
 					var _next = (_curr+_partition<_count) ? _curr+_partition : _count;
 					var _plist = _list.slice(_curr,_next);
 					$.each(_plist,_process);
+					_batch_done.apply(_this);
 					_curr = _next;
 					if (_curr==_count) {
-						_finish.apply(this);
+						_done.apply(_this);
+						setTimeout(function() { _finish.apply(_this); },_interval);
 						stop();
 						return false;
 					}
@@ -3096,7 +3101,12 @@ var HHBJSONDATA,hhb;
 							]);
 						obj.domObject = $icon.data('hhb-object',obj);
 						_iconChildList.push($icon);
+					},
+					batch_done: function() {
 						showIconMsg({ isLoading: true, loadedCount: _iconChildList.length });
+					},
+					done: function() {
+						showIconMsg({ isBinding: true, loadedCount: _iconChildList.length });
 					},
 					finish: function() {
 						/* Custom icon - manual add button */
@@ -3115,7 +3125,6 @@ var HHBJSONDATA,hhb;
 						$palIconset.append(_iconChildList).append($icon);_iconChildList = [];
 						
 						$dom = null;
-						showIconMsg();
 						selectGenre('init');	/* select default genre */
 						version.iconList.current = version.iconList.pending;
 						debugMsg(DEBUG_RUNTIME|DEBUG_REFRESH,'Binded Icon List [I:',listIcon.length,']');
@@ -3280,13 +3289,14 @@ var HHBJSONDATA,hhb;
 				_gaTracker('core','success','Sort Icon List - Sorted');
 			};
 			var showIconMsg = function(_options) {
-				var options = $.extend({ isLoading: false, loadedCount: 0 },_options);
+				var options = $.extend({ isLoading: false, loadedCount: 0, isBinding: false },_options);
 				var delay = 500, fidur = 0, fiop = 1, fodur = 400, foop = 0.3 ,fease = "easeOutQuad";
 				var $iconMsgBox = $(selector.iconMsgBox)
 									.mouseenter(function() { $(this).addClass('focus'); /*clearQueue().fadeTo(fidur,fiop,fease);*/ })
 									.mouseleave(function() { $(this).removeClass('focus'); /*clearQueue().fadeTo(fodur,foop,fease);*/ });
 				
 				if (options.isLoading) $iconMsgBox.text(['Loading...( ',options.loadedCount,' )'].join(''));
+				else if (options.isBinding) $iconMsgBox.text(['Binding...( ',options.loadedCount,' )'].join(''));
 				else {
 					var $icon = $(selector.iconsetIcon).filter(':not(.hhb-icon-button)');
 					var $sicon = $icon.filter(':visible');
