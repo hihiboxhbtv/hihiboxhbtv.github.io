@@ -2724,7 +2724,7 @@ var HHBJSONDATA,hhb;
 						var _this = $(this),_src = _this.attr('src');
 						if (_this.parents('#hhb-img-holder').length > 0) return false;
 						$hhbImgHolderAnchor.find('img').remove();
-						$hhbImgHolderAnchor.append(_this.clone());
+						$hhbImgHolderAnchor.append(_this.clone().css({ width: _this.width(), height: _this.height() }));
 						$hhbImgHolderAnchor.attr('href',_src);
 						$hhbImgSelector.show().css({ left: _this.offset().left-6, top: _this.offset().top-6 });
 						if (listSrcLookup[_src]) $hhbCustomIconAddBtn.hide();
