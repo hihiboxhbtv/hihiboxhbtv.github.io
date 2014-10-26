@@ -56,8 +56,8 @@ var HHBJSONDATA,hhb;
 
 	/*! jQuery isImg selector | Ref: http://james.padolsey.com/javascript/regex-selector-for-jquery/ */
 	jQuery.expr[':'].isIMG = function(elem, index, match) {
-		var regex = /^\[img\][^\[]+\[\/img\]$/ig;
-		return regex.test(jQuery(elem)['attr']('alt'));
+		var reAlt = /^\[img\](https?|ftp)[^\[]+\[\/img\]$/ig,reSrc = /^https?/ig;
+		return reAlt.test(jQuery(elem)['attr']('alt'))&&reSrc.test(jQuery(elem)['attr']('src'));
 	}
 	
 	/* JavaScript Pretty Date | http://ejohn.org/blog/javascript-pretty-date/ | Copyright (c) 2011 John Resig (ejohn.org) | Licensed under the MIT and GPL licenses. */
@@ -242,9 +242,6 @@ var HHBJSONDATA,hhb;
 				activateMsgCharsCounter: 30
 			},
 			supportedPlatform: ['hitbox','twitch','ustream','hkgolden'],
-			listGenre: [],
-			listIcon: [],
-			listCustomIcon: [],
 			genreCategory: ['other','gjtv','platform','builtin','channel','custom','recent'],
 			defaultConfig: {
 				genre: 'HKG',
@@ -272,10 +269,10 @@ var HHBJSONDATA,hhb;
 			icon_filter = _settings.icon_filter,
 			limit = _settings.limit,
 			supportedPlatform = _settings.supportedPlatform,
-			listGenre = _settings.listGenre,
+			listGenre = [],
 			genreCategory = _settings.genreCategory;
-			listIcon = _settings.listIcon,
-			listCustomIcon = _settings.listCustomIcon,
+			listIcon = [],
+			listCustomIcon = [],
 			defaultConfig = _settings.defaultConfig,
 			config = _settings.config,
 			settings = {
@@ -394,6 +391,7 @@ var HHBJSONDATA,hhb;
 			listEmoClsLookup = {},
 			listGenreLookup = {},
 			listCustomIconLookup = {},
+			listSrcLookup = {},
 			listNameBanner = {},
 			nextGenreID = 1,
 			nextIconID = 1,
@@ -2486,6 +2484,8 @@ var HHBJSONDATA,hhb;
 						listParse.push(obj);
 						pcount++;
 					}
+					/* add to src lookup list */
+					listSrcLookup[obj.src] = obj;
 					/* add to new icon list */
 					analyzediconlist.push(obj);
 					count++;
@@ -2727,7 +2727,7 @@ var HHBJSONDATA,hhb;
 						$hhbImgHolderAnchor.append(_this.clone());
 						$hhbImgHolderAnchor.attr('href',_src);
 						$hhbImgSelector.show().css({ left: _this.offset().left-6, top: _this.offset().top-6 });
-						if (listCustomIconLookup[_src]) $hhbCustomIconAddBtn.hide();
+						if (listSrcLookup[_src]) $hhbCustomIconAddBtn.hide();
 						else $hhbCustomIconAddBtn.show();
 					}).on('keydown',function(e) {
 						if (e.ctrlKey||e.altKey) $hhbImgSelector.hide();

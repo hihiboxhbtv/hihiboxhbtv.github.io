@@ -451,6 +451,8 @@ a:hover > .hhb-name-name {
 	height: 24px;
 	margin-left: 4px;
 }
+.hhb-pf-hkgolden #ctl00_ContentPlaceHolder1_PostForm .hhb-button,
+.hhb-pf-hkgolden #ctl00_ContentPlaceHolder1_PostForm .hhb-button:hover,
 .hhb-pf-hkgolden #newmessage .hhb-button,
 .hhb-pf-hkgolden #newmessage .hhb-button:hover {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihibox_hkg_new.png');
@@ -594,6 +596,7 @@ a:hover > .hhb-name-name {
 	margin: 0px;
 	background-color: #CCCCCC;
 	color: #333333;
+	overflow: initial;
 }
 #hhb-iconset .hhb-icon.hhb-icon-button:hover .hhb-custom-icon-btn,
 #hhb-custom-icon-form  .hhb-custom-icon-btn.hhb-custom-icon-add:hover {
@@ -625,6 +628,7 @@ a:hover > .hhb-name-name {
 	right: 30px;
 	bottom: 75px;
 	top: 15px;
+	overflow: initial;
 }
 #hhb-custom-icon-form .hhb-img-preview .hhb-custom-icon-btn.hhb-custom-icon-remove {
 	left: initial;
@@ -801,6 +805,7 @@ a:hover > .hhb-name-name {
 #hhb-img-selector {
 	position: absolute;
 	z-index: 10;
+	overflow: initial;
 }
 #hhb-img-holder {
 	position: relative;
@@ -808,6 +813,10 @@ a:hover > .hhb-name-name {
 	border: 1px solid #111111;
 	border-radius:5px;
 	padding: 5px;
+	overflow: inherit;
+}
+.hhb-pf-hkgolden #hhb-img-holder .Image {
+	max-width: initial;
 }
 .hhb-darkmode #hhb-img-holder {
 	border: 1px solid #EEEEEE;
