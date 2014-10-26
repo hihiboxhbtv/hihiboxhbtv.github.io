@@ -2032,7 +2032,7 @@ var HHBJSONDATA,hhb;
 			/* check platform */
 			if (env.platform=='') {
 				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Platform not detected! Initialization aborted! [',url,']');
-				_gaTracker('core','fail','Initialization - Platform not detected');
+				_gaTracker('core','Initialization - Platform not detected','fail');
 				return;
 			}
 			
@@ -2041,7 +2041,7 @@ var HHBJSONDATA,hhb;
 			env.isExcluded = platformObj.isExcluded();
 			if (env.isExcluded) {
 				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Excluded URL! Initialization aborted! [',url,']');
-				_gaTracker('core','fail','Initialization - Excluded URL');
+				_gaTracker('core','Initialization - Excluded URL','fail');
 				return;
 			}
 			
@@ -2049,7 +2049,7 @@ var HHBJSONDATA,hhb;
 			env.channel = platformObj.getChannelID();
 			if (!env.channel || env.channel=='') {
 				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Channel not detected! Initialization aborted! [',url,']');
-				_gaTracker('core','fail','Initialization - Channel not detected');
+				_gaTracker('core','Initialization - Channel not detected','fail');
 				return;
 			}
 			
@@ -2057,7 +2057,7 @@ var HHBJSONDATA,hhb;
 			var hhbLoaded = ($('body[class*="hhb-pf-"]').length>0);
 			if (hhbLoaded) {
 				debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'HihiBox detected! Initialization aborted!');
-				_gaTracker('core','fail','Initialization - HihiBox detected');
+				_gaTracker('core','Initialization - HihiBox detected','fail');
 				return;
 			}
 			
@@ -2066,7 +2066,7 @@ var HHBJSONDATA,hhb;
 			env.features = platformObj.getFeatures();
 			if (env.platform=='hkgolden') holdIconListBinding = true; /* HKGolden only */
 			debugMsg(DEBUG_ENV|DEBUG_ENV_SUCCESS,'Detected [',env,']');
-			_gaTracker('core','success','Initialize - Platform detected');
+			_gaTracker('core','Initialization - Platform detected','success');
 			_gaTracker('env','platform',env.platform);
 			_gaTracker('env','channel',[env.channel,env.platform].join('@'));
 			if (env.userid && env.userid!='') {
@@ -2202,11 +2202,11 @@ var HHBJSONDATA,hhb;
 				var count = platformObj.injectIcon(listParse);
 				if (count > 0) {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Injected Icon [I:',count,']');
-					_gaTracker('core','success','Icon List - Inject icon',count);
+					_gaTracker('core','Icon List - Inject icon','success',count);
 					setLoadingStatus('injectIcon','complete');
 				} else {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Injected Icon Failed!');
-					_gaTracker('core','fail','Icon List - Inject icon');
+					_gaTracker('core','Icon List - Inject icon','fail');
 					setLoadingStatus('injectIcon','fail');
 				}
 			};
@@ -2238,7 +2238,7 @@ var HHBJSONDATA,hhb;
 				});
 				if (count>0) {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Genre List [ C:',count,', G:',listGenre.length,']');
-					_gaTracker('core','success','Genre List - Analyzed',listGenre.length);
+					_gaTracker('core','Genre List - Analyzed','success',listGenre.length);
 				}
 				return listGenre;
 			}
@@ -2253,7 +2253,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzeBuiltinIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Built-in Icon Failed!');
-						_gaTracker('core','fail','Icon List - Load built-in icon');
+						_gaTracker('core','Icon List - Load built-in icon','fail');
 						setLoadingStatus('analyzeBuiltinIcon','fail')
 					}
 					return;
@@ -2263,7 +2263,7 @@ var HHBJSONDATA,hhb;
 				retryCount.analyzeBuiltinIcon = 0;
 				refreshList();
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Built-in Icon Succeed!');
-				_gaTracker('core','success','Icon List - Load built-in icon',analyzediconlist.length);
+				_gaTracker('core','Icon List - Load built-in icon','success',analyzediconlist.length);
 			};
 			var analyzeCustomIcon = function(_iconlist) {
 				if (retryCount.analyzeCustomIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Custom Icon...'),setLoadingStatus('analyzeCustomIcon','init');
@@ -2276,7 +2276,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzeCustomIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Custom Icon Failed!');
-						_gaTracker('core','fail','Icon List - Load custom icon');
+						_gaTracker('core','Icon List - Load custom icon','fail');
 						setLoadingStatus('analyzeCustomIcon','fail')
 					}
 					return;
@@ -2286,7 +2286,7 @@ var HHBJSONDATA,hhb;
 				retryCount.analyzeCustomIcon = 0;
 				refreshList(true);
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Custom Icon Succeed!');
-				_gaTracker('core','success','Icon List - Load custom icon',analyzediconlist.length);
+				_gaTracker('core','Icon List - Load custom icon','success',analyzediconlist.length);
 			};
 			var analyzeChannelIcon = function(_iconlist) {
 				if (retryCount.analyzeChannelIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Channel Icon...'),setLoadingStatus('analyzeChannelIcon','init');
@@ -2299,7 +2299,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzeChannelIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Channel Icon Failed!');
-						_gaTracker('core','fail','Icon List - Load channel icon');
+						_gaTracker('core','Icon List - Load channel icon','fail');
 						setLoadingStatus('analyzeChannelIcon','fail')
 					}
 					return;
@@ -2309,7 +2309,7 @@ var HHBJSONDATA,hhb;
 				retryCount.analyzeChannelIcon = 0;
 				refreshList();
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Channel Icon Succeed!');
-				_gaTracker('core','success','Icon List - Load channel icon',analyzediconlist.length);
+				_gaTracker('core','Icon List - Load channel icon','success',analyzediconlist.length);
 			};
 			var analyzePlatformIcon = function() {
 				if (retryCount.analyzePlatformIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing Platform Icon...'),setLoadingStatus('analyzePlatformIcon','init');
@@ -2320,7 +2320,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzePlatformIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing Platform Icon Failed!');
-						_gaTracker('core','fail','Icon List - Load platform icon');
+						_gaTracker('core','Icon List - Load platform icon','fail');
 						setLoadingStatus('analyzePlatformIcon','fail');
 					}
 					return false;
@@ -2338,7 +2338,7 @@ var HHBJSONDATA,hhb;
 				retryCount.analyzePlatformIcon = 0;
 				refreshList();
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Platform Icon Succeed!');
-				_gaTracker('core','success','Icon List - Load platform icon',analyzediconlist.length);
+				_gaTracker('core','Icon List - Load platform icon','success',analyzediconlist.length);
 			};
 			var analyzeGJTVIcon = function() {
 				if (retryCount.analyzeGJTVIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing GJTV Icon...'),setLoadingStatus('analyzeGJTVIcon','init');
@@ -2349,7 +2349,7 @@ var HHBJSONDATA,hhb;
 						retryCount.analyzeGJTVIcon++;
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing GJTV Icon Failed!');
-						_gaTracker('core','fail','Icon List - Load GJTV icon');
+						_gaTracker('core','Icon List - Load GJTV icon','fail');
 						setLoadingStatus('analyzeGJTVIcon','fail');
 					}
 					return false;
@@ -2391,7 +2391,7 @@ var HHBJSONDATA,hhb;
 				retryCount.analyzeGJTVIcon = 0;
 				refreshList();
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing GJTV Icon Succeed!');
-				_gaTracker('core','success','Icon List - Load GJTV icon',analyzediconlist.length);
+				_gaTracker('core','Icon List - Load GJTV icon','success',analyzediconlist.length);
 			};
 			var analyzeIcon = function(iconlist,_options) {
 				var count = 0;
@@ -2500,11 +2500,11 @@ var HHBJSONDATA,hhb;
 				
 				if (dcodelist.length>0) {
 					debugMsg(DEBUG_FAIL,'Icon Code Duplicated! [D:',dcodelist,']');
-					_gaTracker('core','fail','Icon List - Icon code duplicated',dcodelist.length);
+					_gaTracker('core','Icon List - Icon code duplicated','fail',dcodelist.length);
 				}
 				if (count>0) {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Icon List [ T:',analyzediconlist.length,'/',iconlist.length,', G:',listGenre.length,', P:',listParse.length,']');
-					_gaTracker('core','success','Icon List - Analyzed',listIcon.length+analyzediconlist.length);
+					_gaTracker('core','Icon List - Analyzed','success',listIcon.length+analyzediconlist.length);
 				}
 				return analyzediconlist;
 			};
@@ -2609,7 +2609,7 @@ var HHBJSONDATA,hhb;
 						setLoadingStatus('activateRebindUIBtn','retry');
 					} else {
 						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Activating Rebind UI Button Failed!');
-						_gaTracker('core','fail','User Interface - Rebind UI button');
+						_gaTracker('core','User Interface - Rebind UI button','fail');
 						setLoadingStatus('activateRebindUIBtn','fail');
 					}
 					return false;
@@ -2619,7 +2619,7 @@ var HHBJSONDATA,hhb;
 						bindUI();
 					}).addClass(cssClass.inited);
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Rebind UI Button');
-					_gaTracker('core','success','User Interface - Rebind UI button',retryCount.activateRebindUIBtn);					
+					_gaTracker('core','User Interface - Rebind UI button','success',retryCount.activateRebindUIBtn);					
 					setLoadingStatus('activateRebindUIBtn','complete');
 				}
 			};
@@ -2637,7 +2637,7 @@ var HHBJSONDATA,hhb;
 					checkVersion();
 					
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Holder UI [G:',listGenre.length,', I:',listIcon.length,']');
-					_gaTracker('core','success','User Interface - Holder UI',retryCount.bindHolderUI);
+					_gaTracker('core','User Interface - Holder UI','success',retryCount.bindHolderUI);
 					retryCount.bindHolderUI = 0;
 					setLoadingStatus('bindHolderUI','complete');
 					return true;
@@ -2762,7 +2762,7 @@ var HHBJSONDATA,hhb;
 						activateImageSizer();
 					}
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Toggle Button UI');
-					_gaTracker('core','success','User Interface - Toggle button UI',retryCount.bindButtonUI);
+					_gaTracker('core','User Interface - Toggle button UI','success',retryCount.bindButtonUI);
 					retryCount.bindButtonUI = 0;
 					setLoadingStatus('bindButtonUI','complete');
 					return true;
@@ -2917,7 +2917,7 @@ var HHBJSONDATA,hhb;
 					});
 				
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Holder Toggle Button');
-				_gaTracker('core','success','User Interface - Holder toggle button',retryCount.bindHolderToggleBtn);
+				_gaTracker('core','User Interface - Holder toggle button','success',retryCount.bindHolderToggleBtn);
 				retryCount.bindHolderToggleBtn = 0;
 				setLoadingStatus('bindHolderToggleBtn','complete');
 			}
@@ -2938,7 +2938,7 @@ var HHBJSONDATA,hhb;
 				toggleSortMode('init');
 				
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Sort Mode');
-				_gaTracker('core','success','Sort Mode - Activated',retryCount.activateSortMode);
+				_gaTracker('core','Sort Mode - Activated','success',retryCount.activateSortMode);
 				retryCount.activateSortMode = 0;
 				setLoadingStatus('activateSortMode','complete');
 			}
@@ -3022,7 +3022,7 @@ var HHBJSONDATA,hhb;
 			var _genreChildList = [];
 			var bindGenreList = function() {
 				if (version.genreList.current==version.genreList.pending) return;
-				var $palGenre = $(selector.genreContainer).empty();
+				var $palGenre = $(selector.genreContainer);
 				if (!$palGenre.length > 0) {
 					setTimeout(function() { bindGenreList() },delay.bindGenreList);
 					return;
@@ -3234,7 +3234,7 @@ var HHBJSONDATA,hhb;
 				version.sortGenre.current = version.sortGenre.pending;
 				setLoadingStatus('sortGenre','complete');
 				debugMsg(DEBUG_RUNTIME|DEBUG_SUCCESS,'Sort Genre List [V:',version.sortGenre.current,',C:',$newOrder.length,',T:',timer.sortGenre,']');
-				_gaTracker('core','success','Sort Genre List - Sorted');
+				_gaTracker('core','Sort Genre List - Sorted','success');
 			};
 			var sortIconList = function(forced) {
 				if (version.sort.current==version.sort.pending) return;
@@ -3290,7 +3290,7 @@ var HHBJSONDATA,hhb;
 				version.sort.current = version.sort.pending;
 				setLoadingStatus('sort','complete');
 				debugMsg(DEBUG_RUNTIME|DEBUG_SUCCESS,'Sort Icon List [M:',sortModeClass[settings.icon_sort_by],',V:',version.sort.current,',C:',$newOrder.length,',T:',timer.sort,']');
-				_gaTracker('core','success','Sort Icon List - Sorted');
+				_gaTracker('core','Sort Icon List - Sorted','success');
 			};
 			var showIconMsg = function(_options) {
 				var options = $.extend({ isLoading: false, loadedCount: 0, isBinding: false },_options);
@@ -3761,7 +3761,7 @@ var HHBJSONDATA,hhb;
 				}
 				setLoadingStatus('analyzeNameBanner','complete');
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzed Name Banner List [NB:',count,']');
-				_gaTracker('core','success','Name Banner - Analyzed',count);
+				_gaTracker('core','Name Banner - Analyzed','success',count);
 				return olist;
 			};
 
@@ -3812,7 +3812,7 @@ var HHBJSONDATA,hhb;
 				toggleDarkMode('init');
 				
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Dark/Light Mode');
-				_gaTracker('core','success','Dark Mode - Activated',retryCount.bindDarkModeBtn);
+				_gaTracker('core','Dark Mode - Activated','success',retryCount.bindDarkModeBtn);
 				activateFeature('darkmode');
 				retryCount.bindDarkModeBtn = 0;
 				setLoadingStatus('bindDarkModeBtn','complete');
@@ -3875,7 +3875,7 @@ var HHBJSONDATA,hhb;
 						.mouseout(function() { f_hideBtn(); });
 					checkIsBookmarked();
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Player Bookmark Button');
-					_gaTracker('core','success','Bookmark - Bind player bookmark button',retryCount.bindPlayerBookmarkBtn);
+					_gaTracker('core','Bookmark - Bind player bookmark button','success',retryCount.bindPlayerBookmarkBtn);
 					retryCount.bindPlayerBookmarkBtn = 0;
 					setLoadingStatus('bindPlayerBookmarkBtn','complete');
 					return true;
@@ -3887,7 +3887,7 @@ var HHBJSONDATA,hhb;
 					setLoadingStatus('bindPlayerBookmarkBtn','retry');
 				} else {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Binding Player Bookmark Button Failed!');
-					_gaTracker('core','fail','Bookmark - Bind player bookmark button');
+					_gaTracker('core','Bookmark - Bind player bookmark button','fail');
 					setLoadingStatus('bindPlayerBookmarkBtn','fail');
 				}
 			};
@@ -3899,7 +3899,7 @@ var HHBJSONDATA,hhb;
 					$bookmarkBtn.click(function() { toggleBookmark(); });
 					checkIsBookmarked();
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Binded Bookmark Button');
-					_gaTracker('core','success','Bookmark - Bind bookmark button',retryCount.bindBookmarkBtn);
+					_gaTracker('core','Bookmark - Bind bookmark button','success',retryCount.bindBookmarkBtn);
 					activateFeature('bookmark');
 					retryCount.bindBookmarkBtn = 0;
 					setLoadingStatus('bindBookmarkBtn','complete');
@@ -3912,7 +3912,7 @@ var HHBJSONDATA,hhb;
 					setLoadingStatus('bindBookmarkBtn','retry');
 				} else {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Binding Bookmark Button Failed!');
-					_gaTracker('core','fail','Bookmark - Bind bookmark button');
+					_gaTracker('core','Bookmark - Bind bookmark button','fail');
 					setLoadingStatus('bindBookmarkBtn','fail');
 				}
 				
@@ -3973,7 +3973,7 @@ var HHBJSONDATA,hhb;
 			setLoadingStatus('initQuoter','init');
 			platformObj.bindQuoter();
 			debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Quoter');
-			_gaTracker('core','success','Quoter - Activated');
+			_gaTracker('core','Quoter - Activated','success');
 			activateFeature('quoter');
 			setLoadingStatus('initQuoter','complete');
 		};
@@ -3994,7 +3994,7 @@ var HHBJSONDATA,hhb;
 				});
 				
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Close Button');
-				_gaTracker('core','success','Close Button - Activated',retryCount.bindCloseBtn);
+				_gaTracker('core','Close Button - Activated','success',retryCount.bindCloseBtn);
 				activateFeature('close_btn');
 				retryCount.bindCloseBtn = 0;
 				setLoadingStatus('bindCloseBtn','complete');
@@ -4029,7 +4029,7 @@ var HHBJSONDATA,hhb;
 					msgLengthCheck();
 					
 					debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Activated Message Chars Counter');
-					_gaTracker('core','success','Msg Chars Counter - Activated',retryCount.activateMsgCharsCounter);
+					_gaTracker('core','Msg Chars Counter - Activate','success',retryCount.activateMsgCharsCounter);
 					activateFeature('msg_chars_counter');
 					retryCount.activateMsgCharsCounter = 0;
 					setLoadingStatus('activateMsgCharsCounter','complete');
@@ -4042,7 +4042,7 @@ var HHBJSONDATA,hhb;
 					setLoadingStatus('activateMsgCharsCounter','retry');
 				} else {
 					debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Activating Message Chars Counter Failed!');
-					_gaTracker('core','fail','Msg Chars Counter - Activating');
+					_gaTracker('core','Msg Chars Counter - Activate','fail');
 					setLoadingStatus('activateMsgCharsCounter','fail');
 				}
 				
@@ -4108,9 +4108,10 @@ var HHBJSONDATA,hhb;
 				_protected.importGenre(_igenre);
 				_protected.importBuiltinIcon(_ilist);
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Imported Icon List [G:',listGenre.length,', I:',listIcon.length,']');
+				_gaTracker('core','Import - Icon list','fail',listIcon.length);
 			} else {
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_FAIL,'Import Icon List Failed!');
-				_gaTracker('core','fail','Import - Icon list');
+				_gaTracker('core','Import - Icon list','fail');
 				setLoadingStatus('importIconList','fail');
 			}
 		};
@@ -4123,9 +4124,10 @@ var HHBJSONDATA,hhb;
 				listNameBanner = (res) ? res : {};
 				
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_INIT,'Imported Name Banner List [NBL:',listNameBanner,']');
+				_gaTracker('core','Import - Name banner list','success');
 			} else {
 				debugMsg(DEBUG_FEATURES|DEBUG_FEATURES_FAIL,'Import Name Banner Failed!');
-				_gaTracker('core','fail','Import - Name banner list');
+				_gaTracker('core','Import - Name banner list','fail');
 				setLoadingStatus('importNameBanner','fail');
 			}
 		};
