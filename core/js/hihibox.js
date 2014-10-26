@@ -2952,7 +2952,10 @@ var HHBJSONDATA,hhb;
 				sortIconList(true);
 				var $genre = $(selector.genreContainerGenre).removeClass(cssClass.active)
 					.filter(selector.genre+'[hhb-genre="'+aGenre+'"]').addClass(cssClass.active);
-				if ($genre.length==0) return selectGenre(settings.default_genre);
+				if ($genre.length==0) {
+					setTimeout(function() { selectGenre(settings.default_genre); },200);
+					return false;
+				}
 				var $icon = $(selector.iconsetIcon).removeClass(cssClass.iconHide);
 				var $hicon = $icon.not([
 									selector.icon,
