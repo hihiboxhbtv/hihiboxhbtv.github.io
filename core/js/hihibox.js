@@ -3016,6 +3016,7 @@ var HHBJSONDATA,hhb;
 				};
 				start();
 			};
+			var _genreChildList = [];
 			var bindGenreList = function() {
 				if (version.genreList.current==version.genreList.pending) return;
 				var $palGenre = $(selector.genreContainer).empty();
@@ -3024,12 +3025,12 @@ var HHBJSONDATA,hhb;
 					return;
 				}
 				if (_procGenreList && _procGenreList.stop) _procGenreList.stop();
-				var _genreChildList = [];
 				_procGenreList = new Processor({
 					name: 'bindGenreList',
 					list: listGenre, partition: 100,
 					process: function(idx,obj) {
 						if (!obj.isParsed) return true;
+						if (obj.domObject) return true;
 						var $genre = $('<div class="'+cssClass.genre+'" hhb-genre="'+obj.name+'">'+obj.name+'</div>')
 							.addClass(genreCategory[obj.category])
 							.data('hhb-object',obj)
@@ -3037,10 +3038,12 @@ var HHBJSONDATA,hhb;
 								var genre = $(this).data('hhb-object');
 								selectGenre(genre.name);
 							});
+						obj.domObject = $genre.data('hhb-object',obj);
 						_genreChildList.push($genre);
 					},
 					finish: function() {
-						$palGenre.append(_genreChildList); _genreChildList = [];
+						$palGenre.append(_genreChildList);
+						_genreChildList = [];
 						version.genreList.current = version.genreList.pending;
 						version.sortGenre.pending++;
 						sortGenreList(true);
@@ -3054,8 +3057,7 @@ var HHBJSONDATA,hhb;
 				if (version.iconList.current==version.iconList.pending) return;
 				var $palGenre = $(selector.genreContainer),
 					$palIconset = $(selector.iconset),
-					$palIconMsgBox = $(selector.iconMsgBox),
-					$dom = $('<div>');
+					$palIconMsgBox = $(selector.iconMsgBox);
 				if (!$palGenre.children().length > 0 || !$palIconset.length > 0) {
 					setTimeout(function() { bindIconList() },delay.bindIconList);
 					return;
@@ -3122,9 +3124,8 @@ var HHBJSONDATA,hhb;
 										})
 								).addClass('hhb-hide');
 						}
-						$palIconset.append(_iconChildList).append($icon);_iconChildList = [];
-						
-						$dom = null;
+						$palIconset.append(_iconChildList).append($icon);
+						_iconChildList = [];
 						selectGenre('init');	/* select default genre */
 						version.iconList.current = version.iconList.pending;
 						debugMsg(DEBUG_RUNTIME|DEBUG_REFRESH,'Binded Icon List [I:',listIcon.length,']');
