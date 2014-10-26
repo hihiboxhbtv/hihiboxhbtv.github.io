@@ -3040,7 +3040,7 @@ var HHBJSONDATA,hhb;
 						_genreChildList.push($genre);
 					},
 					finish: function() {
-						$palGenre.append(_genreChildList);
+						$palGenre.append(_genreChildList); _genreChildList = [];
 						version.genreList.current = version.genreList.pending;
 						version.sortGenre.pending++;
 						sortGenreList(true);
