@@ -234,7 +234,7 @@ var HHBJSONDATA,hhb;
 				analyzeCustomIcon: 1,
 				analyzeChannelIcon: 1,
 				analyzePlatformIcon: 50,
-				analyzeGJTVIcon: 30,
+				analyzeGJTVIcon: 1,
 				activateRebindUIBtn: 30,
 				bindBookmarkBtn: 30,
 				bindPlayerBookmarkBtn: 30,
@@ -512,10 +512,10 @@ var HHBJSONDATA,hhb;
 							if (nb && nb.cssClass) {
 								var bspan = "<span class='"+nb.cssClass+"'>&nbsp;</span>";
 								var nspan = "<span class='"+cssClass.nameName+"'>"+namestr+"</span>";
-								if (env.gjtvIconLoaded) {
+								/*if (env.gjtvIconLoaded) {
 									var gjtvnb = $(this).find('.custom_Nickname');
 									if (gjtvnb.length>0) gjtvnb.hide();
-								}
+								}*/
 								$(this).text('');
 								var _pspan = $(this);
 								$(bspan)
@@ -573,8 +573,8 @@ var HHBJSONDATA,hhb;
 								'color: transparent;',
 								'margin-right: 3px;',
 								'vertical-align:bottom;',
-								'width:',broadcaster.width,'px;',
-								'height:',broadcaster.height,'px;',
+								'width:',broadcaster.width,'px !important;',
+								'height:',broadcaster.height,'px !important;',
 								'background: url(',broadcaster.img,') no-repeat left bottom !important;',
 							'}'].join('');
 					}
@@ -584,8 +584,8 @@ var HHBJSONDATA,hhb;
 								'color: transparent;',
 								'margin-right: 3px;',
 								'vertical-align:bottom;',
-								'width:',moderator.width,'px;',
-								'height:',moderator.height,'px;',
+								'width:',moderator.width,'px !important;',
+								'height:',moderator.height,'px !important;',
 								'background: url(',moderator.img,') no-repeat center center !important;',
 							'}'].join('');
 					}
@@ -2674,7 +2674,8 @@ var HHBJSONDATA,hhb;
 									.load(function() { $imgPreviewHolder.removeClass(loadingClass); $.extend(imgMeta,{ loaded: true, width: this.width, height: this.height }); $imgPreview.attr('src',this.src); f_checkRequire('img'); f_resizePreview(); })
 									.error(function() { $imgPreviewHolder.removeClass(loadingClass); $.extend(imgMeta,{ loaded: false, width:0, height:0 }); if($(this).attr('src')!='') f_checkRequire('img'); $imgPreview.attr('src',''); }),
 					$imgPreview = $('<img id="hhb-img">'),
-					$imgPreviewHolder = $('<div class="hhb-img-preview" hhb-locale-title="{{iconlist.custom_icon.preview}}"></div>').append([$removeBtn,$imgPreview]),
+					$divTips = $('<div id="hhb-img-tips">小提示:<br>按住Ctrl 並用滑鼠指著圖片，可快速新增自訂表情符號</div>');
+					$imgPreviewHolder = $('<div class="hhb-img-preview" hhb-locale-title="{{iconlist.custom_icon.preview}}"></div>').append([$removeBtn,$imgPreview,$divTips]),
 					$txtUrl = $('<input type="text" id="hhb-url" hhb-locale-placeholder="{{iconlist.custom_icon.url}}" placeholder="Image URL">')
 									.change(function() { var src=$(this).val(); $imgPreviewHolder.addClass(loadingClass); $imgLoader.attr('src',src); f_checkRequire('url'); }).keydown(f_keydown),
 					$txtCode = $('<input type="text" id="hhb-code" hhb-locale-placeholder="{{iconlist.custom_icon.code}}" placeholder="Custom Code">').keydown(f_keydown),
@@ -2707,39 +2708,49 @@ var HHBJSONDATA,hhb;
 				]);
 				
 				/* [IMG] Selector */
-			var $hhbImgSelector = $('<div id="hhb-img-selector">'),
-				$hhbImgHolderAnchor = $('<a target="_img">');
-				$hhbImgHolder = $('<div id="hhb-img-holder">').append($hhbImgHolderAnchor).appendTo($hhbImgSelector),
-				$hhbCustomIconAddBtn = $('<div id="hhb-img-custom-icon-add" class="hhb-custom-icon-btn hhb-custom-icon-add">')
-											.attr('title',locale.getLocaleMsg('info.name')+' - '+locale.getLocaleMsg('iconlist.custom_icon.add'))
-											.click(function(e) {
-												e.stopPropagation();
-												var src = $hhbImgHolderAnchor.find('img').attr('src');
-												_protected.initCustomIconForm(src);
-												$hhbImgSelector.hide();
-											}).appendTo($hhbImgHolder);
+				var $hhbImgSelector = $('<div id="hhb-img-selector">'),
+					$hhbImgHolderAnchor = $('<a target="_img">');
+					$hhbImgHolder = $('<div id="hhb-img-holder">').append($hhbImgHolderAnchor).appendTo($hhbImgSelector),
+					$hhbCustomIconAddBtn = $('<div id="hhb-img-custom-icon-add" class="hhb-custom-icon-btn hhb-custom-icon-add">')
+												.attr('title',locale.getLocaleMsg('info.name')+' - '+locale.getLocaleMsg('iconlist.custom_icon.add'))
+												.click(function(e) {
+													e.stopPropagation();
+													var src = $hhbImgHolderAnchor.find('img').attr('src');
+													_protected.initCustomIconForm(src);
+													$hhbImgSelector.hide();
+												}).appendTo($hhbImgHolder);
+												
+				var showImgSelector = function() {
+					if ($hhbImgHolderAnchor.find('img').length > 0) $hhbImgSelector.show();
+				};
+				var hideImgSelector = function() {
+					$hhbImgSelector.hide();
+				}
+				var updateImgSelector = function(_this) {
+					var _src = _this.attr('src');
+					if (_this.parents('#hhb-img-holder').length > 0) return false;
+					clearImgSelector();
+					$hhbImgHolderAnchor.append(_this.clone().css({ width: _this.width(), height: _this.height() }));
+					$hhbImgHolderAnchor.attr('href',_src);
+					$hhbImgSelector.show().css({ left: _this.offset().left-6, top: _this.offset().top-6 });
+					if (listSrcLookup[_src]) $hhbCustomIconAddBtn.hide();
+					else $hhbCustomIconAddBtn.show();
+				}
+				var clearImgSelector = function() {
+					$hhbImgHolderAnchor.find('img').remove();
+					hideImgSelector();
+				}
 				$('body').append($hhbImgSelector.hide())
-					.on('mouseenter','img:isIMG()',function(e) {
-						if (e.ctrlKey||e.altKey) return false;
-						var _this = $(this),_src = _this.attr('src');
-						if (_this.parents('#hhb-img-holder').length > 0) return false;
-						$hhbImgHolderAnchor.find('img').remove();
-						$hhbImgHolderAnchor.append(_this.clone().css({ width: _this.width(), height: _this.height() }));
-						$hhbImgHolderAnchor.attr('href',_src);
-						$hhbImgSelector.show().css({ left: _this.offset().left-6, top: _this.offset().top-6 });
-						if (listSrcLookup[_src]) $hhbCustomIconAddBtn.hide();
-						else $hhbCustomIconAddBtn.show();
+					.on('mousemove','img:isIMG()',function(e) {
+						if (e.ctrlKey) updateImgSelector($(this));
 					}).on('keydown',function(e) {
-						if (e.ctrlKey||e.altKey) $hhbImgSelector.hide();
+						if (e.ctrlKey) showImgSelector();
 					}).on('keyup',function(e) {
-						if ($hhbImgHolderAnchor.find('img').length > 0) $hhbImgSelector.show();
+						hideImgSelector();
 					}).on('mouseenter','#hhb-img-selector, #hhb-img-holder, #hhb-custom-icon-add',function(e) {
-						if (e.ctrlKey||e.altKey) return false;
-						if ($hhbImgHolderAnchor.find('img').length > 0) $hhbImgSelector.show();
+						if (e.ctrlKey) showImgSelector();
 					}).on('mouseleave','#hhb-img-selector, #hhb-img-holder, #hhb-custom-icon-add',function(e) {
-						if (e.ctrlKey||e.altKey) return false;
-						$hhbImgHolderAnchor.find('img').remove();
-						$hhbImgSelector.hide();
+						clearImgSelector();
 					});
 
 				_protected.initCustomIconForm = initCustomIconForm;

@@ -620,7 +620,7 @@ a:hover > .hhb-name-name {
 }
 #hhb-custom-icon-form .hhb-img-preview {
 	text-align: center;
-	padding: 10px;
+	padding: 10px 10px 16px 10px;
 	background: #111111;
 	border: 1px solid #CCCCCC;
 	position: absolute;
@@ -638,6 +638,14 @@ a:hover > .hhb-name-name {
 #hhb-custom-icon-form .hhb-img-preview #hhb-img {
 	max-height: 100%;
 }
+#hhb-custom-icon-form .hhb-img-preview #hhb-img-tips {
+    position: absolute;
+    bottom: 2px;
+    left: 5px;
+	text-align: left;
+    color: #999999;
+	font-size: 12px;
+ }
 #hhb-custom-icon-form .hhb-input {
 	position: absolute;
 	bottom: 14px;
