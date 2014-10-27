@@ -518,6 +518,7 @@ a:hover > .hhb-name-name {
 /* [S:2014-09-08] - Enable BBCode */
 #hhb-header #hhb-bbcode.funcIcon { display: none; }
 .hhb-enable-bbcode #hhb-header #hhb-bbcode.funcIcon { display: inline-block; }
+.hhb-pf-hkgolden #hhb-header #hhb-bbcode.funcIcon { padding-right: 2px; }
 
 /* [S:2014-09-08] - Enable Emoticon */
 #hhb-header #hhb-sortmode.funcIcon, #hhb-genrelist, #hhb-iconset { display: none; }
