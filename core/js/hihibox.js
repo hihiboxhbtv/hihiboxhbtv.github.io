@@ -99,7 +99,7 @@ var HHBJSONDATA,hhb;
 	var $ = jQuery.noConflict();
 	
 	/* restore original jQuery */
-	if (typeof jQuery !== 'undefined' && orgjQuery != null) jQuery = orgjQuery;
+	if (orgjQuery != null) jQuery = orgjQuery;
 
 	var editorExtensionId = "eoiappopphdcceickjphgaaidacdkidi";			/* debug */
 	var host = 'http://hihiboxhbtv.github.io/core';					/* debug */
@@ -2740,18 +2740,20 @@ var HHBJSONDATA,hhb;
 					$hhbImgHolderAnchor.find('img').remove();
 					hideImgSelector();
 				}
+				var _interval = 50, _lastCheck = 0;
+				var checkImg = function(_ctrlKey,_filter,_this) {
+					var _now = (new Date()).getTime();
+					if (_filter&&_lastCheck+_interval>_now) return false;
+					_lastCheck = _now;
+					if (_ctrlKey) {
+						if (_this) updateImgSelector(_this);
+					} else hideImgSelector();
+				}
 				$('body').append($hhbImgSelector.hide())
-					.on('mousemove','img:isIMG()',function(e) {
-						if (e.ctrlKey) updateImgSelector($(this));
-					}).on('keydown',function(e) {
-						if (e.ctrlKey) showImgSelector();
-					}).on('keyup',function(e) {
-						hideImgSelector();
-					}).on('mouseenter','#hhb-img-selector, #hhb-img-holder, #hhb-custom-icon-add',function(e) {
-						if (e.ctrlKey) showImgSelector();
-					}).on('mouseleave','#hhb-img-selector, #hhb-img-holder, #hhb-custom-icon-add',function(e) {
-						clearImgSelector();
-					});
+					.on('mousemove','img:isIMG()',function(e) {	checkImg(e.ctrlKey,true,$(this)); })
+					.on('mousemove','#hhb-img-selector, #hhb-img-holder, #hhb-custom-icon-add',function(e) { checkImg(e.ctrlKey,true); })
+					.on('keypress',function(e) { checkImg(e.ctrlKey); e.stopPropagation(); })
+					.on('keyup',function(e) { checkImg(false); e.stopPropagation(); });
 
 				_protected.initCustomIconForm = initCustomIconForm;
 				_protected.hideCustomIconForm = hideCustomIconForm;
