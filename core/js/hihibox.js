@@ -36,7 +36,7 @@ var HHBJSONDATA,hhb;
 	Date.prototype.toLocalISOString=function(){var e=this,t=function(e){return e<10?"0"+e:e},n=e.getTimezoneOffset(),r=(n>0?"-":"+")+t(parseInt(Math.abs(n/60)));if(n%60!=0)r+=t(Math.abs(n%60));if(n===0)r="Z";return e.getFullYear()+"-"+t(e.getMonth()+1)+"-"+t(e.getDate())+"T"+t(e.getHours())+":"+t(e.getMinutes())+":"+t(e.getSeconds())+r}
 
 	var orgjQuery = jQuery;	/* backup original jQuery */
-	//var pf$ = orgjQuery;
+	var pf$ = orgjQuery;
 	
 	/* HihiBox jQuery */
 	/*! jQuery v2.1.0 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
