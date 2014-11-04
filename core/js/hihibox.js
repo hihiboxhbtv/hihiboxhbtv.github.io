@@ -3493,6 +3493,7 @@ var HHBJSONDATA,hhb;
 				}
 			};
 			var checkMsgInputUrl = function() {
+				if (holdIconListBinding) return;
 				var msg = platformObj.getMsgInput();
 				if (!msg || msg == '') return false;
 				var rebbcode = /(\[(img|url)\][^\[]+\[\/(\2)\])/ig;
