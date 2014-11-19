@@ -4,9 +4,10 @@
 @import "darkmode_twitch.css";
 @import "darkmode_justin.css";
 
+/*
 #hhb-genrelist .hhb-genre[hhb-genre="GJTV"] {
 	display: none;
-}
+} */
 
 #hhb-holder {
 	position: absolute;
@@ -451,6 +452,8 @@ a:hover > .hhb-name-name {
 	height: 24px;
 	margin-left: 4px;
 }
+.hhb-pf-hkgolden #ctl00_ContentPlaceHolder1_PostForm .hhb-button,
+.hhb-pf-hkgolden #ctl00_ContentPlaceHolder1_PostForm .hhb-button:hover,
 .hhb-pf-hkgolden #newmessage .hhb-button,
 .hhb-pf-hkgolden #newmessage .hhb-button:hover {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihibox_hkg_new.png');
@@ -461,10 +464,13 @@ a:hover > .hhb-name-name {
 .hhb-pf-hkgolden .repliers_right .hhb-button,
 .hhb-pf-hkgolden .repliers_right .hhb-button:hover {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihibox_hkg_open.png');
+	/*
 	width: 89px;
 	height: 22px;
 	margin-bottom: -7px;
 	margin-left: 5px;
+	*/
+	display: none;
 }
 .hhb-button {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon.png');
@@ -513,6 +519,7 @@ a:hover > .hhb-name-name {
 /* [S:2014-09-08] - Enable BBCode */
 #hhb-header #hhb-bbcode.funcIcon { display: none; }
 .hhb-enable-bbcode #hhb-header #hhb-bbcode.funcIcon { display: inline-block; }
+.hhb-pf-hkgolden #hhb-header #hhb-bbcode.funcIcon { padding-right: 2px; }
 
 /* [S:2014-09-08] - Enable Emoticon */
 #hhb-header #hhb-sortmode.funcIcon, #hhb-genrelist, #hhb-iconset { display: none; }
@@ -594,6 +601,7 @@ a:hover > .hhb-name-name {
 	margin: 0px;
 	background-color: #CCCCCC;
 	color: #333333;
+	overflow: initial;
 }
 #hhb-iconset .hhb-icon.hhb-icon-button:hover .hhb-custom-icon-btn,
 #hhb-custom-icon-form  .hhb-custom-icon-btn.hhb-custom-icon-add:hover {
@@ -617,7 +625,7 @@ a:hover > .hhb-name-name {
 }
 #hhb-custom-icon-form .hhb-img-preview {
 	text-align: center;
-	padding: 10px;
+	padding: 10px 10px 16px 10px;
 	background: #111111;
 	border: 1px solid #CCCCCC;
 	position: absolute;
@@ -625,6 +633,7 @@ a:hover > .hhb-name-name {
 	right: 30px;
 	bottom: 75px;
 	top: 15px;
+	overflow: initial;
 }
 #hhb-custom-icon-form .hhb-img-preview .hhb-custom-icon-btn.hhb-custom-icon-remove {
 	left: initial;
@@ -634,6 +643,14 @@ a:hover > .hhb-name-name {
 #hhb-custom-icon-form .hhb-img-preview #hhb-img {
 	max-height: 100%;
 }
+#hhb-custom-icon-form .hhb-img-preview #hhb-img-tips {
+    position: absolute;
+    bottom: 2px;
+    left: 5px;
+	text-align: left;
+    color: #999999;
+	font-size: 12px;
+ }
 #hhb-custom-icon-form .hhb-input {
 	position: absolute;
 	bottom: 14px;
@@ -801,6 +818,7 @@ a:hover > .hhb-name-name {
 #hhb-img-selector {
 	position: absolute;
 	z-index: 10;
+	overflow: initial;
 }
 #hhb-img-holder {
 	position: relative;
@@ -808,6 +826,10 @@ a:hover > .hhb-name-name {
 	border: 1px solid #111111;
 	border-radius:5px;
 	padding: 5px;
+	overflow: inherit;
+}
+.hhb-pf-hkgolden #hhb-img-holder .Image {
+	max-width: initial;
 }
 .hhb-darkmode #hhb-img-holder {
 	border: 1px solid #EEEEEE;

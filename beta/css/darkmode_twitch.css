@@ -507,3 +507,7 @@ body.hhb-pf-twitch.hhb-darkmode.error_500,body.hhb-pf-twitch.hhb-darkmode.error_
 .hhb-pf-twitch.hhb-darkmode .hostmode-title-container .hostmode-title .what { background: #9bbe5a; color: #000; }
 .hhb-pf-twitch.hhb-darkmode .close-hostmode { background: #000; border-top: 1px solid rgba(255,255,255,0.2); border-bottom: 1px solid rgba(255,255,255,0.2); }
 .hhb-pf-twitch.hhb-darkmode .target-frame { background: #000; }
+
+/* [S:2014-10-26] */
+#new-user-prompt { background: #0d0d0d; border-color: #9bbe5a; }
+#new-user-prompt .message .title { color: #ddd; }
