@@ -98,6 +98,7 @@ var HHBJSONDATA,hhb;
 	})};
 	
 	var $ = jQuery.noConflict();
+	hhb$ = $;
 	
 	/* restore original jQuery */
 	jQuery = orgjQuery;
@@ -107,13 +108,13 @@ var HHBJSONDATA,hhb;
 	var imgHost = 'http://hihiboxhbtv.github.io/images/icons/';		/* debug */
 	var enableGA = true;		/* debug */
 	var versionInfo = {
-		name: 'HihiBox',		/* debug */
+		name: 'HihiBox β',		/* debug */
 		credits: {
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v4.0.0',
-		lastUpdate: '2014-10-26'
+		coreVersion: 'v4.1.0',
+		lastUpdate: '2014-11-20'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -283,7 +284,8 @@ var HHBJSONDATA,hhb;
 				dark_mode: true,
 				icon_sort_by: 1,
 				img_max_width: 300,
-				img_max_height: 150
+				img_max_height: 150,
+				enable_hkgolden: true
 			},
 			env = {
 				hasjQuery: false,
@@ -513,10 +515,6 @@ var HHBJSONDATA,hhb;
 							if (nb && nb.cssClass) {
 								var bspan = "<span class='"+nb.cssClass+"'>&nbsp;</span>";
 								var nspan = "<span class='"+cssClass.nameName+"'>"+namestr+"</span>";
-								/*if (env.gjtvIconLoaded) {
-									var gjtvnb = $(this).find('.custom_Nickname');
-									if (gjtvnb.length>0) gjtvnb.hide();
-								}*/
 								$(this).text('');
 								var _pspan = $(this);
 								$(bspan)
@@ -2106,6 +2104,13 @@ var HHBJSONDATA,hhb;
 					if (settings.enable_emotify) activateFeature('emoticon');
 					bindIconListLocale();
 					debugMsg(DEBUG_EXT,'pullSettings',settings);
+					
+					/* check settings if platform == hkgolden */
+					if (env.platform=='hkgolden' && !settings.enable_hkgolden) {
+						debugMsg(DEBUG_ENV|DEBUG_ENV_FAIL,'Platform HKGolden disabled! Initialization aborted! [ P:',env.platform,', S:',settings.enable_hkgolden,']');
+						return ;
+					}
+					
 					/* initialize core */
 					initialize();
 				});
@@ -4153,7 +4158,7 @@ var HHBJSONDATA,hhb;
 		return this;
 	};
 	
-	$(document).ready(function() {			
+	$(document).ready(function() {
 		/* Google Analytics */
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
