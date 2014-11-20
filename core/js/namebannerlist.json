@@ -77,7 +77,20 @@ HHBJSONDATA.listNBControl = [
 			{	"code": ["[jacksun]"],			"src": "channel/jack31292000/Jacksun.gif",			"width": 50,	"height": 50,	"genre": ["JACK"]	},
 			{	"code": ["[jackwtf]"],			"src": "channel/jack31292000/JackWTF.gif",			"width": 50,	"height": 50,	"genre": ["JACK"]	},
 			{	"code": ["[jackxmax]"],			"src": "channel/jack31292000/Jackxmaxppa.gif",		"width": 35,	"height": 39,	"genre": ["JACK"]	}
-
+		]
+	},
+	{	"channel": ["chicktv01@twitch"],
+		"icon_list": [
+			{	"code": ["#ass#c"],			"src": "channel/chicktv01/ass.gif",			"width": 150,	"height": 150,	"genre": ["雞寶台"]	},
+			{	"code": ["#good#c"],		"src": "channel/chicktv01/good.gif",		"width": 120,	"height": 120,	"genre": ["雞寶台"]	},
+			{	"code": ["#kick#c"],		"src": "channel/chicktv01/kick.gif",		"width": 120,	"height": 120,	"genre": ["雞寶台"]	},
+			{	"code": ["#kill#c"],		"src": "channel/chicktv01/kill.gif",		"width": 120,	"height": 120,	"genre": ["雞寶台"]	},
+			{	"code": ["#kill2#c"],		"src": "channel/chicktv01/kill2.gif",		"width": 120,	"height": 120,	"genre": ["雞寶台"]	},
+			{	"code": ["[banghead]c"],	"src": "channel/chicktv01/banghead.gif",	"width": 120,	"height": 120,	"genre": ["雞寶台"]	},
+			{	"code": ["[bomb]c"],		"src": "channel/chicktv01/bomb.gif",		"width": 120,	"height": 120,	"genre": ["雞寶台"]	},
+			{	"code": ["[bouncer]c"],		"src": "channel/chicktv01/bouncer.gif",		"width": 120,	"height": 120,	"genre": ["雞寶台"]	},
+			{	"code": ["x_xc"],			"src": "channel/chicktv01/dead.gif",		"width": 120,	"height": 120,	"genre": ["雞寶台"]	},
+			{	"code": ["Z_Zc"],			"src": "channel/chicktv01/z_z.gif",			"width": 120,	"height": 120,	"genre": ["雞寶台"]	}
 		]
 	}
 ];
