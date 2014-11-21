@@ -5,15 +5,27 @@
 		"developer": ["Lemon", "希治閣"],
 		"specialThanks": ["VannZic"]
 	},
-	"lastExtensionVersion": "v4.1",
-	"lastRelease": "2014-11-20",
+	"lastExtensionVersion": "v4.2",
+	"lastRelease": "2014-11-22",
 	"lastSummary": "[概要] 新增HKGolden 開關選項 及 優化Ustream 開台提示功能",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v4.1.0",
-	"lastUpdate": "2014-11-20",
+	"coreVersion": "v4.2.0",
+	"lastUpdate": "2014-11-22",
 	"history": [
+		{
+			"version": "v4.2",
+			"lastUpdate": "2014-11-22",
+			"summary": [
+				"[概要] 新增HKGolden 開關選項 及 優化Ustream 開台提示功能"
+			],
+			"detail": [
+				"[新增] HKGolden 開關選項",
+				"[優化] Ustream 開台提示功能",
+				"[修正] HihiBox v4.1 相關錯誤修正"
+			]
+		},
 		{
 			"version": "v4.1",
 			"lastUpdate": "2014-11-20",
