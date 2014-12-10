@@ -807,7 +807,7 @@ var HHBJSONDATA,hhb;
 						darkModeAcceptor: 'body',
 						showChatBtn: '.showChat',
 						holderContainer: '.chat-messages',
-						buttonContainer: '.chat-input-wrap .flex-row',
+						buttonContainer: '.chat .chatwrapper .chat-input-inner-wrap',
 						msgBox: '#chat-input',
 						newMsg: '.chat-messages .message:not(.hhb-msg)',
 						newName: '.chat-messages .name:not(.hhb-name)',

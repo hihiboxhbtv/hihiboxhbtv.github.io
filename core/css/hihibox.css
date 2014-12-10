@@ -429,7 +429,8 @@ a:hover > .hhb-name-name {
 .hhb-pf-hitbox .hhb-button {
 	top: 2.5em;
 	width: 34px;
-	height: 34px;
+	height: 50px;
+	margin: 0px 10px 0px -10px;
 }
 .hhb-pf-twitch .hhb-button {
 	padding: 0px 10px;
