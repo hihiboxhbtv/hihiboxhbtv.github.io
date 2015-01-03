@@ -258,9 +258,11 @@
 #hhb-genrelist .hhb-genre[hhb-genre="雨傘"]:hover,
 #hhb-genrelist .hhb-genre[hhb-genre="雨傘"].hhb-active { background-color: rgb(255,255,0); }
 
+/*
 #hhb-genrelist .hhb-genre[hhb-genre="聖誕"] {	background-color: rgb(136,0,0);	color: #FFFFFF; }
 #hhb-genrelist .hhb-genre[hhb-genre="聖誕"]:hover,
 #hhb-genrelist .hhb-genre[hhb-genre="聖誕"].hhb-active { background-color: rgb(204,0,0); }
+*/
 
 #hhb-genrelist::-webkit-scrollbar,
 #hhb-iconset::-webkit-scrollbar {
