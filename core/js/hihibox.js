@@ -819,7 +819,7 @@ var HHBJSONDATA,hhb;
 						chatView: '.chat-messages',
 						chatLine: 'li',
 						chatName: '.title .name',
-						chatQuoteRemove: '.chat-compact-time, .chat-normal-time, .chat-status-time, .chat-badge-mod, .hhb-name-banner, .title .name, .chat-buffer',
+						chatQuoteRemove: '.chat-timestamp, .chat-badge-mod, .hhb-name-banner, .title .name, .chat-buffer',
 						chatContainer: '.chatBody',
 						msgList: '.chatBody > li > div',
 						badgeBroadcaster: '.hhb-pf-hitbox .chat-messages .chat-badge-owner',
