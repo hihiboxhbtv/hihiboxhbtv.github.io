@@ -258,6 +258,14 @@
 #hhb-genrelist .hhb-genre[hhb-genre="雨傘"] {	background-color: rgb(192,192,0);	color: #333333; }
 #hhb-genrelist .hhb-genre[hhb-genre="雨傘"]:hover,
 #hhb-genrelist .hhb-genre[hhb-genre="雨傘"].hhb-active { background-color: rgb(255,255,0); }
+/*
+#hhb-genrelist .hhb-genre[hhb-genre="聖誕"] {	background-color: rgb(136,0,0);	color: #FFFFFF; }
+#hhb-genrelist .hhb-genre[hhb-genre="聖誕"]:hover,
+#hhb-genrelist .hhb-genre[hhb-genre="聖誕"].hhb-active { background-color: rgb(204,0,0); }
+*/
+#hhb-genrelist .hhb-genre[hhb-genre="新年"] {	background-color: rgb(136,0,0);	color: #FFFF00; }
+#hhb-genrelist .hhb-genre[hhb-genre="新年"]:hover,
+#hhb-genrelist .hhb-genre[hhb-genre="新年"].hhb-active { background-color: rgb(204,0,0); }
 
 #hhb-genrelist::-webkit-scrollbar,
 #hhb-iconset::-webkit-scrollbar {
@@ -341,10 +349,10 @@
 	transition: opacity 0.4s;
 }
 .hhb-msg:before { content: ' '; }
-.hhb-msgicon {
+.hhb-msgicon, .hhb-pf-twitch .emoticon {
 	cursor: pointer;
 }
-.hhb-msgicon.hhb-resized {
+.hhb-msgicon.hhb-resized, .hhb-pf-twitch .emoticon {
 	max-height: 60px;
 	width: auto;
 }
@@ -430,7 +438,8 @@ a:hover > .hhb-name-name {
 .hhb-pf-hitbox .hhb-button {
 	top: 2.5em;
 	width: 34px;
-	height: 34px;
+	height: 50px;
+	margin: 0px 10px 0px -10px;
 }
 .hhb-pf-twitch .hhb-button {
 	padding: 0px 10px;
