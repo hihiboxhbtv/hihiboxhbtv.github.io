@@ -108,13 +108,13 @@ var HHBJSONDATA,hhb;
 	var imgHost = 'http://hihiboxhbtv.github.io/images/icons/';		/* debug */
 	var enableGA = true;		/* debug */
 	var versionInfo = {
-		name: 'HihiBox β',		/* debug */
+		name: 'HihiBox',		/* debug */
 		credits: {
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v4.1.0',
-		lastUpdate: '2014-11-20'
+		coreVersion: 'v4.2.1',
+		lastUpdate: '2015-02-06'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -1056,67 +1056,207 @@ var HHBJSONDATA,hhb;
 				};
 				_platform.getPlatformIcon = function() {
 					var list = [], tgenre = [].concat('TTV');
-					try {
-						var emoticonsController = window.App.__container__.lookup('controller:emoticons');
-						var emoteSets = emoticonsController.emoticonSets;
-						var defaultSet = emoteSets['default'].sort();
-						if(!defaultSet) return;
-					} catch(e) {
-						return;
-					}
-					
-					var $style = $("style");
-					var ttvcss = '';
-					for (var i=0;i<$style.length;i++) if ($style.eq(i).text().indexOf('.emo-') != -1) ttvcss += $style.eq(i).text();
-					
-					/* ------------------------------------------------------------------
-					/* randexp v0.3.3
-					/* Create random strings that match a given regular expression.
-					/*
-					/* Copyright (C) 2013 by Roly Fentanes (https://github.com/fent)
-					/* MIT License
-					/* http://github.com/fent/randexp.js/raw/master/LICENSE
-					/* ------------------------------------------------------------------ */
-					!function(){var a=function(b,c){var d=a.resolve(b,c||"/"),e=a.modules[d];if(!e)throw new Error("Failed to resolve module "+b+", tried "+d);var f=e._cached?e._cached:e();return f};a.paths=[],a.modules={},a.extensions=[".js",".coffee"],a._core={assert:!0,events:!0,fs:!0,path:!0,vm:!0},a.resolve=function(){return function(b,c){function h(b){if(a.modules[b])return b;for(var c=0;c<a.extensions.length;c++){var d=a.extensions[c];if(a.modules[b+d])return b+d}}function i(b){b=b.replace(/\/+$/,"");var c=b+"/package.json";if(a.modules[c]){var e=a.modules[c](),f=e.browserify;if(typeof f=="object"&&f.main){var g=h(d.resolve(b,f.main));if(g)return g}else if(typeof f=="string"){var g=h(d.resolve(b,f));if(g)return g}else if(e.main){var g=h(d.resolve(b,e.main));if(g)return g}}return h(b+"/index")}function j(a,b){var c=k(b);for(var d=0;d<c.length;d++){var e=c[d],f=h(e+"/"+a);if(f)return f;var g=i(e+"/"+a);if(g)return g}var f=h(a);if(f)return f}function k(a){var b;a==="/"?b=[""]:b=d.normalize(a).split("/");var c=[];for(var e=b.length-1;e>=0;e--){if(b[e]==="node_modules")continue;var f=b.slice(0,e+1).join("/")+"/node_modules";c.push(f)}return c}c||(c="/");if(a._core[b])return b;var d=a.modules.path(),e=c||".";if(b.match(/^(?:\.\.?\/|\/)/)){var f=h(d.resolve(e,b))||i(d.resolve(e,b));if(f)return f}var g=j(b,e);if(g)return g;throw new Error("Cannot find module '"+b+"'")}}(),a.alias=function(b,c){var d=a.modules.path(),e=null;try{e=a.resolve(b+"/package.json","/")}catch(f){e=a.resolve(b,"/")}var g=d.dirname(e),h=(Object.keys||function(a){var b=[];for(var c in a)b.push(c);return b})(a.modules);for(var i=0;i<h.length;i++){var j=h[i];if(j.slice(0,g.length+1)===g+"/"){var k=j.slice(g.length);a.modules[c+k]=a.modules[g+k]}else j===g&&(a.modules[c]=a.modules[g])}},a.define=function(b,c){var d=a._core[b]?"":a.modules.path().dirname(b),e=function(b){return a(b,d)};e.resolve=function(b){return a.resolve(b,d)},e.modules=a.modules,e.define=a.define;var f={exports:{}};a.modules[b]=function(){return a.modules[b]._cached=f.exports,c.call(f.exports,e,f,f.exports,d,b),a.modules[b]._cached=f.exports,f.exports}},typeof process=="undefined"&&(process={}),process.nextTick||(process.nextTick=function(){var a=[],b=typeof window!="undefined"&&window.postMessage&&window.addEventListener;return b&&window.addEventListener("message",function(b){if(b.source===window&&b.data==="browserify-tick"){b.stopPropagation();if(a.length>0){var c=a.shift();c()}}},!0),function(c){b?(a.push(c),window.postMessage("browserify-tick","*")):setTimeout(c,0)}}()),process.title||(process.title="browser"),process.binding||(process.binding=function(b){if(b==="evals")return a("vm");throw new Error("No such module")}),process.cwd||(process.cwd=function(){return"."}),a.define("path",function(a,b,c,d,e){function f(a,b){var c=[];for(var d=0;d<a.length;d++)b(a[d],d,a)&&c.push(a[d]);return c}function g(a,b){var c=0;for(var d=a.length;d>=0;d--){var e=a[d];e=="."?a.splice(d,1):e===".."?(a.splice(d,1),c++):c&&(a.splice(d,1),c--)}if(b)for(;c--;c)a.unshift("..");return a}var h=/^(.+\/(?!$)|\/)?((?:.+?)?(\.[^.]*)?)$/;c.resolve=function(){var a="",b=!1;for(var c=arguments.length;c>=-1&&!b;c--){var d=c>=0?arguments[c]:process.cwd();if(typeof d!="string"||!d)continue;a=d+"/"+a,b=d.charAt(0)==="/"}return a=g(f(a.split("/"),function(a){return!!a}),!b).join("/"),(b?"/":"")+a||"."},c.normalize=function(a){var b=a.charAt(0)==="/",c=a.slice(-1)==="/";return a=g(f(a.split("/"),function(a){return!!a}),!b).join("/"),!a&&!b&&(a="."),a&&c&&(a+="/"),(b?"/":"")+a},c.join=function(){var a=Array.prototype.slice.call(arguments,0);return c.normalize(f(a,function(a,b){return a&&typeof a=="string"}).join("/"))},c.dirname=function(a){var b=h.exec(a)[1]||"",c=!1;return b?b.length===1||c&&b.length<=3&&b.charAt(1)===":"?b:b.substring(0,b.length-1):"."},c.basename=function(a,b){var c=h.exec(a)[2]||"";return b&&c.substr(-1*b.length)===b&&(c=c.substr(0,c.length-b.length)),c},c.extname=function(a){return h.exec(a)[3]||""}}),a.define("/node_modules/ret/package.json",function(a,b,c,d,e){b.exports={main:"./lib/index.js"}}),a.define("/node_modules/ret/lib/index.js",function(a,b,c,d,e){var f=a("./util"),g=a("./types"),h=a("./sets"),i=a("./positions");b.exports=function(a){var b=0,c,d,e={type:g.ROOT,stack:[]},j=e,k=e.stack,l=[],m=function(b){f.error(a,"Nothing to repeat at column "+(b-1))},n=f.strToChars(a);c=n.length;while(b<c){d=n[b++];switch(d){case"\\":d=n[b++];switch(d){case"b":k.push(i.wordBoundary());break;case"B":k.push(i.nonWordBoundary());break;case"w":k.push(h.words());break;case"W":k.push(h.notWords());break;case"d":k.push(h.ints());break;case"D":k.push(h.notInts());break;case"s":k.push(h.whitespace());break;case"S":k.push(h.notWhitespace());break;default:/\d/.test(d)?k.push({type:g.REFERENCE,value:parseInt(d,10)}):k.push({type:g.CHAR,value:d.charCodeAt(0)})}break;case"^":k.push(i.begin());break;case"$":k.push(i.end());break;case"[":var o;n[b]==="^"?(o=!0,b++):o=!1;var p=f.tokenizeClass(n.slice(b),a);b+=p[1],k.push({type:g.SET,set:p[0],not:o});break;case".":k.push(h.anyChar());break;case"(":var q={type:g.GROUP,stack:[],remember:!0};d=n[b],d==="?"&&(d=n[b+1],b+=2,d==="="?q.followedBy=!0:d==="!"?q.notFollowedBy=!0:d!==":"&&f.error(a,"Invalid group, character '"+d+"' after '?' at column "+(b-1)),q.remember=!1),k.push(q),l.push(j),j=q,k=q.stack;break;case")":l.length===0&&f.error(a,"Unmatched ) at column "+(b-1)),j=l.pop(),k=j.options?j.options[j.options.length-1]:j.stack;break;case"|":j.options||(j.options=[j.stack],delete j.stack);var r=[];j.options.push(r),k=r;break;case"{":var s=/^(\d+)(,(\d+)?)?\}/.exec(n.slice(b)),t,u;s!==null?(t=parseInt(s[1],10),u=s[2]?s[3]?parseInt(s[3],10):Infinity:t,b+=s[0].length,k.push({type:g.REPETITION,min:t,max:u,value:k.pop()})):k.push({type:g.CHAR,value:123});break;case"?":k.length===0&&m(b),k.push({type:g.REPETITION,min:0,max:1,value:k.pop()});break;case"+":k.length===0&&m(b),k.push({type:g.REPETITION,min:1,max:Infinity,value:k.pop()});break;case"*":k.length===0&&m(b),k.push({type:g.REPETITION,min:0,max:Infinity,value:k.pop()});break;default:k.push({type:g.CHAR,value:d.charCodeAt(0)})}}return l.length!==0&&f.error(a,"Unterminated group"),e},b.exports.types=g}),a.define("/node_modules/ret/lib/util.js",function(a,b,c,d,e){var f=a("./types"),g=a("./sets"),h="@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ ?",i={0:0,t:9,n:10,v:11,f:12,r:13};c.strToChars=function(a){var b=/(\[\\b\])|\\(?:u([A-F0-9]{4})|x([A-F0-9]{2})|(0?[0-7]{2})|c([@A-Z\[\\\]\^?])|([0tnvfr]))/g;return a=a.replace(b,function(a,b,c,d,e,f,g){var j=b?8:c?parseInt(c,16):d?parseInt(d,16):e?parseInt(e,8):f?h.indexOf(f):g?i[g]:undefined,k=String.fromCharCode(j);return/[\[\]{}\^$.|?*+()]/.test(k)&&(k="\\"+k),k}),a},c.tokenizeClass=function(a,b){var d=[],e=/\\(?:(w)|(d)|(s)|(W)|(D)|(S))|((?:(?:\\)(.)|([^\\]))-(?:\\)?([^\]]))|(\])|(?:\\)?(.)/g,h,i;while((h=e.exec(a))!=null)if(h[1])d.push(g.words());else if(h[2])d.push(g.ints());else if(h[3])d.push(g.whitespace());else if(h[4])d.push(g.notWords());else if(h[5])d.push(g.notInts());else if(h[6])d.push(g.notWhitespace());else if(h[7])d.push({type:f.RANGE,from:(h[8]||h[9]).charCodeAt(0),to:h[10].charCodeAt(0)});else{if(!(i=h[12]))return[d,e.lastIndex];d.push({type:f.CHAR,value:i.charCodeAt(0)})}c.error(b,"Unterminated character class")},c.error=function(a,b){throw new SyntaxError("Invalid regular expression: /"+a+"/: "+b)}}),a.define("/node_modules/ret/lib/types.js",function(a,b,c,d,e){b.exports={ROOT:0,GROUP:1,POSITION:2,SET:3,RANGE:4,REPETITION:5,REFERENCE:6,CHAR:7}}),a.define("/node_modules/ret/lib/sets.js",function(a,b,c,d,e){var f=a("./types"),g=function(){return[{type:f.RANGE,from:48,to:57}]},h=function(){return[{type:f.RANGE,from:97,to:122},{type:f.RANGE,from:65,to:90}].concat(g())},i=function(){return[{type:f.CHAR,value:12},{type:f.CHAR,value:10},{type:f.CHAR,value:13},{type:f.CHAR,value:9},{type:f.CHAR,value:11},{type:f.CHAR,value:160},{type:f.CHAR,value:5760},{type:f.CHAR,value:6158},{type:f.CHAR,value:8192},{type:f.CHAR,value:8193},{type:f.CHAR,value:8194},{type:f.CHAR,value:8195},{type:f.CHAR,value:8196},{type:f.CHAR,value:8197},{type:f.CHAR,value:8198},{type:f.CHAR,value:8199},{type:f.CHAR,value:8200},{type:f.CHAR,value:8201},{type:f.CHAR,value:8202},{type:f.CHAR,value:8232},{type:f.CHAR,value:8233},{type:f.CHAR,value:8239},{type:f.CHAR,value:8287},{type:f.CHAR,value:12288}]};c.words=function(){return{type:f.SET,set:h(),not:!1}},c.notWords=function(){return{type:f.SET,set:h(),not:!0}},c.ints=function(){return{type:f.SET,set:g(),not:!1}},c.notInts=function(){return{type:f.SET,set:g(),not:!0}},c.whitespace=function(){return{type:f.SET,set:i(),not:!1}},c.notWhitespace=function(){return{type:f.SET,set:i(),not:!0}},c.anyChar=function(){return{type:f.SET,set:[{type:f.CHAR,value:10}],not:!0}}}),a.define("/node_modules/ret/lib/positions.js",function(a,b,c,d,e){var f=a("./types");c.wordBoundary=function(){return{type:f.POSITION,value:"b"}},c.nonWordBoundary=function(){return{type:f.POSITION,value:"B"}},c.begin=function(){return{type:f.POSITION,value:"^"}},c.end=function(){return{type:f.POSITION,value:"$"}}}),a.define("/randexp.js",function(a,b,c,d,e){function h(a,b){return a+Math.floor(Math.random()*(1+b-a))}function i(a){return a+(97<=a&&a<=122?-32:65<=a&&a<=90?32:0)}function j(a,b,c,d){return a<=c&&c<=b?{from:c,to:Math.min(b,d)}:a<=d&&d<=b?{from:Math.max(a,c),to:d}:!1}function k(a,b){var c,d,e,f;if((d=a.length)!==b.length)return!1;for(c=0;c<d;c++){f=a[c];for(e in f)if(f.hasOwnProperty(e)&&f[e]!==b[c][e])return!1}return!0}function l(a,b){for(var c=0,d=a.length;c<d;c++){var e=a[c];if(e.not!==b.not&&k(e.set,b.set))return!0}return!1}function m(a,b,c){var d,e,f=[],h=!1;for(var k=0,n=a.length;k<n;k++){d=a[k];switch(d.type){case g.CHAR:e=d.value;if(e===b||c&&i(e)===b)return!0;break;case g.RANGE:if(d.from<=b&&b<=d.to||c&&((e=j(97,122,d.from,d.to))!==!1&&e.from<=b&&b<=e.to||(e=j(65,90,d.from,d.to))!==!1&&e.from<=b&&b<=e.to))return!0;break;case g.SET:f.length>0&&l(f,d)?h=!0:f.push(d);if(!h&&m(d.set,b,c)!==d.not)return!0}}return!1}function n(a,b){return String.fromCharCode(b&&Math.random()>.5?i(a):a)}function o(a,b,c){var d,e,f,i,j,k,l;switch(a.type){case g.ROOT:case g.GROUP:if(a.notFollowedBy)return"";a.remember&&(d=b.push(!1)-1),e=a.options?a.options[Math.floor(Math.random()*a.options.length)]:a.stack,f="";for(j=0,k=e.length;j<k;j++)f+=o.call(this,e[j],b);return a.remember&&(b[d]=f),f;case g.POSITION:return"";case g.SET:c=!!c,l=c!==a.not;if(!l)return a.set.length?o.call(this,a.set[Math.floor(Math.random()*a.set.length)],b,l):"";for(;;){var p=this.anyRandChar(),q=p.charCodeAt(0);if(m(a.set,q,this.ignoreCase))continue;return p}break;case g.RANGE:return n(h(a.from,a.to),this.ignoreCase);case g.REPETITION:i=h(a.min,a.max===Infinity?a.min+this.max:a.max),f="";for(j=0;j<i;j++)f+=o.call(this,a.value,b);return f;case g.REFERENCE:return b[a.value-1]||"";case g.CHAR:return n(a.value,this.ignoreCase)}}var f=a("ret"),g=f.types,p=b.exports=function(a,b){if(a instanceof RegExp)this.ignoreCase=a.ignoreCase,this.multiline=a.multiline,typeof a.max=="number"&&(this.max=a.max),typeof a.anyRandChar=="function"&&(this.anyRandChar=a.anyRandChar),a=a.source;else{if(typeof a!="string")throw new Error("Expected a regexp or string");this.ignoreCase=b&&b.indexOf("i")!==-1,this.multiline=b&&b.indexOf("m")!==-1}this.tokens=f(a)};p.prototype.max=100,p.prototype.anyRandChar=function(){return String.fromCharCode(h(0,65535))},p.prototype.gen=function(){return o.call(this,this.tokens,[])};var q=p.randexp=function(a,b){var c;return a._randexp===undefined?(c=new p(a,b),a._randexp=c):(c=a._randexp,typeof a.max=="number"&&(c.max=a.max),typeof a.anyRandChar=="function"&&(c.anyRandChar=a.anyRandChar)),c.gen()};p.sugar=function(){RegExp.prototype.gen=function(){return q(this)}}}),!function(a,b){typeof define=="function"&&typeof define.amd=="object"?define(a,function(){return b}):typeof window!="undefined"&&(window[a]=b)}("RandExp",a("/randexp.js"))}()
+					var logger = {};
+					var api = {};
+					var ember = null;
+					var emoteGetters = {};
 
-					var reEmo = /\.emo-\d+\s*\{[^\}]+\}/g,
-						listCss = ttvcss.match(reEmo),
-						reClass = /\.(emo-\d+)/,
-						reBGimg = /background-image\s*:\s*url\(([^\)]+)\)\s*;/,
-						reWidth = /width\s*:\s*(\d+)(?:px)\s*;/,
-						reHeight = /height\s*:\s*(\d+)(?:px)\s*;/,
-						listCssLookup = [];
-					if (!listCss) return;
-					for (var i=0;i<listCss.length;i++) {
-						var cssitem = listCss[i];
-						var cls = cssitem.match(reClass);	cls = (cls) ? cls[1] : cls;
-						var src = cssitem.match(reBGimg);	src = (src) ? src[1] : src;
-						var w = cssitem.match(reWidth);		w = (w) ? w[1] : w;
-						var h = cssitem.match(reHeight);	h = (h) ? h[1] : h;
-						if (cls && src && w && h) listCssLookup[cls] = { cls: cls, src: src, width: w, height: h };
-					}
-					var t=[].concat(defaultSet);
-					for (var i=0;i<defaultSet.length;i++) {
-						var emo = defaultSet[i], cls = emo.cls, cssInfo = listCssLookup[cls];
-						if (!cssInfo) continue;
-						if (!emo.isEmoticon||emo.isGJTVEmoticon||emo.isHHBEmoticon) continue;
-						var tcode = [];
-						var regex = emo.regex.toString();
-						regex = regex.replace(/^\/(.+)\/[^\/]*$/, "$1");
-						var iconRegExp = new RegExp(regex, "g");
-						var qmCount = (regex.match(/\?/g)||[]).length;
-						for (var j=0;j<2+Math.pow(2,qmCount);j++) {
-							var genCode = new RandExp(iconRegExp).gen();
-							tcode = tcode.concat(($.inArray(genCode,tcode) < 0) ? genCode : []);
+					logger.debug = function() {};
+
+					api.getEmber = function () {
+						if (ember) {
+							return ember;
 						}
+						if (window.App && window.App.__container__) {
+							ember = window.App.__container__;
+							return ember;
+						}
+						return false;
+					};
+
+					api.isLoaded = function () {
+						return Boolean(api.getEmber());
+					};
+
+					api.lookup = function (lookupFactory) {
+						if (!api.isLoaded()) {
+							logger.debug('Factory lookup failure, Ember not loaded.');
+							return false;
+						}
+						return api.getEmber().lookup(lookupFactory);
+					};
+
+					api.get = function (lookupFactory, property) {
+						if (!api.isLoaded()) {
+							logger.debug('Factory get failure, Ember not loaded.');
+							return false;
+						}
+						var properties = property.split('.');
+						var getter = api.lookup(lookupFactory);
+
+						properties.some(function (property) {
+							// If getter fails, just exit, otherwise, keep looping.
+							if (typeof getter.get === 'function' && typeof getter.get(property) !== 'undefined') {
+								getter = getter.get(property);
+							}
+							else if (typeof getter[property] !== 'undefined') {
+								getter = getter[property];
+							}
+							else {
+								getter = null;
+								return true;
+							}
+						});
+
+						return getter;
+					};
+
+					// Channels.
+					var channels = {};
+					api.getChannel = function (text) {
+						if (channels[text]) {
+							return channels[text];
+						}
+						return '';
+					};
+					api.addChannel = function (text, channel) {
+						channels[text] = channel;
+					};
+
+					// Badges.
+					var badges = {};
+					api.getBadge = function (channel) {
+						if (badges[channel]) {
+							return badges[channel];
+						}
+						return '';
+					};
+					api.addBadge = function (channel, badge) {
+						badges[channel] = badge;
+					}
+
+					function getEmotes() {
+					//	var ember = require('./ember-api');
+						var emberApi = api;
+
+						var emotes = [];
+						var emotesStored = [];
+
+						// Parse the native emotes.
+						var raw = emberApi.get('controller:chat', 'currentRoom.tmiSession._emotesParser.emoticonRegexToIds') || {};
+						Object.keys(raw).forEach(function (key) {
+							var emote = raw[key];
+							emote.url = 'http://static-cdn.jtvnw.net/emoticons/v1/' + emote.id + '/1.0';
+							emote.text = emote.isRegex ? getEmoteFromRegEx(key) : key;
+
+							parse(emote, false);
+						});
+
+						// Parse the custom emotes provided by third party addons.
+						Object.keys(emoteGetters).forEach(function (name) {
+							var getterEmotes = null;
+							try {
+								getterEmotes = emoteGetters[name]();
+							}
+							catch (err) {
+								logger.debug('Emote getter `' + name + '` failed unexpectedly.', err.toString());
+								return;
+							}
+
+							if (!Array.isArray(getterEmotes)) {
+								logger.debug('Emote getter `' + name + '` failed to return a usable array.');
+								return;
+							}
+							getterEmotes.forEach(function (emote) {
+								parse(emote, true);
+							});
+						});
+
+						function parse(emote, isThirdParty) {
+							// Ignore emotes that were forced hidden, don't have URLs, or don't have text.
+							if (emote.hidden || !emote.url || !emote.text) {
+								return;
+							}
+							var parsed = {}
+							parsed.text = emote.text;
+							parsed.url = emote.url;
+							parsed.channel = emote.channel || api.getChannel(parsed.text);
+							parsed.badge = emote.badge || api.getBadge(parsed.channel);
+							parsed.hidden = emote.hidden;
+							// Determine if emote is from a third-party addon.
+							parsed.isThirdParty = isThirdParty;
+							// Determine if emote is hidden by user.
+							//parsed.isVisible = storage.visibility.get('channel-' + parsed.channel, true) && storage.visibility.get(parsed.text, true);
+							parsed.isVisible = true;
+							// Get starred status.
+							//parsed.isStarred = storage.starred.get(parsed.text, false);
+							parsed.isStarred = true;
+							
+							// Override emotes if they've been stored.
+							var storedIndex = emotesStored.indexOf(parsed.text);
+							if (storedIndex === -1) {
+								emotes.push(parsed);
+								emotesStored.push(parsed.text);
+							}
+							else {
+								emotes[storedIndex] = parsed;
+							}
+						}						return emotes;
+					};
+
+					/**
+					 * Gets the usable emote text from a regex.
+					 * @attribute http://userscripts.org/scripts/show/160183 (adaption)
+					 */
+					function getEmoteFromRegEx(regex) {
+						if (typeof regex === 'string') {
+							regex = new RegExp(regex);
+						}
+						if (!regex) {
+							throw new Error('`regex` must be a RegExp string or object.');
+						}
+						return decodeURI(regex.source)
+							.replace('&gt\\;', '>') // right angle bracket
+							.replace('&lt\\;', '<') // left angle bracket
+							.replace(/\(\?![^)]*\)/g, '') // remove negative group
+							.replace(/\(([^|])*\|?[^)]*\)/g, '$1') // pick first option from a group
+							.replace(/\[([^|])*\|?[^\]]*\]/g, '$1') // pick first character from a character group
+							.replace(/[^\\]\?/g, '') // remove optional chars
+							.replace(/^\\b|\\b$/g, '') // remove boundaries
+							.replace(/\\/g, ''); // unescape
+					}
+
+					function getEmoteSets() {
+					//	var ember = require('./ember-api');
+						var emberApi = api;
+						var sets = [];
+						try {
+							sets = emberApi.get('controller:chat', 'currentRoom.tmiRoom').getEmotes(window.Twitch.user.login());
+							sets = sets.filter(function (val) {
+								return typeof val === 'number' && val >= 0;
+							});
+
+							logger.debug('Emoticon sets retrieved.', sets);
+							return sets;
+						}
+						catch (err) {
+							logger.debug('Emote sets failed.', err);
+							return [];
+						}
+					}
+					var emotes = getEmotes();
+					for (var i=0;i<emotes.length;i++) {
+						var emo = emotes[i];
+						var tcode = [].concat(emo.text)
 						list.push({
 							code: tcode,
-							src: cssInfo.src,
-							width: cssInfo.width,
-							height: cssInfo.height,
+							src: emo.url,
+							width: 50,
+							height: 50,
 							genre: tgenre
 						});
 					}
+					
 					return list;
 				};
 				_platform.getPlayer = function() {
@@ -1131,71 +1271,79 @@ var HHBJSONDATA,hhb;
 				/* Icon emotify */
 				_platform.injectIcon = function(iconlist) {
 					var iconlist = [].concat(iconlist);
-					var list = [],
-						count = 0,
-						style = '';
-					listEmoClsLookup = {};
-					try {
-						var emoticonsController = window.App.__container__.lookup('controller:emoticons');
-						var emoteSets = emoticonsController.emoticonSets;
-						var defaultSet = emoteSets['default'].sort();
-						if(!defaultSet) return -1;
-					} catch(e) {
-						return -2;
-					}
-					/* cleaning */
-					for (var idx=0;idx<defaultSet.length;idx++) {
-						var obj = defaultSet[idx];
-						if (obj && obj.isHHBEmoticon) {
-							defaultSet.splice(idx,1);
-							idx--;
+					var get_user = function() {
+						if (typeof PP !== 'undefined' && PP && PP.login) return PP;
+						if (App) {
+							var t = App.__container__.lookup("controller:navigation");
+							return t ? t.get("userData") : void 0
 						}
 					}
-					
-					/* injecting */
-					limitHeight = limit.msgIconHeight;
-					while (icon = iconlist.pop()) {
-						var classname = 'emo-hhb-'+count
-						var ow = ((icon.width) ? icon.width+'px' : 'auto');
-						var oh = ((icon.height) ? icon.height+'px' : 'auto');
-						var w = ow;
-						var h = oh;
-						if (icon.height > limitHeight) {
-							w = ((icon.width/icon.height)*limitHeight)+'px';
-							h = limitHeight+'px';
+					var _emoticonize = function(e, t) {
+						var o = e.get("parentController.model.id"),
+							n = e.get("model.from"),
+							s = this,
+							i = [];
+						for (var _fi=t.length-1;_fi>=0;_fi--) {
+							var _t = t[_fi];
+							_t = ( !_.isString(_t) && _t.emoticonSrc ? _t.altText : _t );
+							if (( _fi<t.length-1 ) && (_.isString(_t) && _.isString(t[_fi+1]))) {
+								_t += t[_fi+1];
+								t.splice(_fi+1,1);
+							}
+							t[_fi] = _t;
 						}
-						style += ['.'+classname+'.'+cssClass.msgIcon+'{', 
-								'opacity: initial;',
-								'background-size:'+w+' '+h+';',
-								'width:'+w+';',
-								'height:'+h+';',
-								'}'].join(' ');
-						style += ['.'+classname+'{',
-								'opacity: 0.01;',
-								'}'].join(' ');
-						style += ['.'+classname+','+
-								'.'+classname+'.'+cssClass.msgIcon+'.'+cssClass.orgSize+'{',
-								'background-image: url('+icon.src+');',
-								'background-size: contain;',
-								'max-width: 100%;',
-								'width:'+ow+';',
-								'height:'+oh+';',
-								'}'].join(' ');
-						var regex = icon.regex;
-						defaultSet.unshift({
-							cls: classname,
-							isHHBEmoticon: true,
-							isEmoticon: true,
-							regex: regex
+						_.each(iconlist, function(e) {
+							_.any(t, function(t) {
+								return _.isString(t) && t.match(e.regex)
+							}) && i.push(e)
 						});
-						listEmoClsLookup[classname] = icon;
-						count++;
+						if (i.length) {
+							if ("string" == typeof t) t = [t];
+							_.each(i, function(e) {
+								var o = {
+									isEmoticon: !0,
+									cls: 'hhb-msgicon',
+									emoticonSrc: e.src,
+									altText: e.hidden ? "???" : e.alt
+								};
+								t = _.compact(_.flatten(_.map(t, function(t) {
+									if (_.isObject(t)) return t;
+									var n = t.split(e.regex),
+										s = [];
+									return n.forEach(function(e, t) {
+										s.push(e), t !== n.length - 1 && s.push(o)
+									}), s
+								})))
+							});
+						}
+						return t;
+					};
+					var _mentionize = function(e, o) {
+						return this.mention_words ? ("string" == typeof o && (o = [o]), _.each(this.mention_words, function(e) {
+							var n = {
+								mentionedUser: e,
+								own: !1
+							};
+							o = _.compact(_.flatten(_.map(o, function(o) {
+								if (_.isObject(o)) return o;
+								var s = o.split(t.get_regex(e)),
+									r = [];
+								return s.forEach(function(e, t) {
+									r.push(e), t !== s.length - 1 && r.push(n)
+								}), r
+							})))
+						}), o) : o
 					}
-					if (count > 0) {
-						$('style.hhb-emo-style').detach();
-						$('<style type="text/css" class="hhb-emo-style">').text(style).appendTo("head");
-					}
-					return count;
+					var e = App.__container__.resolve("controller:line"),
+						o = this;
+					e.reopen({
+						tokenizedMessage: function() {
+							var e = _emoticonize(this, this._super()),
+								t = get_user();
+							return t && this.get("model.from") == t.login || (e = _mentionize(this, e)), e
+						}.property("model.message", "isModeratorOrHigher", "controllers.emoticons.emoticons.[]")
+					});
+					return iconlist.length;
 				};
 				_platform.getNewMsg = function() {	return $(selector.newMsg);	};
 				_platform.bindResizer = function() {
@@ -2336,8 +2484,11 @@ var HHBJSONDATA,hhb;
 				
 				iconlist = platformObj.getPlatformIcon();
 				analyzediconlist = analyzeIcon(iconlist,{ category: 'platform' });
-				if (!iconlist || iconlist.length==0) return retry();
-				else if (!analyzediconlist || analyzediconlist.length==0) return retry(true);
+				// bypass twitch ( v4.2.1 )
+				if ( env.platform != 'twitch' ) {
+					if (!iconlist || iconlist.length==0) return retry();
+					else if (!analyzediconlist || analyzediconlist.length==0) return retry(true);
+				}
 				
 				listIcon = listIcon.concat(analyzediconlist);
 				setLoadingStatus('analyzePlatformIcon','complete');

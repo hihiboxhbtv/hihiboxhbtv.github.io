@@ -7,13 +7,23 @@
 	},
 	"lastExtensionVersion": "v4.2",
 	"lastRelease": "2014-11-22",
-	"lastSummary": "[概要] 新增HKGolden 開關選項 及 優化Ustream 開台提示功能",
+	"lastSummary": "[概要] 因Twitch.tv 更新引致之表情顯示相關問題修正 (測試中)",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v4.2.0",
-	"lastUpdate": "2014-11-22",
+	"coreVersion": "v4.2.1",
+	"lastUpdate": "2015-02-06",
 	"history": [
+		{
+			"version": "v4.2.1",
+			"lastUpdate": "2015-02-06",
+			"summary": [
+				"[概要] 因Twitch.tv 更新引致之表情顯示相關問題修正 (測試中)"
+			],
+			"detail": [
+				"[修正] 因Twitch.tv 更新引致之表情顯示相關問題修正 (測試中)"
+			]
+		},
 		{
 			"version": "v4.2",
 			"lastUpdate": "2014-11-22",
