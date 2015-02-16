@@ -565,8 +565,9 @@ var HHBJSONDATA,hhb;
 						return '';
 					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
 					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
+					var subscriber = $.extend({ img: null, width: 0, height: 0 },badges.subscriber);
 					
-					if (broadcaster && broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
+					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
 						style += [	
 							selector.badgeBroadcaster,' {',
 								'color: transparent;',
@@ -577,7 +578,7 @@ var HHBJSONDATA,hhb;
 								'background: url(',broadcaster.img,') no-repeat left bottom !important;',
 							'}'].join('');
 					}
-					if (moderator && moderator.img && moderator.width>0 && moderator.height>0) {
+					if (moderator.img && moderator.width>0 && moderator.height>0) {
 						style += [	
 							selector.badgeModerator,' {',
 								'color: transparent;',
@@ -588,7 +589,7 @@ var HHBJSONDATA,hhb;
 								'background: url(',moderator.img,') no-repeat center center !important;',
 							'}'].join('');
 					}
-					if (subscriber && subscriber.img && subscriber.width>0 && subscriber.height>0) {
+					if (subscriber.img && subscriber.width>0 && subscriber.height>0) {
 						style += [
 							selector.badgeSubscriber,' {',	
 								'color: transparent;',
