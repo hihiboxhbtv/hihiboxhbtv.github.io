@@ -588,6 +588,17 @@ var HHBJSONDATA,hhb;
 								'background: url(',moderator.img,') no-repeat center center !important;',
 							'}'].join('');
 					}
+					if (subscriber.img && subscriber.width>0 && subscriber.height>0) {
+						style += [
+							selector.badgeSubscriber,' {',	
+								'color: transparent;',
+								'margin-right: 3px;',
+								'vertical-align:bottom;',
+								'width:',subscriber.width,'px !important;',
+								'height:',subscriber.height,'px !important;',
+								'background: url(',subscriber.img,') no-repeat center center !important;',
+							'}'].join('');
+					}
 					return style;
 				},
 				parseBBCode: function(msgs) {
@@ -823,7 +834,8 @@ var HHBJSONDATA,hhb;
 						chatContainer: '.chatBody',
 						msgList: '.chatBody > li > div',
 						badgeBroadcaster: '.hhb-pf-hitbox .chat-messages .chat-badge-owner',
-						badgeModerator: '.hhb-pf-hitbox .chat-messages .chat-badge-mod'
+						badgeModerator: '.hhb-pf-hitbox .chat-messages .chat-badge-mod',
+						badgeSubscriber: '.hhb-pf-hitbox .chat-messages .chat-badge-sub'
 					}),
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
