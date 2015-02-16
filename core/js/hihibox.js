@@ -566,39 +566,27 @@ var HHBJSONDATA,hhb;
 					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
 					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
 					var subscriber = $.extend({ img: null, width: 0, height: 0 },badges.subscriber);
-					
-					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
-						style += [	
-							selector.badgeBroadcaster,' {',
+					var getBadgeCss = function( _selector, _badge ) {
+						var badgeDefaultHeight = 20;
+						return [	
+							_selector,' {',
 								'color: transparent;',
 								'margin-right: 3px;',
+								( _badge.height > badgeDefaultHeight ? ['margin-top: ',badgeDefaultHeight-_badge.height,'px;'].join('') : '' ),
 								'vertical-align:bottom;',
-								'width:',broadcaster.width,'px !important;',
-								'height:',broadcaster.height,'px !important;',
-								'background: url(',broadcaster.img,') no-repeat left bottom !important;',
-							'}'].join('');
+								'width:',_badge.width,'px !important;',
+								'height:',_badge.height,'px !important;',
+								'background: url(',_badge.img,') no-repeat left bottom !important;',
+							'}'].join('')
+					}
+					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
+						style += getBadgeCss( selector.badgeBroadcaster, broadcaster );
 					}
 					if (moderator.img && moderator.width>0 && moderator.height>0) {
-						style += [	
-							selector.badgeModerator,' {',
-								'color: transparent;',
-								'margin-right: 3px;',
-								'vertical-align:bottom;',
-								'width:',moderator.width,'px !important;',
-								'height:',moderator.height,'px !important;',
-								'background: url(',moderator.img,') no-repeat center center !important;',
-							'}'].join('');
+						style += getBadgeCss( selector.badgeModerator, moderator );
 					}
 					if (subscriber.img && subscriber.width>0 && subscriber.height>0) {
-						style += [
-							selector.badgeSubscriber,' {',	
-								'color: transparent;',
-								'margin-right: 3px;',
-								'vertical-align:bottom;',
-								'width:',subscriber.width,'px !important;',
-								'height:',subscriber.height,'px !important;',
-								'background: url(',subscriber.img,') no-repeat center center !important;',
-							'}'].join('');
+						style += getBadgeCss( selector.badgeSubscriber, subscriber );
 					}
 					return style;
 				},
