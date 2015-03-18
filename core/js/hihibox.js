@@ -1202,7 +1202,9 @@ var HHBJSONDATA,hhb;
 							else {
 								emotes[storedIndex] = parsed;
 							}
-						}						return emotes;
+						}
+
+						return emotes;
 					};
 
 					/**
