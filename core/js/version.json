@@ -11,9 +11,19 @@
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v4.2.1",
-	"lastUpdate": "2015-02-06",
+	"coreVersion": "v4.2.2",
+	"lastUpdate": "2015-04-17",
 	"history": [
+		{
+			"version": "v4.2.2",
+			"lastUpdate": "2015-04-17",
+			"summary": [
+				"[概要] 因Twitch.tv 更新引致之表情顯示相關問題修正 (測試中)"
+			],
+			"detail": [
+				"[修正] 因Twitch.tv 更新引致之表情顯示相關問題修正 (測試中)"
+			]
+		},
 		{
 			"version": "v4.2.1",
 			"lastUpdate": "2015-02-06",

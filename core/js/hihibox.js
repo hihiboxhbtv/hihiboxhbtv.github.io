@@ -113,8 +113,8 @@ var HHBJSONDATA,hhb;
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v4.2.1',
-		lastUpdate: '2015-02-06'
+		coreVersion: 'v4.2.2',
+		lastUpdate: '2015-04-17'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -205,7 +205,6 @@ var HHBJSONDATA,hhb;
 				analyzeCustomIcon: 200,
 				analyzeChannelIcon: 200,
 				analyzePlatformIcon: 500,
-				analyzeGJTVIcon: 1000,
 				detectUI: 60000,
 				bindHolderUI: 1000,
 				bindButtonUI: 1000,
@@ -236,7 +235,6 @@ var HHBJSONDATA,hhb;
 				analyzeCustomIcon: 1,
 				analyzeChannelIcon: 1,
 				analyzePlatformIcon: 50,
-				analyzeGJTVIcon: 1,
 				activateRebindUIBtn: 30,
 				bindBookmarkBtn: 30,
 				bindPlayerBookmarkBtn: 30,
@@ -306,7 +304,6 @@ var HHBJSONDATA,hhb;
 						channelIconLoaded: false,
 						builtinIconLoaded: false,
 						platformIconLoaded: false,
-						gjtvIconLoaded: false,
 					isUserInterfaceInited: false,
 						holderUIBinded: false,
 						buttonUIBinded: false,
@@ -330,7 +327,6 @@ var HHBJSONDATA,hhb;
 				analyzeCustomIcon: 0,
 				analyzeChannelIcon: 0,
 				analyzePlatformIcon: 0,
-				analyzeGJTVIcon: 0,
 				activateRebindUIBtn: 0,
 				bindHolderUI: 0,
 				bindButtonUI: 0,
@@ -362,7 +358,6 @@ var HHBJSONDATA,hhb;
 					analyzeCustomIcon:			{ start: 0, end: 0, duration: 0 },
 					analyzeChannelIcon:			{ start: 0, end: 0, duration: 0 },
 					analyzePlatformIcon: 		{ start: 0, end: 0, duration: 0 },
-					analyzeGJTVIcon: 			{ start: 0, end: 0, duration: 0 },
 				initUserInterface: 				{ start: 0, end: 0, duration: 0 },
 					bindUI:						{ start: 0, end: 0, duration: 0 },
 					bindHolderUI:				{ start: 0, end: 0, duration: 0 },
@@ -1307,6 +1302,7 @@ var HHBJSONDATA,hhb;
 									isEmoticon: !0,
 									cls: 'hhb-msgicon',
 									emoticonSrc: e.src,
+									srcSet: e.src,
 									altText: e.hidden ? "???" : e.alt
 								};
 								t = _.compact(_.flatten(_.map(t, function(t) {
@@ -2066,7 +2062,6 @@ var HHBJSONDATA,hhb;
 				case 'analyzeCustomIcon':		env.customIconLoaded = true;	break;
 				case 'analyzeChannelIcon':		env.channelIconLoaded = true;	break;
 				case 'analyzePlatformIcon':		env.platformIconLoaded = true;	break;
-				case 'analyzeGJTVIcon':			env.gjtvIconLoaded = true;	break;
 				/* initUserInterface */
 				case 'bindHolderUI':			env.holderUIBinded = true;	break;
 				case 'bindButtonUI':			env.buttonUIBinded = true;	break;
@@ -2114,9 +2109,6 @@ var HHBJSONDATA,hhb;
 				case 'analyzeCustomIcon':
 				case 'analyzeChannelIcon':
 				case 'analyzePlatformIcon':
-				case 'analyzeGJTVIcon':
-					if (isStatusSuccess('analyzeBuiltinIcon') && isStatusFinished('analyzePlatformIcon')) setLoadingStatus('initIconListData','complete');
-					break;
 				/* initUserInterface */
 				case 'bindHolderUI':
 				case 'bindButtonUI':
@@ -2500,59 +2492,6 @@ var HHBJSONDATA,hhb;
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Platform Icon Succeed!');
 				_gaTracker('core','Icon List - Load platform icon','success',analyzediconlist.length);
 			};
-			var analyzeGJTVIcon = function() {
-				if (retryCount.analyzeGJTVIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing GJTV Icon...'),setLoadingStatus('analyzeGJTVIcon','init');
-				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing GJTV Icon Retry...'),setLoadingStatus('analyzeGJTVIcon','retry');
-				var retry = function(isFail) {
-					if (!isFail && retryCount.analyzeGJTVIcon < limit.analyzeGJTVIcon) {
-						setTimeout(function() { analyzeGJTVIcon(); },delay.analyzeGJTVIcon);
-						retryCount.analyzeGJTVIcon++;
-					} else {
-						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing GJTV Icon Failed!');
-						_gaTracker('core','Icon List - Load GJTV icon','fail');
-						setLoadingStatus('analyzeGJTVIcon','fail');
-					}
-					return false;
-				}
-				var iconlist, analyzediconlist;
-				if (!env.builtinIconLoaded) return retry();
-				var getGJTVIcon = function() {
-					var list = [], dgenre = [].concat('GJTV');
-					if (GoldenJTV && GoldenJTV.iconRoot && GoldenJTV.iconList) {
-						$.each(GoldenJTV.iconList,function(tgenre,emolist) {
-							$.each(emolist,function(idx,obj) {
-								if (obj && obj.code && obj.src && obj.width && obj.height) {
-									var tcode = [].concat(obj.code),
-										tsrc = obj.src,
-										twidth = obj.width,
-										theight = obj.height;
-									if (tsrc.indexOf("http") == -1) tsrc = GoldenJTV.iconRoot + tsrc;
-									
-									if (tcode && tsrc && twidth && theight && twidth>0 && theight>0) {
-										list.push({
-											code: tcode,
-											src: tsrc,
-											width: parseInt(twidth), height: parseInt(theight),
-											genre: dgenre
-										});
-									}
-								}
-							});
-						});
-					}
-					return list;
-				};
-				iconlist = getGJTVIcon();
-				analyzediconlist = analyzeIcon(iconlist,{ category: 'gjtv' });
-				if (!iconlist || iconlist.length==0)  return retry();
-				else if (!analyzediconlist || analyzediconlist.length==0)  return retry(true);
-				listIcon = listIcon.concat(analyzediconlist);
-				setLoadingStatus('analyzeGJTVIcon','complete');
-				retryCount.analyzeGJTVIcon = 0;
-				refreshList();
-				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing GJTV Icon Succeed!');
-				_gaTracker('core','Icon List - Load GJTV icon','success',analyzediconlist.length);
-			};
 			var analyzeIcon = function(iconlist,_options) {
 				var count = 0;
 				var genreOther = 'Other',
@@ -2732,8 +2671,6 @@ var HHBJSONDATA,hhb;
 			_protected.importCustomIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeCustomIcon(_iconlist); }
 			_protected.addCustomIcon = addCustomIcon;
 			_protected.removeCustomIcon = removeCustomIcon;
-			/* analyze GJTV Icon in twitch */
-			if ($.inArray(env.platform,['twitch']) >= 0) analyzeGJTVIcon();
 			/* pull custom iconset */
 			if (settings.enable_bbcode) pullCustomIconset();
 		}
