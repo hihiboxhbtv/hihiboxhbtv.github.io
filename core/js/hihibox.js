@@ -204,7 +204,7 @@ var HHBJSONDATA,hhb;
 				analyzeBuiltinIcon: 200,
 				analyzeCustomIcon: 200,
 				analyzeChannelIcon: 200,
-				analyzePlatformIcon: 500,
+				analyzePlatformIcon: 2000,
 				detectUI: 60000,
 				bindHolderUI: 1000,
 				bindButtonUI: 1000,
@@ -234,7 +234,7 @@ var HHBJSONDATA,hhb;
 				analyzeBuiltinIcon: 1,
 				analyzeCustomIcon: 1,
 				analyzeChannelIcon: 1,
-				analyzePlatformIcon: 50,
+				analyzePlatformIcon: 5,
 				activateRebindUIBtn: 30,
 				bindBookmarkBtn: 30,
 				bindPlayerBookmarkBtn: 30,
@@ -1019,7 +1019,7 @@ var HHBJSONDATA,hhb;
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
 				/* Initialize */
-				_platform.isExcluded = function() {  var m=document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:assets|crossdomain|settings|subscriptions|inbox|directory|message)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
+				_platform.isExcluded = function() {  var m=document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:assets|crossdomain|settings|subscriptions|inbox|directory|message|static)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
 				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:chat\/embed\?channel=)?(\w+)/i); return (m && m[1]) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
@@ -1242,6 +1242,7 @@ var HHBJSONDATA,hhb;
 							return [];
 						}
 					}
+					if ( !api.isLoaded() ) return [];
 					var emotes = getEmotes();
 					for (var i=0;i<emotes.length;i++) {
 						var emo = emotes[i];
@@ -2478,12 +2479,10 @@ var HHBJSONDATA,hhb;
 				if (!env.builtinIconLoaded) return retry();
 				
 				iconlist = platformObj.getPlatformIcon();
+				if (!iconlist || iconlist.length==0) return retry();
+				
 				analyzediconlist = analyzeIcon(iconlist,{ category: 'platform' });
-				// bypass twitch ( v4.2.1 )
-				if ( env.platform != 'twitch' ) {
-					if (!iconlist || iconlist.length==0) return retry();
-					else if (!analyzediconlist || analyzediconlist.length==0) return retry(true);
-				}
+				if (!analyzediconlist || analyzediconlist.length==0) return retry(true);
 				
 				listIcon = listIcon.concat(analyzediconlist);
 				setLoadingStatus('analyzePlatformIcon','complete');
