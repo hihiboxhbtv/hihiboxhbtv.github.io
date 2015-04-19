@@ -2475,14 +2475,16 @@ var HHBJSONDATA,hhb;
 					}
 					return false;
 				}
-				var iconlist, analyzediconlist;
+				var iconlist, analyzediconlist=[];
 				if (!env.builtinIconLoaded) return retry();
-				
-				iconlist = platformObj.getPlatformIcon();
-				if (!iconlist || iconlist.length==0) return retry();
-				
-				analyzediconlist = analyzeIcon(iconlist,{ category: 'platform' });
-				if (!analyzediconlist || analyzediconlist.length==0) return retry(true);
+				// bypass twitch ( v4.2.1 )
+				if ( env.platform != 'twitch' ) {
+					iconlist = platformObj.getPlatformIcon();
+					if (!iconlist || iconlist.length==0) return retry();
+					
+					analyzediconlist = analyzeIcon(iconlist,{ category: 'platform' });
+					if (!analyzediconlist || analyzediconlist.length==0) return retry(true);
+				}
 				
 				listIcon = listIcon.concat(analyzediconlist);
 				setLoadingStatus('analyzePlatformIcon','complete');
