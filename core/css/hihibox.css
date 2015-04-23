@@ -19,6 +19,7 @@
 	line-height: 12px;
 	background-color: hsla(0,0%,0%,0.9);
 	z-index: 10;
+	display:none;
 	
 	-moz-user-select: none;
 	-webkit-user-select: none;
@@ -27,6 +28,9 @@
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
 	font-family: Roboto, sans-serif;
+}
+body.hhb-iconlist-active #hhb-holder {
+	display: block;
 }
 .hhb-pf-hkgolden #hhb-holder {
 	position: fixed;
@@ -487,7 +491,9 @@ a:hover > .hhb-name-name {
 	background-position: center;
 	cursor: pointer;
 }
-.hhb-button:hover {
+
+.hhb-button:hover,
+body.hhb-iconlist-active .hhb-button {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon_hover.png');
 }
 .hhb-button:before {

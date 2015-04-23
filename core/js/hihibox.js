@@ -204,7 +204,7 @@ var HHBJSONDATA,hhb;
 				analyzeBuiltinIcon: 200,
 				analyzeCustomIcon: 200,
 				analyzeChannelIcon: 200,
-				analyzePlatformIcon: 2000,
+				analyzePlatformIcon: 1000,
 				detectUI: 60000,
 				bindHolderUI: 1000,
 				bindButtonUI: 1000,
@@ -1050,212 +1050,32 @@ var HHBJSONDATA,hhb;
 					*/
 					return true;
 				};
+				_platform.platformIconIsLoading = false,
+				_platform.platformIconData = null,
 				_platform.getPlatformIcon = function() {
 					var list = [], tgenre = [].concat('TTV');
-					var logger = {};
-					var api = {};
-					var ember = null;
-					var emoteGetters = {};
-
-					logger.debug = function() {};
-
-					api.getEmber = function () {
-						if (ember) {
-							return ember;
-						}
-						if (window.App && window.App.__container__) {
-							ember = window.App.__container__;
-							return ember;
-						}
-						return false;
-					};
-
-					api.isLoaded = function () {
-						return Boolean(api.getEmber());
-					};
-
-					api.lookup = function (lookupFactory) {
-						if (!api.isLoaded()) {
-							logger.debug('Factory lookup failure, Ember not loaded.');
-							return false;
-						}
-						return api.getEmber().lookup(lookupFactory);
-					};
-
-					api.get = function (lookupFactory, property) {
-						if (!api.isLoaded()) {
-							logger.debug('Factory get failure, Ember not loaded.');
-							return false;
-						}
-						var properties = property.split('.');
-						var getter = api.lookup(lookupFactory);
-
-						properties.some(function (property) {
-							// If getter fails, just exit, otherwise, keep looping.
-							if (typeof getter.get === 'function' && typeof getter.get(property) !== 'undefined') {
-								getter = getter.get(property);
-							}
-							else if (typeof getter[property] !== 'undefined') {
-								getter = getter[property];
-							}
-							else {
-								getter = null;
-								return true;
-							}
+					if ( !_platform.platformIconIsLoading ) {
+						$.getJSON("http://twitchemotes.com/api_cache/v2/global.json", function(data) {
+							_platform.platformIconData = data;
 						});
-
-						return getter;
-					};
-
-					// Channels.
-					var channels = {};
-					api.getChannel = function (text) {
-						if (channels[text]) {
-							return channels[text];
-						}
-						return '';
-					};
-					api.addChannel = function (text, channel) {
-						channels[text] = channel;
-					};
-
-					// Badges.
-					var badges = {};
-					api.getBadge = function (channel) {
-						if (badges[channel]) {
-							return badges[channel];
-						}
-						return '';
-					};
-					api.addBadge = function (channel, badge) {
-						badges[channel] = badge;
 					}
-
-					function getEmotes() {
-					//	var ember = require('./ember-api');
-						var emberApi = api;
-
-						var emotes = [];
-						var emotesStored = [];
-
-						// Parse the native emotes.
-						var raw = emberApi.get('controller:chat', 'currentRoom.tmiSession._emotesParser.emoticonRegexToIds') || {};
-						Object.keys(raw).forEach(function (key) {
-							var emote = raw[key];
-							emote.url = 'http://static-cdn.jtvnw.net/emoticons/v1/' + emote.id + '/1.0';
-							emote.text = emote.isRegex ? getEmoteFromRegEx(key) : key;
-
-							parse(emote, false);
-						});
-
-						// Parse the custom emotes provided by third party addons.
-						Object.keys(emoteGetters).forEach(function (name) {
-							var getterEmotes = null;
-							try {
-								getterEmotes = emoteGetters[name]();
-							}
-							catch (err) {
-								logger.debug('Emote getter `' + name + '` failed unexpectedly.', err.toString());
-								return;
-							}
-
-							if (!Array.isArray(getterEmotes)) {
-								logger.debug('Emote getter `' + name + '` failed to return a usable array.');
-								return;
-							}
-							getterEmotes.forEach(function (emote) {
-								parse(emote, true);
+					if ( _platform.platformIconData ) {
+						var data = _platform.platformIconData,
+							template = data.template,
+							emotes = data.emotes;
+						if (emotes.length == 0) return [];
+						for (var key in emotes) {
+							var emo = emotes[key];
+							var tcode = [].concat(key)
+							list.push({
+								code: tcode,
+								src: "http:"+template.small.replace("{image_id}",emo.image_id),
+								width: 50,
+								height: 50,
+								genre: tgenre
 							});
-						});
-
-						function parse(emote, isThirdParty) {
-							// Ignore emotes that were forced hidden, don't have URLs, or don't have text.
-							if (emote.hidden || !emote.url || !emote.text) {
-								return;
-							}
-							var parsed = {}
-							parsed.text = emote.text;
-							parsed.url = emote.url;
-							parsed.channel = emote.channel || api.getChannel(parsed.text);
-							parsed.badge = emote.badge || api.getBadge(parsed.channel);
-							parsed.hidden = emote.hidden;
-							// Determine if emote is from a third-party addon.
-							parsed.isThirdParty = isThirdParty;
-							// Determine if emote is hidden by user.
-							//parsed.isVisible = storage.visibility.get('channel-' + parsed.channel, true) && storage.visibility.get(parsed.text, true);
-							parsed.isVisible = true;
-							// Get starred status.
-							//parsed.isStarred = storage.starred.get(parsed.text, false);
-							parsed.isStarred = true;
-							
-							// Override emotes if they've been stored.
-							var storedIndex = emotesStored.indexOf(parsed.text);
-							if (storedIndex === -1) {
-								emotes.push(parsed);
-								emotesStored.push(parsed.text);
-							}
-							else {
-								emotes[storedIndex] = parsed;
-							}
-						}
-
-						return emotes;
-					};
-
-					/**
-					 * Gets the usable emote text from a regex.
-					 * @attribute http://userscripts.org/scripts/show/160183 (adaption)
-					 */
-					function getEmoteFromRegEx(regex) {
-						if (typeof regex === 'string') {
-							regex = new RegExp(regex);
-						}
-						if (!regex) {
-							throw new Error('`regex` must be a RegExp string or object.');
-						}
-						return decodeURI(regex.source)
-							.replace('&gt\\;', '>') // right angle bracket
-							.replace('&lt\\;', '<') // left angle bracket
-							.replace(/\(\?![^)]*\)/g, '') // remove negative group
-							.replace(/\(([^|])*\|?[^)]*\)/g, '$1') // pick first option from a group
-							.replace(/\[([^|])*\|?[^\]]*\]/g, '$1') // pick first character from a character group
-							.replace(/[^\\]\?/g, '') // remove optional chars
-							.replace(/^\\b|\\b$/g, '') // remove boundaries
-							.replace(/\\/g, ''); // unescape
-					}
-
-					function getEmoteSets() {
-					//	var ember = require('./ember-api');
-						var emberApi = api;
-						var sets = [];
-						try {
-							sets = emberApi.get('controller:chat', 'currentRoom.tmiRoom').getEmotes(window.Twitch.user.login());
-							sets = sets.filter(function (val) {
-								return typeof val === 'number' && val >= 0;
-							});
-
-							logger.debug('Emoticon sets retrieved.', sets);
-							return sets;
-						}
-						catch (err) {
-							logger.debug('Emote sets failed.', err);
-							return [];
 						}
 					}
-					if ( !api.isLoaded() ) return [];
-					var emotes = getEmotes();
-					for (var i=0;i<emotes.length;i++) {
-						var emo = emotes[i];
-						var tcode = [].concat(emo.text)
-						list.push({
-							code: tcode,
-							src: emo.url,
-							width: 50,
-							height: 50,
-							genre: tgenre
-						});
-					}
-					
 					return list;
 				};
 				_platform.getPlayer = function() {
@@ -1266,82 +1086,148 @@ var HHBJSONDATA,hhb;
 					});
 					return $tplayer;
 				}
-			
 				/* Icon emotify */
 				_platform.injectIcon = function(iconlist) {
-					var iconlist = [].concat(iconlist);
-					var get_user = function() {
-						if (typeof PP !== 'undefined' && PP && PP.login) return PP;
-						if (App) {
-							var t = App.__container__.lookup("controller:navigation");
-							return t ? t.get("userData") : void 0
-						}
-					}
-					var _emoticonize = function(e, t) {
-						var o = e.get("parentController.model.id"),
-							n = e.get("model.from"),
-							s = this,
-							i = [];
-						for (var _fi=t.length-1;_fi>=0;_fi--) {
-							var _t = t[_fi];
-							_t = ( !_.isString(_t) && _t.emoticonSrc ? _t.altText : _t );
-							if (( _fi<t.length-1 ) && (_.isString(_t) && _.isString(t[_fi+1]))) {
-								_t += t[_fi+1];
-								t.splice(_fi+1,1);
-							}
-							t[_fi] = _t;
-						}
-						_.each(iconlist, function(e) {
-							_.any(t, function(t) {
-								return _.isString(t) && t.match(e.regex)
-							}) && i.push(e)
-						});
-						if (i.length) {
-							if ("string" == typeof t) t = [t];
-							_.each(i, function(e) {
-								var o = {
-									isEmoticon: !0,
-									cls: 'hhb-msgicon',
-									emoticonSrc: e.src,
-									srcSet: e.src,
-									altText: e.hidden ? "???" : e.alt
-								};
-								t = _.compact(_.flatten(_.map(t, function(t) {
-									if (_.isObject(t)) return t;
-									var n = t.split(e.regex),
-										s = [];
-									return n.forEach(function(e, t) {
-										s.push(e), t !== n.length - 1 && s.push(o)
-									}), s
-								})))
-							});
-						}
-						return t;
-					};
-					var _mentionize = function(e, o) {
-						return this.mention_words ? ("string" == typeof o && (o = [o]), _.each(this.mention_words, function(e) {
-							var n = {
-								mentionedUser: e,
-								own: !1
+					if ( !window.App ) return 0;
+					var hhbEmotes = [];
+					hhbEmotes = hhbEmotes.concat(iconlist);
+					var e = function(e) {
+							if (!_.isString(e.input) || !e.input.match(e.regex)) return _.isString(e.input) ? [e.input] : e.input;
+							var t = _.map(e.input.split(e.regex), e.transformNoMatch),
+								s = _.map(e.input.match(e.regex), e.transformMatch),
+								n = _.zip(t, s);
+							return n
+						},
+						s = /(?:https?:\/\/)?(?:[-a-zA-Z0-9@:%_\+~#=]+\.)+[a-z]{2,6}\b(?:[-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
+						n = function(t, n) {
+							var a = function(t) {
+								return e({
+									input: t,
+									regex: s,
+									transformNoMatch: _.identity,
+									transformMatch: function(e) {
+										return n || e.length > 255 ? {
+											deletedLink: !0,
+											linkLength: e.length,
+											text: "&lt;deleted link&gt;"
+										} : {
+											isLink: !0,
+											href: e
+										}
+									}
+								})
 							};
-							o = _.compact(_.flatten(_.map(o, function(o) {
-								if (_.isObject(o)) return o;
-								var s = o.split(t.get_regex(e)),
-									r = [];
-								return s.forEach(function(e, t) {
-									r.push(e), t !== s.length - 1 && r.push(n)
-								}), r
-							})))
-						}), o) : o
-					}
-					var e = App.__container__.resolve("controller:line"),
-						o = this;
-					e.reopen({
-						tokenizedMessage: function() {
-							var e = _emoticonize(this, this._super()),
-								t = get_user();
-							return t && this.get("model.from") == t.login || (e = _mentionize(this, e)), e
-						}.property("model.message", "isModeratorOrHigher", "controllers.emoticons.emoticons.[]")
+							return _.chain(t).map(a).flatten().compact().value()
+						},
+						a = function(t, s, n) {
+							var a = new RegExp("@?\\b" + s + "\\b", "ig"),
+								i = /@[a-z0-9]\w{4,25}\b/gi,
+								o = n ? i : a,
+								r = function(t) {
+									return e({
+										input: t,
+										regex: o,
+										transformNoMatch: _.identity,
+										transformMatch: function(e) {
+											return {
+												mentionedUser: e,
+												own: n
+											}
+										}
+									})
+								};
+							return _.chain(t).map(r).flatten().compact().value()
+						},
+						i = function(e) {
+							var s = _.reduce(e, function(e, s, n) {
+								return _.isArray(s[0]) ? s.forEach(function(t) {
+									e.push({
+										isHihiBox: isNaN(n),
+										src: isNaN(n) ? n : "",
+										emoticonId: n,
+										index: t
+									})
+								}) : e.push({
+									isHihiBox: isNaN(n),
+									src: isNaN(n) ? n : "",
+									emoticonId: n,
+									index: s
+								}), e
+							}, []);
+							return s.sortBy("index.firstObject")
+						},
+						o = function(e, t) {
+							if (e && t) {
+								t = i(t), t.reverse();
+								var s = function(e) {
+										return e.isLink ? e.href.length : e.deletedLink ? e.linkLength : e.mentionedUser ? e.mentionedUser.length : e.length
+									},
+									n = _.reduce(t, function(e, t) {
+										for (var n = [], a = e.shift(), i = 0; i + s(a) - 1 < t.index[0];) n.push(a), i += s(a), a = e.shift();
+										return _.isObject(a) ? n = n.concat(a, e) : (n.push(a.slice(0, t.index[0] - i)), n.push({
+											emoticonSrc: t.isHihiBox ? t.src : "http://static-cdn.jtvnw.net/emoticons/v1/" + t.emoticonId + "/1.0",
+											srcSet: t.isHihiBox ? t.src : "http://static-cdn.jtvnw.net/emoticons/v1/%@1/2.0 2x, http://static-cdn.jtvnw.net/emoticons/v1/%@1/3.0 3x".fmt(t.emoticonId),
+											altText: a.slice(t.index[0] - i, t.index[1] + 1 - i)
+										}), n.push(a.slice(t.index[1] + 1 - i)), n = n.concat(e)), n
+									}, e);
+								return "" === n[n.length - 1] && n.pop(), n
+							}
+							return e
+						},
+						hhbEmotify = {
+							u : function (e, t, n, r) {
+								var i;
+								
+								while ((i = t.exec(e)) !== null) {
+									r.push({
+										id : n,
+										start : i.index,
+										end : t.lastIndex - 1
+									});
+									for (var k = 0; k < r.length; k++) {
+										if ((i.index >= r[k].start && (t.lastIndex - 1) < r[k].end) || (i.index > r[k].start && (t.lastIndex - 1) <= r[k].end)) {
+											r.pop();
+										}
+									}
+								}
+							},
+							a : function (t) {
+								var n = 0,
+								r = {};
+								return t = t.sort(function (e, t) {
+										return e.start - t.start
+									}),
+								$.each(t, function (e, t) {
+									t.start >= n && (r[t.id] = r[t.id] || [], r[t.id].push([t.start, t.end]), n = t.end + 1)
+								}),
+								r
+							},
+							parseEmotesTag : function (t) {
+								var self = this;
+								var n = [];
+								$.each(hhbEmotes, function (index, emote) {
+									self.u.call(this, t, emote.regex, emote.src, n);
+								});
+								return self.a(n);
+							}
+						};
+					var lineController = window.App.__container__.resolve("controller:line");
+					lineController.reopen({
+						tokenizedMessage : function () {
+							var e = [this.get("model.message")];
+							console.log('debug','tokenizedMessage e1',e);
+							var t = this.get("parentController.model.roomProperties.hide_chat_links") && !this.get("isModeratorOrHigher"),
+								s = this.get("parentController.model.tmiSession.nickname"),
+								i = this.get("model.from") === s,
+								hhbEmotesTag = hhbEmotify.parseEmotesTag(e),
+								r = this.get("content.tags.emotes");
+							e = n(e, t);
+							e = a(e, s, i);
+							e = o(e, hhbEmotesTag);
+							e = o(e, r);
+							console.log('debug','tokenizedMessage e2',e);
+							return e;
+						}.property("model.message", "isModeratorOrHigher"),
 					});
 					return iconlist.length;
 				};
@@ -2475,17 +2361,14 @@ var HHBJSONDATA,hhb;
 					}
 					return false;
 				}
-				var iconlist, analyzediconlist=[];
+				var iconlist, analyzediconlist;
 				if (!env.builtinIconLoaded) return retry();
-				// bypass twitch ( v4.2.1 )
-				if ( env.platform != 'twitch' ) {
-					iconlist = platformObj.getPlatformIcon();
-					if (!iconlist || iconlist.length==0) return retry();
-					
-					analyzediconlist = analyzeIcon(iconlist,{ category: 'platform' });
-					if (!analyzediconlist || analyzediconlist.length==0) return retry(true);
-				}
+				iconlist = platformObj.getPlatformIcon();
+				if (!iconlist || iconlist.length==0) return retry();
 				
+				analyzediconlist = analyzeIcon(iconlist,{ category: 'platform' });
+				if (!analyzediconlist || analyzediconlist.length==0) return retry(true);
+
 				listIcon = listIcon.concat(analyzediconlist);
 				setLoadingStatus('analyzePlatformIcon','complete');
 				retryCount.analyzePlatformIcon = 0;
@@ -2727,7 +2610,7 @@ var HHBJSONDATA,hhb;
 				if (retryCount.bindHolderUI==0) setLoadingStatus('bindHolderUI','init');
 				var $holderCon = platformObj.getHolderContainer();
 				if ($holderCon.length > 0) {
-					var $palHolder = platformObj.genHolder(id,versionInfo).hide();
+					var $palHolder = platformObj.genHolder(id,versionInfo);
 					$palHolder.appendTo($holderCon);
 					bindCustomIconForm();
 					bindIconListLocale();
@@ -3247,27 +3130,25 @@ var HHBJSONDATA,hhb;
 				});
 			};
 			var toggleHolder = function(act,keepFilter) {
-				var $holder = $(selector.holder);
-				if ($holder.is(':visible') && act == 'show') return;
-				if (!$holder.is(':visible') && act == 'hide') return;
+				var $holder = $(selector.holder),
+					$body = $(selector.body),
+					_class = 'hhb-iconlist-active',
+					_isShow = $body.hasClass(_class);
+				if (_isShow && act == 'show') return;
+				if (!_isShow && act == 'hide') return;
 				var $iconset = $(selector.iconset).scrollTop(0);
 				if (!keepFilter) {
 					$iconset.find(selector.icon).removeClass([cssClass.filterMatch,cssClass.filterNotMatch,cssClass.filterSelected].join(' '));
 					currFilterCodeHead = '';
 				}
-				if (act == 'toggle') {
-					$holder.toggle(0);
-				} else if (act == 'show') {
-					$holder.show(0);
-				} else {
-					$holder.hide(0);
-				}
-				if (!$holder.is(':visible')) {
+				if (act == 'toggle') $body.toggleClass(_class);
+				else if (act == 'show') $body.addClass(_class);
+				else $body.removeClass(_class);
+				
+				if (!$body.hasClass(_class)) {
 					_protected.hideCustomIconForm();
 					_protected.toggleImageSizerForm('hide');
 				}
-				var $holder = $(selector.holder),
-					$iconMsgBox = $(selector.iconMsgBox)
 				resizeIconset();
 				
 				sortGenreList(true);
