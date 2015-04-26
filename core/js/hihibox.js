@@ -512,8 +512,8 @@ var HHBJSONDATA,hhb;
 								var nspan = "<span class='"+cssClass.nameName+"'>"+namestr+"</span>";
 								$(this).text('');
 								var _pspan = $(this);
-								$(bspan)
-									.click(function() { $(this).parent().click(); })
+								var $bspan = $(bspan);
+								$bspan
 									.animate(
 										{ 'width': [nb.width,'px'].join('') },
 										{ easing: "easeOutExpo", duration: dur,
@@ -522,13 +522,17 @@ var HHBJSONDATA,hhb;
 									).prependTo($(this));
 								var $nspan = $(nspan).appendTo($(this))
 								$nspan.width($nspan.width())
-									.click(function() { $(this).parent().click(); })
 									.animate(
 										{  'width': '1px' },
 										{ easing: "easeOutExpo", duration: dur,
 											complete: callback
 										}
 									);
+								if (env.platform == 'twitch') {
+									var _this = $(this);
+									$bspan.data('parent',_this).click(function() { $(this).data('parent').click(); });
+									$nspan.data('parent',_this).click(function() { $(this).data('parent').click(); });
+								}
 								bicount++;
 								
 								/* Google Analytics - name banner */
@@ -1215,7 +1219,6 @@ var HHBJSONDATA,hhb;
 					lineController.reopen({
 						tokenizedMessage : function () {
 							var e = [this.get("model.message")];
-							console.log('debug','tokenizedMessage e1',e);
 							var t = this.get("parentController.model.roomProperties.hide_chat_links") && !this.get("isModeratorOrHigher"),
 								s = this.get("parentController.model.tmiSession.nickname"),
 								i = this.get("model.from") === s,
@@ -1225,7 +1228,6 @@ var HHBJSONDATA,hhb;
 							e = a(e, s, i);
 							e = o(e, hhbEmotesTag);
 							e = o(e, r);
-							console.log('debug','tokenizedMessage e2',e);
 							return e;
 						}.property("model.message", "isModeratorOrHigher"),
 					});
