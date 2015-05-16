@@ -135,7 +135,7 @@ body.hhb-iconlist-active #hhb-holder {
 	border-radius: 5px;
 	padding: 7px 0px 0px 3px;
 	font-size: 18px;
-	font-family: "fontello";
+	font-family: "fontello-hhb";
 	font-style: normal;
 	font-weight: normal;
 	color: #dddddd !important;
@@ -411,6 +411,7 @@ a:hover > .hhb-name-name {
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
 	opacity: 0.9;
+	z-index: 999999999;
 }
 #hhb-player-bookmark.funcIcon.isBookmarked {
 	padding: 6px 5px;
@@ -569,7 +570,7 @@ body.hhb-iconlist-active .hhb-button {
 	text-align: center;
 	cursor: pointer;
 	box-shadow: 0px 0px 10px 1px rgba(255,255,255,0.7);
-	font-family: "fontello";
+	font-family: "fontello-hhb";
 	line-height: 20px;
 }
 .hhb-custom-icon-btn:hover {
