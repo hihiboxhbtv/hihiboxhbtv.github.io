@@ -1103,7 +1103,7 @@ var HHBJSONDATA,hhb;
 							return n
 						},
 						s = /(?:https?:\/\/)?(?:[-a-zA-Z0-9@:%_\+~#=]+\.)+[a-z]{2,6}\b(?:[-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
-						n = function(t, n) {
+						o = function(t, n) {
 							var a = function(t) {
 								return e({
 									input: t,
@@ -1142,7 +1142,7 @@ var HHBJSONDATA,hhb;
 								};
 							return _.chain(t).map(r).flatten().compact().value()
 						},
-						i = function(e) {
+						hhbu = function(e) {
 							var s = _.reduce(e, function(e, s, n) {
 								return _.isArray(s[0]) ? s.forEach(function(t) {
 									e.push({
@@ -1160,9 +1160,9 @@ var HHBJSONDATA,hhb;
 							}, []);
 							return s.sortBy("index.firstObject")
 						},
-						o = function(e, t) {
+						hhbl = function(e, t) {
 							if (e && t) {
-								t = i(t), t.reverse();
+								t = hhbu(t), t.reverse();
 								var s = function(e) {
 										return e.isLink ? e.href.length : e.deletedLink ? e.linkLength : e.mentionedUser ? e.mentionedUser.length : e.length
 									},
@@ -1215,21 +1215,21 @@ var HHBJSONDATA,hhb;
 								return self.a(n);
 							}
 						};
-					var lineController = window.App.__container__.resolve("controller:line");
-					lineController.reopen({
+					var lineChatComponent = window.App.__container__.resolve("component:chat-line");
+					lineChatComponent.reopen({
 						tokenizedMessage : function () {
-							var e = [this.get("model.message")];
-							var t = this.get("parentController.model.roomProperties.hide_chat_links") && !this.get("isModeratorOrHigher"),
-								s = this.get("parentController.model.tmiSession.nickname"),
-								i = this.get("model.from") === s,
+							var e = [this.get("msgObject.message")],
+								t = this.get("isChannelLinksDisabled") && !this.get("isModeratorOrHigher"),
+								n = this.get("currentUserNick"),
+								i = this.get("msgObject.from") === n,
 								hhbEmotesTag = hhbEmotify.parseEmotesTag(e),
-								r = this.get("content.tags.emotes");
-							e = n(e, t);
-							e = a(e, s, i);
-							e = o(e, hhbEmotesTag);
-							e = o(e, r);
+								s = this.get("msgObject.tags.emotes");
+							e = hhbl(e, t);
+							e = a(e, n, i);
+							e = hhbl(e, hhbEmotesTag);
+							e = hhbl(e, s);
 							return e;
-						}.property("model.message", "isModeratorOrHigher"),
+						}.property("msgObject.message", "isModeratorOrHigher"),
 					});
 					return iconlist.length;
 				};
