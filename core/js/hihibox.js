@@ -1525,7 +1525,7 @@ var HHBJSONDATA,hhb;
 							(msgDebugFlag & DEBUG_GA) && 		'[ ga ]' ||
 							'');
 			if (indent!='') args.unshift(indent);
-			args.unshift("[HihiBox Beta]");		/* debug */
+			args.unshift("[HihiBox]");		/* debug */
 			if ((msgDebugFlag & debugFlag) > 0) console.log.apply(console,args);
 		};
 		
