@@ -3739,7 +3739,7 @@ var HHBJSONDATA,hhb;
 			default:
 				_gaStartHeartbeat();
 				if ( enableGA ) {
-					ga('send', {
+					hhbga('send', {
 						'hitType': 'event',			// Required.
 						'eventCategory': category,	// Required.
 						'eventAction': action,		// Required.
@@ -3807,7 +3807,7 @@ var HHBJSONDATA,hhb;
 		if (!hhb) {
 			hhb = hhb || new HihiBox();
 			if (hhb.isInitialize()) {
-				ga('send', 'pageview');
+				hhbga('send', 'pageview');
 				console.log('[HihiBox]','Created',hhb);		/* debug */
 				
 				var features = hhb.getFeatures();
@@ -3852,11 +3852,11 @@ var HHBJSONDATA,hhb;
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		})(window,document,'script','//www.google-analytics.com/analytics.js','hhbga');
 
-		ga('create', 'UA-48929186-1', 'auto');
-		ga('require','displayfeatures');
-		ga('send', 'pageview');
+		hhbga('create', 'UA-48929186-1', 'auto');
+		hhbga('require','displayfeatures');
+		hhbga('send', 'pageview');
 		
 		hhbInitialize();
 	});
