@@ -5,15 +5,28 @@
 		"developer": ["Lemon", "希治閣"],
 		"specialThanks": ["VannZic"]
 	},
-	"lastExtensionVersion": "v4.2",
-	"lastRelease": "2014-11-22",
-	"lastSummary": "[概要] 因Twitch.tv 更新引致之表情顯示相關問題修正 (測試中)",
+	"lastExtensionVersion": "v5.0",
+	"lastRelease": "2015-08-29",
+	"lastSummary": "[概要] Bookmarks 功能 (追加支援Streamup.com, LIVEhouse.in)",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v4.2.3",
-	"lastUpdate": "2015-08-01",
+	"coreVersion": "v5.0.0",
+	"lastUpdate": "2015-08-29",
 	"history": [
+		{
+			"version": "v5.0.0",
+			"lastUpdate": "2015-08-29",
+			"summary": [
+				"[概要] Bookmarks 功能 (追加支援Streamup.com, LIVEhouse.in)"
+			],
+			"detail": [
+				"[新增] Bookmarks 功能 (追加支援Streamup.com, LIVEhouse.in)",
+				"[改善] 匯入/匯出 界面更新 (加入 匯入進度顯示)",
+				"[改善] 狀態不明的頻道以紅底表示並排列至最後",
+				"[改善] 提升執行效能及穩定性"
+			]
+		},
 		{
 			"version": "v4.2.3",
 			"lastUpdate": "2015-08-01",
@@ -48,11 +61,11 @@
 			"version": "v4.2",
 			"lastUpdate": "2014-11-22",
 			"summary": [
-				"[概要] 新增HKGolden 開關選項 及 優化Ustream 開台提示功能"
+				"[概要] 新增HKGolden 開關選項 及 改善Ustream 開台提示功能"
 			],
 			"detail": [
 				"[新增] HKGolden 開關選項",
-				"[優化] Ustream 開台提示功能",
+				"[改善] Ustream 開台提示功能",
 				"[修正] HihiBox v4.1 相關錯誤修正"
 			]
 		},
@@ -60,11 +73,11 @@
 			"version": "v4.1",
 			"lastUpdate": "2014-11-20",
 			"summary": [
-				"[概要] 新增HKGolden 開關選項 及 優化Ustream 開台提示功能"
+				"[概要] 新增HKGolden 開關選項 及 改善Ustream 開台提示功能"
 			],
 			"detail": [
 				"[新增] HKGolden 開關選項",
-				"[優化] Ustream 開台提示功能"
+				"[改善] Ustream 開台提示功能"
 			]
 		},
 		{
@@ -77,7 +90,7 @@
 				"[新增] 多項精選功能 (追加支援HKGolden.com)",
 				"[新增] 訊息長度計功能 (HKGolden.com)",
 				"[新增] 水彩, 草泥馬系列icon",
-				"[優化] [IMG] 選取介面更新",
+				"[改善] [IMG] 選取介面更新",
 				"[修正] HihiBox v3.0 相關錯誤修正"
 			]
 		},
@@ -96,13 +109,13 @@
 			"version": "v3.0.0",
 			"lastUpdate": "2014-10-08",
 			"summary": [
-				"[概要] 新增自訂表情, 一鍵引用, 並優化書籤同步功能"
+				"[概要] 新增自訂表情, 一鍵引用, 並改善書籤同步功能"
 			],
 			"detail": [
 				"[新增] 自訂表情及其同步功能",
 				"[新增] 一鍵引用功能 (Ctrl+Click / Alt+Click)",
-				"[優化] 書籤同步功能",
-				"[優化] 加入[IMG] Preloader",
+				"[改善] 書籤同步功能",
+				"[改善] 加入[IMG] Preloader",
 				"[修正] Hitbox 聊天室相關錯誤修正"
 			]
 		},
@@ -110,12 +123,12 @@
 			"version": "v2.2.0",
 			"lastUpdate": "2014-09-02",
 			"summary": [
-				"[概要] 新增頻道專屬icon, 自訂聊天室連結, 優化匯出備份檔格式 及HihiBox v2.1 相關錯誤修正"
+				"[概要] 新增頻道專屬icon, 自訂聊天室連結, 改善匯出備份檔格式 及HihiBox v2.1 相關錯誤修正"
 			],
 			"detail": [
 				"[新增] 頻道專屬icon",
 				"[新增] 自訂聊天室連結",
-				"[優化] 匯出備份檔格式, 追加自訂聊天室連結及相關頻道資料",
+				"[改善] 匯出備份檔格式, 追加自訂聊天室連結及相關頻道資料",
 				"[修正] HihiBox v2.1 相關錯誤修正"
 			]
 		},
@@ -161,7 +174,7 @@
 			"detail": [
 				"[新增] 表情轉換開關功能",
 				"[新增] [IMG],[URL] 等BBCode 之解析功能",
-				"[優化] 無法檢測狀態之頻道現以暗紅底色標示",
+				"[改善] 無法檢測狀態之頻道現以暗紅底色標示",
 				"[修正] HihiBox v1.7.2 相關錯誤修正"
 			]
 		},
@@ -232,10 +245,10 @@
 				"[新增] 表情篩選功能相關訊息",
 				"[新增] 自定義name banner, 管理員徽章",
 				"[新增] Pixel, 食鬼, 聖誕, 北極, 口罩系列icon",
-				"[優化] 沿用當前平台轉換表情之方法",
-				"[優化] 點擊後顯示表情原圖大小",
-				"[優化] 需時較長功能的觸發方式",
-				"[優化] Google analytics 事件追蹤",
+				"[改善] 沿用當前平台轉換表情之方法",
+				"[改善] 點擊後顯示表情原圖大小",
+				"[改善] 需時較長功能的觸發方式",
+				"[改善] Google analytics 事件追蹤",
 				"[微調] Dark mode 樣式修改"
 			]
 		},
@@ -251,9 +264,9 @@
 				"[新增] Dark Mode/Light Mode 切換功能",
 				"[新增] Plugin 自動更新功能 (如非重大版本, Plugin 會自動更新)",
 				"[新增] 官方網站及Facebook 專頁 連結",
-				"[優化] 聊天訊息會與底線對齊",
-				"[優化] 較大的icon 會被進一步限制其顯示尺寸",
-				"[優化] :spiderman: 現在也可寫為:iamhay:",
+				"[改善] 聊天訊息會與底線對齊",
+				"[改善] 較大的icon 會被進一步限制其顯示尺寸",
+				"[改善] :spiderman: 現在也可寫為:iamhay:",
 				"[移除] icon 代碼 [sosad369ex]",
 				"[次要] HihiBox 樣式修改"
 			]

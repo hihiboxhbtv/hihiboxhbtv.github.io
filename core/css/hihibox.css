@@ -4,10 +4,6 @@
 @import "darkmode_twitch.css";
 @import "darkmode_justin.css";
 
-#hhb-genrelist .hhb-genre[hhb-genre="GJTV"] {
-	display: none;
-}
-
 #hhb-holder {
 	position: absolute;
 	height: 32px;
