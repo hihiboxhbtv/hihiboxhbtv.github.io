@@ -511,3 +511,6 @@ body.hhb-pf-twitch.hhb-darkmode.error_500,body.hhb-pf-twitch.hhb-darkmode.error_
 /* [S:2014-10-26] */
 #new-user-prompt { background: #0d0d0d; border-color: #9bbe5a; }
 #new-user-prompt .message .title { color: #ddd; }
+
+/* [S:2015-06-20] */
+.hhb-pf-twitch.hhb-darkmode .ember-chat .chat-messages .whisper-line.whisper-incoming { background-color: #181818; }

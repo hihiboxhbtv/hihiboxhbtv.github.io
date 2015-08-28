@@ -113,8 +113,8 @@ var HHBJSONDATA,hhb;
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v4.2.1',
-		lastUpdate: '2015-02-06'
+		coreVersion: 'v5.0.0',
+		lastUpdate: '2015-08-29'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -204,8 +204,7 @@ var HHBJSONDATA,hhb;
 				analyzeBuiltinIcon: 200,
 				analyzeCustomIcon: 200,
 				analyzeChannelIcon: 200,
-				analyzePlatformIcon: 500,
-				analyzeGJTVIcon: 1000,
+				analyzePlatformIcon: 1000,
 				detectUI: 60000,
 				bindHolderUI: 1000,
 				bindButtonUI: 1000,
@@ -235,15 +234,14 @@ var HHBJSONDATA,hhb;
 				analyzeBuiltinIcon: 1,
 				analyzeCustomIcon: 1,
 				analyzeChannelIcon: 1,
-				analyzePlatformIcon: 50,
-				analyzeGJTVIcon: 1,
+				analyzePlatformIcon: 5,
 				activateRebindUIBtn: 30,
 				bindBookmarkBtn: 30,
 				bindPlayerBookmarkBtn: 30,
 				bindCloseBtn: 30,
 				activateMsgCharsCounter: 30
 			},
-			supportedPlatform: ['hitbox','twitch','ustream','hkgolden'],
+			supportedPlatform: ['hitbox','twitch','ustream','streamup','livehouse','hkgolden'],
 			genreCategory: ['other','gjtv','platform','builtin','channel','custom','recent'],
 			defaultConfig: {
 				genre: 'HKG',
@@ -306,7 +304,6 @@ var HHBJSONDATA,hhb;
 						channelIconLoaded: false,
 						builtinIconLoaded: false,
 						platformIconLoaded: false,
-						gjtvIconLoaded: false,
 					isUserInterfaceInited: false,
 						holderUIBinded: false,
 						buttonUIBinded: false,
@@ -330,7 +327,6 @@ var HHBJSONDATA,hhb;
 				analyzeCustomIcon: 0,
 				analyzeChannelIcon: 0,
 				analyzePlatformIcon: 0,
-				analyzeGJTVIcon: 0,
 				activateRebindUIBtn: 0,
 				bindHolderUI: 0,
 				bindButtonUI: 0,
@@ -362,7 +358,6 @@ var HHBJSONDATA,hhb;
 					analyzeCustomIcon:			{ start: 0, end: 0, duration: 0 },
 					analyzeChannelIcon:			{ start: 0, end: 0, duration: 0 },
 					analyzePlatformIcon: 		{ start: 0, end: 0, duration: 0 },
-					analyzeGJTVIcon: 			{ start: 0, end: 0, duration: 0 },
 				initUserInterface: 				{ start: 0, end: 0, duration: 0 },
 					bindUI:						{ start: 0, end: 0, duration: 0 },
 					bindHolderUI:				{ start: 0, end: 0, duration: 0 },
@@ -515,14 +510,10 @@ var HHBJSONDATA,hhb;
 							if (nb && nb.cssClass) {
 								var bspan = "<span class='"+nb.cssClass+"'>&nbsp;</span>";
 								var nspan = "<span class='"+cssClass.nameName+"'>"+namestr+"</span>";
-								/*if (env.gjtvIconLoaded) {
-									var gjtvnb = $(this).find('.custom_Nickname');
-									if (gjtvnb.length>0) gjtvnb.hide();
-								}*/
 								$(this).text('');
 								var _pspan = $(this);
-								$(bspan)
-									.click(function() { $(this).parent().click(); })
+								var $bspan = $(bspan);
+								$bspan
 									.animate(
 										{ 'width': [nb.width,'px'].join('') },
 										{ easing: "easeOutExpo", duration: dur,
@@ -531,13 +522,17 @@ var HHBJSONDATA,hhb;
 									).prependTo($(this));
 								var $nspan = $(nspan).appendTo($(this))
 								$nspan.width($nspan.width())
-									.click(function() { $(this).parent().click(); })
 									.animate(
 										{  'width': '1px' },
 										{ easing: "easeOutExpo", duration: dur,
 											complete: callback
 										}
 									);
+								if (env.platform == 'twitch') {
+									var _this = $(this);
+									$bspan.data('parent',_this).click(function() { $(this).data('parent').click(); });
+									$nspan.data('parent',_this).click(function() { $(this).data('parent').click(); });
+								}
 								bicount++;
 								
 								/* Google Analytics - name banner */
@@ -569,28 +564,28 @@ var HHBJSONDATA,hhb;
 						return '';
 					var broadcaster = $.extend({ img: null, width: 0, height: 0 },badges.broadcaster);
 					var moderator = $.extend({ img: null, width: 0, height: 0 },badges.moderator);
-					
-					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
-						style += [	
-							selector.badgeBroadcaster,' {',
+					var subscriber = $.extend({ img: null, width: 0, height: 0 },badges.subscriber);
+					var getBadgeCss = function( _selector, _badge ) {
+						var badgeDefaultHeight = 20;
+						return [	
+							_selector,' {',
 								'color: transparent;',
 								'margin-right: 3px;',
+								( _badge.height > badgeDefaultHeight ? ['margin-top: ',badgeDefaultHeight-_badge.height,'px;'].join('') : '' ),
 								'vertical-align:bottom;',
-								'width:',broadcaster.width,'px !important;',
-								'height:',broadcaster.height,'px !important;',
-								'background: url(',broadcaster.img,') no-repeat left bottom !important;',
-							'}'].join('');
+								'width:',_badge.width,'px !important;',
+								'height:',_badge.height,'px !important;',
+								'background: url(',_badge.img,') no-repeat left bottom !important;',
+							'}'].join('')
+					}
+					if (broadcaster.img && broadcaster.width>0 && broadcaster.height>0) {
+						style += getBadgeCss( selector.badgeBroadcaster, broadcaster );
 					}
 					if (moderator.img && moderator.width>0 && moderator.height>0) {
-						style += [	
-							selector.badgeModerator,' {',
-								'color: transparent;',
-								'margin-right: 3px;',
-								'vertical-align:bottom;',
-								'width:',moderator.width,'px !important;',
-								'height:',moderator.height,'px !important;',
-								'background: url(',moderator.img,') no-repeat center center !important;',
-							'}'].join('');
+						style += getBadgeCss( selector.badgeModerator, moderator );
+					}
+					if (subscriber.img && subscriber.width>0 && subscriber.height>0) {
+						style += getBadgeCss( selector.badgeSubscriber, subscriber );
 					}
 					return style;
 				},
@@ -823,11 +818,12 @@ var HHBJSONDATA,hhb;
 						chatView: '.chat-messages',
 						chatLine: 'li',
 						chatName: '.title .name',
-						chatQuoteRemove: '.chat-timestamp, .chat-badge-mod, .hhb-name-banner, .title .name, .chat-buffer',
+						chatQuoteRemove: '.chat-timestamp, .chat-badge-mod, .hhb-name-banner, .title .name, .chat-buffer, .chat-message-animated',
 						chatContainer: '.chatBody',
 						msgList: '.chatBody > li > div',
 						badgeBroadcaster: '.hhb-pf-hitbox .chat-messages .chat-badge-owner',
-						badgeModerator: '.hhb-pf-hitbox .chat-messages .chat-badge-mod'
+						badgeModerator: '.hhb-pf-hitbox .chat-messages .chat-badge-mod',
+						badgeSubscriber: '.hhb-pf-hitbox .chat-messages .chat-badge-sub'
 					}),
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
@@ -840,7 +836,6 @@ var HHBJSONDATA,hhb;
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
 				_platform.getButtonFront = function() {	return [];	};
-				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
 				_platform.genToggleButton = function(_class) {
 					return $('<div class="'+_class+'" class="icon-cog hoverG2" hhb-locale-title="{{info.name}}" title="HihiBox"></div>');
@@ -886,6 +881,9 @@ var HHBJSONDATA,hhb;
 					}
 					return list;
 				};
+				
+				/* features.bookmarks */
+				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.getPlayer = function() {
 					var selectors = [].concat(selector.player), $tplayer = $();
 					$.each(selectors,function(idx,selector) {
@@ -1027,7 +1025,7 @@ var HHBJSONDATA,hhb;
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
 				/* Initialize */
-				_platform.isExcluded = function() {  var m=document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:assets|crossdomain|settings|subscriptions|inbox|directory|message)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
+				_platform.isExcluded = function() {  var m=document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:assets|crossdomain|settings|subscriptions|inbox|directory|message|static)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
 				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:chat\/embed\?channel=)?(\w+)/i); return (m && m[1]) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
@@ -1035,7 +1033,6 @@ var HHBJSONDATA,hhb;
 				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
 				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
 				_platform.getButtonFront = function() {	return $(selector.buttonFront);	};
-				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
 				_platform.genToggleButton = function(_class) {
 					return $('<a class="'+_class+'" class="button glyph-only" hhb-locale-title="{{info.name}}" title="HihiBox"></a>');
@@ -1058,213 +1055,37 @@ var HHBJSONDATA,hhb;
 					*/
 					return true;
 				};
+				_platform.platformIconIsLoading = false,
+				_platform.platformIconData = null,
 				_platform.getPlatformIcon = function() {
 					var list = [], tgenre = [].concat('TTV');
-					var logger = {};
-					var api = {};
-					var ember = null;
-					var emoteGetters = {};
-
-					logger.debug = function() {};
-
-					api.getEmber = function () {
-						if (ember) {
-							return ember;
-						}
-						if (window.App && window.App.__container__) {
-							ember = window.App.__container__;
-							return ember;
-						}
-						return false;
-					};
-
-					api.isLoaded = function () {
-						return Boolean(api.getEmber());
-					};
-
-					api.lookup = function (lookupFactory) {
-						if (!api.isLoaded()) {
-							logger.debug('Factory lookup failure, Ember not loaded.');
-							return false;
-						}
-						return api.getEmber().lookup(lookupFactory);
-					};
-
-					api.get = function (lookupFactory, property) {
-						if (!api.isLoaded()) {
-							logger.debug('Factory get failure, Ember not loaded.');
-							return false;
-						}
-						var properties = property.split('.');
-						var getter = api.lookup(lookupFactory);
-
-						properties.some(function (property) {
-							// If getter fails, just exit, otherwise, keep looping.
-							if (typeof getter.get === 'function' && typeof getter.get(property) !== 'undefined') {
-								getter = getter.get(property);
-							}
-							else if (typeof getter[property] !== 'undefined') {
-								getter = getter[property];
-							}
-							else {
-								getter = null;
-								return true;
-							}
+					if ( !_platform.platformIconIsLoading ) {
+						$.getJSON("http://twitchemotes.com/api_cache/v2/global.json", function(data) {
+							_platform.platformIconData = data;
 						});
-
-						return getter;
-					};
-
-					// Channels.
-					var channels = {};
-					api.getChannel = function (text) {
-						if (channels[text]) {
-							return channels[text];
-						}
-						return '';
-					};
-					api.addChannel = function (text, channel) {
-						channels[text] = channel;
-					};
-
-					// Badges.
-					var badges = {};
-					api.getBadge = function (channel) {
-						if (badges[channel]) {
-							return badges[channel];
-						}
-						return '';
-					};
-					api.addBadge = function (channel, badge) {
-						badges[channel] = badge;
 					}
-
-					function getEmotes() {
-					//	var ember = require('./ember-api');
-						var emberApi = api;
-
-						var emotes = [];
-						var emotesStored = [];
-
-						// Parse the native emotes.
-						var raw = emberApi.get('controller:chat', 'currentRoom.tmiSession._emotesParser.emoticonRegexToIds') || {};
-						Object.keys(raw).forEach(function (key) {
-							var emote = raw[key];
-							emote.url = 'http://static-cdn.jtvnw.net/emoticons/v1/' + emote.id + '/1.0';
-							emote.text = emote.isRegex ? getEmoteFromRegEx(key) : key;
-
-							parse(emote, false);
-						});
-
-						// Parse the custom emotes provided by third party addons.
-						Object.keys(emoteGetters).forEach(function (name) {
-							var getterEmotes = null;
-							try {
-								getterEmotes = emoteGetters[name]();
-							}
-							catch (err) {
-								logger.debug('Emote getter `' + name + '` failed unexpectedly.', err.toString());
-								return;
-							}
-
-							if (!Array.isArray(getterEmotes)) {
-								logger.debug('Emote getter `' + name + '` failed to return a usable array.');
-								return;
-							}
-							getterEmotes.forEach(function (emote) {
-								parse(emote, true);
+					if ( _platform.platformIconData ) {
+						var data = _platform.platformIconData,
+							template = data.template,
+							emotes = data.emotes;
+						if (emotes.length == 0) return [];
+						for (var key in emotes) {
+							var emo = emotes[key];
+							var tcode = [].concat(key)
+							list.push({
+								code: tcode,
+								src: "http:"+template.small.replace("{image_id}",emo.image_id),
+								width: 50,
+								height: 50,
+								genre: tgenre
 							});
-						});
-
-						function parse(emote, isThirdParty) {
-							// Ignore emotes that were forced hidden, don't have URLs, or don't have text.
-							if (emote.hidden || !emote.url || !emote.text) {
-								return;
-							}
-							var parsed = {}
-							parsed.text = emote.text;
-							parsed.url = emote.url;
-							parsed.channel = emote.channel || api.getChannel(parsed.text);
-							parsed.badge = emote.badge || api.getBadge(parsed.channel);
-							parsed.hidden = emote.hidden;
-							// Determine if emote is from a third-party addon.
-							parsed.isThirdParty = isThirdParty;
-							// Determine if emote is hidden by user.
-							//parsed.isVisible = storage.visibility.get('channel-' + parsed.channel, true) && storage.visibility.get(parsed.text, true);
-							parsed.isVisible = true;
-							// Get starred status.
-							//parsed.isStarred = storage.starred.get(parsed.text, false);
-							parsed.isStarred = true;
-							
-							// Override emotes if they've been stored.
-							var storedIndex = emotesStored.indexOf(parsed.text);
-							if (storedIndex === -1) {
-								emotes.push(parsed);
-								emotesStored.push(parsed.text);
-							}
-							else {
-								emotes[storedIndex] = parsed;
-							}
-						}
-
-						return emotes;
-					};
-
-					/**
-					 * Gets the usable emote text from a regex.
-					 * @attribute http://userscripts.org/scripts/show/160183 (adaption)
-					 */
-					function getEmoteFromRegEx(regex) {
-						if (typeof regex === 'string') {
-							regex = new RegExp(regex);
-						}
-						if (!regex) {
-							throw new Error('`regex` must be a RegExp string or object.');
-						}
-						return decodeURI(regex.source)
-							.replace('&gt\\;', '>') // right angle bracket
-							.replace('&lt\\;', '<') // left angle bracket
-							.replace(/\(\?![^)]*\)/g, '') // remove negative group
-							.replace(/\(([^|])*\|?[^)]*\)/g, '$1') // pick first option from a group
-							.replace(/\[([^|])*\|?[^\]]*\]/g, '$1') // pick first character from a character group
-							.replace(/[^\\]\?/g, '') // remove optional chars
-							.replace(/^\\b|\\b$/g, '') // remove boundaries
-							.replace(/\\/g, ''); // unescape
-					}
-
-					function getEmoteSets() {
-					//	var ember = require('./ember-api');
-						var emberApi = api;
-						var sets = [];
-						try {
-							sets = emberApi.get('controller:chat', 'currentRoom.tmiRoom').getEmotes(window.Twitch.user.login());
-							sets = sets.filter(function (val) {
-								return typeof val === 'number' && val >= 0;
-							});
-
-							logger.debug('Emoticon sets retrieved.', sets);
-							return sets;
-						}
-						catch (err) {
-							logger.debug('Emote sets failed.', err);
-							return [];
 						}
 					}
-					var emotes = getEmotes();
-					for (var i=0;i<emotes.length;i++) {
-						var emo = emotes[i];
-						var tcode = [].concat(emo.text)
-						list.push({
-							code: tcode,
-							src: emo.url,
-							width: 50,
-							height: 50,
-							genre: tgenre
-						});
-					}
-					
 					return list;
 				};
+				
+				/* features.bookmarks */ 
+				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
 				_platform.getPlayer = function() {
 					var selectors = [].concat(selector.player), $tplayer = $();
 					$.each(selectors,function(idx,selector) {
@@ -1273,81 +1094,146 @@ var HHBJSONDATA,hhb;
 					});
 					return $tplayer;
 				}
-			
 				/* Icon emotify */
 				_platform.injectIcon = function(iconlist) {
-					var iconlist = [].concat(iconlist);
-					var get_user = function() {
-						if (typeof PP !== 'undefined' && PP && PP.login) return PP;
-						if (App) {
-							var t = App.__container__.lookup("controller:navigation");
-							return t ? t.get("userData") : void 0
-						}
-					}
-					var _emoticonize = function(e, t) {
-						var o = e.get("parentController.model.id"),
-							n = e.get("model.from"),
-							s = this,
-							i = [];
-						for (var _fi=t.length-1;_fi>=0;_fi--) {
-							var _t = t[_fi];
-							_t = ( !_.isString(_t) && _t.emoticonSrc ? _t.altText : _t );
-							if (( _fi<t.length-1 ) && (_.isString(_t) && _.isString(t[_fi+1]))) {
-								_t += t[_fi+1];
-								t.splice(_fi+1,1);
-							}
-							t[_fi] = _t;
-						}
-						_.each(iconlist, function(e) {
-							_.any(t, function(t) {
-								return _.isString(t) && t.match(e.regex)
-							}) && i.push(e)
-						});
-						if (i.length) {
-							if ("string" == typeof t) t = [t];
-							_.each(i, function(e) {
-								var o = {
-									isEmoticon: !0,
-									cls: 'hhb-msgicon',
-									emoticonSrc: e.src,
-									altText: e.hidden ? "???" : e.alt
-								};
-								t = _.compact(_.flatten(_.map(t, function(t) {
-									if (_.isObject(t)) return t;
-									var n = t.split(e.regex),
-										s = [];
-									return n.forEach(function(e, t) {
-										s.push(e), t !== n.length - 1 && s.push(o)
-									}), s
-								})))
-							});
-						}
-						return t;
-					};
-					var _mentionize = function(e, o) {
-						return this.mention_words ? ("string" == typeof o && (o = [o]), _.each(this.mention_words, function(e) {
-							var n = {
-								mentionedUser: e,
-								own: !1
+					if ( !window.App ) return 0;
+					var hhbEmotes = [];
+					hhbEmotes = hhbEmotes.concat(iconlist);
+					var e = function(e) {
+							if (!_.isString(e.input) || !e.input.match(e.regex)) return _.isString(e.input) ? [e.input] : e.input;
+							var t = _.map(e.input.split(e.regex), e.transformNoMatch),
+								s = _.map(e.input.match(e.regex), e.transformMatch),
+								n = _.zip(t, s);
+							return n
+						},
+						s = /(?:https?:\/\/)?(?:[-a-zA-Z0-9@:%_\+~#=]+\.)+[a-z]{2,6}\b(?:[-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
+						o = function(t, n) {
+							var a = function(t) {
+								return e({
+									input: t,
+									regex: s,
+									transformNoMatch: _.identity,
+									transformMatch: function(e) {
+										return n || e.length > 255 ? {
+											deletedLink: !0,
+											linkLength: e.length,
+											text: "&lt;deleted link&gt;"
+										} : {
+											isLink: !0,
+											href: e
+										}
+									}
+								})
 							};
-							o = _.compact(_.flatten(_.map(o, function(o) {
-								if (_.isObject(o)) return o;
-								var s = o.split(t.get_regex(e)),
-									r = [];
-								return s.forEach(function(e, t) {
-									r.push(e), t !== s.length - 1 && r.push(n)
-								}), r
-							})))
-						}), o) : o
-					}
-					var e = App.__container__.resolve("controller:line"),
-						o = this;
-					e.reopen({
-						tokenizedMessage: function() {
-							var e = _emoticonize(this, this._super()),
-								t = get_user();
-							return t && this.get("model.from") == t.login || (e = _mentionize(this, e)), e
-						}.property("model.message", "isModeratorOrHigher", "controllers.emoticons.emoticons.[]")
+							return _.chain(t).map(a).flatten().compact().value()
+						},
+						a = function(t, s, n) {
+							var a = new RegExp("@?\\b" + s + "\\b", "ig"),
+								i = /@[a-z0-9]\w{4,25}\b/gi,
+								o = n ? i : a,
+								r = function(t) {
+									return e({
+										input: t,
+										regex: o,
+										transformNoMatch: _.identity,
+										transformMatch: function(e) {
+											return {
+												mentionedUser: e,
+												own: n
+											}
+										}
+									})
+								};
+							return _.chain(t).map(r).flatten().compact().value()
+						},
+						hhbu = function(e) {
+							var s = _.reduce(e, function(e, s, n) {
+								return _.isArray(s[0]) ? s.forEach(function(t) {
+									e.push({
+										isHihiBox: isNaN(n),
+										src: isNaN(n) ? n : "",
+										emoticonId: n,
+										index: t
+									})
+								}) : e.push({
+									isHihiBox: isNaN(n),
+									src: isNaN(n) ? n : "",
+									emoticonId: n,
+									index: s
+								}), e
+							}, []);
+							return s.sortBy("index.firstObject")
+						},
+						hhbl = function(e, t) {
+							if (e && t) {
+								t = hhbu(t), t.reverse();
+								var s = function(e) {
+										return e.isLink ? e.href.length : e.deletedLink ? e.linkLength : e.mentionedUser ? e.mentionedUser.length : e.length
+									},
+									n = _.reduce(t, function(e, t) {
+										for (var n = [], a = e.shift(), i = 0; i + s(a) - 1 < t.index[0];) n.push(a), i += s(a), a = e.shift();
+										return _.isObject(a) ? n = n.concat(a, e) : (n.push(a.slice(0, t.index[0] - i)), n.push({
+											emoticonSrc: t.isHihiBox ? t.src : "http://static-cdn.jtvnw.net/emoticons/v1/" + t.emoticonId + "/1.0",
+											srcSet: t.isHihiBox ? t.src : "http://static-cdn.jtvnw.net/emoticons/v1/%@1/2.0 2x, http://static-cdn.jtvnw.net/emoticons/v1/%@1/3.0 3x".fmt(t.emoticonId),
+											altText: a.slice(t.index[0] - i, t.index[1] + 1 - i)
+										}), n.push(a.slice(t.index[1] + 1 - i)), n = n.concat(e)), n
+									}, e);
+								return "" === n[n.length - 1] && n.pop(), n
+							}
+							return e
+						},
+						hhbEmotify = {
+							u : function (e, t, n, r) {
+								var i;
+								
+								while ((i = t.exec(e)) !== null) {
+									r.push({
+										id : n,
+										start : i.index,
+										end : t.lastIndex - 1
+									});
+									for (var k = 0; k < r.length; k++) {
+										if ((i.index >= r[k].start && (t.lastIndex - 1) < r[k].end) || (i.index > r[k].start && (t.lastIndex - 1) <= r[k].end)) {
+											r.pop();
+										}
+									}
+								}
+							},
+							a : function (t) {
+								var n = 0,
+								r = {};
+								return t = t.sort(function (e, t) {
+										return e.start - t.start
+									}),
+								$.each(t, function (e, t) {
+									t.start >= n && (r[t.id] = r[t.id] || [], r[t.id].push([t.start, t.end]), n = t.end + 1)
+								}),
+								r
+							},
+							parseEmotesTag : function (t) {
+								var self = this;
+								var n = [];
+								$.each(hhbEmotes, function (index, emote) {
+									self.u.call(this, t, emote.regex, emote.src, n);
+								});
+								return self.a(n);
+							}
+						};
+					var lineChatComponent = window.App.__container__.resolve("component:chat-line");
+					lineChatComponent.reopen({
+						tokenizedMessage : function () {
+							var e = [this.get("msgObject.message")],
+								t = this.get("isChannelLinksDisabled") && !this.get("isModeratorOrHigher"),
+								n = this.get("currentUserNick"),
+								i = this.get("msgObject.from") === n,
+								hhbEmotesTag = hhbEmotify.parseEmotesTag(e),
+								s = this.get("msgObject.tags.emotes");
+							e = hhbl(e, t);
+							e = a(e, n, i);
+							e = hhbl(e, hhbEmotesTag);
+							e = hhbl(e, s);
+							return e;
+						}.property("msgObject.message", "isModeratorOrHigher"),
 					});
 					return iconlist.length;
 				};
@@ -1439,281 +1325,6 @@ var HHBJSONDATA,hhb;
 					return _platformObj.default.parseBBCode(msgs);
 				};
 			},
-			justin: function() {
-				/* Private variables */
-				var _platform = this,
-					id = 'justin',
-					supportedFeatures = ['ui','emoticon','name_banner','darkmode','bookmark'],
-					cssClass = $.extend(_protected.cssClass,{
-						darkMode: 'hhb-darkmode'
-					}),
-					selector = $.extend(_protected.selector,{
-						darkModeAcceptor: 'body',
-						showChatBtn: '#show-chat:contains("Click to show chat")',
-						holderContainer: '#jtv_chat',
-						buttonContainer: '#chat_text_input_wrapper',
-						msgBox: '#chat_text_input',
-						newMsg: '.chat_line span.message:not(.hhb-msg)',
-						newName: '.chat_line .nick:not(.hhb-name)',
-						newBBCodeMsg: '.chat_line span.message:not(.hhb-bbc-msg)',
-						newQuoteMsg: '.chat_line span.message:not(.hhb-quote-msg)',
-						emoticon: 'span.emoticon',
-						timestampsBox: '#toggle-timestamp',
-						userName: '.global-header-user-info .global-header-username',
-						player: ['#JustinPlayer','object[data*="JustinPlayer.swf"]']
-					}),
-					limit = $.extend(_protected.limit,{});
-				/* Public methods */
-				/* Initialize */
-				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.justin\.tv\/(?:directory|broadcast|dashboard|message|settings|user|p|(?:\w+)\/about)(?:$|\/)/i); return ((m) ? m.length>0 : false); }
-				_platform.getChannelID = function() { var m=document.URL.match(/^https?\:\/\/.+\.justin\.tv\/(?:chat|(\w+))(?:\/embed\?channel=(\w+))?/i); return ((m && m[2]) ? m[2] : ((m && m[1]) ? m[1] : '')); }
-				_platform.getUsername = function() { var uname=$(selector.userName).text().trim().toLowerCase(); return (uname!='guest user') ? uname : ''; };
-				_platform.getFeatures = function() {	return supportedFeatures;	};
-				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-justin'); };
-				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
-				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
-				_platform.getButtonFront = function() {	return [];	};
-				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
-				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
-				_platform.genToggleButton = function(_class) {
-					return $('<a class="'+_class+'" href="#"></a>');
-				};
-				_platform.onBindedToggleButton = function() {
-					$('#chat_emotes_trigger').hide(0);
-					$(selector.holder).css('bottom',$('#chat_speak').outerHeight());
-				};
-				_platform.getShowChatBtn = function() {	return $(selector.showChatBtn);	};
-				_platform.toggleTimestamps = function(act) {	/* Not Applicable */
-					/*
-					var scope = angular.element($(_platform.selector.timestampsBox)).scope();
-					if (act == 'toggle') {
-						scope.$apply(function(){	scope.timestamps = !scope.timestamps;	});
-					} else if (act == 'show') {
-						scope.$apply(function(){	scope.timestamps = true;	});
-					} else {
-						scope.$apply(function(){	scope.timestamps = false;	});
-					}
-					*/
-					return true;
-				};
-				_platform.getPlatformIcon = function() {
-					var list = [], tgenre = [].concat('JTV');
-					try {
-						var chatEmoticonList = (CurrentChat) ? CurrentChat.emoticons : DefaultChatEmoticons;
-						var defaultPPEmoteList = PP.chat_emotes.sort(function(a,b){return (a.expression<b.expression)?-1:(a.expression>b.expression)?1:0;});
-						if(!chatEmoticonList||!defaultPPEmoteList) return;
-					} catch(e) {
-						return;
-					}
-					
-					/* ------------------------------------------------------------------
-					/* randexp v0.3.3
-					/* Create random strings that match a given regular expression.
-					/*
-					/* Copyright (C) 2013 by Roly Fentanes (https://github.com/fent)
-					/* MIT License
-					/* http://github.com/fent/randexp.js/raw/master/LICENSE
-					/* ------------------------------------------------------------------ */
-					!function(){var a=function(b,c){var d=a.resolve(b,c||"/"),e=a.modules[d];if(!e)throw new Error("Failed to resolve module "+b+", tried "+d);var f=e._cached?e._cached:e();return f};a.paths=[],a.modules={},a.extensions=[".js",".coffee"],a._core={assert:!0,events:!0,fs:!0,path:!0,vm:!0},a.resolve=function(){return function(b,c){function h(b){if(a.modules[b])return b;for(var c=0;c<a.extensions.length;c++){var d=a.extensions[c];if(a.modules[b+d])return b+d}}function i(b){b=b.replace(/\/+$/,"");var c=b+"/package.json";if(a.modules[c]){var e=a.modules[c](),f=e.browserify;if(typeof f=="object"&&f.main){var g=h(d.resolve(b,f.main));if(g)return g}else if(typeof f=="string"){var g=h(d.resolve(b,f));if(g)return g}else if(e.main){var g=h(d.resolve(b,e.main));if(g)return g}}return h(b+"/index")}function j(a,b){var c=k(b);for(var d=0;d<c.length;d++){var e=c[d],f=h(e+"/"+a);if(f)return f;var g=i(e+"/"+a);if(g)return g}var f=h(a);if(f)return f}function k(a){var b;a==="/"?b=[""]:b=d.normalize(a).split("/");var c=[];for(var e=b.length-1;e>=0;e--){if(b[e]==="node_modules")continue;var f=b.slice(0,e+1).join("/")+"/node_modules";c.push(f)}return c}c||(c="/");if(a._core[b])return b;var d=a.modules.path(),e=c||".";if(b.match(/^(?:\.\.?\/|\/)/)){var f=h(d.resolve(e,b))||i(d.resolve(e,b));if(f)return f}var g=j(b,e);if(g)return g;throw new Error("Cannot find module '"+b+"'")}}(),a.alias=function(b,c){var d=a.modules.path(),e=null;try{e=a.resolve(b+"/package.json","/")}catch(f){e=a.resolve(b,"/")}var g=d.dirname(e),h=(Object.keys||function(a){var b=[];for(var c in a)b.push(c);return b})(a.modules);for(var i=0;i<h.length;i++){var j=h[i];if(j.slice(0,g.length+1)===g+"/"){var k=j.slice(g.length);a.modules[c+k]=a.modules[g+k]}else j===g&&(a.modules[c]=a.modules[g])}},a.define=function(b,c){var d=a._core[b]?"":a.modules.path().dirname(b),e=function(b){return a(b,d)};e.resolve=function(b){return a.resolve(b,d)},e.modules=a.modules,e.define=a.define;var f={exports:{}};a.modules[b]=function(){return a.modules[b]._cached=f.exports,c.call(f.exports,e,f,f.exports,d,b),a.modules[b]._cached=f.exports,f.exports}},typeof process=="undefined"&&(process={}),process.nextTick||(process.nextTick=function(){var a=[],b=typeof window!="undefined"&&window.postMessage&&window.addEventListener;return b&&window.addEventListener("message",function(b){if(b.source===window&&b.data==="browserify-tick"){b.stopPropagation();if(a.length>0){var c=a.shift();c()}}},!0),function(c){b?(a.push(c),window.postMessage("browserify-tick","*")):setTimeout(c,0)}}()),process.title||(process.title="browser"),process.binding||(process.binding=function(b){if(b==="evals")return a("vm");throw new Error("No such module")}),process.cwd||(process.cwd=function(){return"."}),a.define("path",function(a,b,c,d,e){function f(a,b){var c=[];for(var d=0;d<a.length;d++)b(a[d],d,a)&&c.push(a[d]);return c}function g(a,b){var c=0;for(var d=a.length;d>=0;d--){var e=a[d];e=="."?a.splice(d,1):e===".."?(a.splice(d,1),c++):c&&(a.splice(d,1),c--)}if(b)for(;c--;c)a.unshift("..");return a}var h=/^(.+\/(?!$)|\/)?((?:.+?)?(\.[^.]*)?)$/;c.resolve=function(){var a="",b=!1;for(var c=arguments.length;c>=-1&&!b;c--){var d=c>=0?arguments[c]:process.cwd();if(typeof d!="string"||!d)continue;a=d+"/"+a,b=d.charAt(0)==="/"}return a=g(f(a.split("/"),function(a){return!!a}),!b).join("/"),(b?"/":"")+a||"."},c.normalize=function(a){var b=a.charAt(0)==="/",c=a.slice(-1)==="/";return a=g(f(a.split("/"),function(a){return!!a}),!b).join("/"),!a&&!b&&(a="."),a&&c&&(a+="/"),(b?"/":"")+a},c.join=function(){var a=Array.prototype.slice.call(arguments,0);return c.normalize(f(a,function(a,b){return a&&typeof a=="string"}).join("/"))},c.dirname=function(a){var b=h.exec(a)[1]||"",c=!1;return b?b.length===1||c&&b.length<=3&&b.charAt(1)===":"?b:b.substring(0,b.length-1):"."},c.basename=function(a,b){var c=h.exec(a)[2]||"";return b&&c.substr(-1*b.length)===b&&(c=c.substr(0,c.length-b.length)),c},c.extname=function(a){return h.exec(a)[3]||""}}),a.define("/node_modules/ret/package.json",function(a,b,c,d,e){b.exports={main:"./lib/index.js"}}),a.define("/node_modules/ret/lib/index.js",function(a,b,c,d,e){var f=a("./util"),g=a("./types"),h=a("./sets"),i=a("./positions");b.exports=function(a){var b=0,c,d,e={type:g.ROOT,stack:[]},j=e,k=e.stack,l=[],m=function(b){f.error(a,"Nothing to repeat at column "+(b-1))},n=f.strToChars(a);c=n.length;while(b<c){d=n[b++];switch(d){case"\\":d=n[b++];switch(d){case"b":k.push(i.wordBoundary());break;case"B":k.push(i.nonWordBoundary());break;case"w":k.push(h.words());break;case"W":k.push(h.notWords());break;case"d":k.push(h.ints());break;case"D":k.push(h.notInts());break;case"s":k.push(h.whitespace());break;case"S":k.push(h.notWhitespace());break;default:/\d/.test(d)?k.push({type:g.REFERENCE,value:parseInt(d,10)}):k.push({type:g.CHAR,value:d.charCodeAt(0)})}break;case"^":k.push(i.begin());break;case"$":k.push(i.end());break;case"[":var o;n[b]==="^"?(o=!0,b++):o=!1;var p=f.tokenizeClass(n.slice(b),a);b+=p[1],k.push({type:g.SET,set:p[0],not:o});break;case".":k.push(h.anyChar());break;case"(":var q={type:g.GROUP,stack:[],remember:!0};d=n[b],d==="?"&&(d=n[b+1],b+=2,d==="="?q.followedBy=!0:d==="!"?q.notFollowedBy=!0:d!==":"&&f.error(a,"Invalid group, character '"+d+"' after '?' at column "+(b-1)),q.remember=!1),k.push(q),l.push(j),j=q,k=q.stack;break;case")":l.length===0&&f.error(a,"Unmatched ) at column "+(b-1)),j=l.pop(),k=j.options?j.options[j.options.length-1]:j.stack;break;case"|":j.options||(j.options=[j.stack],delete j.stack);var r=[];j.options.push(r),k=r;break;case"{":var s=/^(\d+)(,(\d+)?)?\}/.exec(n.slice(b)),t,u;s!==null?(t=parseInt(s[1],10),u=s[2]?s[3]?parseInt(s[3],10):Infinity:t,b+=s[0].length,k.push({type:g.REPETITION,min:t,max:u,value:k.pop()})):k.push({type:g.CHAR,value:123});break;case"?":k.length===0&&m(b),k.push({type:g.REPETITION,min:0,max:1,value:k.pop()});break;case"+":k.length===0&&m(b),k.push({type:g.REPETITION,min:1,max:Infinity,value:k.pop()});break;case"*":k.length===0&&m(b),k.push({type:g.REPETITION,min:0,max:Infinity,value:k.pop()});break;default:k.push({type:g.CHAR,value:d.charCodeAt(0)})}}return l.length!==0&&f.error(a,"Unterminated group"),e},b.exports.types=g}),a.define("/node_modules/ret/lib/util.js",function(a,b,c,d,e){var f=a("./types"),g=a("./sets"),h="@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ ?",i={0:0,t:9,n:10,v:11,f:12,r:13};c.strToChars=function(a){var b=/(\[\\b\])|\\(?:u([A-F0-9]{4})|x([A-F0-9]{2})|(0?[0-7]{2})|c([@A-Z\[\\\]\^?])|([0tnvfr]))/g;return a=a.replace(b,function(a,b,c,d,e,f,g){var j=b?8:c?parseInt(c,16):d?parseInt(d,16):e?parseInt(e,8):f?h.indexOf(f):g?i[g]:undefined,k=String.fromCharCode(j);return/[\[\]{}\^$.|?*+()]/.test(k)&&(k="\\"+k),k}),a},c.tokenizeClass=function(a,b){var d=[],e=/\\(?:(w)|(d)|(s)|(W)|(D)|(S))|((?:(?:\\)(.)|([^\\]))-(?:\\)?([^\]]))|(\])|(?:\\)?(.)/g,h,i;while((h=e.exec(a))!=null)if(h[1])d.push(g.words());else if(h[2])d.push(g.ints());else if(h[3])d.push(g.whitespace());else if(h[4])d.push(g.notWords());else if(h[5])d.push(g.notInts());else if(h[6])d.push(g.notWhitespace());else if(h[7])d.push({type:f.RANGE,from:(h[8]||h[9]).charCodeAt(0),to:h[10].charCodeAt(0)});else{if(!(i=h[12]))return[d,e.lastIndex];d.push({type:f.CHAR,value:i.charCodeAt(0)})}c.error(b,"Unterminated character class")},c.error=function(a,b){throw new SyntaxError("Invalid regular expression: /"+a+"/: "+b)}}),a.define("/node_modules/ret/lib/types.js",function(a,b,c,d,e){b.exports={ROOT:0,GROUP:1,POSITION:2,SET:3,RANGE:4,REPETITION:5,REFERENCE:6,CHAR:7}}),a.define("/node_modules/ret/lib/sets.js",function(a,b,c,d,e){var f=a("./types"),g=function(){return[{type:f.RANGE,from:48,to:57}]},h=function(){return[{type:f.RANGE,from:97,to:122},{type:f.RANGE,from:65,to:90}].concat(g())},i=function(){return[{type:f.CHAR,value:12},{type:f.CHAR,value:10},{type:f.CHAR,value:13},{type:f.CHAR,value:9},{type:f.CHAR,value:11},{type:f.CHAR,value:160},{type:f.CHAR,value:5760},{type:f.CHAR,value:6158},{type:f.CHAR,value:8192},{type:f.CHAR,value:8193},{type:f.CHAR,value:8194},{type:f.CHAR,value:8195},{type:f.CHAR,value:8196},{type:f.CHAR,value:8197},{type:f.CHAR,value:8198},{type:f.CHAR,value:8199},{type:f.CHAR,value:8200},{type:f.CHAR,value:8201},{type:f.CHAR,value:8202},{type:f.CHAR,value:8232},{type:f.CHAR,value:8233},{type:f.CHAR,value:8239},{type:f.CHAR,value:8287},{type:f.CHAR,value:12288}]};c.words=function(){return{type:f.SET,set:h(),not:!1}},c.notWords=function(){return{type:f.SET,set:h(),not:!0}},c.ints=function(){return{type:f.SET,set:g(),not:!1}},c.notInts=function(){return{type:f.SET,set:g(),not:!0}},c.whitespace=function(){return{type:f.SET,set:i(),not:!1}},c.notWhitespace=function(){return{type:f.SET,set:i(),not:!0}},c.anyChar=function(){return{type:f.SET,set:[{type:f.CHAR,value:10}],not:!0}}}),a.define("/node_modules/ret/lib/positions.js",function(a,b,c,d,e){var f=a("./types");c.wordBoundary=function(){return{type:f.POSITION,value:"b"}},c.nonWordBoundary=function(){return{type:f.POSITION,value:"B"}},c.begin=function(){return{type:f.POSITION,value:"^"}},c.end=function(){return{type:f.POSITION,value:"$"}}}),a.define("/randexp.js",function(a,b,c,d,e){function h(a,b){return a+Math.floor(Math.random()*(1+b-a))}function i(a){return a+(97<=a&&a<=122?-32:65<=a&&a<=90?32:0)}function j(a,b,c,d){return a<=c&&c<=b?{from:c,to:Math.min(b,d)}:a<=d&&d<=b?{from:Math.max(a,c),to:d}:!1}function k(a,b){var c,d,e,f;if((d=a.length)!==b.length)return!1;for(c=0;c<d;c++){f=a[c];for(e in f)if(f.hasOwnProperty(e)&&f[e]!==b[c][e])return!1}return!0}function l(a,b){for(var c=0,d=a.length;c<d;c++){var e=a[c];if(e.not!==b.not&&k(e.set,b.set))return!0}return!1}function m(a,b,c){var d,e,f=[],h=!1;for(var k=0,n=a.length;k<n;k++){d=a[k];switch(d.type){case g.CHAR:e=d.value;if(e===b||c&&i(e)===b)return!0;break;case g.RANGE:if(d.from<=b&&b<=d.to||c&&((e=j(97,122,d.from,d.to))!==!1&&e.from<=b&&b<=e.to||(e=j(65,90,d.from,d.to))!==!1&&e.from<=b&&b<=e.to))return!0;break;case g.SET:f.length>0&&l(f,d)?h=!0:f.push(d);if(!h&&m(d.set,b,c)!==d.not)return!0}}return!1}function n(a,b){return String.fromCharCode(b&&Math.random()>.5?i(a):a)}function o(a,b,c){var d,e,f,i,j,k,l;switch(a.type){case g.ROOT:case g.GROUP:if(a.notFollowedBy)return"";a.remember&&(d=b.push(!1)-1),e=a.options?a.options[Math.floor(Math.random()*a.options.length)]:a.stack,f="";for(j=0,k=e.length;j<k;j++)f+=o.call(this,e[j],b);return a.remember&&(b[d]=f),f;case g.POSITION:return"";case g.SET:c=!!c,l=c!==a.not;if(!l)return a.set.length?o.call(this,a.set[Math.floor(Math.random()*a.set.length)],b,l):"";for(;;){var p=this.anyRandChar(),q=p.charCodeAt(0);if(m(a.set,q,this.ignoreCase))continue;return p}break;case g.RANGE:return n(h(a.from,a.to),this.ignoreCase);case g.REPETITION:i=h(a.min,a.max===Infinity?a.min+this.max:a.max),f="";for(j=0;j<i;j++)f+=o.call(this,a.value,b);return f;case g.REFERENCE:return b[a.value-1]||"";case g.CHAR:return n(a.value,this.ignoreCase)}}var f=a("ret"),g=f.types,p=b.exports=function(a,b){if(a instanceof RegExp)this.ignoreCase=a.ignoreCase,this.multiline=a.multiline,typeof a.max=="number"&&(this.max=a.max),typeof a.anyRandChar=="function"&&(this.anyRandChar=a.anyRandChar),a=a.source;else{if(typeof a!="string")throw new Error("Expected a regexp or string");this.ignoreCase=b&&b.indexOf("i")!==-1,this.multiline=b&&b.indexOf("m")!==-1}this.tokens=f(a)};p.prototype.max=100,p.prototype.anyRandChar=function(){return String.fromCharCode(h(0,65535))},p.prototype.gen=function(){return o.call(this,this.tokens,[])};var q=p.randexp=function(a,b){var c;return a._randexp===undefined?(c=new p(a,b),a._randexp=c):(c=a._randexp,typeof a.max=="number"&&(c.max=a.max),typeof a.anyRandChar=="function"&&(c.anyRandChar=a.anyRandChar)),c.gen()};p.sugar=function(){RegExp.prototype.gen=function(){return q(this)}}}),!function(a,b){typeof define=="function"&&typeof define.amd=="object"?define(a,function(){return b}):typeof window!="undefined"&&(window[a]=b)}("RandExp",a("/randexp.js"))}()
-
-					/* chatEmoticonList */
-					var chatEmoDefaultPath = 'http://www-cdn.jtvnw.net/static/images/emoticons/';
-					var gifEmo = ['surprised','excited','skeptical','pirate','happy','raspberry','winkberry','cool','wink','angry','drunk','bored','sad','horny'];
-					var dictEmo = { 'bunion': 'bunion2',
-									'mvg': 'mvgbest', 
-									'dylan': 'dylanlive', 
-									'sm-skull': 'spacemarine/sm-skull', 
-									'sm-orc': 'spacemarine/sm-orc'}
-					for (var i=0;i<chatEmoticonList.length;i++) {
-						var emo = chatEmoticonList[i];
-						var tcode = [];
-						var tsrc = [	chatEmoDefaultPath,
-										(dictEmo[emo.img]) ? dictEmo[emo.img] : emo.img,
-										($.inArray(emo.img,gifEmo) < 0) ? '.png' : '.gif'].join('');
-						var twidth = -1,theight = -1;
-						for (var j=0;j<2;j++) {
-							var genCode = new RandExp(emo.rx).gen();
-							tcode = tcode.concat(($.inArray(genCode,tcode) < 0) ? genCode : []);
-						}
-						list.push({
-							code: tcode,
-							src: tsrc,
-							width: twidth,
-							height: theight,
-							genre: tgenre
-						});
-					}
-					
-					/* defaultPPEmoteList */
-					for (var i=0;i<defaultPPEmoteList.length;i++) {
-						var emo = defaultPPEmoteList[i];
-						var tcode = [].concat(emo.expression);
-						var tsrc = [PP.emote_root,emo.source].join('');
-						var twidth = -1,theight = -1;
-						list.push({
-							code: tcode,
-							src: tsrc,
-							width: twidth,
-							height: theight,
-							genre: tgenre
-						});
-					}
-					return list;
-				};
-				_platform.getPlayer = function() {
-					var selectors = [].concat(selector.player), $tplayer = $();
-					$.each(selectors,function(idx,selector) {
-						$tplayer = $(selector);
-						if ($tplayer.length>0) return false;
-					});
-					return $tplayer;
-				}
-			
-				/* Icon emotify */
-				_platform.injectIcon = function(iconlist) {
-					var iconlist = iconlist;
-					var count = iconlist.length;
-					
-					function toRegExp(str) { return (str+'').replace(/([.?*+^$[\]\\(){}|\-\:])/g, "\\$1"); }
-					function emotify_pre(msg) {
-						/* extract html tag */
-						var html = [],
-							mhtml = [].concat(msg.match(/<\s*(\w+)\s[^>]*>(.*?)<\s*\/\s*\1>/gi)),
-							url = [],
-							murl = [].concat(msg.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)/gi));
-						if (mhtml) {
-							for (var i=0;i<mhtml.length;i++) {
-								html[i] = mhtml[i];
-								msg = msg.replace(html[i],"___hhb_html_"+i+"___");
-							}
-						}
-						/* extract url */
-						if (murl) {
-							for (var i=0;i<murl.length;i++) {
-								url[i] = murl[i];
-								msg = msg.replace(url[i],"___hhb_url_"+i+"___");
-							}
-						}
-						/* extract emoticon */
-						for(var i = 0; i < iconlist.length; i++) {
-							var code = [].concat(iconlist[i].code);
-							for(var j = 0; j < code.length; j++) {
-								var regex = code[j];
-								if(!(regex instanceof RegExp)) regex = new RegExp(toRegExp(regex), 'g');
-								msg = msg.replace(regex, "___hhb_emote_"+i+"___");
-							}
-						}
-						/* restore html tag */
-						if (mhtml) {
-							for (var i=0;i<html.length;i++) {
-								msg = msg.replace(new RegExp("___hhb_html_"+i+"___","g"), html[i]);
-							}
-						}
-						/* restore url */
-						if (murl) {
-							for (var i=0;i<url.length;i++) {
-								msg = msg.replace(new RegExp("___hhb_url_"+i+"___","g"), url[i]);
-							}
-						}
-						return msg;
-					}
-					function emotify_post(msg)
-					{
-						var classMsgIcon = cssClass.msgIcon,
-							classResized = cssClass.resized
-							limitHeight = limit.msgIconHeight;
-						/* restore emoticon */
-						for(var i = 0; i < iconlist.length; i++) {
-							var emo = iconlist[i];
-							var tsrc = emo.src;
-							var ttitle = emo.code.join(", ").replace(/(<([^>]+)>)/ig,'').replace(/, $/,'');
-							var tw = (emo.width > 0) ? emo.width : 0;
-							var th = (emo.height > 0) ? emo.height : 0;
-							msg = msg.replace(new RegExp("___hhb_emote_"+i+"___","g"), emo.img);
-						}
-						return msg;
-					}
-					function emotify_main(old,args) {
-						var str = args[0];
-						var msg = emotify_pre(str);
-						args[0] = msg;
-						msg = old.apply(this,args);
-						msg = emotify_post(msg);
-						return msg;
-					}
-					/* Injecting emoticonize */					
-					var method = 'emoticonize',
-						objChat = (CurrentChat) ? CurrentChat : Chat.prototype;
-					if (method in objChat && !('__hhb_'+method in objChat)) {
-						var orgMethod = objChat[method];
-						objChat['__hhb_'+method] = true;
-						objChat[method] = function() {
-							try {
-								var args = [	orgMethod.bind(this),
-												Array.prototype.slice.apply(arguments)
-											];
-								return emotify_main.apply(this,args);
-							} catch(e) {
-								return orgMethod.apply(this,arguments);
-							}
-						};
-					}
-					return count;
-				},
-				_platform.getNewMsg = function() {	return $(selector.newMsg);	};
-				_platform.bindResizer = function() {
-					var msgs = _platform.getNewMsg(),
-						resized = [];
-					if (msgs.length > 0) {
-						var count = 0;
-						var bicount = 0, bircount = 0;
-						msgs.each(function() {
-							var emoticons = $(this)
-								.addClass(cssClass.checkedMsg)
-								.children(selector.emoticon)
-									.each(function() {
-										if ($(this).height() > limitHeight) $(this).addClass(cssClass.resized);
-										$(this).addClass(cssClass.msgIcon);
-									});
-							var resized = $(this).children(selector.msgIconResized)
-								.click(function() {
-									$(this).toggleClass(cssClass.orgSize);
-								});
-							bicount += emoticons.length;
-							bircount += resized.length;
-						});
-					}
-					return {
-						msg: msgs.length, 
-						emotified: bicount,
-						resized: bircount
-					};
-				};
-				_platform.getMsgBox = function(getDOM) { return (getDOM ? $(selector.msgBox)[0]||false : $(selector.msgBox)); };
-				_platform.getMsgInput = function() {	return $(selector.msgBox).val()||'';	};
-				_platform.insertText = function(text) {	_platform.replaceText(text);	};
-				_platform.replaceText = function(text,reReplace) {
-					var txtarea = platformObj.getMsgBox(true);
-					if (txtarea) {
-						_platformObj.default.replaceText(txtarea,text,reReplace);
-					}
-				};
-				
-				/* Name Banner + Badge */
-				_platform.getNewNames = function() {	return $(selector.newName);	};
-				_platform.bindNameBanner = function() {
-					var names = _platform.getNewNames();
-					return _platformObj.default.bindNameBanner(names);
-				};
-				_platform.genBadgeCss = function(badges) { return _platformObj.default.genBadgeCss(badges,selector); };
-				
-				/* BBCode */
-				_platform.getNewBBCodeMsg = function() {	return $(selector.newBBCodeMsg);	};
-				_platform.parseBBCode = function() {
-					var msgs = _platform.getNewBBCodeMsg();
-					return _platformObj.default.parseBBCode(msgs);
-				};
-			},
 			ustream: function() {
 				/* Private variables */
 				var _platform = this,
@@ -1723,16 +1334,6 @@ var HHBJSONDATA,hhb;
 						darkMode: 'hhb-darkmode'
 					}),
 					selector = $.extend(_protected.selector,{
-					/*	darkModeAcceptor: 'body',
-						showChatBtn: '#show-chat:contains("Click to show chat")',
-						holderContainer: '#jtv_chat',
-						buttonContainer: '#chat_text_input_wrapper',
-						msgBox: '#chat_text_input',
-						newMsg: '.chat_line span.message:not(.hhb-msg)',
-						newName: '.chat_line .nick:not(.hhb-name)',
-						emoticon: 'span.emoticon',
-						timestampsBox: '#toggle-timestamp',
-					*/
 						userName: '.userName span',
 						player: ['#UstreamViewer','object[id^="utv"]']
 					}),
@@ -1744,96 +1345,9 @@ var HHBJSONDATA,hhb;
 				_platform.getUsername = function() { var uname=$(selector.userName).text().trim().toLowerCase(); return (uname!='guest user') ? uname : ''; };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
 				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-ustream'); };
-				_platform.getHolderContainer = function() {	return $(selector.holderContainer);	};
-				_platform.getButtonContainer = function() {	return $(selector.buttonContainer);	};
-				_platform.getButtonFront = function() {	return [];	};
+				
+				/* features.bookmarks */
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
-				_platform.genHolder = function(idObj,infoObj) { return _platformObj.default.genHolder(idObj,infoObj); };
-				_platform.genToggleButton = function(_class) {
-					return $('<a class="'+_class+'" href="#"></a>');
-				};
-				_platform.onBindedToggleButton = function() {
-					$('#chat_emotes_trigger').hide(0);
-					$(selector.holder).css('bottom',$('#chat_speak').outerHeight());
-				};
-				_platform.getShowChatBtn = function() {	return $(selector.showChatBtn);	};
-				_platform.toggleTimestamps = function(act) {	/* Not Applicable */
-					/*
-					var scope = angular.element($(_platform.selector.timestampsBox)).scope();
-					if (act == 'toggle') {
-						scope.$apply(function(){	scope.timestamps = !scope.timestamps;	});
-					} else if (act == 'show') {
-						scope.$apply(function(){	scope.timestamps = true;	});
-					} else {
-						scope.$apply(function(){	scope.timestamps = false;	});
-					}
-					*/
-					return true;
-				};
-				_platform.getPlatformIcon = function() {
-					var list = [], tgenre = [].concat('JTV');
-					try {
-						var chatEmoticonList = (CurrentChat) ? CurrentChat.emoticons : DefaultChatEmoticons;
-						var defaultPPEmoteList = PP.chat_emotes.sort(function(a,b){return (a.expression<b.expression)?-1:(a.expression>b.expression)?1:0;});
-						if(!chatEmoticonList||!defaultPPEmoteList) return;
-					} catch(e) {
-						return;
-					}
-					
-					/* ------------------------------------------------------------------
-					/* randexp v0.3.3
-					/* Create random strings that match a given regular expression.
-					/*
-					/* Copyright (C) 2013 by Roly Fentanes (https://github.com/fent)
-					/* MIT License
-					/* http://github.com/fent/randexp.js/raw/master/LICENSE
-					/* ------------------------------------------------------------------ */
-					!function(){var a=function(b,c){var d=a.resolve(b,c||"/"),e=a.modules[d];if(!e)throw new Error("Failed to resolve module "+b+", tried "+d);var f=e._cached?e._cached:e();return f};a.paths=[],a.modules={},a.extensions=[".js",".coffee"],a._core={assert:!0,events:!0,fs:!0,path:!0,vm:!0},a.resolve=function(){return function(b,c){function h(b){if(a.modules[b])return b;for(var c=0;c<a.extensions.length;c++){var d=a.extensions[c];if(a.modules[b+d])return b+d}}function i(b){b=b.replace(/\/+$/,"");var c=b+"/package.json";if(a.modules[c]){var e=a.modules[c](),f=e.browserify;if(typeof f=="object"&&f.main){var g=h(d.resolve(b,f.main));if(g)return g}else if(typeof f=="string"){var g=h(d.resolve(b,f));if(g)return g}else if(e.main){var g=h(d.resolve(b,e.main));if(g)return g}}return h(b+"/index")}function j(a,b){var c=k(b);for(var d=0;d<c.length;d++){var e=c[d],f=h(e+"/"+a);if(f)return f;var g=i(e+"/"+a);if(g)return g}var f=h(a);if(f)return f}function k(a){var b;a==="/"?b=[""]:b=d.normalize(a).split("/");var c=[];for(var e=b.length-1;e>=0;e--){if(b[e]==="node_modules")continue;var f=b.slice(0,e+1).join("/")+"/node_modules";c.push(f)}return c}c||(c="/");if(a._core[b])return b;var d=a.modules.path(),e=c||".";if(b.match(/^(?:\.\.?\/|\/)/)){var f=h(d.resolve(e,b))||i(d.resolve(e,b));if(f)return f}var g=j(b,e);if(g)return g;throw new Error("Cannot find module '"+b+"'")}}(),a.alias=function(b,c){var d=a.modules.path(),e=null;try{e=a.resolve(b+"/package.json","/")}catch(f){e=a.resolve(b,"/")}var g=d.dirname(e),h=(Object.keys||function(a){var b=[];for(var c in a)b.push(c);return b})(a.modules);for(var i=0;i<h.length;i++){var j=h[i];if(j.slice(0,g.length+1)===g+"/"){var k=j.slice(g.length);a.modules[c+k]=a.modules[g+k]}else j===g&&(a.modules[c]=a.modules[g])}},a.define=function(b,c){var d=a._core[b]?"":a.modules.path().dirname(b),e=function(b){return a(b,d)};e.resolve=function(b){return a.resolve(b,d)},e.modules=a.modules,e.define=a.define;var f={exports:{}};a.modules[b]=function(){return a.modules[b]._cached=f.exports,c.call(f.exports,e,f,f.exports,d,b),a.modules[b]._cached=f.exports,f.exports}},typeof process=="undefined"&&(process={}),process.nextTick||(process.nextTick=function(){var a=[],b=typeof window!="undefined"&&window.postMessage&&window.addEventListener;return b&&window.addEventListener("message",function(b){if(b.source===window&&b.data==="browserify-tick"){b.stopPropagation();if(a.length>0){var c=a.shift();c()}}},!0),function(c){b?(a.push(c),window.postMessage("browserify-tick","*")):setTimeout(c,0)}}()),process.title||(process.title="browser"),process.binding||(process.binding=function(b){if(b==="evals")return a("vm");throw new Error("No such module")}),process.cwd||(process.cwd=function(){return"."}),a.define("path",function(a,b,c,d,e){function f(a,b){var c=[];for(var d=0;d<a.length;d++)b(a[d],d,a)&&c.push(a[d]);return c}function g(a,b){var c=0;for(var d=a.length;d>=0;d--){var e=a[d];e=="."?a.splice(d,1):e===".."?(a.splice(d,1),c++):c&&(a.splice(d,1),c--)}if(b)for(;c--;c)a.unshift("..");return a}var h=/^(.+\/(?!$)|\/)?((?:.+?)?(\.[^.]*)?)$/;c.resolve=function(){var a="",b=!1;for(var c=arguments.length;c>=-1&&!b;c--){var d=c>=0?arguments[c]:process.cwd();if(typeof d!="string"||!d)continue;a=d+"/"+a,b=d.charAt(0)==="/"}return a=g(f(a.split("/"),function(a){return!!a}),!b).join("/"),(b?"/":"")+a||"."},c.normalize=function(a){var b=a.charAt(0)==="/",c=a.slice(-1)==="/";return a=g(f(a.split("/"),function(a){return!!a}),!b).join("/"),!a&&!b&&(a="."),a&&c&&(a+="/"),(b?"/":"")+a},c.join=function(){var a=Array.prototype.slice.call(arguments,0);return c.normalize(f(a,function(a,b){return a&&typeof a=="string"}).join("/"))},c.dirname=function(a){var b=h.exec(a)[1]||"",c=!1;return b?b.length===1||c&&b.length<=3&&b.charAt(1)===":"?b:b.substring(0,b.length-1):"."},c.basename=function(a,b){var c=h.exec(a)[2]||"";return b&&c.substr(-1*b.length)===b&&(c=c.substr(0,c.length-b.length)),c},c.extname=function(a){return h.exec(a)[3]||""}}),a.define("/node_modules/ret/package.json",function(a,b,c,d,e){b.exports={main:"./lib/index.js"}}),a.define("/node_modules/ret/lib/index.js",function(a,b,c,d,e){var f=a("./util"),g=a("./types"),h=a("./sets"),i=a("./positions");b.exports=function(a){var b=0,c,d,e={type:g.ROOT,stack:[]},j=e,k=e.stack,l=[],m=function(b){f.error(a,"Nothing to repeat at column "+(b-1))},n=f.strToChars(a);c=n.length;while(b<c){d=n[b++];switch(d){case"\\":d=n[b++];switch(d){case"b":k.push(i.wordBoundary());break;case"B":k.push(i.nonWordBoundary());break;case"w":k.push(h.words());break;case"W":k.push(h.notWords());break;case"d":k.push(h.ints());break;case"D":k.push(h.notInts());break;case"s":k.push(h.whitespace());break;case"S":k.push(h.notWhitespace());break;default:/\d/.test(d)?k.push({type:g.REFERENCE,value:parseInt(d,10)}):k.push({type:g.CHAR,value:d.charCodeAt(0)})}break;case"^":k.push(i.begin());break;case"$":k.push(i.end());break;case"[":var o;n[b]==="^"?(o=!0,b++):o=!1;var p=f.tokenizeClass(n.slice(b),a);b+=p[1],k.push({type:g.SET,set:p[0],not:o});break;case".":k.push(h.anyChar());break;case"(":var q={type:g.GROUP,stack:[],remember:!0};d=n[b],d==="?"&&(d=n[b+1],b+=2,d==="="?q.followedBy=!0:d==="!"?q.notFollowedBy=!0:d!==":"&&f.error(a,"Invalid group, character '"+d+"' after '?' at column "+(b-1)),q.remember=!1),k.push(q),l.push(j),j=q,k=q.stack;break;case")":l.length===0&&f.error(a,"Unmatched ) at column "+(b-1)),j=l.pop(),k=j.options?j.options[j.options.length-1]:j.stack;break;case"|":j.options||(j.options=[j.stack],delete j.stack);var r=[];j.options.push(r),k=r;break;case"{":var s=/^(\d+)(,(\d+)?)?\}/.exec(n.slice(b)),t,u;s!==null?(t=parseInt(s[1],10),u=s[2]?s[3]?parseInt(s[3],10):Infinity:t,b+=s[0].length,k.push({type:g.REPETITION,min:t,max:u,value:k.pop()})):k.push({type:g.CHAR,value:123});break;case"?":k.length===0&&m(b),k.push({type:g.REPETITION,min:0,max:1,value:k.pop()});break;case"+":k.length===0&&m(b),k.push({type:g.REPETITION,min:1,max:Infinity,value:k.pop()});break;case"*":k.length===0&&m(b),k.push({type:g.REPETITION,min:0,max:Infinity,value:k.pop()});break;default:k.push({type:g.CHAR,value:d.charCodeAt(0)})}}return l.length!==0&&f.error(a,"Unterminated group"),e},b.exports.types=g}),a.define("/node_modules/ret/lib/util.js",function(a,b,c,d,e){var f=a("./types"),g=a("./sets"),h="@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^ ?",i={0:0,t:9,n:10,v:11,f:12,r:13};c.strToChars=function(a){var b=/(\[\\b\])|\\(?:u([A-F0-9]{4})|x([A-F0-9]{2})|(0?[0-7]{2})|c([@A-Z\[\\\]\^?])|([0tnvfr]))/g;return a=a.replace(b,function(a,b,c,d,e,f,g){var j=b?8:c?parseInt(c,16):d?parseInt(d,16):e?parseInt(e,8):f?h.indexOf(f):g?i[g]:undefined,k=String.fromCharCode(j);return/[\[\]{}\^$.|?*+()]/.test(k)&&(k="\\"+k),k}),a},c.tokenizeClass=function(a,b){var d=[],e=/\\(?:(w)|(d)|(s)|(W)|(D)|(S))|((?:(?:\\)(.)|([^\\]))-(?:\\)?([^\]]))|(\])|(?:\\)?(.)/g,h,i;while((h=e.exec(a))!=null)if(h[1])d.push(g.words());else if(h[2])d.push(g.ints());else if(h[3])d.push(g.whitespace());else if(h[4])d.push(g.notWords());else if(h[5])d.push(g.notInts());else if(h[6])d.push(g.notWhitespace());else if(h[7])d.push({type:f.RANGE,from:(h[8]||h[9]).charCodeAt(0),to:h[10].charCodeAt(0)});else{if(!(i=h[12]))return[d,e.lastIndex];d.push({type:f.CHAR,value:i.charCodeAt(0)})}c.error(b,"Unterminated character class")},c.error=function(a,b){throw new SyntaxError("Invalid regular expression: /"+a+"/: "+b)}}),a.define("/node_modules/ret/lib/types.js",function(a,b,c,d,e){b.exports={ROOT:0,GROUP:1,POSITION:2,SET:3,RANGE:4,REPETITION:5,REFERENCE:6,CHAR:7}}),a.define("/node_modules/ret/lib/sets.js",function(a,b,c,d,e){var f=a("./types"),g=function(){return[{type:f.RANGE,from:48,to:57}]},h=function(){return[{type:f.RANGE,from:97,to:122},{type:f.RANGE,from:65,to:90}].concat(g())},i=function(){return[{type:f.CHAR,value:12},{type:f.CHAR,value:10},{type:f.CHAR,value:13},{type:f.CHAR,value:9},{type:f.CHAR,value:11},{type:f.CHAR,value:160},{type:f.CHAR,value:5760},{type:f.CHAR,value:6158},{type:f.CHAR,value:8192},{type:f.CHAR,value:8193},{type:f.CHAR,value:8194},{type:f.CHAR,value:8195},{type:f.CHAR,value:8196},{type:f.CHAR,value:8197},{type:f.CHAR,value:8198},{type:f.CHAR,value:8199},{type:f.CHAR,value:8200},{type:f.CHAR,value:8201},{type:f.CHAR,value:8202},{type:f.CHAR,value:8232},{type:f.CHAR,value:8233},{type:f.CHAR,value:8239},{type:f.CHAR,value:8287},{type:f.CHAR,value:12288}]};c.words=function(){return{type:f.SET,set:h(),not:!1}},c.notWords=function(){return{type:f.SET,set:h(),not:!0}},c.ints=function(){return{type:f.SET,set:g(),not:!1}},c.notInts=function(){return{type:f.SET,set:g(),not:!0}},c.whitespace=function(){return{type:f.SET,set:i(),not:!1}},c.notWhitespace=function(){return{type:f.SET,set:i(),not:!0}},c.anyChar=function(){return{type:f.SET,set:[{type:f.CHAR,value:10}],not:!0}}}),a.define("/node_modules/ret/lib/positions.js",function(a,b,c,d,e){var f=a("./types");c.wordBoundary=function(){return{type:f.POSITION,value:"b"}},c.nonWordBoundary=function(){return{type:f.POSITION,value:"B"}},c.begin=function(){return{type:f.POSITION,value:"^"}},c.end=function(){return{type:f.POSITION,value:"$"}}}),a.define("/randexp.js",function(a,b,c,d,e){function h(a,b){return a+Math.floor(Math.random()*(1+b-a))}function i(a){return a+(97<=a&&a<=122?-32:65<=a&&a<=90?32:0)}function j(a,b,c,d){return a<=c&&c<=b?{from:c,to:Math.min(b,d)}:a<=d&&d<=b?{from:Math.max(a,c),to:d}:!1}function k(a,b){var c,d,e,f;if((d=a.length)!==b.length)return!1;for(c=0;c<d;c++){f=a[c];for(e in f)if(f.hasOwnProperty(e)&&f[e]!==b[c][e])return!1}return!0}function l(a,b){for(var c=0,d=a.length;c<d;c++){var e=a[c];if(e.not!==b.not&&k(e.set,b.set))return!0}return!1}function m(a,b,c){var d,e,f=[],h=!1;for(var k=0,n=a.length;k<n;k++){d=a[k];switch(d.type){case g.CHAR:e=d.value;if(e===b||c&&i(e)===b)return!0;break;case g.RANGE:if(d.from<=b&&b<=d.to||c&&((e=j(97,122,d.from,d.to))!==!1&&e.from<=b&&b<=e.to||(e=j(65,90,d.from,d.to))!==!1&&e.from<=b&&b<=e.to))return!0;break;case g.SET:f.length>0&&l(f,d)?h=!0:f.push(d);if(!h&&m(d.set,b,c)!==d.not)return!0}}return!1}function n(a,b){return String.fromCharCode(b&&Math.random()>.5?i(a):a)}function o(a,b,c){var d,e,f,i,j,k,l;switch(a.type){case g.ROOT:case g.GROUP:if(a.notFollowedBy)return"";a.remember&&(d=b.push(!1)-1),e=a.options?a.options[Math.floor(Math.random()*a.options.length)]:a.stack,f="";for(j=0,k=e.length;j<k;j++)f+=o.call(this,e[j],b);return a.remember&&(b[d]=f),f;case g.POSITION:return"";case g.SET:c=!!c,l=c!==a.not;if(!l)return a.set.length?o.call(this,a.set[Math.floor(Math.random()*a.set.length)],b,l):"";for(;;){var p=this.anyRandChar(),q=p.charCodeAt(0);if(m(a.set,q,this.ignoreCase))continue;return p}break;case g.RANGE:return n(h(a.from,a.to),this.ignoreCase);case g.REPETITION:i=h(a.min,a.max===Infinity?a.min+this.max:a.max),f="";for(j=0;j<i;j++)f+=o.call(this,a.value,b);return f;case g.REFERENCE:return b[a.value-1]||"";case g.CHAR:return n(a.value,this.ignoreCase)}}var f=a("ret"),g=f.types,p=b.exports=function(a,b){if(a instanceof RegExp)this.ignoreCase=a.ignoreCase,this.multiline=a.multiline,typeof a.max=="number"&&(this.max=a.max),typeof a.anyRandChar=="function"&&(this.anyRandChar=a.anyRandChar),a=a.source;else{if(typeof a!="string")throw new Error("Expected a regexp or string");this.ignoreCase=b&&b.indexOf("i")!==-1,this.multiline=b&&b.indexOf("m")!==-1}this.tokens=f(a)};p.prototype.max=100,p.prototype.anyRandChar=function(){return String.fromCharCode(h(0,65535))},p.prototype.gen=function(){return o.call(this,this.tokens,[])};var q=p.randexp=function(a,b){var c;return a._randexp===undefined?(c=new p(a,b),a._randexp=c):(c=a._randexp,typeof a.max=="number"&&(c.max=a.max),typeof a.anyRandChar=="function"&&(c.anyRandChar=a.anyRandChar)),c.gen()};p.sugar=function(){RegExp.prototype.gen=function(){return q(this)}}}),!function(a,b){typeof define=="function"&&typeof define.amd=="object"?define(a,function(){return b}):typeof window!="undefined"&&(window[a]=b)}("RandExp",a("/randexp.js"))}()
-
-					/* chatEmoticonList */
-					var chatEmoDefaultPath = 'http://www-cdn.jtvnw.net/static/images/emoticons/';
-					var gifEmo = ['surprised','excited','skeptical','pirate','happy','raspberry','winkberry','cool','wink','angry','drunk','bored','sad','horny'];
-					var dictEmo = { 'bunion': 'bunion2',
-									'mvg': 'mvgbest', 
-									'dylan': 'dylanlive', 
-									'sm-skull': 'spacemarine/sm-skull', 
-									'sm-orc': 'spacemarine/sm-orc'}
-					for (var i=0;i<chatEmoticonList.length;i++) {
-						var emo = chatEmoticonList[i];
-						var tcode = [];
-						var tsrc = [	chatEmoDefaultPath,
-										(dictEmo[emo.img]) ? dictEmo[emo.img] : emo.img,
-										($.inArray(emo.img,gifEmo) < 0) ? '.png' : '.gif'].join('');
-						var twidth = -1,theight = -1;
-						for (var j=0;j<2;j++) {
-							var genCode = new RandExp(emo.rx).gen();
-							tcode = tcode.concat(($.inArray(genCode,tcode) < 0) ? genCode : []);
-						}
-						list.push({
-							code: tcode,
-							src: tsrc,
-							width: twidth,
-							height: theight,
-							genre: tgenre
-						});
-					}
-					
-					/* defaultPPEmoteList */
-					for (var i=0;i<defaultPPEmoteList.length;i++) {
-						var emo = defaultPPEmoteList[i];
-						var tcode = [].concat(emo.expression);
-						var tsrc = [PP.emote_root,emo.source].join('');
-						var twidth = -1,theight = -1;
-						list.push({
-							code: tcode,
-							src: tsrc,
-							width: twidth,
-							height: theight,
-							genre: tgenre
-						});
-					}
-					return list;
-				};
 				_platform.getPlayer = function() {
 					var selectors = [].concat(selector.player), $tplayer = $();
 					$.each(selectors,function(idx,selector) {
@@ -1842,61 +1356,70 @@ var HHBJSONDATA,hhb;
 					});
 					return $tplayer;
 				}
-			
-				/* Icon emotify */
-				_platform.injectIcon = function(iconlist) {	return 0; },
-				_platform.getNewMsg = function() {	return $(selector.newMsg);	};
-				_platform.bindResizer = function() {
-					var msgs = _platform.getNewMsg(),
-						resized = [];
-					if (msgs.length > 0) {
-						var count = 0;
-						var bicount = 0, bircount = 0;
-						msgs.each(function() {
-							var emoticons = $(this)
-								.addClass(cssClass.checkedMsg)
-								.children(selector.emoticon)
-									.each(function() {
-										if ($(this).height() > limitHeight) $(this).addClass(cssClass.resized);
-										$(this).addClass(cssClass.msgIcon);
-									});
-							var resized = $(this).children(selector.msgIconResized)
-								.click(function() {
-									$(this).toggleClass(cssClass.orgSize);
-								});
-							bicount += emoticons.length;
-							bircount += resized.length;
-						});
-					}
-					return {
-						msg: msgs.length, 
-						emotified: bicount,
-						resized: bircount
-					};
-				};
-				_platform.bindQuoter = function() { /* _platformObj.default.bindQuoter(_platform,selector); */ }
-				_platform.getNewQuoteMsg = function() {	return [];	};
-				_platform.parseQuote = function() { /*
-					var msgs = _platform.getNewQuoteMsg();
-					return _platformObj.default.parseQuote(msgs,cssClass); */
-				}
-				_platform.getMsgBox = function(getDOM) { return (getDOM ? $(selector.msgBox)[0]||false : $(selector.msgBox)); };
-				_platform.getMsgInput = function() {	return $(selector.msgBox).val()||'';	};
-				_platform.insertText = function(text) {	_platform.replaceText(text);	};
-				_platform.replaceText = function(text,reReplace) {
-					var txtarea = platformObj.getMsgBox(true);
-					if (txtarea) {
-						_platformObj.default.replaceText(txtarea,text,reReplace);
-					}
-				};
+			},
+			streamup: function() {
+				/* Private variables */
+				var _platform = this,
+					id = 'streamup',
+					supportedFeatures = ['bookmark'],
+					cssClass = $.extend(_protected.cssClass,{
+						darkMode: 'hhb-darkmode'
+					}),
+					selector = $.extend(_protected.selector,{
+						userName: 'body',
+						player: ['#channelVideoPlayer','#StreamupEmbeddable']
+					}),
+					limit = $.extend(_protected.limit,{});
+				/* Public methods */
+				/* Initialize */
+				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/streamup\.com\/(?:settings|profile|api)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/streamup\.com\/(?:rooms\/)?(\w+)/i); return (m && m[1]) ? m[1] : ''; }
+				_platform.getUsername = function() { var uname=$(selector.userName).attr('data-username'); return ( uname ) ? uname.trim().toLowerCase() : ''; };
+				_platform.getFeatures = function() {	return supportedFeatures;	};
+				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-streamup'); };
 				
-				/* Name Banner + Badge */
-				_platform.getNewNames = function() {	return $(selector.newName);	};
-				_platform.bindNameBanner = function() {
-					var names = _platform.getNewNames();
-					return _platformObj.default.bindNameBanner(names);
-				};
-				_platform.genBadgeCss = function(badges) { return _platformObj.default.genBadgeCss(badges,selector); };
+				/* features.bookmarks */
+				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
+				_platform.getPlayer = function() {
+					var selectors = [].concat(selector.player), $tplayer = $();
+					$.each(selectors,function(idx,selector) {
+						$tplayer = $(selector);
+						if ($tplayer.length>0) return false;
+					});
+					return $tplayer;
+				}
+			},
+			livehouse: function() {
+				/* Private variables */
+				var _platform = this,
+					id = 'livehouse',
+					supportedFeatures = ['bookmark'],
+					cssClass = $.extend(_protected.cssClass,{
+						darkMode: 'hhb-darkmode'
+					}),
+					selector = $.extend(_protected.selector,{
+						userName: 'body',
+						player: ['.video-part','.viewer-mode.embed-part']
+					}),
+					limit = $.extend(_protected.limit,{});
+				/* Public methods */
+				/* Initialize */
+				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/livehouse\.in\/(?:settings|profile|api)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
+				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/livehouse\.in\/(?:embed\/)?channel\/(\w+)/i); return (m && m[1]) ? m[1] : ''; }
+				_platform.getUsername = function() { return ( window.gon && window.gon.userName ) ? window.gon.userName.trim().toLowerCase() : ''; };
+				_platform.getFeatures = function() {	return supportedFeatures;	};
+				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-livehouse'); };
+				
+				/* features.bookmarks */
+				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
+				_platform.getPlayer = function() {
+					var selectors = [].concat(selector.player), $tplayer = $();
+					$.each(selectors,function(idx,selector) {
+						$tplayer = $(selector);
+						if ($tplayer.length>0) return false;
+					});
+					return $tplayer;
+				}
 			},
 			hkgolden: function() {
 				/* Private variables */
@@ -2005,6 +1528,7 @@ var HHBJSONDATA,hhb;
 			args.unshift("[HihiBox Beta]");		/* debug */
 			if ((msgDebugFlag & debugFlag) > 0) console.log.apply(console,args);
 		};
+		
 		var setLoadingStatus = function(target,status) {
 			if (!loadingStatus[target]) loadingStatus[target] = 0;
 			var tloadingStatus = loadingStatus[target];
@@ -2069,7 +1593,6 @@ var HHBJSONDATA,hhb;
 				case 'analyzeCustomIcon':		env.customIconLoaded = true;	break;
 				case 'analyzeChannelIcon':		env.channelIconLoaded = true;	break;
 				case 'analyzePlatformIcon':		env.platformIconLoaded = true;	break;
-				case 'analyzeGJTVIcon':			env.gjtvIconLoaded = true;	break;
 				/* initUserInterface */
 				case 'bindHolderUI':			env.holderUIBinded = true;	break;
 				case 'bindButtonUI':			env.buttonUIBinded = true;	break;
@@ -2117,9 +1640,6 @@ var HHBJSONDATA,hhb;
 				case 'analyzeCustomIcon':
 				case 'analyzeChannelIcon':
 				case 'analyzePlatformIcon':
-				case 'analyzeGJTVIcon':
-					if (isStatusSuccess('analyzeBuiltinIcon') && isStatusFinished('analyzePlatformIcon')) setLoadingStatus('initIconListData','complete');
-					break;
 				/* initUserInterface */
 				case 'bindHolderUI':
 				case 'bindButtonUI':
@@ -2177,8 +1697,10 @@ var HHBJSONDATA,hhb;
 								(url.match("^https?:\/\/.+\.twitch\.tv\/") ? 'twitch' : 
 									(url.match("^https?:\/\/.+\.justin\.tv\/") ? 'justin': 
 										(url.match("^https?:\/\/.+\.ustream\.tv\/") ? 'ustream':
-											(url.match("^https?:\/\/.+\.hkgolden\.com\/") ? 'hkgolden': '')
-							)))).toLowerCase();	
+											(url.match("^https?:\/\/streamup\.com\/") ? 'streamup':
+												(url.match("^https?:\/\/livehouse\.in\/") ? 'livehouse':
+													(url.match("^https?:\/\/.+\.hkgolden\.com\/") ? 'hkgolden': '')
+							)))))).toLowerCase();	
 			env.platform = (($.inArray(env.platform,supportedPlatform) >= 0) ? env.platform : '');
 			env.platform = ((_platformObj[env.platform]) ? env.platform : '');
 			
@@ -2218,7 +1740,9 @@ var HHBJSONDATA,hhb;
 			env.userid = platformObj.getUsername();
 			env.features = platformObj.getFeatures();
 			if (env.platform=='hkgolden') holdIconListBinding = true; /* HKGolden only */
+			
 			debugMsg(DEBUG_ENV|DEBUG_ENV_SUCCESS,'Detected [',env,']');
+			
 			_gaTracker('core','Initialization - Platform detected','success');
 			_gaTracker('env','platform',env.platform);
 			_gaTracker('env','channel',[env.channel,env.platform].join('@'));
@@ -2487,74 +2011,18 @@ var HHBJSONDATA,hhb;
 				}
 				var iconlist, analyzediconlist;
 				if (!env.builtinIconLoaded) return retry();
-				
 				iconlist = platformObj.getPlatformIcon();
-				analyzediconlist = analyzeIcon(iconlist,{ category: 'platform' });
-				// bypass twitch ( v4.2.1 )
-				if ( env.platform != 'twitch' ) {
-					if (!iconlist || iconlist.length==0) return retry();
-					else if (!analyzediconlist || analyzediconlist.length==0) return retry(true);
-				}
+				if (!iconlist || iconlist.length==0) return retry();
 				
+				analyzediconlist = analyzeIcon(iconlist,{ category: 'platform' });
+				if (!analyzediconlist || analyzediconlist.length==0) return retry(true);
+
 				listIcon = listIcon.concat(analyzediconlist);
 				setLoadingStatus('analyzePlatformIcon','complete');
 				retryCount.analyzePlatformIcon = 0;
 				refreshList();
 				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing Platform Icon Succeed!');
 				_gaTracker('core','Icon List - Load platform icon','success',analyzediconlist.length);
-			};
-			var analyzeGJTVIcon = function() {
-				if (retryCount.analyzeGJTVIcon==0) debugMsg(DEBUG_SUB|DEBUG_SUB_INIT,'Analyzing GJTV Icon...'),setLoadingStatus('analyzeGJTVIcon','init');
-				else debugMsg(DEBUG_SUB|DEBUG_SUB_RETRY,'Analyzing GJTV Icon Retry...'),setLoadingStatus('analyzeGJTVIcon','retry');
-				var retry = function(isFail) {
-					if (!isFail && retryCount.analyzeGJTVIcon < limit.analyzeGJTVIcon) {
-						setTimeout(function() { analyzeGJTVIcon(); },delay.analyzeGJTVIcon);
-						retryCount.analyzeGJTVIcon++;
-					} else {
-						debugMsg(DEBUG_SUB|DEBUG_SUB_FAIL,'Analyzing GJTV Icon Failed!');
-						_gaTracker('core','Icon List - Load GJTV icon','fail');
-						setLoadingStatus('analyzeGJTVIcon','fail');
-					}
-					return false;
-				}
-				var iconlist, analyzediconlist;
-				if (!env.builtinIconLoaded) return retry();
-				var getGJTVIcon = function() {
-					var list = [], dgenre = [].concat('GJTV');
-					if (GoldenJTV && GoldenJTV.iconRoot && GoldenJTV.iconList) {
-						$.each(GoldenJTV.iconList,function(tgenre,emolist) {
-							$.each(emolist,function(idx,obj) {
-								if (obj && obj.code && obj.src && obj.width && obj.height) {
-									var tcode = [].concat(obj.code),
-										tsrc = obj.src,
-										twidth = obj.width,
-										theight = obj.height;
-									if (tsrc.indexOf("http") == -1) tsrc = GoldenJTV.iconRoot + tsrc;
-									
-									if (tcode && tsrc && twidth && theight && twidth>0 && theight>0) {
-										list.push({
-											code: tcode,
-											src: tsrc,
-											width: parseInt(twidth), height: parseInt(theight),
-											genre: dgenre
-										});
-									}
-								}
-							});
-						});
-					}
-					return list;
-				};
-				iconlist = getGJTVIcon();
-				analyzediconlist = analyzeIcon(iconlist,{ category: 'gjtv' });
-				if (!iconlist || iconlist.length==0)  return retry();
-				else if (!analyzediconlist || analyzediconlist.length==0)  return retry(true);
-				listIcon = listIcon.concat(analyzediconlist);
-				setLoadingStatus('analyzeGJTVIcon','complete');
-				retryCount.analyzeGJTVIcon = 0;
-				refreshList();
-				debugMsg(DEBUG_SUB|DEBUG_SUB_SUCCESS,'Analyzing GJTV Icon Succeed!');
-				_gaTracker('core','Icon List - Load GJTV icon','success',analyzediconlist.length);
 			};
 			var analyzeIcon = function(iconlist,_options) {
 				var count = 0;
@@ -2735,8 +2203,6 @@ var HHBJSONDATA,hhb;
 			_protected.importCustomIcon = function(_iconlist) { 	if (settings.enable_emotify) analyzeCustomIcon(_iconlist); }
 			_protected.addCustomIcon = addCustomIcon;
 			_protected.removeCustomIcon = removeCustomIcon;
-			/* analyze GJTV Icon in twitch */
-			if ($.inArray(env.platform,['twitch']) >= 0) analyzeGJTVIcon();
 			/* pull custom iconset */
 			if (settings.enable_bbcode) pullCustomIconset();
 		}
@@ -2792,7 +2258,7 @@ var HHBJSONDATA,hhb;
 				if (retryCount.bindHolderUI==0) setLoadingStatus('bindHolderUI','init');
 				var $holderCon = platformObj.getHolderContainer();
 				if ($holderCon.length > 0) {
-					var $palHolder = platformObj.genHolder(id,versionInfo).hide();
+					var $palHolder = platformObj.genHolder(id,versionInfo);
 					$palHolder.appendTo($holderCon);
 					bindCustomIconForm();
 					bindIconListLocale();
@@ -3311,27 +2777,25 @@ var HHBJSONDATA,hhb;
 				});
 			};
 			var toggleHolder = function(act,keepFilter) {
-				var $holder = $(selector.holder);
-				if ($holder.is(':visible') && act == 'show') return;
-				if (!$holder.is(':visible') && act == 'hide') return;
+				var $holder = $(selector.holder),
+					$body = $(selector.body),
+					_class = 'hhb-iconlist-active',
+					_isShow = $body.hasClass(_class);
+				if (_isShow && act == 'show') return;
+				if (!_isShow && act == 'hide') return;
 				var $iconset = $(selector.iconset).scrollTop(0);
 				if (!keepFilter) {
 					$iconset.find(selector.icon).removeClass([cssClass.filterMatch,cssClass.filterNotMatch,cssClass.filterSelected].join(' '));
 					currFilterCodeHead = '';
 				}
-				if (act == 'toggle') {
-					$holder.toggle(0);
-				} else if (act == 'show') {
-					$holder.show(0);
-				} else {
-					$holder.hide(0);
-				}
-				if (!$holder.is(':visible')) {
+				if (act == 'toggle') $body.toggleClass(_class);
+				else if (act == 'show') $body.addClass(_class);
+				else $body.removeClass(_class);
+				
+				if (!$body.hasClass(_class)) {
 					_protected.hideCustomIconForm();
 					_protected.toggleImageSizerForm('hide');
 				}
-				var $holder = $(selector.holder),
-					$iconMsgBox = $(selector.iconMsgBox)
 				resizeIconset();
 				
 				sortGenreList(true);
@@ -4256,18 +3720,37 @@ var HHBJSONDATA,hhb;
 			$('body').addClass('hhb-enable-'+_feature);
 		}
 		
-		var _gaTracker = function(category,action,label,value) {
+		var _gaCounter = 0, _gaHeartbeatTimer;
+		var _gaHeartbeat = function(){
+			_gaTracker( 'heartbeat', 'heartbeat', '', 0, true);
+		};
+		var _gaStartHeartbeat = function() {
+			clearTimeout( _gaHeartbeatTimer );
+			_gaHeartbeatTimer = setTimeout(_gaHeartbeat, 2*60*1000);
+		}
+		var _gaTracker = function( category, action, label, value, nonInteraction ) {
 			label = (label) ? label : '';
 			value = (value) ? value : 1;
-			if (enableGA)
-				ga('send', {
-					'hitType': 'event',			// Required.
-					'eventCategory': category,	// Required.
-					'eventAction': action,		// Required.
-					'eventLabel': label,
-					'eventValue': value
-				});
-			debugMsg(DEBUG_GA,'Google Analytics Data Submitted [E:',enableGA,', C:',category,', A:',action,', L:',label,', V:',value,']');
+			nonInteraction = (nonInteraction ? 1 : 0 );
+			
+			switch ( category ) {
+			case 'core':	break;
+			default:
+				_gaStartHeartbeat();
+				if ( enableGA ) {
+					ga('send', {
+						'hitType': 'event',			// Required.
+						'eventCategory': category,	// Required.
+						'eventAction': action,		// Required.
+						'eventLabel': label,
+						'eventValue': value,
+						'nonInteraction': nonInteraction
+					});
+				}
+				_gaCounter++;
+				debugMsg(DEBUG_GA,'Google Analytics Data Submitted [ ', _gaCounter ,' ] : [ E:',enableGA,', C:',category,', A:',action,', L:',label,', V:',value,', NI:', nonInteraction, ' ]');
+				break;
+			}
 		};
 		
 		/* Public methods */
@@ -4314,71 +3797,12 @@ var HHBJSONDATA,hhb;
 		return this;
 	};
 	
-	$(document).ready(function() {
-		function detectExtension(extensionId, path, callback) { 
-			var img; 
-			img = new Image(); 
-			img.src = "chrome-extension://" + extensionId + path; 
-			img.onload = function() { callback(true); }; 
-			img.onerror = function() { callback(false); }; 
+	var hhbInitialize = function() {
+		if ( typeof Locale === "undefined" ) {
+			setTimeout(hhbInitialize,200);
+			return ;
 		}
-		detectExtension('eoiappopphdcceickjphgaaidacdkidi', '/css/images/animated-overlay.gif',
-			function(installed) {
-				//console.log('detectExtension',installed);
-				return true; /* debug */
-				if (!installed) {
-					$(	'<div id="hhb-update-reminder">'+
-							'<style>'+
-								'#hhb-update-reminder {'+
-									'position:absolute;top:0px;right:0px;z-index: 9999;'+
-									'padding: 0px;font-size: 12px;'+
-									'background-color: rgba(8,112,45,0.8);'+
-								'}'+
-								'#hhb-update-reminder,'+
-								'#hhb-update-reminder * {'+
-									'-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;'+
-								'}'+
-								'#hhb-update-reminder div.close {'+
-									'display: inline-block;cursor:pointer;'+
-									'padding: 10px 15px;margin: 2px 10px 0px 0px;'+
-									'border-right: 1px solid #cccccc;'+
-								'}'+
-								'body.hhb-pf-twitch #hhb-update-reminder div.close {'+
-									'padding: 8px 15px;'+
-								'}'+
-								'#hhb-update-reminder div.close:before { content: "x"; }'+
-								'#hhb-update-reminder a,'+
-								'#hhb-update-reminder div.close {'+
-									'color: #FFFFFF;'+
-								'}'+
-								'#hhb-update-reminder a:hover .text,'+
-								'#hhb-update-reminder div.close:hover { color:#8FBF00; }'+
-								'#hhb-update-reminder a .text {'+
-									'display:inline-block;padding: 10px 10px 0px 20px;font-size: 12px;'+
-								'}'+
-								'#hhb-update-reminder a .logo {'+
-									'width:36px;height:36px;float:right'+
-								'}'+
-							'</style>'+
-							'<a href="https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi" target="_hihibox">'+
-								'<div class="text">請按此下載HihiBox 完全版</div>'+
-								'<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/t1.0-1/p50x50/10342775_552261241551569_504391291480808308_t.png" class="logo">'+
-							'</a>'+
-						'</div>'
-					).prepend($('<div class="close">').click(function() { $('#hhb-update-reminder').detach(); }))
-					.appendTo('body');
-				}
-			});
-			
-		/* Google Analytics */
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-		ga('create', 'UA-48929186-1', 'hihiboxhbtv.github.io');
-		ga('require','displayfeatures');
-	
+		
 		if (!hhb) {
 			hhb = hhb || new HihiBox();
 			if (hhb.isInitialize()) {
@@ -4402,22 +3826,37 @@ var HHBJSONDATA,hhb;
 									HHBJSONDATA.listGenre,
 									HHBJSONDATA.listIcon
 								);
-							});
-					}
-					/* load name banner list */
-					if ($.inArray('name_banner',features) >= 0) {
-						$.getScript([host,"/js/namebannerlist.json"].join(''))
-							.done(function(script,textStatus) {
-								var HHBJSONDATA = window.HHBJSONDATA;
-								hhb.importNameBanner(
-									HHBJSONDATA.listNameBanner,
-									HHBJSONDATA.listNBControl
-								);
+							}).always(function() {
+								/* load name banner list */
+								if ($.inArray('name_banner',features) >= 0) {
+									$.getScript([host,"/js/namebannerlist.json"].join(''))
+										.done(function(script,textStatus) {
+											var HHBJSONDATA = window.HHBJSONDATA;
+											hhb.importNameBanner(
+												HHBJSONDATA.listNameBanner,
+												HHBJSONDATA.listNBControl
+											);
+										});
+								}
 							});
 					}
 				};
 				tryImport();
 			}
 		}
+	};
+	
+	$(document).ready(function() {
+		/* Google Analytics */
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-48929186-1', 'auto');
+		ga('require','displayfeatures');
+		ga('send', 'pageview');
+		
+		hhbInitialize();
 	});
 }(window,document));

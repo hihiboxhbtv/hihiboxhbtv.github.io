@@ -4,11 +4,6 @@
 @import "darkmode_twitch.css";
 @import "darkmode_justin.css";
 
-/*
-#hhb-genrelist .hhb-genre[hhb-genre="GJTV"] {
-	display: none;
-} */
-
 #hhb-holder {
 	position: absolute;
 	height: 32px;
@@ -20,6 +15,7 @@
 	line-height: 12px;
 	background-color: hsla(0,0%,0%,0.9);
 	z-index: 10;
+	display:none;
 	
 	-moz-user-select: none;
 	-webkit-user-select: none;
@@ -28,6 +24,9 @@
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
 	font-family: Roboto, sans-serif;
+}
+body.hhb-iconlist-active #hhb-holder {
+	display: block;
 }
 .hhb-pf-hkgolden #hhb-holder {
 	position: fixed;
@@ -132,7 +131,7 @@
 	border-radius: 5px;
 	padding: 7px 0px 0px 3px;
 	font-size: 18px;
-	font-family: "fontello";
+	font-family: "fontello-hhb";
 	font-style: normal;
 	font-weight: normal;
 	color: #dddddd !important;
@@ -263,10 +262,11 @@
 #hhb-genrelist .hhb-genre[hhb-genre="聖誕"]:hover,
 #hhb-genrelist .hhb-genre[hhb-genre="聖誕"].hhb-active { background-color: rgb(204,0,0); }
 */
+/*
 #hhb-genrelist .hhb-genre[hhb-genre="新年"] {	background-color: rgb(136,0,0);	color: #FFFF00; }
 #hhb-genrelist .hhb-genre[hhb-genre="新年"]:hover,
 #hhb-genrelist .hhb-genre[hhb-genre="新年"].hhb-active { background-color: rgb(204,0,0); }
-
+*/
 #hhb-genrelist::-webkit-scrollbar,
 #hhb-iconset::-webkit-scrollbar {
 	width: 5px !important;
@@ -407,6 +407,7 @@ a:hover > .hhb-name-name {
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
 	opacity: 0.9;
+	z-index: 999999999;
 }
 #hhb-player-bookmark.funcIcon.isBookmarked {
 	padding: 6px 5px;
@@ -487,7 +488,9 @@ a:hover > .hhb-name-name {
 	background-position: center;
 	cursor: pointer;
 }
-.hhb-button:hover {
+
+.hhb-button:hover,
+body.hhb-iconlist-active .hhb-button {
 	background-image: url('http://hihiboxhbtv.github.io/images/hihiicon_hover.png');
 }
 .hhb-button:before {
@@ -563,7 +566,7 @@ a:hover > .hhb-name-name {
 	text-align: center;
 	cursor: pointer;
 	box-shadow: 0px 0px 10px 1px rgba(255,255,255,0.7);
-	font-family: "fontello";
+	font-family: "fontello-hhb";
 	line-height: 20px;
 }
 .hhb-custom-icon-btn:hover {
@@ -826,7 +829,7 @@ a:hover > .hhb-name-name {
 /* [S: 2014-10-17] - IMG selector */
 #hhb-img-selector {
 	position: absolute;
-	z-index: 10;
+	z-index: 99999;
 	overflow: initial;
 }
 #hhb-img-holder {
