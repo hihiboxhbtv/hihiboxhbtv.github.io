@@ -35,7 +35,7 @@ var HHBJSONDATA,hhb;
 	/* JavaScript Date.prototype.toLocalISOString | */
 	Date.prototype.toLocalISOString=function(){var e=this,t=function(e){return e<10?"0"+e:e},n=e.getTimezoneOffset(),r=(n>0?"-":"+")+t(parseInt(Math.abs(n/60)));if(n%60!=0)r+=t(Math.abs(n%60));if(n===0)r="Z";return e.getFullYear()+"-"+t(e.getMonth()+1)+"-"+t(e.getDate())+"T"+t(e.getHours())+":"+t(e.getMinutes())+":"+t(e.getSeconds())+r}
 
-	var orgjQuery = jQuery;	/* backup original jQuery */
+	var orgjQuery = jQuery || null;	/* backup original jQuery */
 	var pf$ = orgjQuery;
 	
 	/* HihiBox jQuery */
@@ -101,7 +101,7 @@ var HHBJSONDATA,hhb;
 	hhb$ = $;
 	
 	/* restore original jQuery */
-	jQuery = orgjQuery;
+	if (orgjQuery) jQuery = orgjQuery;
 
 	var editorExtensionId = "eoiappopphdcceickjphgaaidacdkidi";			/* debug */
 	var host = 'https://hihiboxhbtv.github.io/core';				/* debug */
@@ -3378,7 +3378,7 @@ var HHBJSONDATA,hhb;
 				olist = {};
 				$.each(tlist,function(key,obj) {
 					var m = key.match(reName);
-					if (m.length>=2) {
+					if (m && m.length>=2) {
 						var classname = 'nb-hhb-'+count;
 						var nobj = $.extend(obj,{
 								cssClass: [cssClass.nameBanner,classname].join(' '),
