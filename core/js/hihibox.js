@@ -3753,6 +3753,7 @@ var HHBJSONDATA,hhb;
 				break;
 			}
 		};
+		_gaStartHeartbeat();
 		
 		/* Public methods */
 		this.isInitialize = function() {	return env.isInitialize;	};
