@@ -3727,7 +3727,7 @@ var HHBJSONDATA,hhb;
 		};
 		var _gaStartHeartbeat = function() {
 			clearTimeout( _gaHeartbeatTimer );
-			_gaHeartbeatTimer = setTimeout(_gaHeartbeat, 2*60*1000);
+			_gaHeartbeatTimer = setTimeout(_gaHeartbeat, 20*60*1000);
 		}
 		var _gaTracker = function( category, action, label, value, nonInteraction ) {
 			label = (label) ? label : '';
