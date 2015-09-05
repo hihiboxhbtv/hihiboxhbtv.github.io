@@ -719,9 +719,13 @@ var HHBJSONDATA,hhb;
 							$sbody.scrollTop(Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2));
 						}
 						
-						debugMsg(DEBUG_RETRY,'scrollToBottom',(offsetlm.top<bottomLine && offsetlm.bottom> bottomLine),
-						Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2),
-						bodyHeight,$cview.height(),offsetlm);
+						debugMsg(DEBUG_RETRY,'scrollToBottom',
+							(offsetlm.top<bottomLine && offsetlm.bottom> bottomLine),
+							Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2),
+							bodyHeight,
+							$cview.height(),
+							offsetlm
+						);
 					} catch(e) {};
 				},
 				bindQuoter: function(_platform,selector) {
@@ -819,7 +823,7 @@ var HHBJSONDATA,hhb;
 						chatLine: 'li',
 						chatName: '.title .name',
 						chatQuoteRemove: '.chat-timestamp, .chat-badge-mod, .hhb-name-banner, .title .name, .chat-buffer, .chat-message-animated',
-						chatContainer: '.chatBody',
+						chatContainer: '.tse-scroll-content',
 						msgList: '.chatBody > li > div',
 						badgeBroadcaster: '.hhb-pf-hitbox .chat-messages .chat-badge-owner',
 						badgeModerator: '.hhb-pf-hitbox .chat-messages .chat-badge-mod',
@@ -3777,7 +3781,7 @@ var HHBJSONDATA,hhb;
 			}
 		};
 		this.importNameBanner = function(nblist,nbcontrol) {
-			if (!env.listeningNameBannerData) return false
+			if (!env.listeningNameBannerData) return false;
 			if (nblist && nbcontrol) {
 				if ($.inArray('name_banner',env.features) < 0) return false;
 				initIncomingParser();	/* require features */
@@ -3861,4 +3865,4 @@ var HHBJSONDATA,hhb;
 		
 		hhbInitialize();
 	});
-}(window,document));
+}( window, document ));
