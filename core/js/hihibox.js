@@ -715,15 +715,16 @@ var HHBJSONDATA,hhb;
 						$.extend(offsetlm,{ bottom: offsetlm.top+($lmsg.height()+parseInt($lmsg.css('margin-bottom'))), right: offsetlm.left+$lmsg.width() });
 						var bodyHeight = offsetlm.bottom-($fmsg.offset().top-Math.ceil(parseFloat($fmsg.css('margin-top'))));
 						var bottomLine = $cview.offset().top+$cview.height();
-						if (offsetlm.top<bottomLine && offsetlm.bottom> bottomLine) {
+						if (offsetlm.top<(bottomLine+($cview.height()*0.3))) {
 							$sbody.scrollTop(Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2));
 						}
 						
 						debugMsg(DEBUG_RETRY,'scrollToBottom',
-							(offsetlm.top<bottomLine && offsetlm.bottom> bottomLine),
+							(offsetlm.top<(bottomLine+($cview.height()*0.3))),
 							Math.ceil(bodyHeight-$cview.height())+($lmsg.height()*2),
+							$sbody.scrollTop(),
 							bodyHeight,
-							$cview.height(),
+							bottomLine,
 							offsetlm
 						);
 					} catch(e) {};
