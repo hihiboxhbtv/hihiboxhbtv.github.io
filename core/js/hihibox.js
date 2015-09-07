@@ -833,7 +833,7 @@ var HHBJSONDATA,hhb;
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
 				/* Initialize */
-				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:settings|404|signup|video)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
+				_platform.isExcluded = function() { var m=document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:settings|404|signup|video|embedvideo)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
 				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.hitbox\.tv\/(?:embed\/|embedchat\/|dashboard\/)?(\w+)/i); return (m && m.length>=2) ? m[1] : ''; }
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
