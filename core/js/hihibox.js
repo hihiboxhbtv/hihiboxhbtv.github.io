@@ -3728,7 +3728,7 @@ var HHBJSONDATA,hhb;
 		
 		var _gaCounter = 0, _gaHeartbeatTimer;
 		var _gaHeartbeat = function(){
-			_gaTracker( 'heartbeat', 'heartbeat', '', 0, true);
+			_gaTracker( 'heartbeat', 'heartbeat', '', 0 );
 		};
 		var _gaStartHeartbeat = function() {
 			clearTimeout( _gaHeartbeatTimer );
