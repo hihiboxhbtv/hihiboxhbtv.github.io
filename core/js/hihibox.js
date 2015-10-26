@@ -113,8 +113,8 @@ var HHBJSONDATA,hhb;
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v5.0.0',
-		lastUpdate: '2015-08-29'
+		coreVersion: 'v5.0.1',
+		lastUpdate: '2015-10-26'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -443,6 +443,23 @@ var HHBJSONDATA,hhb;
 				},
 				genPlayerBookmarkBtn: function(idBtn) {
 					return $('<div id="'+idBtn+'" class="funcIcon" hhb-locale-title="{{info.name}} - {{iconlist.bookmark}}">&nbsp;</div>');
+				},
+				getPlayer: function( selector ) {
+					var selectors = [].concat( selector ), $tplayer = false;
+					$.each( selectors, function( idx, selector ) {
+						$tplayer = $( selector );
+						if ( $tplayer.length > 0 ) return false;
+					});
+					return $tplayer;
+				},
+				getPlayerButtonTrigger: function( selector ) {
+					var selectors = [].concat( selector ), $tplayertrigger = false;
+					$.each( selectors, function( idx, selector ) {
+						var $obj = $( selector );
+						if ( $tplayertrigger ) $tplayertrigger.add( $obj );
+						else $tplayertrigger = $obj;
+					});
+					return $tplayertrigger;
 				},
 				replaceText: function(txtarea,text,reReplace) {
 					if (txtarea) {
@@ -820,6 +837,7 @@ var HHBJSONDATA,hhb;
 						timestampsBox: '#timestampsBox',
 						userName: '.navItemsUser .item.user:first-child span',
 						player: '#mediaplayer',
+						playerButtonTrigger: '#mediaplayer',
 						chatView: '.chat-messages',
 						chatLine: 'li',
 						chatName: '.title .name',
@@ -847,20 +865,7 @@ var HHBJSONDATA,hhb;
 				};
 				_platform.onBindedToggleButton = function() {};
 				_platform.getShowChatBtn = function() {	return $(selector.showChatBtn);	};
-				_platform.toggleTimestamps = function(act) {	/* Not Applicable */
-					/*
-					var scope = angular.element($(selector.timestampsBox)).scope();
-					if (!scope) return false;
-					if (act == 'toggle') {
-						scope.$apply(function(){	scope.timestamps = !scope.timestamps;	});
-					} else if (act == 'show') {
-						scope.$apply(function(){	scope.timestamps = true;	});
-					} else {
-						scope.$apply(function(){	scope.timestamps = false;	});
-					}
-					*/
-					return true;
-				};
+				_platform.toggleTimestamps = function(act) { return true; };
 				_platform.getPlatformIcon = function() {
 					var list = [], dgenre = [].concat('HBTV');
 					if (emotify) {
@@ -889,14 +894,8 @@ var HHBJSONDATA,hhb;
 				
 				/* features.bookmarks */
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
-				_platform.getPlayer = function() {
-					var selectors = [].concat(selector.player), $tplayer = $();
-					$.each(selectors,function(idx,selector) {
-						$tplayer = $(selector);
-						if ($tplayer.length>0) return false;
-					});
-					return $tplayer;
-				}
+				_platform.getPlayer = function() { return _platformObj.default.getPlayer( selector.player ); };
+				_platform.getPlayerButtonTrigger = function() { return _platformObj.default.getPlayerButtonTrigger( selector.playerButtonTrigger ); };
 			
 				/* Icon emotify */
 				_platform.injectIcon = function(iconlist) {
@@ -1017,7 +1016,8 @@ var HHBJSONDATA,hhb;
 						emoticon: 'span.emoticon',
 						timestampsBox: '.chat-menu-content .ember-checkbox:contains("Time Stamps")',
 						userName: '#nav_personal .username',
-						player: 'object[data*="TwitchPlayer.swf"]',
+						player: '.player .player-video object',
+						playerButtonTrigger: '.player > div',
 						chatView: '.chat-messages',
 						chatLine: '.chat-line',
 						chatName: '.from',
@@ -1031,7 +1031,12 @@ var HHBJSONDATA,hhb;
 				/* Public methods */
 				/* Initialize */
 				_platform.isExcluded = function() {  var m=document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:assets|crossdomain|settings|subscriptions|inbox|directory|message|static)(?:$|\/)/i);return ((m) ? m.length>0 : false); }
-				_platform.getChannelID = function() { var m = document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:chat\/embed\?channel=)?(\w+)/i); return (m && m[1]) ? m[1] : ''; }
+				_platform.getChannelID = function() { 
+					var m = document.URL.match(/^https?\:\/\/.+\.twitch\.tv\/(?:chat\/embed\?channel=)?(\w+)/i); 
+					if ( m && m[1]) return m[1];
+					m = document.URL.match(/^https?:\/\/player\.twitch\.tv\/.*(?:&?channel\=(\w+))/i);
+					return ( m && m[1] ? m[1] : '' );
+				};
 				_platform.getUsername = function() { return $(selector.userName).text().trim().toLowerCase(); };
 				_platform.getFeatures = function() {	return supportedFeatures;	};
 				_platform.initialize = function() { $(selector.body).addClass('hhb-pf-twitch'); };
@@ -1091,14 +1096,9 @@ var HHBJSONDATA,hhb;
 				
 				/* features.bookmarks */ 
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
-				_platform.getPlayer = function() {
-					var selectors = [].concat(selector.player), $tplayer = $();
-					$.each(selectors,function(idx,selector) {
-						$tplayer = $(selector);
-						if ($tplayer.length>0) return false;
-					});
-					return $tplayer;
-				}
+				_platform.getPlayer = function() { return _platformObj.default.getPlayer( selector.player ); };
+				_platform.getPlayerButtonTrigger = function() { return _platformObj.default.getPlayerButtonTrigger( selector.playerButtonTrigger ); };
+				
 				/* Icon emotify */
 				_platform.injectIcon = function(iconlist) {
 					if ( !window.App ) return 0;
@@ -1340,7 +1340,8 @@ var HHBJSONDATA,hhb;
 					}),
 					selector = $.extend(_protected.selector,{
 						userName: '.userName span',
-						player: ['#UstreamViewer','object[id^="utv"]']
+						player: ['#UstreamViewer','object[id^="utv"]'],
+						playerButtonTrigger: ['#UstreamViewer','object[id^="utv"]']
 					}),
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
@@ -1353,14 +1354,8 @@ var HHBJSONDATA,hhb;
 				
 				/* features.bookmarks */
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
-				_platform.getPlayer = function() {
-					var selectors = [].concat(selector.player), $tplayer = $();
-					$.each(selectors,function(idx,selector) {
-						$tplayer = $(selector);
-						if ($tplayer.length>0) return false;
-					});
-					return $tplayer;
-				}
+				_platform.getPlayer = function() { return _platformObj.default.getPlayer( selector.player ); };
+				_platform.getPlayerButtonTrigger = function() { return _platformObj.default.getPlayerButtonTrigger( selector.playerButtonTrigger ); };
 			},
 			streamup: function() {
 				/* Private variables */
@@ -1372,7 +1367,8 @@ var HHBJSONDATA,hhb;
 					}),
 					selector = $.extend(_protected.selector,{
 						userName: 'body',
-						player: ['#channelVideoPlayer','#StreamupEmbeddable']
+						player: ['#channelVideoPlayer','#StreamupEmbeddable'],
+						playerButtonTrigger: ['#channelVideoPlayer','#StreamupEmbeddable']
 					}),
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
@@ -1385,14 +1381,8 @@ var HHBJSONDATA,hhb;
 				
 				/* features.bookmarks */
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
-				_platform.getPlayer = function() {
-					var selectors = [].concat(selector.player), $tplayer = $();
-					$.each(selectors,function(idx,selector) {
-						$tplayer = $(selector);
-						if ($tplayer.length>0) return false;
-					});
-					return $tplayer;
-				}
+				_platform.getPlayer = function() { return _platformObj.default.getPlayer( selector.player ); };
+				_platform.getPlayerButtonTrigger = function() { return _platformObj.default.getPlayerButtonTrigger( selector.playerButtonTrigger ); };
 			},
 			livehouse: function() {
 				/* Private variables */
@@ -1404,7 +1394,8 @@ var HHBJSONDATA,hhb;
 					}),
 					selector = $.extend(_protected.selector,{
 						userName: 'body',
-						player: ['.video-part','.viewer-mode.embed-part']
+						player: ['.video-part','.viewer-mode.embed-part'],
+						playerButtonTrigger: ['.video-part','.viewer-mode.embed-part']
 					}),
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
@@ -1417,14 +1408,8 @@ var HHBJSONDATA,hhb;
 				
 				/* features.bookmarks */
 				_platform.genPlayerBookmarkBtn = function(idBtn) { return _platformObj.default.genPlayerBookmarkBtn(idBtn); };
-				_platform.getPlayer = function() {
-					var selectors = [].concat(selector.player), $tplayer = $();
-					$.each(selectors,function(idx,selector) {
-						$tplayer = $(selector);
-						if ($tplayer.length>0) return false;
-					});
-					return $tplayer;
-				}
+				_platform.getPlayer = function() { return _platformObj.default.getPlayer( selector.player ); };
+				_platform.getPlayerButtonTrigger = function() { return _platformObj.default.getPlayerButtonTrigger( selector.playerButtonTrigger ); };
 			},
 			hkgolden: function() {
 				/* Private variables */
@@ -1471,8 +1456,7 @@ var HHBJSONDATA,hhb;
 				_platform.getShowChatBtn = function() {	return [];	};
 				_platform.toggleTimestamps = function(act) { return true; };
 				_platform.getPlatformIcon = function() { return []; };
-				_platform.getPlayer = function() { return false; }
-			
+				
 				/* Icon emotify */
 				_platform.injectIcon = function(iconlist) { return iconlist.length; };
 				_platform.getNewMsg = function() {	return $(selector.newMsg);	};
@@ -3284,7 +3268,7 @@ var HHBJSONDATA,hhb;
 				var nbdict = {},objChannel = null;
 				var clist,olist=[];
 				var reCh = new RegExp('^'+env.channel+'(?:@'+env.platform+')?$','i');
-				var reName = new RegExp('^(\\w+)(?:@'+env.channel+')?(?:@'+env.platform+')?$','i');
+				var reName = new RegExp('^(\\w+)(?:@'+env.channel+')?(?:@'+env.platform+')$','i');
 				var filterName = function(arr,idonly) {
 					var res=[],arr=[].concat(arr);
 					$.each(arr,function(idx,obj) {
@@ -3381,9 +3365,9 @@ var HHBJSONDATA,hhb;
 				var tlist = $.extend({},olist);
 				var count=0;
 				olist = {};
-				$.each(tlist,function(key,obj) {
-					var m = key.match(reName);
-					if (m && m.length>=2) {
+				$.each( tlist, function( key, obj ) {
+					var m = key.match( reName );
+					if ( m && m.length >= 2 ) {
 						var classname = 'nb-hhb-'+count;
 						var nobj = $.extend(obj,{
 								cssClass: [cssClass.nameBanner,classname].join(' '),
@@ -3506,6 +3490,7 @@ var HHBJSONDATA,hhb;
 				if ($playerBookmark.length > 0) return true;
 				if (retryCount.bindPlayerBookmarkBtn==0) setLoadingStatus('bindPlayerBookmarkBtn','init');
 				var $player = platformObj.getPlayer();
+				var $playerButtonTrigger = platformObj.getPlayerButtonTrigger();
 				if ($player.length > 0) {
 					var $playerBookmark = platformObj.genPlayerBookmarkBtn(id.playerBookmark);
 					var isPendingHide = true;
@@ -3515,7 +3500,7 @@ var HHBJSONDATA,hhb;
 						.click(function() { toggleBookmark(); })
 						.mousemove(function() { f_showBtn(); })
 						.insertAfter($player);
-					$player
+					$playerButtonTrigger
 						.mouseover(function() { f_showBtn(); })
 						.mousemove(function() { f_showBtn(); })
 						.mouseout(function() { f_hideBtn(); });
@@ -3862,7 +3847,6 @@ var HHBJSONDATA,hhb;
 
 		hhbga('create', 'UA-48929186-1', 'auto');
 		hhbga('require','displayfeatures');
-		hhbga('send', 'pageview');
 		
 		hhbInitialize();
 	});

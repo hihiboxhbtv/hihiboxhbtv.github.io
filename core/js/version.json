@@ -11,9 +11,19 @@
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v5.0.0",
-	"lastUpdate": "2015-08-29",
+	"coreVersion": "v5.0.1",
+	"lastUpdate": "2015-10-26",
 	"history": [
+		{
+			"version": "v5.0.1",
+			"lastUpdate": "2015-10-26",
+			"summary": [
+				"[概要] 因Twitch.tv 更新引致播放器書籤按鈕顯示問題修正 (測試中)"
+			],
+			"detail": [
+				"[修正] 因Twitch.tv 更新引致播放器書籤按鈕顯示問題修正 (測試中)"
+			]
+		},
 		{
 			"version": "v5.0.0",
 			"lastUpdate": "2015-08-29",
@@ -31,30 +41,30 @@
 			"version": "v4.2.3",
 			"lastUpdate": "2015-08-01",
 			"summary": [
-				"[概要] 因Twitch.tv 更新引致之表情顯示相關問題修正 (測試中)"
+				"[概要] 因Twitch.tv 更新引致表情顯示相關問題修正 (測試中)"
 			],
 			"detail": [
-				"[修正] 因Twitch.tv 更新引致之表情顯示相關問題修正 (測試中)"
+				"[修正] 因Twitch.tv 更新引致表情顯示相關問題修正 (測試中)"
 			]
 		},
 		{
 			"version": "v4.2.2",
 			"lastUpdate": "2015-04-17",
 			"summary": [
-				"[概要] 因Twitch.tv 更新引致之表情顯示相關問題修正 (測試中)"
+				"[概要] 因Twitch.tv 更新引致表情顯示相關問題修正 (測試中)"
 			],
 			"detail": [
-				"[修正] 因Twitch.tv 更新引致之表情顯示相關問題修正 (測試中)"
+				"[修正] 因Twitch.tv 更新引致表情顯示相關問題修正 (測試中)"
 			]
 		},
 		{
 			"version": "v4.2.1",
 			"lastUpdate": "2015-02-06",
 			"summary": [
-				"[概要] 因Twitch.tv 更新引致之表情顯示相關問題修正 (測試中)"
+				"[概要] 因Twitch.tv 更新引致表情顯示相關問題修正 (測試中)"
 			],
 			"detail": [
-				"[修正] 因Twitch.tv 更新引致之表情顯示相關問題修正 (測試中)"
+				"[修正] 因Twitch.tv 更新引致表情顯示相關問題修正 (測試中)"
 			]
 		},
 		{
