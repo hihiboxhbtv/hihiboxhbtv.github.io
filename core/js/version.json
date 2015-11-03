@@ -11,9 +11,19 @@
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v5.0.1",
-	"lastUpdate": "2015-10-26",
+	"coreVersion": "v5.0.2",
+	"lastUpdate": "2015-11-03",
 	"history": [
+		{
+			"version": "v5.0.2",
+			"lastUpdate": "2015-11-03",
+			"summary": [
+				"[概要] 新增星戰系列icon"
+			],
+			"detail": [
+				"[新增] 星戰系列icon"
+			]
+		},
 		{
 			"version": "v5.0.1",
 			"lastUpdate": "2015-10-26",
