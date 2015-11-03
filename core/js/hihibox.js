@@ -113,8 +113,8 @@ var HHBJSONDATA,hhb;
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v5.0.1',
-		lastUpdate: '2015-10-26'
+		coreVersion: 'v5.0.2',
+		lastUpdate: '2015-11-03'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
