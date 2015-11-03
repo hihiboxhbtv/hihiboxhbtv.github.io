@@ -254,6 +254,11 @@ body.hhb-iconlist-active #hhb-holder {
 #hhb-genrelist .hhb-genre.other:hover, #hhb-genrelist .hhb-genre.gjtv:hover,
 #hhb-genrelist .hhb-genre.other.hhb-active, #hhb-genrelist .hhb-genre.gjtv.hhb-active { 		background-color: #AAAAAA;		color: #333333;	}
 
+/* [S: 2015-11-03] - Star Wars	*/
+#hhb-genrelist .hhb-genre[hhb-genre="星戰"] {	background-color: #222222;	color: rgb(192,192,0);	border: 1px solid rgb(192,192,0);	padding: 2px 5px;	}
+#hhb-genrelist .hhb-genre[hhb-genre="星戰"]:hover,
+#hhb-genrelist .hhb-genre[hhb-genre="星戰"].hhb-active { background-color: #000000;	color: rgb(255,255,0);	border-color: rgb(255,255,0);	}
+
 #hhb-genrelist .hhb-genre[hhb-genre="雨傘"] {	background-color: rgb(192,192,0);	color: #333333; }
 #hhb-genrelist .hhb-genre[hhb-genre="雨傘"]:hover,
 #hhb-genrelist .hhb-genre[hhb-genre="雨傘"].hhb-active { background-color: rgb(255,255,0); }
