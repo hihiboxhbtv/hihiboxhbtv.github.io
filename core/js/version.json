@@ -11,9 +11,19 @@
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v5.0.2",
-	"lastUpdate": "2015-11-03",
+	"coreVersion": "v5.0.3",
+	"lastUpdate": "2015-12-06",
 	"history": [
+		{
+			"version": "v5.0.3",
+			"lastUpdate": "2015-12-06",
+			"summary": [
+				"[概要] 新增網絡23 系列icon"
+			],
+			"detail": [
+				"[新增] 網絡23 系列icon"
+			]
+		},
 		{
 			"version": "v5.0.2",
 			"lastUpdate": "2015-11-03",

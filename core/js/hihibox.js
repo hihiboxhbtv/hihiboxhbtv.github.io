@@ -113,8 +113,8 @@ var HHBJSONDATA,hhb;
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v5.0.2',
-		lastUpdate: '2015-11-03'
+		coreVersion: 'v5.0.3',
+		lastUpdate: '2015-12-06'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -2745,6 +2745,30 @@ var HHBJSONDATA,hhb;
 						showIconMsg({ isBinding: true, loadedCount: _iconChildList.length });
 					},
 					finish: function() {
+						/* Copyright 23 - link */
+						var $iconMore = $(selector.icon+'.copyright23.hhb-icon-button');
+						if (!($iconMore && $iconMore.length > 0)) {
+							$iconMore = [ 
+								$('<div class="'+cssClass.icon+' copyright23 hhb-icon-button info" hhb-genre="網絡23"></div>')
+									.append(
+										$('<div class="hhb-copyright23-icon-btn" title="">')
+											.text( '網絡廿三條係乜?' )
+											.click( function(e){
+												$('<a>', { href: 'http://on.fb.me/1SES2Gl', target: 'copyright23'})[0].click();
+											})
+									).addClass('hhb-hide'),
+								$('<div class="'+cssClass.icon+' copyright23 hhb-icon-button sign" hhb-genre="網絡23"></div>')
+									.append(
+										$('<div class="hhb-copyright23-icon-btn" title="">')
+											.text( '聯署' )
+											.click( function(e){
+												$('<a>', { href: 'http://bit.ly/1TrE6PS', target: 'signature'})[0].click();
+											})
+									).addClass('hhb-hide'),
+									
+							];
+						}
+						
 						/* Custom icon - manual add button */
 						var $icon = $(selector.icon+'.custom.hhb-icon-button');
 						if (!($icon && $icon.length > 0)) {
@@ -2758,7 +2782,8 @@ var HHBJSONDATA,hhb;
 										})
 								).addClass('hhb-hide');
 						}
-						$palIconset.append(_iconChildList).append($icon);
+						$palIconset.append(_iconChildList).append($icon).append($iconMore);
+						
 						_iconChildList = [];
 						selectGenre('init');	/* select default genre */
 						version.iconList.current = version.iconList.pending;
