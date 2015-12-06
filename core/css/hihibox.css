@@ -268,11 +268,11 @@ body.hhb-iconlist-active #hhb-holder {
 #hhb-genrelist .hhb-genre[hhb-genre="雨傘"]:hover,
 #hhb-genrelist .hhb-genre[hhb-genre="雨傘"].hhb-active { background-color: rgb(255,255,0); }
 */
-/*
+
 #hhb-genrelist .hhb-genre[hhb-genre="聖誕"] {	background-color: rgb(136,0,0);	color: #FFFFFF; }
 #hhb-genrelist .hhb-genre[hhb-genre="聖誕"]:hover,
 #hhb-genrelist .hhb-genre[hhb-genre="聖誕"].hhb-active { background-color: rgb(204,0,0); }
-*/
+
 /*
 #hhb-genrelist .hhb-genre[hhb-genre="新年"] {	background-color: rgb(136,0,0);	color: #FFFF00; }
 #hhb-genrelist .hhb-genre[hhb-genre="新年"]:hover,
@@ -884,7 +884,7 @@ body.hhb-iconlist-active .hhb-button {
 /* [S: 2015-12-05] - Copyright 23 Btn */
 
 #hhb-iconset .hhb-icon.copyright23.hhb-icon-button.info {
-    width: 160px;
+    width: 140px;
     right: 90px;
     bottom: 10px;
 }
@@ -912,6 +912,7 @@ body.hhb-iconlist-active .hhb-button {
     color: #333333;
     overflow: initial;
     border-radius: 10px;
+	font-size: 14px;
 }
 #hhb-iconset .hhb-icon.copyright23.hhb-icon-button:hover .hhb-copyright23-icon-btn {
     background-color: #333333;
