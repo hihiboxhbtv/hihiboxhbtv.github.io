@@ -1367,8 +1367,8 @@ var HHBJSONDATA,hhb;
 					}),
 					selector = $.extend(_protected.selector,{
 						userName: 'body',
-						player: ['#channelVideoPlayer','#StreamupEmbeddable'],
-						playerButtonTrigger: ['#channelVideoPlayer','#StreamupEmbeddable']
+						player: ['div.streamup_live_player'],
+						playerButtonTrigger: ['div.streamup_live_player']
 					}),
 					limit = $.extend(_protected.limit,{});
 				/* Public methods */
