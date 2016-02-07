@@ -1,6 +1,6 @@
 ﻿var HHBJSONDATA = HHBJSONDATA || {};
 
-HHBJSONDATA.listGenre = ["網絡23","HKG","HKG2","星戰","meme","pkmon","腦魔","禿伯","小丑","Pixel","食鬼","聖誕","北極","口罩","新年","Alpaca","水彩","Cap圖","雨傘","Emoji","Discuz"];
+HHBJSONDATA.listGenre = ["網絡23","HKG","HKG2","星戰","meme","pkmon","腦魔","禿伯","小丑","Pixel","食鬼","聖誕","新年","北極","口罩","Alpaca","水彩","Cap圖","雨傘","Emoji","Discuz"];
 HHBJSONDATA.listIcon = [
 	{	"_start": 	"***************************************",
 		"comment": 	"HKG",
