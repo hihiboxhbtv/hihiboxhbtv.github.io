@@ -1070,7 +1070,7 @@ var HHBJSONDATA,hhb;
 				_platform.getPlatformIcon = function() {
 					var list = [], tgenre = [].concat('TTV');
 					if ( !_platform.platformIconIsLoading ) {
-						$.getJSON("http://twitchemotes.com/api_cache/v2/global.json", function(data) {
+						$.getJSON("https://twitchemotes.com/api_cache/v2/global.json", function(data) {
 							_platform.platformIconData = data;
 						});
 					}
@@ -1084,7 +1084,7 @@ var HHBJSONDATA,hhb;
 							var tcode = [].concat(key)
 							list.push({
 								code: tcode,
-								src: "http:"+template.small.replace("{image_id}",emo.image_id),
+								src: template.small.replace("{image_id}",emo.image_id),
 								width: 50,
 								height: 50,
 								genre: tgenre
