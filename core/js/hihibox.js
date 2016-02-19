@@ -35,7 +35,13 @@ var HHBJSONDATA,hhb;
 	/* JavaScript Date.prototype.toLocalISOString | */
 	Date.prototype.toLocalISOString=function(){var e=this,t=function(e){return e<10?"0"+e:e},n=e.getTimezoneOffset(),r=(n>0?"-":"+")+t(parseInt(Math.abs(n/60)));if(n%60!=0)r+=t(Math.abs(n%60));if(n===0)r="Z";return e.getFullYear()+"-"+t(e.getMonth()+1)+"-"+t(e.getDate())+"T"+t(e.getHours())+":"+t(e.getMinutes())+":"+t(e.getSeconds())+r}
 
-	var orgjQuery = jQuery || null;	/* backup original jQuery */
+	var orgjQuery;
+
+	try {
+		orgjQuery = jQuery;	/* backup original jQuery */
+	} catch (e) {
+		orgjQuery = null;
+	}
 	var pf$ = orgjQuery;
 	
 	/* HihiBox jQuery */
@@ -1101,6 +1107,7 @@ var HHBJSONDATA,hhb;
 				
 				/* Icon emotify */
 				_platform.injectIcon = function(iconlist) {
+					return 0;
 					if ( !window.App ) return 0;
 					var hhbEmotes = [];
 					hhbEmotes = hhbEmotes.concat(iconlist);
