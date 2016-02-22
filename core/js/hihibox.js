@@ -119,8 +119,8 @@ var HHBJSONDATA,hhb;
 			developer: ["Lemon", "希治閣"],
 			specialThanks: ["VannZic"]
 		},
-		coreVersion: 'v5.0.3',
-		lastUpdate: '2015-12-06'
+		coreVersion: 'v5.0.4',
+		lastUpdate: '2016-02-13'
 	};
 	var htmlEncode = function(value){
 		return (value) ? $('<div />').text(value).html() : '';
@@ -1107,60 +1107,145 @@ var HHBJSONDATA,hhb;
 				
 				/* Icon emotify */
 				_platform.injectIcon = function(iconlist) {
-					return 0;
 					if ( !window.App ) return 0;
 					var hhbEmotes = [];
-					hhbEmotes = hhbEmotes.concat(iconlist);
-					var e = function(e) {
+					hhbEmotes = hhbEmotes.concat( iconlist );
+					
+					var r = function(e) {
+							var o = e,
+								l = {
+									"&": "&amp;",
+									"<": "&lt;",
+									">": "&gt;",
+									'"': "&quot;",
+									"'": "&#x27;",
+									"`": "&#x60;"
+								},
+								u = /[&<>"'`]/g,
+								c = /[&<>"'`]/,
+								t = function(e) {
+									return l[e]
+								};
+							return null == e ? "" : e ? (e = "" + e, c.test(e) ? e.replace(u, t) : e) : e + ""
+						},
+						n = function(e) { return "string" == typeof e },
+						s = function(e) { return _.extend(l(e), { type: "emoticon" }) },
+						o = function(e) { return _.extend(l(e), { type: "text" }) },
+						l = function(e) {
+							return _.extend({}, e, {
+								length: e.length,
+								hidden: e.hidden || !1,
+								escaped: function(e) {
+									return r(this[e] || "")
+								}
+							})
+						},
+						d = function(e) {
 							if (!_.isString(e.input) || !e.input.match(e.regex)) return _.isString(e.input) ? [e.input] : e.input;
 							var t = _.map(e.input.split(e.regex), e.transformNoMatch),
-								s = _.map(e.input.match(e.regex), e.transformMatch),
-								n = _.zip(t, s);
+								r = _.map(e.input.match(e.regex), e.transformMatch),
+								n = _.zip(t, r);
 							return n
 						},
-						s = /(?:https?:\/\/)?(?:[-a-zA-Z0-9@:%_\+~#=]+\.)+[a-z]{2,6}\b(?:[-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
-						o = function(t, n) {
-							var a = function(t) {
-								return e({
-									input: t,
-									regex: s,
+						h = /(?:https?:\/\/)?(?:[-a-zA-Z0-9@:%_\+~#=]+\.)+[a-z]{2,6}\b(?:[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/g,
+						p = function(e, t) {
+							var r = function(e) {
+								return d({
+									input: e,
+									regex: h,
 									transformNoMatch: _.identity,
 									transformMatch: function(e) {
-										return n || e.length > 255 ? {
-											deletedLink: !0,
-											linkLength: e.length,
-											text: "&lt;deleted link&gt;"
-										} : {
-											isLink: !0,
-											href: e
-										}
+										var r = function(e) {
+											return e.indexOf("@") > -1 && (-1 === e.indexOf("/") || e.indexOf("@") < e.indexOf("/"))
+										},
+										n = {
+											length: e.length,
+											isDeleted: t || e.length > 255,
+											isMailTo: r(e),
+											text: e,
+											link: e
+										};
+										return n.isMailTo || e.match(/^(?:https?:\/\/)/) || (n.link = "http://" + e), i(n)
 									}
 								})
 							};
-							return _.chain(t).map(a).flatten().compact().value()
+							return _.chain(e).map(r).flatten().compact().value()
 						},
-						a = function(t, s, n) {
-							var a = new RegExp("@?\\b" + s + "\\b", "ig"),
-								i = /@[a-z0-9]\w{4,25}\b/gi,
-								o = n ? i : a,
-								r = function(t) {
-									return e({
-										input: t,
-										regex: o,
-										transformNoMatch: _.identity,
-										transformMatch: function(e) {
-											return {
-												mentionedUser: e,
-												own: n
-											}
-										}
+						m = function(e, t, r) {
+							var n = new RegExp("@?\\b" + t + "\\b", "ig"),
+							i = /@[a-z0-9]\w{4,25}\b/gi,
+							s = r ? i : n,
+							o = function(e) {
+								return d({
+									input: e,
+									regex: s,
+									transformNoMatch: _.identity,
+									transformMatch: function(e) {
+										return a({
+											length: e.length,
+											user: e,
+											isOwnMessage: r
+										})
+									}
+								})
+							};
+							return _.chain(e).map(o).flatten().compact().value()
+						},
+						/* 
+							original code
+						***********************************
+						f = function(e) {
+							var r = _.reduce(e, function(e, r, n) {
+								//return t["default"].isArray(r[0]) ? r.forEach(function(t) {
+								return _.isArray(r[0]) ? r.forEach(function(t) {
+									e.push({
+										emoticonId: n,
+										index: t
 									})
-								};
-							return _.chain(t).map(r).flatten().compact().value()
+								}) : e.push({
+									emoticonId: n,
+									index: r
+								}), e
+							}, []);
+							return _.sortBy(r, function(e) {
+								return e.index[0]
+							})
 						},
-						hhbu = function(e) {
-							var s = _.reduce(e, function(e, s, n) {
-								return _.isArray(s[0]) ? s.forEach(function(t) {
+						g = function(e, r) {
+							if (e && r) {
+								r = f(r), r.reverse();
+								var i = _.reduce(r, function(e, r) {
+									for (var i = [], a = e.shift(), o = 0; o + a.length - 1 < r.index[0];) i.push(a), o += a.length, a = e.shift();
+									if (n(a)) {
+										var l = a.slice(0, r.index[0] - o);
+										l.length > 0 && i.push(l), i.push(s({
+											length: r.index[1] - r.index[0] + 1,
+											imgSrc: "//static-cdn.jtvnw.net/emoticons/v1/" + r.emoticonId + "/1.0",
+											//srcSet: t["default"].String.fmt("//static-cdn.jtvnw.net/emoticons/v1/%@1/2.0 2x", r.emoticonId),
+											srcSet: "//static-cdn.jtvnw.net/emoticons/v1/%@1/2.0 2x".fmt(r.emoticonId),
+											altText: a.slice(r.index[0] - o, r.index[1] + 1 - o)
+										}));
+										var u = a.slice(r.index[1] + 1 - o);
+										u.length > 0 && i.push(u), i = i.concat(e)
+									} else i = i.concat(a, e);
+									return i
+								}, e);
+								return "" === i[i.length - 1] && i.pop(), i
+							}
+							return e
+						},*/
+						v = function(e) {
+							
+							return _.map(e, function(e) {
+								return n(e) ? o({
+									length: e.length,
+									text: e
+								}) : e
+							})
+						},
+						hhbf = function(e) {
+							var r = _.reduce(e, function(e, r, n) {
+								return _.isArray(r[0]) ? r.forEach(function(t) {
 									e.push({
 										isHihiBox: isNaN(n),
 										src: isNaN(n) ? n : "",
@@ -1171,26 +1256,32 @@ var HHBJSONDATA,hhb;
 									isHihiBox: isNaN(n),
 									src: isNaN(n) ? n : "",
 									emoticonId: n,
-									index: s
+									index: r
 								}), e
 							}, []);
-							return s.sortBy("index.firstObject")
+							return _.sortBy(r, function(e) {
+								return e.index[0]
+							})
 						},
-						hhbl = function(e, t) {
-							if (e && t) {
-								t = hhbu(t), t.reverse();
-								var s = function(e) {
-										return e.isLink ? e.href.length : e.deletedLink ? e.linkLength : e.mentionedUser ? e.mentionedUser.length : e.length
-									},
-									n = _.reduce(t, function(e, t) {
-										for (var n = [], a = e.shift(), i = 0; i + s(a) - 1 < t.index[0];) n.push(a), i += s(a), a = e.shift();
-										return _.isObject(a) ? n = n.concat(a, e) : (n.push(a.slice(0, t.index[0] - i)), n.push({
-											emoticonSrc: t.isHihiBox ? t.src : "http://static-cdn.jtvnw.net/emoticons/v1/" + t.emoticonId + "/1.0",
-											srcSet: t.isHihiBox ? t.src : "http://static-cdn.jtvnw.net/emoticons/v1/%@1/2.0 2x, http://static-cdn.jtvnw.net/emoticons/v1/%@1/3.0 3x".fmt(t.emoticonId),
-											altText: a.slice(t.index[0] - i, t.index[1] + 1 - i)
-										}), n.push(a.slice(t.index[1] + 1 - i)), n = n.concat(e)), n
-									}, e);
-								return "" === n[n.length - 1] && n.pop(), n
+						hhbg = function(e, r) {
+							if (e && r) {
+								r = hhbf(r), r.reverse();
+								var i = _.reduce(r, function(e, r) {
+									for (var i = [], a = e.shift(), o = 0; o + a.length - 1 < r.index[0];) i.push(a), o += a.length, a = e.shift();
+									if (n(a)) {
+										var l = a.slice(0, r.index[0] - o);
+										l.length > 0 && i.push(l), i.push(s({
+											length: r.index[1] - r.index[0] + 1,
+											imgSrc: r.isHihiBox ? r.src : "//static-cdn.jtvnw.net/emoticons/v1/" + r.emoticonId + "/1.0",
+											srcSet: r.isHihiBox ? r.src : "//static-cdn.jtvnw.net/emoticons/v1/%@1/2.0 2x".fmt(r.emoticonId),
+											altText: a.slice(r.index[0] - o, r.index[1] + 1 - o)
+										}));
+										var u = a.slice(r.index[1] + 1 - o);
+										u.length > 0 && i.push(u), i = i.concat(e)
+									} else i = i.concat(a, e);
+									return i
+								}, e);
+								return "" === i[i.length - 1] && i.pop(), i
 							}
 							return e
 						},
@@ -1235,16 +1326,18 @@ var HHBJSONDATA,hhb;
 					lineChatComponent.reopen({
 						tokenizedMessage : function () {
 							var e = [this.get("msgObject.message")],
-								t = this.get("isChannelLinksDisabled") && !this.get("isModeratorOrHigher"),
-								n = this.get("currentUserNick"),
-								i = this.get("msgObject.from") === n,
-								hhbEmotesTag = hhbEmotify.parseEmotesTag(e),
-								s = this.get("msgObject.tags.emotes");
-							e = hhbl(e, t);
-							e = a(e, n, i);
-							e = hhbl(e, hhbEmotesTag);
-							e = hhbl(e, s);
-							return e;
+							t = this.get("isChannelLinksDisabled") && !this.get("isModeratorOrHigher"),
+							n = this.get("currentUserNick"),
+							i = this.get("msgObject.from") === n,
+							s = this.get("msgObject.tags.emotes"),
+							hhbEmotesTag = hhbEmotify.parseEmotesTag(e);
+							
+							if ( this.get("enabledLinkification") ) 
+								e = (0, p)(e, t);
+							e = (0, m)(e, n, i);
+							e = (0, hhbg)(e, hhbEmotesTag);
+							e = (0, hhbg)(e, s);
+							return (0, v)(e);
 						}.property("msgObject.message", "isModeratorOrHigher"),
 					});
 					return iconlist.length;
