@@ -1129,17 +1129,11 @@ var HHBJSONDATA,hhb;
 							return null == e ? "" : e ? (e = "" + e, c.test(e) ? e.replace(u, t) : e) : e + ""
 						},
 						n = function(e) { return "string" == typeof e },
+						i = function(e) { return _.extend(l(e), { type: "link", isDeleted: e.isDeleted, isMailTo: e.isMailTo }) },
 						s = function(e) { return _.extend(l(e), { type: "emoticon" }) },
+						a = function(e) { return _.extend(l(e), { type: "mention", isOwnMessage: e.isOwnMessage }) },
 						o = function(e) { return _.extend(l(e), { type: "text" }) },
-						l = function(e) {
-							return _.extend({}, e, {
-								length: e.length,
-								hidden: e.hidden || !1,
-								escaped: function(e) {
-									return r(this[e] || "")
-								}
-							})
-						},
+						l = function(e) { return _.extend({}, e, { length: e.length, hidden: e.hidden || !1, escaped: function(e) { return r(this[e] || "") } }) },
 						d = function(e) {
 							if (!_.isString(e.input) || !e.input.match(e.regex)) return _.isString(e.input) ? [e.input] : e.input;
 							var t = _.map(e.input.split(e.regex), e.transformNoMatch),
