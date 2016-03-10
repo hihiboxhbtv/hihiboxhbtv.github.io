@@ -111,7 +111,7 @@ var HHBJSONDATA,hhb;
 
 	var editorExtensionId = "eoiappopphdcceickjphgaaidacdkidi";			/* debug */
 	var host = 'https://hihiboxhbtv.github.io/core';				/* debug */
-	var imgHost = 'http://hihiboxhbtv.github.io/images/icons/';		/* debug */
+	var imgHost = 'https://hihiboxhbtv.github.io/images/icons/';		/* debug */
 	var enableGA = true;		/* debug */
 	var versionInfo = {
 		name: 'HihiBox',		/* debug */
