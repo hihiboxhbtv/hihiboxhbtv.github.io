@@ -5,15 +5,25 @@
 		"developer": ["Lemon", "希治閣"],
 		"specialThanks": ["VannZic"]
 	},
-	"lastExtensionVersion": "v5.0",
-	"lastRelease": "2015-08-29",
-	"lastSummary": "[概要] Bookmarks 功能 (追加支援Streamup.com, LIVEhouse.in)",
+	"lastExtensionVersion": "v5.1.0",
+	"lastRelease": "2016-07-07",
+	"lastSummary": "[概要] 為重新在Chrome Web Store 上架而進行的相關整合",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v5.0.4",
-	"lastUpdate": "2016-02-13",
+	"coreVersion": "v5.1.0",
+	"lastUpdate": "2016-07-07",
 	"history": [
+		{
+			"version": "v5.1.0",
+			"lastUpdate": "2016-07-07",
+			"summary": [
+				"[概要] 為重新在Chrome Web Store 上架而進行相關的插件架構重整"
+			],
+			"detail": [
+				"[改善] 為重新在Chrome Web Store 上架而進行相關的插件架構重整"
+			]
+		},
 		{
 			"version": "v5.0.4",
 			"lastUpdate": "2016-02-13",
