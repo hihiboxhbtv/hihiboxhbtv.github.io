@@ -3930,7 +3930,7 @@ var HHBJSONDATA,hhb;
 					console.log('[HihiBox]','Import Data List Start');		/* debug */
 					/* load icon list */
 					if ($.inArray('emoticon',features) >= 0) {
-						$.getScript([host,"/js/iconlist.json"].join(''))
+						$.getScript([host,"/js/iconlist.5.0.json"].join(''))
 							.done(function(script,textStatus) {
 								var HHBJSONDATA = window.HHBJSONDATA;
 								hhb.importIconList(
@@ -3940,7 +3940,7 @@ var HHBJSONDATA,hhb;
 							}).always(function() {
 								/* load name banner list */
 								if ($.inArray('name_banner',features) >= 0) {
-									$.getScript([host,"/js/namebannerlist.json"].join(''))
+									$.getScript([host,"/js/namebannerlist.5.0.json"].join(''))
 										.done(function(script,textStatus) {
 											var HHBJSONDATA = window.HHBJSONDATA;
 											hhb.importNameBanner(
