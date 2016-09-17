@@ -5,15 +5,25 @@
 		"developer": ["Lemon", "希治閣"],
 		"specialThanks": ["VannZic"]
 	},
-	"lastExtensionVersion": "v5.1.1",
-	"lastRelease": "2016-08-06",
-	"lastSummary": "[概要] 因Twitch.tv 更新引致表情顯示問題修正 (測試中)",
+	"lastExtensionVersion": "v5.1.2",
+	"lastRelease": "2016-09-18",
+	"lastSummary": "[概要] 修正開台提示功能",
 	"downloadURI": "https://chrome.google.com/webstore/detail/hihibox/eoiappopphdcceickjphgaaidacdkidi",
 	"siteURI": "http://bit.ly/hihibox_site",
 	"pageURI": "http://bit.ly/hihibox_fb",
-	"coreVersion": "v5.1.1",
-	"lastUpdate": "2016-08-06",
+	"coreVersion": "v5.1.2",
+	"lastUpdate": "2016-09-18",
 	"history": [
+		{
+			"version": "v5.1.2",
+			"lastUpdate": "2016-09-18",
+			"summary": [
+				"[概要] 修正開台提示功能"
+			],
+			"detail": [
+				"[修正] 修正開台提示功能"
+			]
+		},
 		{
 			"version": "v5.1.1",
 			"lastUpdate": "2016-08-06",
